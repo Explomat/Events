@@ -71,9 +71,14 @@ var Filters = React.createClass({
 
 	propsTypes: {
 		selectedMonthIndex: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]).isRequired,
+		selectedYearIndex: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]).isRequired
 	},
 
 	handleChangeMonth: function(e, payload, text, index){
+		CalendarActions.changeMonth(index);
+	},
+
+	handleChangeYear: function(e, payload, text, index){
 		CalendarActions.changeMonth(index);
 	},
 
@@ -81,6 +86,7 @@ var Filters = React.createClass({
 		return (
 			<header className="calendar-header">
 				<DropDown onChange={this.handleChangeMonth} items={DateUtils.getMonths()} selectedPayload={this.props.selectedMonthIndex} className={"calendar-header__months"} classNameButton={"calendar-header__months-button"}/>
+				<DropDown onChange={this.handleChangeYear} items={DateUtils.getYears()} selectedPayload={this.props.selectedYearIndex} className={"calendar-header__years"} classNameButton={"calendar-header__years-button"}/>
 			</header>
 		);
 	}
@@ -182,7 +188,7 @@ var CalendarView = React.createClass({
 	getRows: function(){
 		var rows = [];
 		var currentDate = this.props.currentDate;
-		var startDate = new Date(currentDate.getFullYear(), currentDate.getMonth());
+		var startDate = new Date(currentDate.getFullYear(), this.props.selectedMonthIndex);
 		//var lastDate = this._getLastDateInMonth(currentDate);
 		var startWeekDay = this._getDay(startDate);
 		//var lastWeekDay = this._getDay(lastDate);
