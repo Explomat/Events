@@ -8,8 +8,21 @@ var CalendarActions = {
 			actionType: CalendarConstants.RECEIVE_CALENDAR_DATA,
 			data: data
 		});
-	}
+	},
 
+	changeMonth: function(index) {
+		AppDispatcher.handleAction({
+			actionType: CalendarConstants.CHANGE_CALENDAR_MONTH,
+			index: index
+		});
+	},
+
+	selectDate: function(date) {
+		AppDispatcher.handleAction({
+			actionType: CalendarConstants.SELECT_CALENDAR_DATE,
+			date: date
+		});
+	},
 }
 
 module.exports = CalendarActions;

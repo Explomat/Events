@@ -2,12 +2,13 @@ var React = require('react');
 var DropDown = require('./DropDown');
 var DateUtils = require('../../utils/event/DateUtils');
 var EventStatuses = require('../../utils/event/EventStatuses');
+var CalendarActions = require('../../actions/CalendarActions');
 
 var EventSideBar = React.createClass({
 
 	getTime: function(){
-		var startDate = new Date(this.props.startDate);
-		var finishDate = new Date(this.props.finishDate);
+		var startDate = this.props.startDate;
+		var finishDate = this.props.finishDate;
 		return startDate.getHours() + ':' + startDate.getMinutes() + '-' +  finishDate.getHours() + ':' + finishDate.getMinutes();
 	},
 
@@ -41,21 +42,21 @@ var SideBar = React.createClass({
 		}
 	},
 
-	getSelectedEvents: function(activeDate, events){
+	getSelectedEvents: function(selectedDate, events){
 		return this.props.events.filter(function(ev){
-			return DateUtils.compare(activeDate, new Date(ev.startDate));
+			return DateUtils.compare(selectedDate, ev.startDate);
 		})
 	},
 
 	render: function() {
-		var activeDate = this.props.activeDate.toLocaleDateString('ru', {year: 'numeric', month: 'long', day: 'numeric'});
-		var selectedEvents = this.getSelectedEvents(this.props.activeDate, this.props.events);
+		var selectedDate = this.props.selectedDate.toLocaleDateString('ru', {year: 'numeric', month: 'long', day: 'numeric'});
+		var selectedEvents = this.getSelectedEvents(this.props.selectedDate, this.props.events);
 		var isDisplayMessage = { display: selectedEvents.length === 0 ? 'block' : 'none' }
 		return (
 			<aside className="timetable">
 				<header className="timetable__header">
 					<i className="timetable__header-icon fa fa-calendar"></i>
-					<p className="timetable__header-date">{activeDate}</p>
+					<p className="timetable__header-date">{selectedDate}</p>
 				</header>
 				<div style={isDisplayMessage} className="timetable__message">Нет мероприятий на выбранную дату</div>
 				{selectedEvents.map(function(ev, index){
@@ -69,23 +70,17 @@ var SideBar = React.createClass({
 var Filters = React.createClass({
 
 	propsTypes: {
-		selectedMonthIndex: React.PropTypes.string
+		selectedMonthIndex: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]).isRequired,
 	},
 
 	handleChangeMonth: function(e, payload, text, index){
-		
-	},
-
-	getDefaultProps: function(){
-		return {
-			selectedMonthIndex: new Date().getMonth().toString()
-		}
+		CalendarActions.changeMonth(index);
 	},
 
 	render: function() {
 		return (
 			<header className="calendar-header">
-				<DropDown onChange={this.handleChangeMonth} items={DateUtils.getMonths()} selectedPayload={new Date(this.props.currentDate).getMonth().toString()} className={"calendar-header__months"} classNameButton={"calendar-header__months-button"}/>
+				<DropDown onChange={this.handleChangeMonth} items={DateUtils.getMonths()} selectedPayload={this.props.selectedMonthIndex} className={"calendar-header__months"} classNameButton={"calendar-header__months-button"}/>
 			</header>
 		);
 	}
@@ -155,13 +150,18 @@ var CalendarView = React.createClass({
 	_getEventsInDate: function(date, events){
 		var _events = [];
 		for (var i = events.length - 1; i >= 0; i--) {
-			if (DateUtils.compare(new Date(events[i].startDate), date)) _events.push(events[i]);
+			if (DateUtils.compare(events[i].startDate, date)) _events.push(events[i]);
 		};
 		return _events;
 	},
 
 	propsTypes: {
 		currentDate: function(props, propName){
+			if (typeof(props[propName] !== Date)) {
+				return new Error('Validation for \'currentDate\' failed!');
+			}
+		},
+		selectedDate: function(props, propName){
 			if (typeof(props[propName] !== Date)) {
 				return new Error('Validation for \'currentDate\' failed!');
 			}
@@ -175,19 +175,13 @@ var CalendarView = React.createClass({
 		}
 	},
 
-	getInitialState: function(){
-		return {
-			activeDate: new Date(this.props.currentDate)
-		}
-	},
-
 	componentWillReceiveProps: function(nextProps){
 		
 	},
 
 	getRows: function(){
 		var rows = [];
-		var currentDate = new Date(this.props.currentDate);
+		var currentDate = this.props.currentDate;
 		var startDate = new Date(currentDate.getFullYear(), currentDate.getMonth());
 		//var lastDate = this._getLastDateInMonth(currentDate);
 		var startWeekDay = this._getDay(startDate);
@@ -206,7 +200,7 @@ var CalendarView = React.createClass({
 				var isCurrentMonth = startDate.getMonth() === currentMonth;
 				var curDay = isCurrentMonth ? startDate.getDate() : '';
 				var events = isCurrentMonth ? this._getEventsInDate(startDate, this.props.events) : [];
-				var clickFunc = isCurrentMonth ? this.handleSelectCell : undefined;
+				var clickFunc = isCurrentMonth ? this.handleSelectDate : undefined;
 				cells.push(<CalendarCell key={j} onClick={clickFunc} day={curDay} date={new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate())} isCurrentDay={currentDate.getDate() === curDay} events={events}/>);
 				startDate.setDate(curDay + 1);
 			};
@@ -216,16 +210,16 @@ var CalendarView = React.createClass({
 	},
 
 
-	handleSelectCell: function(date){
-		this.setState({ activeDate: date });
+	handleSelectDate: function(date){
+		CalendarActions.selectDate(date);
 	},
 
 	render: function() {
 		return (
 			<div className="container">
-				<SideBar activeDate={this.state.activeDate} events={this.props.events}/>
+				<SideBar selectedDate={this.props.selectedDate} events={this.props.events}/>
 				<main className="calendar">
-					<Filters currentDate={this.props.currentDate} />
+					<Filters currentDate={this.props.currentDate} selectedMonthIndex={this.props.selectedMonthIndex}/>
 					<div className="calendar-table__wrapper">
 						<div className="calendar-table">
 							<div className="calendar-table__header">

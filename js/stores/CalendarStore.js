@@ -9,12 +9,20 @@ function loadData(data) {
 	_calendar = data;
 }
 
+function changeMonth(index){
+	_calendar.selectedMonthIndex = index;
+}
+
+function selectDate(date){
+	_calendar.selectedDate = date;
+}
+
 var CalendarStore = extend({}, EventEmitter.prototype, {
 	
 	getData: function(){
 		return _calendar;
 	},
-	
+
 	emitChange: function() {
 		this.emit('change');
 	},
@@ -35,6 +43,12 @@ CalendarStore.dispatchToken = AppDispatcher.register(function(payload) {
 
 		case CalendarConstants.RECEIVE_CALENDAR_DATA:
 			loadData(action.data);
+			break;
+		case CalendarConstants.CHANGE_CALENDAR_MONTH:
+			changeMonth(action.index);
+			break;
+		case CalendarConstants.SELECT_CALENDAR_DATE:
+			selectDate(action.date);
 			break;
 		default:
 			return true;

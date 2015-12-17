@@ -27,7 +27,7 @@ var CalendarView = React.createClass({
 
 	render: function(){
 		return(
-			<Calendar currentDate={this.state.currentDate} events={this.state.events} selectedMonthIndex={this.state.selectedMonthIndex} selectedDay={this.state.selectedDay}/>
+			<Calendar currentDate={this.state.currentDate} selectedDate={this.state.selectedDate} events={this.state.events} selectedMonthIndex={this.state.selectedMonthIndex}/>
 		);
 	}
 });

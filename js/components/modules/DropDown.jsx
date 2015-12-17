@@ -33,7 +33,7 @@ var DropDown = React.createClass({
 		items: React.PropTypes.array.isRequired, //[{ payload: 1, text: 'Test' },{...}]
 		onChange: React.PropTypes.func,
 		deviders: React.PropTypes.array, //указать индексы элементов после которых вставлять разделители
-		selectedPayload: React.PropTypes.string,
+		selectedPayload: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]),
 		className: React.PropTypes.string,
 		classNameChild: React.PropTypes.string,
 		classNameButton: React.PropTypes.string
@@ -108,7 +108,7 @@ var DropDown = React.createClass({
 			if (index % 2 == 0 && index !== 0 && this.props.deviders.indexOf(index) !== -1){
 				list.push(<li key={"divider"+ index + 1} className="dropdown-list__devider"></li>);
 			}
-			var selected = this.props.selectedPayload === item.payload.toString() ? true : false;
+			var selected = this.props.selectedPayload.toString() === item.payload.toString() ? true : false;
 			list.push(<Item key={index + 1} selected={selected} text={item.text} payload={item.payload} onChange={this.handleChange} index={index}/>);
 		}.bind(this))
 		return (
