@@ -1,0 +1,115 @@
+@import 'variables';
+
+$rightColor: #8ad875;
+
+.dropinfo {
+	width: 100%;
+	position: relative;
+	border: 1px solid $deviderColor;
+    border-radius: $borderRadius;
+
+	.dropinfo__block {
+		width: 100%;
+		padding: 8px;
+		transition: all .2s linear;
+		border-radius: $borderRadius;
+
+		&.dropinfo__block_selected {
+			background-color: $rightColor;
+		}
+		&.dropinfo__block_show {
+			height: 40px;
+			opacity: 1;
+			visibility: visible;
+			cursor: pointer;
+		}
+		&.dropinfo__block_hide {
+			border-top-style: none;
+		    padding-bottom: 0px;
+		    padding-top: 0px;
+		    border-bottom-style: none;
+		    overflow: hidden;
+		    visibility: hidden;
+		    zoom: 1;
+		    opacity: 0;
+		    height: 0px;
+		}
+
+		.markup-block {
+		    overflow: hidden;
+		    text-overflow: ellipsis;
+		    white-space: nowrap;
+		    width: 95%;
+
+			&.markup-block_empty {
+				color: red;
+			}
+
+			.markup-block__text {
+				margin-right: 16px;
+			}
+
+			.markup-block__hide-block {
+
+			}
+
+			.markup-block__arrow {
+				margin-right: 16px;
+			}
+
+			.markup-block__conformity {
+
+			}
+		}
+	}
+
+	.dropinfo__content-box {
+		transition: all .2s linear;
+		overflow: hidden;
+
+		.dropinfo__content {
+			
+		}
+
+		&.dropinfo__content-box_show {
+			visibility: visible;
+			opacity: 1;
+		}
+		&.dropinfo__content-box_hide {
+			border-top-style: none;
+		    padding-bottom: 0px;
+		    padding-top: 0px;
+		    border-bottom-style: none;
+		    overflow: hidden;
+		    visibility: hidden;
+		    zoom: 1;
+		    opacity: 0;
+		    height: 0px;
+		}
+		.dropinfo__content-header {
+			background-color: $selectedColor;
+			border-radius: $borderRadius $borderRadius 0px 0px;
+			height: 40px;
+			cursor: pointer;
+
+			&.dropinfo__content-header_selected {
+				background-color: $rightColor;
+			}
+		}
+		.dropinfo__content-body {
+			padding: 8px;
+		}
+		.dropinfo__content-footer {
+			
+		}
+	}
+
+	.dropinfo__glyphicon-block, & .dropinfo__glyphicon-content{
+		position: absolute;
+		cursor: pointer;
+    	right: 0px;
+    	top: 10px;
+    	right: 8px;
+    	font-size: $fontSizeXXLarge;
+	}
+}

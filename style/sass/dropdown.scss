@@ -1,0 +1,88 @@
+@import 'variables';
+
+.dropdown-box {
+	position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    width: 100%;
+
+    .dropdown-list {
+        position: absolute;
+        top: 0;
+        left: -1px;
+        z-index: 1000;
+        display: none;
+        float: left;
+        min-width: 160px;
+        padding: 5px 0;
+        margin: 0;
+        list-style: none;
+        font-size: 16px;
+        text-align: left;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border: 1px solid rgba(0,0,0,.15);
+        border-radius: 4px;
+        box-shadow: 0 6px 12px rgba(0,0,0,.175);
+        background-clip: padding-box;
+        max-height: 350px;
+        overflow-y:auto;
+
+        &.dropdown-list_up {
+            top: auto;
+            bottom: 100%;
+            margin-bottom: 2px;
+        }
+
+        .dropdown-list__item {
+            padding: 3px 20px;
+            cursor: pointer;
+            white-space: nowrap;
+
+            &:hover {
+                background-color: $hoverColor;
+            }
+
+            &.dropdown-list__item_selected {
+                color: red;
+            }
+
+            &.dropdown-list__item_description {
+                color: $deviderColor;
+            }
+        }
+
+        .dropdown-list__devider {
+            height: 1px;
+            margin: 10px 0;
+            overflow: hidden;
+            background-color: $deviderColor;
+        }
+    }
+
+    .dropdown-box__title {
+        margin-right: 10px;
+    }
+
+    .dropdown-box__caret {
+        position: absolute;
+        right: 0;
+        top: calc(50% - 2px);
+        color: $deviderColor;
+    }
+
+    .dropdown-box__default-item {
+        position: relative;
+        border: none;
+        background-color: #fff;
+        border-bottom: 1px solid $deviderColor;
+        line-height: 32px;
+        padding-left: 0px;
+        text-align: left;
+        outline: none !important;
+        width: 100%;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+}

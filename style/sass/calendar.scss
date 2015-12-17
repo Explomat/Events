@@ -1,0 +1,179 @@
+@import 'variables';
+
+.calendar{
+  float: right;
+
+  box-sizing: border-box;
+  width: calc(100% - 251px);
+  margin-left: 16px;
+  height: 848px;
+  box-shadow: 2px 2px 10px 0 lighten($headerColor, 20%);
+
+  .calendar-header{
+    position: relative;
+    z-index: 2;
+    padding-left: 16px;
+    box-shadow: 2px 2px 10px 0 lighten($headerColor, 20%);
+    line-height: 60px;
+    color: #FFF;
+    background-color: $headerColor;
+
+    .calendar-header__months {
+      display: inline-block;
+      background-color: #646464;
+      color: #000;
+      line-height: 30px;
+      width: auto;
+      display: inline-block;
+    }
+
+    .calendar-header__months-button{
+      background-color: #646464;
+      color: #fff;
+    }
+  }
+
+  .calendar-table__wrapper{
+    padding: 0 16px;
+
+    .calendar-table{
+      font-size: .9em;
+
+      display: table;
+
+      box-sizing: border-box;
+      width: 100%;
+
+      border-collapse: collapse;
+
+      .calendar-table__header{
+        display: table-header-group;
+
+        width: 100%;
+        margin-bottom: 8px;
+      }
+
+      .calendar-table__body{
+        display: table-row-group;
+
+        width: 100%;
+      }
+      
+      .calendar-table__week{
+        display: table-row;
+
+        width: 100%;
+
+        .calendar-table__day{
+          position: relative;
+          cursor: pointer;
+          display: table-cell;
+
+          width: 131px;
+          height: 92px;
+
+          text-align: center;
+
+          border: 1px solid lighten($headerColor, 30%);
+          background-color: #FFFFFF;
+          transition: background-color .1s ease,
+                      transform .1s ease,
+                      box-shadow;
+
+          &:hover {
+            background-color: $grayBg;
+            transform: scale(1.05);
+            box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.16),
+                        0px 2px 5px 0px rgba(0,0,0,0.23),
+                        2px 0px 5px 0px rgba(0,0,0,0.16),
+                        2px 0px 5px 0px rgba(0,0,0,0.23);
+            z-index: 5;
+          }
+
+          &.calendar-table__day--no-hover {
+            transform: none;
+            box-shadow: none;
+            background-color: transparent;
+            cursor: default;
+          }
+
+          &.calendar-table__day--weekday{
+            cursor: default;
+            font-weight: bold;
+            height: auto;
+            padding: 16px 0 8px 0;
+            border: none;
+            transform: none;
+            box-shadow: none;
+            background-color: transparent;
+          }
+
+          .event-list {
+            .event-list__item {
+              font-size: .8em;
+              margin: 0;
+              margin-top: 3px;
+              text-align: left;
+
+              &.event-list__item--close{
+                background-color: #DEDEDE;
+              }
+
+              &.event-list__item--active{
+                background-color: #8EEC99;
+              }
+
+              &.event-list__item--plan{
+                background-color: #8ED3EC;
+              }
+
+              .event-list__item-name {
+                line-height: 16px;
+                padding:0 0 0 24px;
+                display: inline-block;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                width: 129px;
+                box-sizing:border-box;
+                vertical-align: top;
+              }
+            }
+          }
+
+          .day {
+            margin: 1px 1px 0 0;
+            text-align: right;
+
+            .day__number{
+              line-height: 24px;
+              display: inline-block;
+              width: 24px;
+              height: 24px;
+              text-align: center;
+              border-radius: 50%;
+
+              &.day__number--current {
+                color: #FFF;
+                background-color: $elementsColor;
+              }
+            }
+          }
+        } 
+      }
+    }
+  }
+} 
+
+.calendar-table__add-event-btn{
+    float: right;
+
+  margin: 64px 16px 16px 0;
+  padding: 8px;
+  cursor: pointer;
+
+  color: $elementsColor;
+  border: 1px solid $elementsColor;
+  outline: none;
+  background-color: #FFF;
+}
