@@ -4,10 +4,10 @@ var Calendar = require('../models/Calendar');
 
 module.exports = {
 
-	getSettingsData: function(){
-		var settings = Storage.getItem('settings');
+	getData: function(){
+		var settings = Storage.getItem('calendar');
 		var data = new Calendar(settings);
-		Storage.setItem('settings', data);
+		Storage.setItem('calendar', data);
 		return data;
 	}
 }

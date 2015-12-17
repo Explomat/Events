@@ -1,17 +1,20 @@
 var Router = require('./utils/Crossroads');
 var Hasher = require('./utils/Hasher');
 var Config = require('./config');
+var Storage = require('./utils/Storage');
 var BasicController = require('./controllers/BasicController');
-var SettingsController = require('./controllers/SettingsController');
+var CalendarController = require('./controllers/CalendarController');
 
 window.onload = function(){
 
-	Router.addRoute('settings', function(){
-	    SettingsController.start();
+	Storage.setRootName('events');
+
+	Router.addRoute('calendar', function(){
+	    CalendarController.start();
 	});
 
 	function init(curHash){
-		curHash = curHash === '' ? 'settings' : curHash;
+		curHash = curHash === '' ? 'calendar' : curHash;
 		BasicController.start();
 		Hasher.setHash(curHash);
 		

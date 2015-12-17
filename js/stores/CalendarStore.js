@@ -1,20 +1,20 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
-var SettingsConstants = require('../constants/SettingsConstants');
+var CalendarConstants = require('../constants/CalendarConstants');
 var extend = require('extend');
 
-var _settings = {};
+var _calendar = {};
 
-function loadSettingsData(data) {
-	_settings = data;
+function loadData(data) {
+	_calendar = data;
 }
 
-var SettingsStore = extend({}, EventEmitter.prototype, {
+var CalendarStore = extend({}, EventEmitter.prototype, {
 	
-	getSettings: function(){
-		return _settings;
+	getData: function(){
+		return _calendar;
 	},
-
+	
 	emitChange: function() {
 		this.emit('change');
 	},
@@ -28,20 +28,20 @@ var SettingsStore = extend({}, EventEmitter.prototype, {
 	}
 });
 
-SettingsStore.dispatchToken = AppDispatcher.register(function(payload) {
+CalendarStore.dispatchToken = AppDispatcher.register(function(payload) {
 	var action = payload.action;
 
 	switch(action.actionType) {
 
-		case SettingsConstants.RECEIVE_SETTINGS_DATA:
-			loadSettingsData(action.data);
+		case CalendarConstants.RECEIVE_CALENDAR_DATA:
+			loadData(action.data);
 			break;
 		default:
 			return true;
 	}
 
-	SettingsStore.emitChange();
+	CalendarStore.emitChange();
 	return true;
 });
 
-module.exports = SettingsStore;
+module.exports = CalendarStore;

@@ -68,8 +68,18 @@ var SideBar = React.createClass({
 
 var Filters = React.createClass({
 
+	propsTypes: {
+		selectedMonthIndex: React.PropTypes.string
+	},
+
 	handleChangeMonth: function(e, payload, text, index){
 		
+	},
+
+	getDefaultProps: function(){
+		return {
+			selectedMonthIndex: new Date().getMonth().toString()
+		}
 	},
 
 	render: function() {

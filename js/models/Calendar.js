@@ -9,4 +9,8 @@ module.exports = function(args){
 		new ShortEvent({ name:'Второе мероприятие', startDate: 'Tue, 16 Dec 2015 18:40:10 +0300', status: 'close', place:'Москва' }), 
 		new ShortEvent({ name:'Третье мероприятие', startDate: 'Tue, 1 Dec 2015 18:40:10 +0300', status: 'active', place:'Москва' }) 
 	];
+
+	//for calendar view
+	this.selectedMonthIndex = new Date(this.currentDate).getMonth();
+	this.selectedDay = new Date(this.currentDate).getDate();
 }
