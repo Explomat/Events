@@ -70,8 +70,8 @@ var SideBar = React.createClass({
 var Filters = React.createClass({
 
 	propsTypes: {
-		selectedMonthIndex: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]).isRequired,
-		selectedYearIndex: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]).isRequired
+		selectedYear: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]).isRequired,
+		selectedMonthIndex: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]).isRequired
 	},
 
 	handleChangeMonth: function(e, payload, text, index){
@@ -79,14 +79,26 @@ var Filters = React.createClass({
 	},
 
 	handleChangeYear: function(e, payload, text, index){
-		CalendarActions.changeMonth(index);
+		CalendarActions.changeYear(payload);
+	},
+
+	handleChangeStatus: function(e, payload, text, index){
+		CalendarActions.changeStatus(payload);
+	},
+
+	handleChangeSearchText: function(e){
+		CalendarActions.changeSearchText(e.target.value);
 	},
 
 	render: function() {
 		return (
 			<header className="calendar-header">
-				<DropDown onChange={this.handleChangeMonth} items={DateUtils.getMonths()} selectedPayload={this.props.selectedMonthIndex} className={"calendar-header__months"} classNameButton={"calendar-header__months-button"}/>
-				<DropDown onChange={this.handleChangeYear} items={DateUtils.getYears()} selectedPayload={this.props.selectedYearIndex} className={"calendar-header__years"} classNameButton={"calendar-header__years-button"}/>
+				<DropDown onChange={this.handleChangeMonth} items={this.props.months} selectedPayload={this.props.selectedMonthIndex} className={"calendar-header__months"} classNameButton={"calendar-header__months-button"}/>
+				<DropDown onChange={this.handleChangeYear} items={this.props.years} selectedPayload={this.props.selectedYear} className={"calendar-header__years"} classNameButton={"calendar-header__years-button"}/>
+				<DropDown onChange={this.handleChangeStatus} items={this.props.statuses} selectedPayload={this.props.selectedStatus} className={"calendar-header__status"} classNameButton={"calendar-header__status-button"}/>
+				<div className={"calendar-header__search"}>
+					<input type="text" value={this.props.searchText} onChange={this.handleChangeSearchText}/>
+				</div>
 			</header>
 		);
 	}
@@ -126,8 +138,9 @@ var CalendarCell = React.createClass({
 	render: function(){
 		var cellClassName = this.props.isCurrentDay ? 'day__number--current' : '';
 		var isHoverClass = !this.props.onClick && !this.props.day ? 'calendar-table__day--no-hover' : '';
+		var isSelectedClass = this.props.isSelectedDay ? 'calendar-table__day--selected' : '';
 		return (
-			<div onClick={this.handleClick} className={"calendar-table__day " + isHoverClass}>
+			<div onClick={this.handleClick} className={"calendar-table__day " + isHoverClass + " " + isSelectedClass}>
 				<p className="day">
 					<span className={"day__number " + cellClassName}>{this.props.day}</span>
 				</p>
@@ -153,10 +166,12 @@ var CalendarView = React.createClass({
 		return new Date(date.getFullYear(), date.getMonth() + 1, 0);
 	},
 
-	_getEventsInDate: function(date, events){
+	_getEventsForDate: function(date){
 		var _events = [];
-		for (var i = events.length - 1; i >= 0; i--) {
-			if (DateUtils.compare(events[i].startDate, date)) _events.push(events[i]);
+		var filterEvents = this.props.filterEvents;
+		for (var i = filterEvents.length - 1; i >= 0; i--) {
+			var ev = filterEvents[i];
+			if (DateUtils.compare(ev.startDate, date)) _events.push(ev);
 		};
 		return _events;
 	},
@@ -185,10 +200,23 @@ var CalendarView = React.createClass({
 		
 	},
 
+	getFiltersProps: function(){
+		return {
+			currentDate: this.props.currentDate,
+			years: this.props.years,
+			months: this.props.months,
+			statuses: this.props.statuses,
+			selectedYear: this.props.selectedYear,
+			selectedMonthIndex: this.props.selectedMonthIndex,
+			selectedStatus: this.props.selectedStatus,
+			searchText: this.props.searchText
+		}
+	},
+
 	getRows: function(){
 		var rows = [];
 		var currentDate = this.props.currentDate;
-		var startDate = new Date(currentDate.getFullYear(), this.props.selectedMonthIndex);
+		var startDate = new Date(this.props.selectedYear, this.props.selectedMonthIndex);
 		//var lastDate = this._getLastDateInMonth(currentDate);
 		var startWeekDay = this._getDay(startDate);
 		//var lastWeekDay = this._getDay(lastDate);
@@ -205,9 +233,16 @@ var CalendarView = React.createClass({
 			for (j; j < 7; j++) {
 				var isCurrentMonth = startDate.getMonth() === currentMonth;
 				var curDay = isCurrentMonth ? startDate.getDate() : '';
-				var events = isCurrentMonth ? this._getEventsInDate(startDate, this.props.events) : [];
-				var clickFunc = isCurrentMonth ? this.handleSelectDate : undefined;
-				cells.push(<CalendarCell key={j} onClick={clickFunc} day={curDay} date={new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate())} isCurrentDay={currentDate.getDate() === curDay} events={events}/>);
+
+				var dayProps = {
+					onClick: isCurrentMonth ? this.handleSelectDate : undefined,
+					day: curDay,
+					date: new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate()),
+					isCurrentDay: DateUtils.compare(currentDate, startDate),
+					isSelectedDay: DateUtils.compare(this.props.selectedDate, startDate),
+					events: isCurrentMonth ? this._getEventsForDate(startDate) : []
+				}
+				cells.push(<CalendarCell key={j} {...dayProps}/>);
 				startDate.setDate(curDay + 1);
 			};
 			rows.push(<div className="calendar-table__week" key={i}>{cells}</div>);
@@ -221,11 +256,12 @@ var CalendarView = React.createClass({
 	},
 
 	render: function() {
+		var filtersProps = this.getFiltersProps();
 		return (
 			<div className="container">
-				<SideBar selectedDate={this.props.selectedDate} events={this.props.events}/>
+				<SideBar selectedDate={this.props.selectedDate} events={this.props.filterEvents}/>
 				<main className="calendar">
-					<Filters currentDate={this.props.currentDate} selectedMonthIndex={this.props.selectedMonthIndex}/>
+					<Filters {...filtersProps}/>
 					<div className="calendar-table__wrapper">
 						<div className="calendar-table">
 							<div className="calendar-table__header">

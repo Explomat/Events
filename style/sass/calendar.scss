@@ -11,23 +11,28 @@
 
   .calendar-header{
     position: relative;
-    z-index: 2;
+    z-index: 100;
     padding-left: 16px;
     box-shadow: 2px 2px 10px 0 lighten($headerColor, 20%);
     line-height: 60px;
     color: #FFF;
     background-color: $headerColor;
 
-    .calendar-header__months {
+    .calendar-header__months, .calendar-header__years, .calendar-header__status, .calendar-header__search {
       display: inline-block;
       background-color: #646464;
       color: #000;
       line-height: 30px;
       width: auto;
       display: inline-block;
+      margin-right: 32px;
     }
 
-    .calendar-header__months-button{
+    .calendar-header__status {
+      margin-left: 350px;
+    }
+
+    .calendar-header__months-button, .calendar-header__years-button, .calendar-header__status-button{
       background-color: #646464;
       color: #fff;
     }
@@ -35,6 +40,8 @@
 
   .calendar-table__wrapper{
     padding: 0 16px;
+    position: relative;
+    z-index: 50;
 
     .calendar-table{
       font-size: .9em;
@@ -80,7 +87,7 @@
                       transform .1s ease,
                       box-shadow;
 
-          &:hover {
+          &:hover, &.calendar-table__day--selected {
             background-color: $grayBg;
             transform: scale(1.05);
             box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.16),
@@ -88,6 +95,10 @@
                         2px 0px 5px 0px rgba(0,0,0,0.16),
                         2px 0px 5px 0px rgba(0,0,0,0.23);
             z-index: 5;
+          }
+
+          &.calendar-table__day--selected {
+            z-index: 6;
           }
 
           &.calendar-table__day--no-hover {
@@ -129,7 +140,7 @@
 
               .event-list__item-name {
                 line-height: 16px;
-                padding:0 0 0 24px;
+                padding:0 0 0 8px;
                 display: inline-block;
                 white-space: nowrap;
                 text-overflow: ellipsis;

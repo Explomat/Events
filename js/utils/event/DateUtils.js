@@ -6,6 +6,14 @@ module.exports = {
 		return firstDate.getFullYear() === secondDate.getFullYear() && firstDate.getMonth() === secondDate.getMonth() && firstDate.getDate() === secondDate.getDate();
 	},
 
+	getYears: function(curYear){
+		return [
+			{ payload: curYear - 1, text: curYear - 1},
+			{ payload: curYear, text: curYear},
+			{ payload: curYear + 1, text: curYear + 1},
+		]
+	},
+
 	getMonths: function(){
 		return [
 			{ payload: 0, text: 'Январь'},

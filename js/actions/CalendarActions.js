@@ -10,10 +10,31 @@ var CalendarActions = {
 		});
 	},
 
+	changeYear: function(year){
+		AppDispatcher.handleAction({
+			actionType: CalendarConstants.CHANGE_CALENDAR_YEAR,
+			year: year
+		});
+	},
+
 	changeMonth: function(index) {
 		AppDispatcher.handleAction({
 			actionType: CalendarConstants.CHANGE_CALENDAR_MONTH,
 			index: index
+		});
+	},
+
+	changeStatus: function(status) {
+		AppDispatcher.handleAction({
+			actionType: CalendarConstants.CHANGE_CALENDAR_STATUS,
+			status: status
+		});
+	},
+
+	changeSearchText: function(text) {
+		AppDispatcher.handleAction({
+			actionType: CalendarConstants.CHANGE_CALENDAR_SEARCH_TEXT,
+			text: text
 		});
 	},
 
