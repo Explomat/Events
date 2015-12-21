@@ -1,15 +1,15 @@
 var React = require('react');
 var DropDown = require('./DropDown');
+var SearchBox = require('./SearchBox');
 var DateUtils = require('../../utils/event/DateUtils');
+var EventUtils = require('../../utils/event/EventUtils');
 var EventStatuses = require('../../utils/event/EventStatuses');
 var CalendarActions = require('../../actions/CalendarActions');
 
 var EventSideBar = React.createClass({
 
 	getTime: function(){
-		var startDate = this.props.startDate;
-		var finishDate = this.props.finishDate;
-		return startDate.getHours() + ':' + startDate.getMinutes() + '-' +  finishDate.getHours() + ':' + finishDate.getMinutes();
+		return DateUtils.getTime(this.props.startDate) + '-' + DateUtils.getTime(this.props.finishDate);
 	},
 
 	render: function(){
@@ -51,17 +51,19 @@ var SideBar = React.createClass({
 	render: function() {
 		var selectedDate = this.props.selectedDate.toLocaleDateString('ru', {year: 'numeric', month: 'long', day: 'numeric'});
 		var selectedEvents = this.getSelectedEvents(this.props.selectedDate, this.props.events);
-		var isDisplayMessage = { display: selectedEvents.length === 0 ? 'block' : 'none' }
+		var isDisplayMessageClass = selectedEvents.length === 0 ? 'timetable__message--show' : '';
 		return (
 			<aside className="timetable">
 				<header className="timetable__header">
 					<i className="timetable__header-icon fa fa-calendar"></i>
 					<p className="timetable__header-date">{selectedDate}</p>
 				</header>
-				<div style={isDisplayMessage} className="timetable__message">Нет мероприятий на выбранную дату</div>
-				{selectedEvents.map(function(ev, index){
-					return <EventSideBar key={index} {...ev} />
-				})}
+				<div className={"timetable__message " + isDisplayMessageClass}>Нет мероприятий на выбранную дату</div>
+				<div className="timetable__events">
+					{selectedEvents.map(function(ev, index){
+						return <EventSideBar key={index} {...ev} />
+					})}
+				</div>
 			</aside>
 		);
 	}
@@ -86,8 +88,8 @@ var Filters = React.createClass({
 		CalendarActions.changeStatus(payload);
 	},
 
-	handleChangeSearchText: function(e){
-		CalendarActions.changeSearchText(e.target.value);
+	handleChangeSearchText: function(val){
+		CalendarActions.changeSearchText(val);
 	},
 
 	render: function() {
@@ -96,9 +98,8 @@ var Filters = React.createClass({
 				<DropDown onChange={this.handleChangeMonth} items={this.props.months} selectedPayload={this.props.selectedMonthIndex} className={"calendar-header__months"} classNameButton={"calendar-header__months-button"}/>
 				<DropDown onChange={this.handleChangeYear} items={this.props.years} selectedPayload={this.props.selectedYear} className={"calendar-header__years"} classNameButton={"calendar-header__years-button"}/>
 				<DropDown onChange={this.handleChangeStatus} items={this.props.statuses} selectedPayload={this.props.selectedStatus} className={"calendar-header__status"} classNameButton={"calendar-header__status-button"}/>
-				<div className={"calendar-header__search"}>
-					<input type="text" value={this.props.searchText} onChange={this.handleChangeSearchText}/>
-				</div>
+				
+				<SearchBox onSearch={this.handleChangeSearchText} value={this.props.searchText} className={"calendar-header__search"} />
 			</header>
 		);
 	}
@@ -127,12 +128,22 @@ var CalendarCell = React.createClass({
 	},
 
 	getEventsMarkup: function () {
-		return this.props.events.map(function(ev, index) {
+		var events = [];
+		var eventsCount = this.props.events.length;
+		var eventsCountLimit = eventsCount <= 2 ? eventsCount : 2;
+		for (var i = 0; i < eventsCountLimit; i++) {
+			var ev = this.props.events[i];
 			var classItem = "event-list__item--" + ev.status;
-			return (<p key={index} className={"event-list__item " + classItem}>
-						<span className="event-list__item-name">{ev.name}</span>
-					</p>);
-		});
+			events.push(<p key={i} className={"event-list__item " + classItem}>
+							<span className="event-list__item-name">{ev.name}</span>
+						</p>);
+		};
+		if (eventsCount > eventsCountLimit) {
+			events.push(<p key={i + 1} className="event-list__item">
+							<span className="event-list__item-count">Всего {eventsCount + " " + EventUtils.getInducingEvent(eventsCount)}</span>
+						</p>);
+		}
+		return events;
 	},
 
 	render: function(){

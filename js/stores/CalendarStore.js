@@ -2,31 +2,41 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var CalendarConstants = require('../constants/CalendarConstants');
 var CalendarEventStatuses = require('../utils/event/CalendarEventStatuses');
+var Calendar = require('../models/Calendar');
+var ShortEvent = require('../models/ShortEvent');
 var extend = require('extend');
 
 var _calendar = {};
 
 function _filterEvents(_events){
 	return _events.filter(function(ev){
-		return ev.name.indexOf(_calendar.searchText) !== -1 && 
+		var eventName = ev.name.toLowerCase();
+		var searchText = _calendar.searchText.toLowerCase();
+		return eventName.indexOf(searchText) !== -1 && 
 			(ev.status === _calendar.selectedStatus || _calendar.selectedStatus === CalendarEventStatuses.keys.all);
 	});
 }
 
+function prepareEvents(events) {
+	return events.map(function(ev){
+		return new ShortEvent(ev);
+	});
+}
+
 function loadData(data) {
-	_calendar = data;
+	_calendar = new Calendar(data);
 }
 
 function changeMonth(monthIndex, events){
 	_calendar.selectedMonthIndex = monthIndex;
-	_calendar.events = events;
-	_calendar.filterEvents = _filterEvents(events);
+	_calendar.events = prepareEvents(events);
+	_calendar.filterEvents = _filterEvents(_calendar.events);
 }
 
 function changeYear(year, events){
 	_calendar.selectedYear = year;
-	_calendar.events = events;
-	_calendar.filterEvents = _filterEvents(events);
+	_calendar.events = prepareEvents(events);
+	_calendar.filterEvents = _filterEvents(_calendar.events);
 }
 
 function selectDate(date){

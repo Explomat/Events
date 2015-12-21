@@ -6,6 +6,10 @@ module.exports = {
 		return firstDate.getFullYear() === secondDate.getFullYear() && firstDate.getMonth() === secondDate.getMonth() && firstDate.getDate() === secondDate.getDate();
 	},
 
+	getTime: function(date){
+		return date.getHours() + ':' + ("0" + date.getMinutes()).slice(-2);
+	},
+
 	getYears: function(curYear){
 		return [
 			{ payload: curYear - 1, text: curYear - 1},

@@ -1,4 +1,4 @@
-var serverId = '6166852566696923932';
+var serverId = '6230716351040721570';
 var routerUrl = '/custom_web_template.html?object_id=6135330846971222087';
 
 module.exports = {
@@ -10,10 +10,6 @@ module.exports = {
 				return '&'.concat(k).concat('=').concat(obj[k]);
 			}).join(''));
 		}
-	},
-
-	icons: {
-		loading: 'build/icons/loading.gif'
 	},
 
 	dom: {

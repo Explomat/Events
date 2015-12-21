@@ -2,14 +2,21 @@
 
 .timetable{
 	display: inline-block;
-
+	position: relative;
 	width: 235px;
-	height: 848px;
+	height: 100%;
 	box-shadow: 2px 2px 10px 0 lighten($headerColor, 20%);
+	background-color: #fff;
 
 	.timetable__message {
 		color: $deviderColor;
 		padding: 16px;
+		display: none;
+
+		&.timetable__message--show {
+			position: absolute;
+			display: block;
+		}
 	}
 
 	.timetable__header-date{
@@ -30,51 +37,58 @@
 			margin-left: 16px;
 		}
 	}
-	.timetable__event{
-		background-color: $grayBg;
 
-		&:not(:last-child){
-			border-bottom: 1px solid $deviderColor;
-		}
+	.timetable__events {
+		overflow-y: auto;
+		height: 660px;
 
-		.timetable__event-details-btn{
-			float: right;
-			margin: 0 16px 16px 0;
-			cursor: pointer;
-			color: $elementsColor;
-			border: 1px solid $elementsColor;
-			outline: none;
-			background-color: #FFF;
-		}
+		.timetable__event{
+			background-color: $grayBg;
 
-		.timetable__event-info-wrapper{
-			margin-top: 16px;
-
-			.timetable_info-icon{
-				font-size: 1rem;
-				float: left;
-				width: 20px;
-				margin-right: 8px;
-				margin-left: 16px;
-				text-align: center;
-				color: $elementsColor;
+			&:not(:last-child){
+				border-bottom: 1px solid $deviderColor;
 			}
 
-			.timetable__event-info{
-				font-size: .9em;
-				margin-top: 0;
-				margin-bottom: 16px;
-				margin-left: 44px;
+			.timetable__event-details-btn{
+				float: right;
+				margin: 0 16px 16px 0;
+				cursor: pointer;
+				color: $elementsColor;
+				border: 1px solid $elementsColor;
+				outline: none;
+				background-color: #FFF;
+			}
 
-				&.timetable__event-info--time{
-					font-weight: bold;
+			.timetable__event-info-wrapper{
+				margin-top: 16px;
+				word-wrap: break-word;
+
+				.timetable_info-icon{
+					font-size: 1rem;
+					float: left;
+					width: 20px;
+					margin-right: 8px;
+					margin-left: 16px;
+					text-align: center;
+					color: $elementsColor;
 				}
-				&.timetable__event-info--name{
-					padding-right: 8px;
-				}
-				&.timetable__event-info--place{
-					display: inline-block;
-					margin: 0 8px 16px 0;
+
+				.timetable__event-info{
+					font-size: .9em;
+					margin-top: 0;
+					margin-bottom: 16px;
+					margin-left: 44px;
+
+					&.timetable__event-info--time{
+						font-weight: bold;
+					}
+					&.timetable__event-info--name{
+						padding-right: 8px;
+					}
+					&.timetable__event-info--place{
+						display: inline-block;
+						margin: 0 8px 16px 0;
+					}
 				}
 			}
 		}
