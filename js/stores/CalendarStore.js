@@ -6,34 +6,41 @@ var extend = require('extend');
 
 var _calendar = {};
 
+function _filterEvents(_events){
+	return _events.filter(function(ev){
+		return ev.name.indexOf(_calendar.searchText) !== -1 && 
+			(ev.status === _calendar.selectedStatus || _calendar.selectedStatus === CalendarEventStatuses.keys.all);
+	});
+}
+
 function loadData(data) {
 	_calendar = data;
 }
 
-function changeMonth(index){
-	_calendar.selectedMonthIndex = index;
+function changeMonth(monthIndex, events){
+	_calendar.selectedMonthIndex = monthIndex;
+	_calendar.events = events;
+	_calendar.filterEvents = _filterEvents(events);
+}
+
+function changeYear(year, events){
+	_calendar.selectedYear = year;
+	_calendar.events = events;
+	_calendar.filterEvents = _filterEvents(events);
 }
 
 function selectDate(date){
 	_calendar.selectedDate = date;
 }
 
-function changeYear(year){
-	_calendar.selectedYear = year;
-}
-
 function changeStatus(status){
 	_calendar.selectedStatus = status;
-	_calendar.filterEvents = _calendar.events.filter(function(ev){
-		return ev.status === status || status === CalendarEventStatuses.keys.all;
-	});
+	_calendar.filterEvents = _filterEvents(_calendar.events);
 }
 
 function changeSearchText(text){
 	_calendar.searchText = text;
-	_calendar.filterEvents = _calendar.events.filter(function(ev){
-		return ev.name.indexOf(text) !== -1;
-	});
+	_calendar.filterEvents = _filterEvents(_calendar.events);
 }
 
 var CalendarStore = extend({}, EventEmitter.prototype, {
@@ -63,11 +70,11 @@ CalendarStore.dispatchToken = AppDispatcher.register(function(payload) {
 		case CalendarConstants.RECEIVE_CALENDAR_DATA:
 			loadData(action.data);
 			break;
-		case CalendarConstants.CHANGE_CALENDAR_YEAR:
-			changeYear(action.year);
-			break;
 		case CalendarConstants.CHANGE_CALENDAR_MONTH:
-			changeMonth(action.index);
+			changeMonth(action.monthIndex, action.events);
+			break;
+		case CalendarConstants.CHANGE_CALENDAR_YEAR:
+			changeYear(action.year, action.events);
 			break;
 		case CalendarConstants.CHANGE_CALENDAR_STATUS:
 			changeStatus(action.status);

@@ -17,7 +17,8 @@ module.exports = function(args){
 	this.events = args.events || [ 
 		new ShortEvent({ name:'Первое мероприятие', startDate: 'Tue, 16 Dec 2015 18:40:10 +0300', status: 'plan', place:'Москва' }),
 		new ShortEvent({ name:'Второе мероприятие', startDate: 'Tue, 16 Dec 2015 18:40:10 +0300', status: 'close', place:'Москва' }), 
-		new ShortEvent({ name:'Третье мероприятие', startDate: 'Tue, 1 Dec 2015 18:40:10 +0300', status: 'active', place:'Москва' }) 
+		new ShortEvent({ name:'Третье мероприятие', startDate: 'Tue, 1 Dec 2015 18:40:10 +0300', status: 'active', place:'Москва' }),
+		new ShortEvent({ name:'Четвертое мероприятие', startDate: 'Tue, 10 Jan 2016 18:40:10 +0300', status: 'active', place:'Москва' })  
 	];
 	this.filterEvents = this.events.slice(0);
 
