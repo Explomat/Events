@@ -7,11 +7,15 @@ var Config = require('../config');
 
 module.exports = {
 
+	isLoaded: false,
+
 	start: function(){
+		this.isLoaded = true;
+		
 		var app = document.getElementById(Config.dom.appId) || document.body;
 		ReactDOM.unmountComponentAtNode(app);
 
-		CalendarAPI.getData().then(function(calendarData){
+		return CalendarAPI.getData().then(function(calendarData){
 			CalendarActions.receiveData(calendarData);
 			ReactDOM.render(React.createElement(CalendarView), app);
 		}, function(err){

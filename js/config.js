@@ -15,6 +15,7 @@ module.exports = {
 	dom: {
 		basicAppId: 'basicApp',
 		appId: 'app',
+		eventViewModalId: 'eventViewModalId',
 		modalId: 'modal'
 	},
 

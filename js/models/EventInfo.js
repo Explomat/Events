@@ -1,0 +1,39 @@
+var EventTypes = require('../utils/event/EventTypes');	
+var EventStatuses = require('../utils/event/EventStatuses');
+var Collaborator = require('./Collaborator');
+var Tutor = require('./Collaborator');
+var Lector = require('./Collaborator');
+var UUID = require('../utils/UUID');
+
+module.exports = function(args){
+	var args = args || {};
+	args.startDate = args.startDate || Date();
+	args.finishDate = args.finishDate || Date();
+
+	this.id = args.id || UUID.generate();
+	this.name = args.name || 'Нет названия';
+	this.type = args.type || EventTypes.keys.full_time;
+	this.startDate = new Date(args.startDate);
+	this.finishDate = new Date(args.finishDate);
+	this.status = args.status || EventStatuses.keys.plan;
+	this.place = args.place || '';
+
+	this.collaborators = [];
+	if (args.collaborators) {
+		this.collaborators = args.collaborators.map(function(col){
+			return new Collaborator(col);
+		});
+	}
+	this.tutors = [];
+	if (args.collaborators) {
+		this.tutors = args.tutors.map(function(t){
+			return new Tutor(t);
+		});
+	}
+	this.lectors = [];
+	if (args.lectors) {
+		this.lectors = args.lectors.map(function(l){
+			return new Lector(l);
+		});
+	}
+}

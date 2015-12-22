@@ -1,20 +1,23 @@
 var Router = require('./utils/Crossroads');
 var Hasher = require('./utils/Hasher');
-var Config = require('./config');
-var Storage = require('./utils/Storage');
 var BasicController = require('./controllers/BasicController');
 var CalendarController = require('./controllers/CalendarController');
-var EventViewController = require('./controllers/CalendarController');
+var EventInfoController = require('./controllers/EventInfoController');
 
 window.onload = function(){
 
-	Storage.setRootName('events');
-
 	Router.addRoute('calendar', function(){
-	    CalendarController.start();
+		//if (!CalendarController.isLoaded) CalendarController.start();
+		CalendarController.start();
 	});
+
 	Router.addRoute('event/view/{id}', function(id){
-	    EventViewController.start(id);
+		if (!CalendarController.isLoaded) {
+			CalendarController.start().then(function(){
+				EventInfoController.start(id);
+			});
+		}
+	    else EventInfoController.start(id);
 	});
 
 	function init(curHash){

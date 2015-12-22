@@ -2,7 +2,7 @@
 
 .calendar{
   float: right;
-
+  position: relative;
   box-sizing: border-box;
   width: calc(100% - 251px);
   margin-left: 16px;
@@ -91,7 +91,7 @@
 
           width: 131px;
           height: 92px;
-
+          z-index: 4;
           text-align: center;
 
           border: 1px solid lighten($headerColor, 30%);
@@ -119,6 +119,8 @@
             box-shadow: none;
             background-color: #E6E4E4;
             cursor: default;
+            position: relative;
+            z-index: 4;
           }
 
           &.calendar-table__day--weekday{

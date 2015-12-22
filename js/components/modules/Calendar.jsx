@@ -5,11 +5,17 @@ var DateUtils = require('../../utils/event/DateUtils');
 var EventUtils = require('../../utils/event/EventUtils');
 var EventStatuses = require('../../utils/event/EventStatuses');
 var CalendarActions = require('../../actions/CalendarActions');
+var Hasher = require('../../utils/Hasher');
+var Config = require('../../config');
 
 var EventSideBar = React.createClass({
 
 	getTime: function(){
 		return DateUtils.getTime(this.props.startDate) + '-' + DateUtils.getTime(this.props.finishDate);
+	},
+
+	handleViewEvent: function(){
+		Hasher.setHash('event/view/' + this.props.id);
 	},
 
 	render: function(){
@@ -24,7 +30,7 @@ var EventSideBar = React.createClass({
 					<i className="timetable_info-icon fa fa-map-marker"></i>
 					<p className="timetable__event-info timetable__event-info--place">{this.props.place}</p>
 				</div>
-				<button className="timetable__event-details-btn">Подробнее</button>
+				<button onClick={this.handleViewEvent} className="timetable__event-details-btn">Подробнее</button>
 			</section>
 		);
 	}
@@ -291,7 +297,7 @@ var CalendarView = React.createClass({
 							</div>
 						</div>
 					</div>
-					<div className="calendar-footer"></div>
+					<div id={Config.dom.eventViewModalId}></div>
 				</main>
 			</div>
 		);
