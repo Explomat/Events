@@ -8,7 +8,6 @@ var EventInfoController = require('./controllers/EventInfoController');
 window.onload = function(){
 
 	Router.addRoute('calendar', function(){
-		//if (!CalendarController.isLoaded) CalendarController.start();
 		CalendarController.start();
 	});
 

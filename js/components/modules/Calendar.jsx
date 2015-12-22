@@ -4,6 +4,7 @@ var SearchBox = require('./SearchBox');
 var DateUtils = require('../../utils/event/DateUtils');
 var EventUtils = require('../../utils/event/EventUtils');
 var EventStatuses = require('../../utils/event/EventStatuses');
+var EventTypes = require('../../utils/event/EventTypes');
 var CalendarActions = require('../../actions/CalendarActions');
 var Hasher = require('../../utils/Hasher');
 var Config = require('../../config');
@@ -20,12 +21,13 @@ var EventSideBar = React.createClass({
 
 	render: function(){
 		var time = this.getTime();
+		var typeIconClass = this.props.type === EventTypes.keys.webinar ? 'fa fa-video-camera': 'fa fa-users';
 		return(
 			<section className="timetable__event clearfix">
 				<div className="timetable__event-info-wrapper">
 					<i className="timetable_info-icon fa fa-clock-o"></i>
 					<p className="timetable__event-info timetable__event-info--time">{time}</p>
-					<i className="timetable_info-icon fa fa-desktop"></i>
+					<i className={"timetable_info-icon " + typeIconClass}></i>
 					<p className="timetable__event-info timetable__event-info--name">{this.props.name}</p>
 					<i className="timetable_info-icon fa fa-map-marker"></i>
 					<p className="timetable__event-info timetable__event-info--place">{this.props.place}</p>

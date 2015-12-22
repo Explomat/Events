@@ -29,9 +29,9 @@ module.exports = function(args){
 	this.statuses = args.statuses || CalendarEventStatuses.toArray();
 
 	//Calculated fileds. For calendar view.
-	this.selectedYear = this.currentDate.getFullYear();
-	this.selectedMonthIndex = this.currentDate.getMonth();
-	this.selectedDate = this.currentDate;
-	this.selectedStatus = CalendarEventStatuses.keys.all;
-	this.searchText = '';
+	this.selectedYear = args.selectedYear ? args.selectedYear : this.currentDate.getFullYear();
+	this.selectedMonthIndex = args.selectedMonthIndex ? args.selectedMonthIndex : this.currentDate.getMonth();
+	this.selectedDate = args.selectedDate ? new Date(args.selectedDate) : this.currentDate;
+	this.selectedStatus = args.selectedStatus ? args.selectedStatus : CalendarEventStatuses.keys.all;
+	this.searchText = args.searchText ? args.searchText : '';
 }

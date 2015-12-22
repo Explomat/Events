@@ -1,5 +1,6 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
+var CalendarAPI = require('../api/CalendarAPI');
 var CalendarConstants = require('../constants/CalendarConstants');
 var CalendarEventStatuses = require('../utils/event/CalendarEventStatuses');
 var Calendar = require('../models/Calendar');
@@ -25,6 +26,7 @@ function prepareEvents(events) {
 
 function loadData(data) {
 	_calendar = new Calendar(data);
+	_calendar.filterEvents = _filterEvents(_calendar.events);
 }
 
 function changeMonth(monthIndex, events){
@@ -100,6 +102,7 @@ CalendarStore.dispatchToken = AppDispatcher.register(function(payload) {
 	}
 
 	CalendarStore.emitChange();
+	CalendarAPI.saveToStorage(_calendar);
 	return true;
 });
 

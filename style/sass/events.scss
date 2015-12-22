@@ -35,6 +35,7 @@ html, body{
     text-shadow: 0 1px 0 #fff;
     opacity: .2;
     filter: alpha(opacity=20);
+    outline: none;
 
     &:hover {
     	color: #000;

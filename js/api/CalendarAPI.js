@@ -40,5 +40,9 @@ module.exports = {
 				new ShortEvent({ name:'Четвертое мероприятие4', startDate: 'Sun, 10 Jan 2016 18:40:10 +0300', status: 'active', place:'Москва' })  
 			]);
 		});*/
+	},
+
+	saveToStorage: function(calendarData){
+		Storage.setItem('calendar', calendarData);
 	}
 }
