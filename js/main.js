@@ -1,5 +1,6 @@
 var Router = require('./utils/Crossroads');
 var Hasher = require('./utils/Hasher');
+var Storage = require('./utils/Storage');
 var BasicController = require('./controllers/BasicController');
 var CalendarController = require('./controllers/CalendarController');
 var EventInfoController = require('./controllers/EventInfoController');
@@ -21,6 +22,7 @@ window.onload = function(){
 	});
 
 	function init(curHash){
+		Storage.clear();
 		curHash = curHash === '' ? 'calendar' : curHash;
 		BasicController.start();
 		Hasher.setHash(curHash);

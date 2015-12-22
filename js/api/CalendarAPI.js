@@ -8,8 +8,16 @@ var Ajax = require('../utils/Ajax');
 module.exports = {
 
 	getData: function(){
+		var calendarData = Storage.getItem('calendar');
+		if (calendarData) {
+			return new Promise(function(resolve, reject){
+				resolve(calendarData);
+			});
+		}
 		return Ajax.sendRequest(Config.url.createPath({action_name: 'getData'})).then(function(data){
-			return JSON.parse(data)
+			var calendarData = JSON.parse(data);
+			Storage.setItem('calendar', calendarData);
+			return calendarData;
 		});
 		/*return new Promise(function(resolve, reject){
 			var settings = Storage.getItem('calendar');
