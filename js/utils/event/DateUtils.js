@@ -10,6 +10,10 @@ module.exports = {
 		return date.getHours() + ':' + ("0" + date.getMinutes()).slice(-2);
 	},
 
+	getDateTime: function(date){
+		return date.toLocaleDateString() + ' ' + this.getTime(date);
+	},
+
 	getYears: function(curYear){
 		return [
 			{ payload: curYear - 1, text: curYear - 1},

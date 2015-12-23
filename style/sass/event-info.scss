@@ -1,3 +1,5 @@
+@import 'variables';
+
 .event-info-box {
 	position: absolute;
     height: 100%;
@@ -48,9 +50,15 @@
 			    font-size: .8em;
 	   			margin: 0 0 8px;
 	   		}
+
+	   		.event-info__map {
+	   			&.event-info__map--hide {
+	   				display: none;
+	   			}
+	   		}
 		}
 		.event-info__body-info {
-			height: 40%;
+			height: 50%;
 			margin-top: 50px;
 
 			.members{
@@ -60,8 +68,17 @@
 			    clear: both;
 			    float: right;
 
+			    .members__count {
+			    	color: $deviderColor;
+			    	margin-left: 8px;
+				    display: inline-block;
+				    position: relative;
+				    top: -3px;
+			    }
+
 			    .members__dropdown {
 			    	width: auto;
+			    	margin-bottom: 10px;
 
 			    	.members__dropdown-button {
 			    		border-bottom: none;
@@ -69,12 +86,13 @@
 			    	}
 			    }
 
-			    .collaborators, .tutors, .lectors {
+			    .items {
 			    	height: 90%;
 				    width: 100%;
 				    box-sizing: border-box;
 				    overflow-x: hidden;
 				    overflow-y: auto;
+				    border-top: 1px solid $deviderColor;
 
 			    	.event-item {
 			    		padding: 8px 8px 8px 0px;
@@ -125,28 +143,37 @@
 			    margin-right: 5%;
 			    overflow-y: auto;
 
-			    .file-item {
-			    	padding: 8px 8px 8px 0px;
+			    .files__label {
+			    	margin-bottom: 10px;
+			    	display: inline-block;
+			    }
 
-			    	.file-item__icon{
-			    		padding: 2px 5px;
-					    color: #646464;
-					    display: inline-block;
-					    font-size: 1.7em;
-					    text-align: center;
-					    vertical-align: middle;
-			    	}
+			    .files-body {
+			    	border-top: 1px solid $deviderColor;
 
-			    	.file-wrapper{
-			    		display: inline-block;
-					    vertical-align: middle;
-					    font-size: .8em;
-					    margin-left: 8px;
+			    	.file-item {
+				    	padding: 8px 8px 8px 0px;
 
-			    		.file-wrapper__name{
-			    			display: block;
-			    		}
-			    	}
+				    	.file-item__icon{
+				    		padding: 2px 5px;
+						    color: #646464;
+						    display: inline-block;
+						    font-size: 1.7em;
+						    text-align: center;
+						    vertical-align: middle;
+				    	}
+
+				    	.file-wrapper{
+				    		display: inline-block;
+						    vertical-align: middle;
+						    font-size: .8em;
+						    margin-left: 8px;
+
+				    		.file-wrapper__name{
+				    			display: block;
+				    		}
+				    	}
+				    }
 			    }
 			}
 		}
