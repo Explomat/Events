@@ -5,4 +5,5 @@ module.exports = function(args){
 
 	this.id = args.id || UUID.generate();
 	this.fullname = args.fullname || 'Нет имени';
+	this.href = args.href || '#';
 }

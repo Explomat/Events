@@ -27,10 +27,11 @@ var Item = React.createClass({
 	}
 });
 
-var DropDown = React.createClass({
+var DropDown = {
 
 	propTypes: {
 		items: React.PropTypes.array.isRequired, //[{ payload: 1, text: 'Test' },{...}]
+		//icons: React.PropTypes.array, //Количество такое же как и items. Payload должен совпадать с payload item. [ payload: 1, iconClass: icon-class ]
 		onChange: React.PropTypes.func,
 		deviders: React.PropTypes.array, //указать индексы элементов после которых вставлять разделители
 		selectedPayload: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]),
@@ -95,11 +96,7 @@ var DropDown = React.createClass({
 		this.setState({display: !this.state.display});
 	},
 
-	render: function() {
-		var className = this.props.className ? this.props.className : '';
-		var classNameChild = this.props.classNameChild ? this.props.classNameChild : '';
-		var classNameButton = this.props.classNameButton ? this.props.classNameButton : '';
-		var isTypeDisplayStyle = { display: this.state.display ? "block" : "none" };
+	getList: function(){
 		var list = [];
 		if (this.props.description && !this.props.selectedPayload) {
 			list.push(<ItemDescription key={0} text={this.props.description} />);
@@ -110,7 +107,25 @@ var DropDown = React.createClass({
 			}
 			var selected = this.props.selectedPayload.toString() === item.payload.toString() ? true : false;
 			list.push(<Item key={index + 1} selected={selected} text={item.text} payload={item.payload} onChange={this.handleChange} index={index}/>);
-		}.bind(this))
+		}.bind(this));
+		return list;
+	},
+
+	/*getIcon: function(){
+		if (!this.props.icons) return null;
+		for (var i = this.props.icons.length - 1; i >= 0; i--) {
+			if (this.props.icons[i].payload === selectedPayload) {
+				return <span className={this.props.icons[i].iconClass}></span>
+			}
+		};
+	},*/
+
+	render: function() {
+		var className = this.props.className ? this.props.className : '';
+		var classNameChild = this.props.classNameChild ? this.props.classNameChild : '';
+		var classNameButton = this.props.classNameButton ? this.props.classNameButton : '';
+		var isTypeDisplayStyle = { display: this.state.display ? "block" : "none" };
+		var list = this.getList();
 		return (
 			<div className={"dropdown-box " + className}>
 				<button className={"dropdown-box__default-item " + classNameButton} type="button" onClick={this.handleToogelDisplay}>
@@ -121,6 +136,7 @@ var DropDown = React.createClass({
 			</div>
 		);
 	}
-});
+};
 
-module.exports = DropDown;
+module.exports = React.createClass(DropDown);
+module.exports.Class = DropDown;

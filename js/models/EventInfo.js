@@ -1,8 +1,10 @@
 var EventTypes = require('../utils/event/EventTypes');	
 var EventStatuses = require('../utils/event/EventStatuses');
+var EventUtils = require('..//utils/event/EventUtils');
 var Collaborator = require('./Collaborator');
-var Tutor = require('./Collaborator');
-var Lector = require('./Collaborator');
+var Tutor = require('./Tutor');
+var Lector = require('./Lector');
+var File = require('./File');
 var UUID = require('../utils/UUID');
 
 module.exports = function(args){
@@ -25,7 +27,7 @@ module.exports = function(args){
 		});
 	}
 	this.tutors = [];
-	if (args.collaborators) {
+	if (args.tutors) {
 		this.tutors = args.tutors.map(function(t){
 			return new Tutor(t);
 		});
@@ -36,4 +38,14 @@ module.exports = function(args){
 			return new Lector(l);
 		});
 	}
+
+	this.files = [];
+	if (args.files) {
+		this.files = args.files.map(function(f){
+			return new File(f);
+		});
+	}
+
+	//
+	this.members = args.members || EventUtils.getMembers();
 }
