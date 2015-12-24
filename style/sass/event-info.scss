@@ -4,8 +4,7 @@
 	position: absolute;
     height: 100%;
     width: 100%;
-    background: #000;
-    background: rgba(91, 91, 91, 0.26);
+    background-color: rgba(91, 91, 91, 0.26);
     z-index: 100;
     top: 0;
 
@@ -35,13 +34,6 @@
 		    background-size: 72%;
 		    background-position: center center;
 		    color: #646464;
-
-		    &.event-info__icon--webinar {
-				background-image: url("/react/events/build/icons/webinar.png");
-			}
-			&.event-info__icon--fulltime {
-				background-image: url("/react/events/build/icons/teacher.png");
-			}
 		}
 
 		.event-info__main-info{

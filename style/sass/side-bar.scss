@@ -71,13 +71,6 @@
 					margin-left: 16px;
 					text-align: center;
 					color: $elementsColor;
-
-					&.info-icon--webinar {
-						background-image: url("/react/events/build/icons/webinar.png");
-					}
-					&.info-icon--fulltime {
-						background-image: url("/react/events/build/icons/teacher.png");
-					}
 				}
 
 				.timetable__event-info{

@@ -56,7 +56,11 @@ html, body{
     height: 80px;
 
     &.icon--type--webinar {
-        
+        background-image: url("/react/events/build/icons/webinar.png");
+    }
+
+    &.icon--type--fulltime {
+        background-image: url("/react/events/build/icons/teacher.png");
     }
 
     &.icon--small {
@@ -67,6 +71,31 @@ html, body{
     &.icon--big {
         width: 152px;
         height: 152px;
+    }
+}
+
+.overlay-loading {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(91,91,91,.26);
+    z-index: 150;
+    top: 0;
+    display: none;
+
+    &:before {
+        content: "";
+        background-image: url("/react/events/build/icons/loading.gif");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: 100%;
+        display: block;
+        width: 32px;
+        height: 32px;
+    }
+
+    &.overlay-loading--show {
+        display: block;
     }
 }
 

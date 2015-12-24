@@ -182,20 +182,20 @@ var EventInfo = React.createClass({
 	render: function(){
 		var dateTime = this.getDateTime();
 		var status = EventStatuses.values[this.state.status];
-		var iconClass = this.state.type === EventTypes.keys.webinar ? 'event-info__icon--webinar': 'event-info__icon--fulltime';
+		var iconClass = this.state.type === EventTypes.keys.webinar ? 'icon--type--webinar': 'icon--type--fulltime';
 		var isDisplayPlaceClass = this.state.type === EventTypes.keys.webinar ? 'event-info__map--hide': '';
 		return(
 			<div className="event-info-box">
 				<section className="event-info">
 					<button onClick={this.handleClose} className="close-btn">&times;</button>
-					<i className={"icon icon--big event-info__icon " + iconClass}></i>
+					<i className={"icon icon--big "+iconClass+" event-info__icon"}></i>
 					<div className="event-info__main-info">
 						<h1 className="event-info__name">{this.state.name}</h1>
 						<p className="event-info__state">Статус : {status}</p>
 						<p className="event-info__time">Дата проведения : {dateTime}</p>
 						<p className={"event-info__map " + isDisplayPlaceClass}>
-							<span>Место проведения: {this.state.place}</span>
-							<a href='#' className="event-info__map-link">Схема проезда</a>
+							<span>Место проведения: {this.state.place}</span><br/>
+							<a href='#' className="event-info__map-link"> Схема проезда</a>
 						</p>
 					</div>
 					<EventInfoBody members={this.state.members} collaborators={this.state.collaborators} tutors={this.state.tutors} lectors={this.state.lectors} files={this.state.files}/>

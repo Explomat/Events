@@ -12,7 +12,7 @@ var Config = require('../../config');
 var EventSideBar = React.createClass({
 
 	getTime: function(){
-		return DateUtils.getTime(this.props.startDate) + '-' + DateUtils.getTime(this.props.finishDate);
+		return DateUtils.getTime(this.props.startDate) + ' - ' + DateUtils.getTime(this.props.finishDate);
 	},
 
 	handleViewEvent: function(){
@@ -21,13 +21,13 @@ var EventSideBar = React.createClass({
 
 	render: function(){
 		var time = this.getTime();
-		var typeIconClass = this.props.type === EventTypes.keys.webinar ? 'info-icon--webinar': 'info-icon--fulltime';
+		var typeIconClass = this.props.type === EventTypes.keys.webinar ? 'icon--type--webinar': 'icon--type--fulltime';
 		return(
 			<section className="timetable__event clearfix">
 				<div className="timetable__event-info-wrapper">
 					<i className="info-icon fa fa-clock-o"></i>
 					<p className="timetable__event-info timetable__event-info--time">{time}</p>
-					<i className={"icon icon--small info-icon " + typeIconClass}></i>
+					<i className={"icon icon--small "+ typeIconClass +" info-icon"}></i>
 					<p className="timetable__event-info timetable__event-info--name">{this.props.name}</p>
 					<i className="info-icon fa fa-map-marker"></i>
 					<p className="timetable__event-info timetable__event-info--place">{this.props.place}</p>
@@ -302,6 +302,7 @@ var CalendarView = React.createClass({
 							</div>
 						</div>
 					</div>
+					<div className="overlay-loading"></div>
 					<div id={Config.dom.eventViewModalId}></div>
 				</main>
 			</div>
