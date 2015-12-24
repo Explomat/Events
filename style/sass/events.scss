@@ -85,13 +85,17 @@ html, body{
 
     &:before {
         content: "";
-        background-image: url("/react/events/build/icons/loading.gif");
+        position: absolute;
+        background-image: url("/react/events/build/icons/loading6.gif");
         background-position: center center;
         background-repeat: no-repeat;
         background-size: 100%;
         display: block;
         width: 32px;
         height: 32px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
     }
 
     &.overlay-loading--show {

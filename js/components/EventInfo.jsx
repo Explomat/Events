@@ -19,7 +19,7 @@ var Collaborator = React.createClass({
 			<div className="event-item">
 				<i className="event-item__icon fa fa-user"></i>
 				<div className="event-wrapper">
-					<a href={this.props.href} target="__blank" className="event-wrapper__fullname">{this.props.fullname}</a>
+					<a href={this.props.href} title={this.props.fullname} target="__blank" className="event-wrapper__fullname">{this.props.fullname}</a>
 				</div>
 			</div>
 		);
@@ -33,7 +33,7 @@ var Tutor = React.createClass({
 			<div className="event-item">
 				<i className="event-item__icon fa fa-user"></i>
 				<div className="event-wrapper">
-					<a href={this.props.href} target="__blank" className="event-wrapper__fullname">{this.props.fullname}</a>
+					<a href={this.props.href} title={this.props.fullname} target="__blank" className="event-wrapper__fullname">{this.props.fullname}</a>
 					<i className="event-wrapper__phone-icon fa fa-phone"></i>
 					<span className="event-wrapper__phone">{this.props.phone}</span>
 					<i className="event-wrapper__mail-icon fa fa-envelope"></i>
@@ -51,7 +51,7 @@ var Lector = React.createClass({
 			<div className="event-item">
 				<i className="event-item__icon fa fa-user"></i>
 				<div className="event-wrapper">
-					<a href={this.props.href} target="__blank" className="event-wrapper__fullname">{this.props.fullname}</a>
+					<a href={this.props.href} title={this.props.fullname} target="__blank" className="event-wrapper__fullname">{this.props.fullname}</a>
 					<i className="event-wrapper__phone-icon fa fa-phone"></i>
 					<span className="event-wrapper__phone">{this.props.phone}</span>
 					<i className="event-wrapper__mail-icon fa fa-envelope"></i>
@@ -69,9 +69,7 @@ var File = React.createClass({
 		return (
 			<div className="file-item">
 				<i className={"file-item__icon " + fileTypeClass}></i>
-				<div className="file-wrapper">
-					<a href={this.props.href} className="file-wrapper__name">{this.props.name}</a>
-				</div>
+				<a href={this.props.href} title={this.props.name} className="file-item__name">{this.props.name}</a>
 			</div>
 		);
 	}

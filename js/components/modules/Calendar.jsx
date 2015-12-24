@@ -85,10 +85,12 @@ var Filters = React.createClass({
 	},
 
 	handleChangeMonth: function(e, payload, text, index){
+		if (this.props.onChangeMonth) this.props.onChangeMonth(payload);
 		CalendarActions.changeMonth(index, this.props.selectedYear);
 	},
 
 	handleChangeYear: function(e, payload, text, index){
+		if (this.props.onChangeYear) this.props.onChangeYear(payload);
 		CalendarActions.changeYear(payload, this.props.selectedMonthIndex);
 	},
 
@@ -212,6 +214,12 @@ var CalendarView = React.createClass({
 		events: React.PropTypes.array
 	},
 
+	getInitialState: function(){
+		return {
+			isLoading: false
+		}
+	},
+
 	getDefaultProps: function(){
 		return {
 			events: []
@@ -219,7 +227,7 @@ var CalendarView = React.createClass({
 	},
 
 	componentWillReceiveProps: function(nextProps){
-		
+		this.setState({isLoading: false});
 	},
 
 	getFiltersProps: function(){
@@ -277,13 +285,22 @@ var CalendarView = React.createClass({
 		CalendarActions.selectDate(date);
 	},
 
+	handleChangeMonth: function(){
+		this.setState({ isLoading: true });
+	},
+
+	handleChangeYear: function(){
+		this.setState({ isLoading: true });
+	},
+
 	render: function() {
 		var filtersProps = this.getFiltersProps();
+		var isLoadingClass = this.state.isLoading ? 'overlay-loading--show ': '';
 		return (
 			<div className="container">
 				<SideBar selectedDate={this.props.selectedDate} events={this.props.filterEvents}/>
 				<main className="calendar">
-					<Filters {...filtersProps}/>
+					<Filters {...filtersProps} onChangeMonth={this.handleChangeMonth} onChangeYear={this.handleChangeYear}/>
 					<div className="calendar-table__wrapper">
 						<div className="calendar-table">
 							<div className="calendar-table__header">
@@ -302,7 +319,7 @@ var CalendarView = React.createClass({
 							</div>
 						</div>
 					</div>
-					<div className="overlay-loading"></div>
+					<div className={"overlay-loading " + isLoadingClass}></div>
 					<div id={Config.dom.eventViewModalId}></div>
 				</main>
 			</div>
