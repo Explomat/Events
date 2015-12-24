@@ -45,3 +45,23 @@ html, body{
 	    filter: alpha(opacity=50);
     }
 }
+
+.icon {
+    /* background: url("http://study.merlion.ru/react/events/build/icons/users181.png") no-repeat; */
+    display: block;
+    background-position: right center;
+
+    width: 80px;
+    height: 80px;
+
+    &.icon--small {
+        width: 20px;
+        height: 20px;
+    }
+
+    &.icon--big {
+        width: 152px;
+        height: 152px;
+    }
+}
+

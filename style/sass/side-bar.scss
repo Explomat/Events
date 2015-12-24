@@ -63,7 +63,7 @@
 				margin-top: 16px;
 				word-wrap: break-word;
 
-				.timetable_info-icon{
+				.timetable__info-icon{
 					font-size: 1rem;
 					float: left;
 					width: 20px;
@@ -71,6 +71,13 @@
 					margin-left: 16px;
 					text-align: center;
 					color: $elementsColor;
+
+					&.timetable__info-icon--webinar {
+						background: url("/react/events/build/icons/webinar.png") no-repeat;
+					}
+					&.timetable__info-icon--fulltime {
+						background: url("/react/events/build/icons/teacher.png") no-repeat;
+					}
 				}
 
 				.timetable__event-info{
