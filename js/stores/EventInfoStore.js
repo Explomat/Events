@@ -16,6 +16,16 @@ var EventInfoStore = extend({}, EventEmitter.prototype, {
 		return _eventInfo;
 	},
 
+	isUserInEvent: function(){
+		return _eventInfo.collaborators.find(function(col){
+			_eventInfo.userId == col.id;
+		});
+	},
+
+	getWebinarInfo: function(){
+		return _eventInfo.webinarInfo;
+	},
+
 	emitChange: function() {
 		this.emit('change');
 	},

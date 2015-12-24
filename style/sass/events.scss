@@ -63,6 +63,10 @@ html, body{
         background-image: url("/react/events/build/icons/teacher.png");
     }
 
+    &.icon--type--webinar-record {
+        background-image: url("/react/events/build/icons/webinar_record.png");
+    }
+
     &.icon--small {
         width: 20px;
         height: 20px;

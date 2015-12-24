@@ -48,4 +48,5 @@ module.exports = function(args){
 
 	//
 	this.members = args.members || EventUtils.getMembers();
+	this.webinarInfo = args.webinarInfo || null;
 }

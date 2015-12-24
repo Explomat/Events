@@ -18,7 +18,7 @@ module.exports = {
 		pdf: 'fa fa-file-pdf-o',
 		pptx: 'fa fa-file-powerpoint-o',
 		ppt: 'fa fa-file-powerpoint-o',
-		webinar_record: '',
+		webinar_record: 'icon--type--webinar-record',
 		unknown: 'fa fa-file'
 	}
 }

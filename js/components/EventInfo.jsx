@@ -68,7 +68,7 @@ var File = React.createClass({
 		var fileTypeClass = FileTypes.values[this.props.type] || FileTypes.values.unknown;
 		return (
 			<div className="file-item">
-				<i className={"file-item__icon " + fileTypeClass}></i>
+				<i className={"icon "+ fileTypeClass +" file-item__icon"}></i>
 				<a href={this.props.href} title={this.props.name} className="file-item__name">{this.props.name}</a>
 			</div>
 		);
@@ -172,16 +172,58 @@ var EventInfo = React.createClass({
 		return DateUtils.getDateTime(this.state.startDate) + ' - ' + DateUtils.getDateTime(this.state.finishDate);
 	},
 
+	getButtons: function(){
+		var buttons = [];
+		var status = this.state.status;
+		var type = this.state.type;
+		var isWebinar = type === EventTypes.keys.webinar;
+		var index = 0;
+		if (isWebinar){
+			var webinarInfo = EventInfoStore.getWebinarInfo();
+			if (EventInfoStore.isUserInEvent()){
+				buttons.push(<button key={index} className="event-btn event-info__btn">Отказаться от участия</button>);
+				index++;
+			}
+			if (status === EventStatuses.keys.active) {
+				buttons.push(<button key={index} className="event-btn event-info__btn">Войти в вебинар</button>);
+			}
+			else if (status === EventStatuses.keys.close) {
+				buttons.push(<button key={index} className="event-btn event-info__btn">Добавить отзыв</button>);
+				index++;
+				if (webinarInfo) {
+					buttons.push(<button key={index} className="event-btn event-info__btn">Посмотеть запись</button>);
+					index++;
+				}
+			}
+		}
+		else {
+			if (EventInfoStore.isUserInEvent()){
+				buttons.push(<button key={index} className="event-btn event-info__btn">Отказаться от участия</button>);
+				index++;
+			}
+			if (status === EventStatuses.keys.plan) {
+				buttons.push(<button key={index} className="event-btn event-info__btn">Подать заявку</button>);
+				index++;
+			}
+			else if (status === EventStatuses.keys.close){
+				buttons.push(<button key={index} className="event-btn event-info__btn">Добавить отзыв</button>);
+			}
+		}
+		return buttons;
+	},
+
 	handleClose: function(){
 		EventInfoStore.removeChangeListener(this._onChange);
 		Hasher.setHash('calendar');
 	},
 
 	render: function(){
+		var isWebinar = this.state.type === EventTypes.keys.webinar;
 		var dateTime = this.getDateTime();
 		var status = EventStatuses.values[this.state.status];
 		var iconClass = this.state.type === EventTypes.keys.webinar ? 'icon--type--webinar': 'icon--type--fulltime';
-		var isDisplayPlaceClass = this.state.type === EventTypes.keys.webinar ? 'event-info__map--hide': '';
+		var isDisplayPlaceClass = isWebinar ? 'event-info__map--hide': '';
+		var buttons = this.getButtons();
 		return(
 			<div className="event-info-box">
 				<section className="event-info">
@@ -198,8 +240,7 @@ var EventInfo = React.createClass({
 					</div>
 					<EventInfoBody members={this.state.members} collaborators={this.state.collaborators} tutors={this.state.tutors} lectors={this.state.lectors} files={this.state.files}/>
 					<div className="event-info__buttons">
-						<button className="event-btn event-info__btn">Добавить отзыв</button>
-						<button className="event-btn event-info__btn">Скачать запись</button>
+						{buttons}
 					</div>
 				</section>
 			</div>

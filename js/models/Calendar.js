@@ -13,6 +13,7 @@ module.exports = function(args){
 		});
 	}
 
+	this.userId = args.userId || '';
 	this.currentDate = new Date(args.currentDate);
 	this.events = args.events || [ 
 		new ShortEvent({ name:'Первое мероприятие', startDate: 'Tue, 16 Dec 2015 18:40:10 +0300', status: 'plan', place:'Москва' }),
