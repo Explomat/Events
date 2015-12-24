@@ -47,9 +47,10 @@ html, body{
 }
 
 .icon {
-    /* background: url("http://study.merlion.ru/react/events/build/icons/users181.png") no-repeat; */
     display: block;
     background-position: right center;
+    background-repeat: no-repeat;
+    background-size: 100%;
 
     width: 80px;
     height: 80px;

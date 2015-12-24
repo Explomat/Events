@@ -63,7 +63,7 @@
 				margin-top: 16px;
 				word-wrap: break-word;
 
-				.timetable__info-icon{
+				.info-icon{
 					font-size: 1rem;
 					float: left;
 					width: 20px;
@@ -72,11 +72,11 @@
 					text-align: center;
 					color: $elementsColor;
 
-					&.timetable__info-icon--webinar {
-						background: url("/react/events/build/icons/webinar.png") no-repeat;
+					&.info-icon--webinar {
+						background-image: url("/react/events/build/icons/webinar.png");
 					}
-					&.timetable__info-icon--fulltime {
-						background: url("/react/events/build/icons/teacher.png") no-repeat;
+					&.info-icon--fulltime {
+						background-image: url("/react/events/build/icons/teacher.png");
 					}
 				}
 

@@ -181,13 +181,13 @@ var EventInfo = React.createClass({
 	render: function(){
 		var dateTime = this.getDateTime();
 		var status = EventStatuses.values[this.state.status];
-		var iconClass = this.state.type === EventTypes.keys.webinar ? 'fa fa-video-camera': 'fa fa-users';
+		var iconClass = this.state.type === EventTypes.keys.webinar ? 'event-info__icon--webinar': 'event-info__icon--fulltime';
 		var isDisplayPlaceClass = this.state.type === EventTypes.keys.webinar ? 'event-info__map--hide': '';
 		return(
 			<div className="event-info-box">
 				<section className="event-info">
 					<button onClick={this.handleClose} className="close-btn">&times;</button>
-					<i className={iconClass + " event-info__icon"}></i>
+					<i className={"icon icon--big event-info__icon " + iconClass}></i>
 					<div className="event-info__main-info">
 						<h1 className="event-info__name">{this.state.name}</h1>
 						<p className="event-info__state">Статус : {status}</p>
