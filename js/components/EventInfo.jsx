@@ -65,9 +65,10 @@ var Lector = React.createClass({
 var File = React.createClass({
 
 	render: function() {
+		var fileTypeClass = FileTypes.values[this.props.type] || FileTypes.values.unknown;
 		return (
 			<div className="file-item">
-				<i className={"file-item__icon " + FileTypes.values[this.props.type]}></i>
+				<i className={"file-item__icon " + fileTypeClass}></i>
 				<div className="file-wrapper">
 					<a href={this.props.href} className="file-wrapper__name">{this.props.name}</a>
 				</div>
