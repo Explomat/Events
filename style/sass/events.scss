@@ -19,10 +19,7 @@ html, body{
     background-color: #fff;
     cursor: pointer;
 
-    & > a {
-        color: #ff5252;
-    }
-    & > a:hover {
+    &:hover, &:active, &:visited {
         text-decoration: none;
         color: #ff5252;
     }
