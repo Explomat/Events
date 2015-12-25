@@ -173,6 +173,10 @@ var EventInfo = React.createClass({
 		return DateUtils.getDateTime(this.state.startDate) + ' - ' + DateUtils.getDateTime(this.state.finishDate);
 	},
 
+	handleCreateRequest: function(){
+		EventInfoActions.createRequest();
+	},
+
 	getButtons: function(){
 		var buttons = [];
 		var status = this.state.status;
@@ -192,30 +196,28 @@ var EventInfo = React.createClass({
 					buttons.push(<button key={index} className="event-btn event-info__btn">Войти в вебинар</button>);
 				}
 				else if (status === EventStatuses.keys.close){
-					buttons.push(<button key={index} className="event-btn event-info__btn">Добавить отзыв</button>);
+					buttons.push(<a key={index} className="event-btn event-info__btn" target="__blank" href={this.state.reportHref}>Добавить отзыв</a>);
 				}
 				index++;
 			}
 			else {
 				if (status === EventStatuses.keys.plan) {
-					buttons.push(<button key={index} className="event-btn event-info__btn">Подать заявку</button>);
+					buttons.push(<button onClick={this.handleCreateRequest} key={index} className="event-btn event-info__btn">Подать заявку</button>);
 					index++;
 				}
 			}
 			if (webinarInfo && status === EventStatuses.keys.close) {
-				buttons.push(<button key={index} className="event-btn event-info__btn">
-								<a target="__blank" href={webinarInfo.href}>Посмотреть запись</a>
-							</button>);
+				buttons.push(<a key={index} className="event-btn event-info__btn" target="__blank" href={webinarInfo.href}>Посмотреть запись</a>);;
 			}
 		}
 		else {
 			if (status === EventStatuses.keys.plan) {
 				if (isUserInEvent) buttons.push(<button key={index} className="event-btn event-info__btn">Отказаться от участия</button>);
-				else buttons.push(<button key={index} className="event-btn event-info__btn">Подать заявку</button>);
+				else buttons.push(<button onClick={this.handleCreateRequest} key={index} className="event-btn event-info__btn">Подать заявку</button>);
 				index++;
 			}
-			else if (status === EventStatuses.keys.close){
-				buttons.push(<button key={index} className="event-btn event-info__btn">Добавить отзыв</button>);
+			else if (isUserInEvent && status === EventStatuses.keys.close){
+				buttons.push(<a key={index} className="event-btn event-info__btn" target="__blank" href={this.state.reportHref}>Добавить отзыв</a>);
 			}
 		}
 		return buttons;

@@ -19,6 +19,7 @@ module.exports = function(args){
 	this.finishDate = new Date(args.finishDate);
 	this.status = args.status || EventStatuses.keys.plan;
 	this.place = args.place || '';
+	this.reportHref = args.reportHref || "#";
 
 	this.collaborators = [];
 	if (args.collaborators) {
