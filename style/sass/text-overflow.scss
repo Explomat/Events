@@ -1,0 +1,46 @@
+.text-overflow-box {
+	height: calc(1em * 1); 
+	overflow: hidden;
+	position: relative;
+
+	&.text-overflow-box--2 {
+		height: calc(1em * 2); 
+	}
+
+	&.text-overflow-box--3 {
+		height: calc(1em * 3); 
+	}
+
+	&.text-overflow-box--4 {
+		height: calc(1em * 4); 
+	}
+
+	&.text-overflow-box--5 {
+		height: calc(1em * 5); 
+	}
+
+	&.text-overflow-box--6 {
+		height: calc(1em * 6); 
+	}
+
+	.text-overflow-box__text{
+		width: 94%;
+		font-size: 1em;
+		line-height: 1em;
+		padding: 0;
+		margin: 0;
+	}
+
+	.text-overflow-box__dots{
+		position: absolute;
+	    display: none;
+	    bottom: -3px;
+	    right: 0;
+	    font-size: inherit;
+	    padding: inherit;
+
+		&.text-overflow-box__dots--show{
+			display: inline-block;
+		}
+	}
+}

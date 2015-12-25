@@ -16,9 +16,9 @@ var EventInfoStore = extend({}, EventEmitter.prototype, {
 		return _eventInfo;
 	},
 
-	isUserInEvent: function(){
+	isUserInEvent: function(userId){
 		return _eventInfo.collaborators.find(function(col){
-			_eventInfo.userId == col.id;
+			return userId == col.id;
 		});
 	},
 

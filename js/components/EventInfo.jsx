@@ -1,6 +1,7 @@
 var React = require('react');
 var Hasher = require('../utils/Hasher');
 var EventInfoStore = require('../stores/EventInfoStore');
+var CalendarStore = require('../stores/CalendarStore');
 var EventInfoActions = require('../actions/EventInfoActions');
 var EventStatuses = require('../utils/event/EventStatuses');
 var EventTypes = require('../utils/event/EventTypes');	
@@ -176,33 +177,41 @@ var EventInfo = React.createClass({
 		var buttons = [];
 		var status = this.state.status;
 		var type = this.state.type;
+		var userId = CalendarStore.getUserId();
 		var isWebinar = type === EventTypes.keys.webinar;
+		var isUserInEvent = EventInfoStore.isUserInEvent(userId);
 		var index = 0;
+
 		if (isWebinar){
 			var webinarInfo = EventInfoStore.getWebinarInfo();
-			if (EventInfoStore.isUserInEvent()){
-				buttons.push(<button key={index} className="event-btn event-info__btn">Отказаться от участия</button>);
+			if (isUserInEvent) {
+				if (status === EventStatuses.keys.plan) {
+					buttons.push(<button key={index} className="event-btn event-info__btn">Отказаться от участия</button>);
+				}
+				else if (status === EventStatuses.keys.active) {
+					buttons.push(<button key={index} className="event-btn event-info__btn">Войти в вебинар</button>);
+				}
+				else if (status === EventStatuses.keys.close){
+					buttons.push(<button key={index} className="event-btn event-info__btn">Добавить отзыв</button>);
+				}
 				index++;
 			}
-			if (status === EventStatuses.keys.active) {
-				buttons.push(<button key={index} className="event-btn event-info__btn">Войти в вебинар</button>);
-			}
-			else if (status === EventStatuses.keys.close) {
-				buttons.push(<button key={index} className="event-btn event-info__btn">Добавить отзыв</button>);
-				index++;
-				if (webinarInfo) {
-					buttons.push(<button key={index} className="event-btn event-info__btn">Посмотеть запись</button>);
+			else {
+				if (status === EventStatuses.keys.plan) {
+					buttons.push(<button key={index} className="event-btn event-info__btn">Подать заявку</button>);
 					index++;
 				}
 			}
+			if (webinarInfo && status === EventStatuses.keys.close) {
+				buttons.push(<button key={index} className="event-btn event-info__btn">
+								<a target="__blank" href={webinarInfo.href}>Посмотреть запись</a>
+							</button>);
+			}
 		}
 		else {
-			if (EventInfoStore.isUserInEvent()){
-				buttons.push(<button key={index} className="event-btn event-info__btn">Отказаться от участия</button>);
-				index++;
-			}
 			if (status === EventStatuses.keys.plan) {
-				buttons.push(<button key={index} className="event-btn event-info__btn">Подать заявку</button>);
+				if (isUserInEvent) buttons.push(<button key={index} className="event-btn event-info__btn">Отказаться от участия</button>);
+				else buttons.push(<button key={index} className="event-btn event-info__btn">Подать заявку</button>);
 				index++;
 			}
 			else if (status === EventStatuses.keys.close){

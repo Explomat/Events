@@ -18,6 +18,14 @@ html, body{
     outline: none;
     background-color: #fff;
     cursor: pointer;
+
+    & > a {
+        color: #ff5252;
+    }
+    & > a:hover {
+        text-decoration: none;
+        color: #ff5252;
+    }
 }
 
 .close-btn {

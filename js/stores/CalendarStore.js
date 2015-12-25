@@ -61,6 +61,10 @@ var CalendarStore = extend({}, EventEmitter.prototype, {
 		return _calendar;
 	},
 
+	getUserId: function(){
+		return _calendar.userId;
+	},
+
 	emitChange: function() {
 		this.emit('change');
 	},

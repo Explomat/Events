@@ -1,6 +1,7 @@
 var React = require('react');
 var DropDown = require('./DropDown');
 var SearchBox = require('./SearchBox');
+var TextOverflow = require('./TextOverflow');
 var DateUtils = require('../../utils/event/DateUtils');
 var EventUtils = require('../../utils/event/EventUtils');
 var EventStatuses = require('../../utils/event/EventStatuses');
@@ -28,7 +29,7 @@ var EventSideBar = React.createClass({
 					<i className="info-icon fa fa-clock-o"></i>
 					<p className="timetable__event-info timetable__event-info--time">{time}</p>
 					<i className={"icon icon--small "+ typeIconClass +" info-icon"}></i>
-					<p className="timetable__event-info timetable__event-info--name">{this.props.name}</p>
+					<TextOverflow className={"timetable__event-info timetable__event-info--name"} value={this.props.name} rowsCount={3} />
 					<i className="info-icon fa fa-map-marker"></i>
 					<p className="timetable__event-info timetable__event-info--place">{this.props.place}</p>
 				</div>

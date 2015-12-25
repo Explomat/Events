@@ -119,6 +119,7 @@
                         2px 0px 5px 0px rgba(0,0,0,0.16),
                         2px 0px 5px 0px rgba(0,0,0,0.23);
             z-index: 5;
+            border-collapse: separate;
           }
 
           &.calendar-table__day--selected {
