@@ -29,7 +29,7 @@ var EventSideBar = React.createClass({
 					<i className="info-icon fa fa-clock-o"></i>
 					<p className="timetable__event-info timetable__event-info--time">{time}</p>
 					<i className={"icon icon--small "+ typeIconClass +" info-icon"}></i>
-					<TextOverflow className={"timetable__event-info timetable__event-info--name"} value={this.props.name} rowsCount={3} />
+					<TextOverflow className={"timetable__event-info timetable__event-info--name"} value={this.props.name} rowsCount={2} />
 					<i className="info-icon fa fa-map-marker"></i>
 					<p className="timetable__event-info timetable__event-info--place">{this.props.place}</p>
 				</div>
