@@ -31,7 +31,7 @@ module.exports = function(args){
 
 	//Calculated fileds. For calendar view.
 	this.selectedYear = args.selectedYear ? args.selectedYear : this.currentDate.getFullYear();
-	this.selectedMonthIndex = args.selectedMonthIndex ? args.selectedMonthIndex : this.currentDate.getMonth();
+	this.selectedMonthIndex = (args.selectedMonthIndex !== undefined && args.selectedMonthIndex !== null) ? args.selectedMonthIndex : this.currentDate.getMonth();
 	this.selectedDate = args.selectedDate ? new Date(args.selectedDate) : this.currentDate;
 	this.selectedStatus = args.selectedStatus ? args.selectedStatus : CalendarEventStatuses.keys.all;
 	this.searchText = args.searchText ? args.searchText : '';

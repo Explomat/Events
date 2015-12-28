@@ -9,7 +9,10 @@ module.exports = {
 
 	getData: function(id){
 		return Ajax.sendRequest(Config.url.createPath({action_name: 'getEventInfo', id: id})).then(function(data){
-			return JSON.parse(data)
+			try {
+				return JSON.parse(data)
+			}
+			catch(e){}
 		});
 		/*return new Promise(function(resolve, reject){
 			resolve(new EventInfo());

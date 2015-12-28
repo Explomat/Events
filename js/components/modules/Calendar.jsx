@@ -86,11 +86,13 @@ var Filters = React.createClass({
 	},
 
 	handleChangeMonth: function(e, payload, text, index){
+		if (payload === this.props.selectedMonthIndex) return;
 		if (this.props.onChangeMonth) this.props.onChangeMonth(payload);
 		CalendarActions.changeMonth(index, this.props.selectedYear);
 	},
 
 	handleChangeYear: function(e, payload, text, index){
+		if (payload === this.props.selectedYear) return;
 		if (this.props.onChangeYear) this.props.onChangeYear(payload);
 		CalendarActions.changeYear(payload, this.props.selectedMonthIndex);
 	},
