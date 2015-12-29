@@ -33,7 +33,7 @@ var EventSideBar = React.createClass({
 					<i className="info-icon fa fa-map-marker"></i>
 					<p className="timetable__event-info timetable__event-info--place">{this.props.place}</p>
 				</div>
-				<button onClick={this.handleViewEvent} className="timetable__event-details-btn">Подробнее</button>
+				<button onClick={this.handleViewEvent} className="event-btn timetable__event-details-btn">Подробнее</button>
 			</section>
 		);
 	}

@@ -207,7 +207,7 @@ var EventInfo = React.createClass({
 				}
 			}
 			if (webinarInfo && status === EventStatuses.keys.close) {
-				buttons.push(<a key={index} className="event-btn event-info__btn" target="__blank" href={webinarInfo.href}>Посмотреть запись</a>);;
+				buttons.push(<a key={index} className="event-btn event-info__btn" target="__blank" href={webinarInfo.href}>Посмотреть запись</a>);
 			}
 		}
 		else {
@@ -238,20 +238,27 @@ var EventInfo = React.createClass({
 		return(
 			<div className="event-info-box">
 				<section className="event-info">
-					<button onClick={this.handleClose} className="close-btn">&times;</button>
-					<i className={"icon icon--big "+iconClass+" event-info__icon"}></i>
-					<div className="event-info__main-info">
-						<h1 className="event-info__name">{this.state.name}</h1>
-						<p className="event-info__state">Статус : {status}</p>
-						<p className="event-info__time">Дата проведения : {dateTime}</p>
-						<p className={"event-info__map " + isDisplayPlaceClass}>
-							<span>Место проведения: {this.state.place}</span><br/>
-							<a href='#' className="event-info__map-link"> Схема проезда</a>
-						</p>
+					<div className="event-info__header">
+						<button onClick={this.handleClose} className="close-btn">&times;</button>
 					</div>
-					<EventInfoBody members={this.state.members} collaborators={this.state.collaborators} tutors={this.state.tutors} lectors={this.state.lectors} files={this.state.files}/>
-					<div className="event-info__buttons">
-						{buttons}
+					<div className="event-info__body">
+						<i className={"icon icon--big "+iconClass+" event-info__icon"}></i>
+						<div className="event-info__main-info">
+							<h1 className="event-info__name">{this.state.name}</h1>
+							<p className="event-info__state">Статус : {status}</p>
+							<p className="event-info__time">Дата проведения : {dateTime}</p>
+							<p className={"event-info__map " + isDisplayPlaceClass}>
+								<span>Место проведения: {this.state.place}</span><br/>
+								<a href='#' className="event-info__map-link"> Схема проезда</a>
+							</p>
+						</div>
+						<EventInfoBody members={this.state.members} collaborators={this.state.collaborators} tutors={this.state.tutors} lectors={this.state.lectors} files={this.state.files}/>
+					</div>
+					<div className="event-info__footer">
+						<div className="error-block">{this.state.error}</div>
+						<div className="event-info__buttons">
+							{buttons}
+						</div>
 					</div>
 				</section>
 			</div>
