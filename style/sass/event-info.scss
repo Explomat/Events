@@ -196,13 +196,28 @@
 		
 		
 		.event-info__footer {
+			.error-block {
+				display: none;
+
+				&.error-block--show {
+					display: block;
+				}
+			}
+
+			.info-block {
+				display: none;
+
+				&.info-block--show {
+					display: block;
+				}
+			}
+
 			.event-info__buttons{
 				position: absolute;
 			    bottom: 16px;
 			    right: 16px;
 
 			    .event-info__btn {
-			    	padding: 8px;
 	    			margin-left: 8px;
 			    }
 			}

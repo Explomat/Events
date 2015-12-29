@@ -10,7 +10,11 @@ var FileTypes = require('../utils/event/FileTypes');
 var DateUtils = require('../utils/event/DateUtils');
 
 function getEventInfoState() {
-	return EventInfoStore.getData();
+	return {
+		event: EventInfoStore.getData(),
+		error: EventInfoStore.getError(),
+		info: EventInfoStore.getInfo()
+	}
 }
 
 var Collaborator = React.createClass({
@@ -158,6 +162,7 @@ var EventInfo = React.createClass({
 	},
 
 	componentWillUnmount: function() {
+		EventInfoActions.disposeData();
 		EventInfoStore.removeChangeListener(this._onChange);
 	},
 
@@ -170,17 +175,21 @@ var EventInfo = React.createClass({
 	},
 
 	getDateTime: function(){
-		return DateUtils.getDateTime(this.state.startDate) + ' - ' + DateUtils.getDateTime(this.state.finishDate);
+		return DateUtils.getDateTime(this.state.event.startDate) + ' - ' + DateUtils.getDateTime(this.state.event.finishDate);
 	},
 
 	handleCreateRequest: function(){
-		EventInfoActions.createRequest();
+		EventInfoActions.createRequest(this.state.event.id);
+	},
+
+	handleRemoveCollaborator: function(){
+		EventInfoActions.removeCollaborator(this.state.event.id, CalendarStore.getUserId());
 	},
 
 	getButtons: function(){
 		var buttons = [];
-		var status = this.state.status;
-		var type = this.state.type;
+		var status = this.state.event.status;
+		var type = this.state.event.type;
 		var userId = CalendarStore.getUserId();
 		var isWebinar = type === EventTypes.keys.webinar;
 		var isUserInEvent = EventInfoStore.isUserInEvent(userId);
@@ -190,13 +199,13 @@ var EventInfo = React.createClass({
 			var webinarInfo = EventInfoStore.getWebinarInfo();
 			if (isUserInEvent) {
 				if (status === EventStatuses.keys.plan) {
-					buttons.push(<button key={index} className="event-btn event-info__btn">Отказаться от участия</button>);
+					buttons.push(<button onClick={this.handleRemoveCollaborator} key={index} className="event-btn event-info__btn">Отказаться от участия</button>);
 				}
 				else if (status === EventStatuses.keys.active) {
 					buttons.push(<button key={index} className="event-btn event-info__btn">Войти в вебинар</button>);
 				}
 				else if (status === EventStatuses.keys.close){
-					buttons.push(<a key={index} className="event-btn event-info__btn" target="__blank" href={this.state.reportHref}>Добавить отзыв</a>);
+					buttons.push(<a key={index} className="event-btn event-info__btn" target="__blank" href={this.state.event.reportHref}>Добавить отзыв</a>);
 				}
 				index++;
 			}
@@ -212,29 +221,40 @@ var EventInfo = React.createClass({
 		}
 		else {
 			if (status === EventStatuses.keys.plan) {
-				if (isUserInEvent) buttons.push(<button key={index} className="event-btn event-info__btn">Отказаться от участия</button>);
+				if (isUserInEvent) buttons.push(<button onClick={this.handleRemoveCollaborator} key={index} className="event-btn event-info__btn">Отказаться от участия</button>);
 				else buttons.push(<button onClick={this.handleCreateRequest} key={index} className="event-btn event-info__btn">Подать заявку</button>);
 				index++;
 			}
 			else if (isUserInEvent && status === EventStatuses.keys.close){
-				buttons.push(<a key={index} className="event-btn event-info__btn" target="__blank" href={this.state.reportHref}>Добавить отзыв</a>);
+				buttons.push(<a key={index} className="event-btn event-info__btn" target="__blank" href={this.state.event.reportHref}>Добавить отзыв</a>);
 			}
 		}
 		return buttons;
 	},
 
 	handleClose: function(){
+		EventInfoActions.disposeData();
 		EventInfoStore.removeChangeListener(this._onChange);
 		Hasher.setHash('calendar');
 	},
 
+	handleCloseError: function(){
+		EventInfoActions.clearError();
+	},
+
+	handleCloseInfo: function(){
+		EventInfoActions.clearInfo();
+	},
+
 	render: function(){
-		var isWebinar = this.state.type === EventTypes.keys.webinar;
+		var isWebinar = this.state.event.type === EventTypes.keys.webinar;
 		var dateTime = this.getDateTime();
-		var status = EventStatuses.values[this.state.status];
-		var iconClass = this.state.type === EventTypes.keys.webinar ? 'icon--type--webinar': 'icon--type--fulltime';
+		var status = EventStatuses.values[this.state.event.status];
+		var iconClass = this.state.event.type === EventTypes.keys.webinar ? 'icon--type--webinar': 'icon--type--fulltime';
 		var isDisplayPlaceClass = isWebinar ? 'event-info__map--hide': '';
 		var buttons = this.getButtons();
+		var errorClass = this.state.error ? 'error-block--show' : '';
+		var infoClass = this.state.info ? 'info-block--show' : '';
 		return(
 			<div className="event-info-box">
 				<section className="event-info">
@@ -244,18 +264,25 @@ var EventInfo = React.createClass({
 					<div className="event-info__body">
 						<i className={"icon icon--big "+iconClass+" event-info__icon"}></i>
 						<div className="event-info__main-info">
-							<h1 className="event-info__name">{this.state.name}</h1>
+							<h1 className="event-info__name">{this.state.event.name}</h1>
 							<p className="event-info__state">Статус : {status}</p>
 							<p className="event-info__time">Дата проведения : {dateTime}</p>
 							<p className={"event-info__map " + isDisplayPlaceClass}>
-								<span>Место проведения: {this.state.place}</span><br/>
+								<span>Место проведения: {this.state.event.place}</span><br/>
 								<a href='#' className="event-info__map-link"> Схема проезда</a>
 							</p>
 						</div>
-						<EventInfoBody members={this.state.members} collaborators={this.state.collaborators} tutors={this.state.tutors} lectors={this.state.lectors} files={this.state.files}/>
+						<EventInfoBody members={this.state.event.members} collaborators={this.state.event.collaborators} tutors={this.state.event.tutors} lectors={this.state.event.lectors} files={this.state.event.files}/>
 					</div>
 					<div className="event-info__footer">
-						<div className="error-block">{this.state.error}</div>
+						<div className={"error-block " + errorClass}>
+							<button onClick={this.handleCloseError} className="close-btn">&times;</button>
+							<span>{this.state.error}</span>
+						</div>
+						<div className={"info-block " + infoClass}>
+							<button onClick={this.handleCloseInfo} className="close-btn">&times;</button>
+							<span>{this.state.info}</span>
+						</div>
 						<div className="event-info__buttons">
 							{buttons}
 						</div>
