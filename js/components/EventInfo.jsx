@@ -195,38 +195,29 @@ var EventInfo = React.createClass({
 		var isUserInEvent = EventInfoStore.isUserInEvent(userId);
 		var index = 0;
 
-		if (isWebinar){
-			var webinarInfo = EventInfoStore.getWebinarInfo();
-			if (isUserInEvent) {
-				if (status === EventStatuses.keys.plan) {
-					buttons.push(<button onClick={this.handleRemoveCollaborator} key={index} className="event-btn event-info__btn">Отказаться от участия</button>);
-				}
-				else if (status === EventStatuses.keys.active) {
-					buttons.push(<button key={index} className="event-btn event-info__btn">Войти в вебинар</button>);
-				}
-				else if (status === EventStatuses.keys.close){
-					buttons.push(<a key={index} className="event-btn event-info__btn" target="__blank" href={this.state.event.reportHref}>Добавить отзыв</a>);
-				}
-				index++;
-			}
-			else {
-				if (status === EventStatuses.keys.plan) {
-					buttons.push(<button onClick={this.handleCreateRequest} key={index} className="event-btn event-info__btn">Подать заявку</button>);
-					index++;
-				}
-			}
-			if (webinarInfo && status === EventStatuses.keys.close) {
-				buttons.push(<a key={index} className="event-btn event-info__btn" target="__blank" href={webinarInfo.href}>Посмотреть запись</a>);
+		if (isUserInEvent){
+			if (status === EventStatuses.keys.close)
+				buttons.push(<a key={index} className="event-btn event-info__btn" target="__blank" href={this.state.event.reportHref}>Добавить отзыв</a>);
+			else if (status === EventStatuses.keys.plan) {
+				buttons.push(<button onClick={this.handleRemoveCollaborator} key={index} className="event-btn event-info__btn">Отказаться от участия</button>);
 			}
 		}
 		else {
 			if (status === EventStatuses.keys.plan) {
-				if (isUserInEvent) buttons.push(<button onClick={this.handleRemoveCollaborator} key={index} className="event-btn event-info__btn">Отказаться от участия</button>);
-				else buttons.push(<button onClick={this.handleCreateRequest} key={index} className="event-btn event-info__btn">Подать заявку</button>);
+				buttons.push(<button onClick={this.handleCreateRequest} key={index} className="event-btn event-info__btn">Подать заявку</button>);
+			}
+		}
+
+		if (isWebinar){
+			var webinarInfo = EventInfoStore.getWebinarInfo();
+			if (isUserInEvent) {
+				if (status === EventStatuses.keys.active) {
+					buttons.push(<a key={index} className="event-btn event-info__btn" target="__blank" href={webinarInfo.enterHref}>Войти в вебинар</a>);
+				}
 				index++;
 			}
-			else if (isUserInEvent && status === EventStatuses.keys.close){
-				buttons.push(<a key={index} className="event-btn event-info__btn" target="__blank" href={this.state.event.reportHref}>Добавить отзыв</a>);
+			if (webinarInfo && status === EventStatuses.keys.close) {
+				buttons.push(<a key={index} className="event-btn event-info__btn" target="__blank" href={webinarInfo.href}>Посмотреть запись</a>);
 			}
 		}
 		return buttons;

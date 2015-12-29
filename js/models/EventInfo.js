@@ -2,6 +2,7 @@ var EventTypes = require('../utils/event/EventTypes');
 var EventStatuses = require('../utils/event/EventStatuses');
 var EventUtils = require('..//utils/event/EventUtils');
 var Collaborator = require('./Collaborator');
+var WebinarInfo = require('./WebinarInfo');
 var Tutor = require('./Tutor');
 var Lector = require('./Lector');
 var File = require('./File');
@@ -49,5 +50,5 @@ module.exports = function(args){
 
 	//
 	this.members = args.members || EventUtils.getMembers();
-	this.webinarInfo = args.webinarInfo || null;
+	this.webinarInfo = args.webinarInfo ? new WebinarInfo(args.webinarInfo) : null;
 }
