@@ -43,7 +43,6 @@
       display: inline-block;
       background-color: #646464;
       color: #000;
-      line-height: 30px;
       width: auto;
       display: inline-block;
       margin-right: 32px;
@@ -175,6 +174,7 @@
                 width: 129px;
                 box-sizing:border-box;
                 vertical-align: top;
+                font-size: inherit;
               }
 
               .event-list__item-count{

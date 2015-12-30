@@ -6,6 +6,7 @@ var EventInfoActions = require('../actions/EventInfoActions');
 var EventStatuses = require('../utils/event/EventStatuses');
 var EventTypes = require('../utils/event/EventTypes');	
 var DropDown = require('./modules/DropDown');
+var TextOverflow = require('./modules/TextOverflow');
 var FileTypes = require('../utils/event/FileTypes');
 var DateUtils = require('../utils/event/DateUtils');
 
@@ -210,7 +211,7 @@ var EventInfo = React.createClass({
 
 		if (isWebinar){
 			var webinarInfo = EventInfoStore.getWebinarInfo();
-			if (isUserInEvent) {
+			if (webinarInfo && isUserInEvent) {
 				if (status === EventStatuses.keys.active) {
 					buttons.push(<a key={index} className="event-btn event-info__btn" target="__blank" href={webinarInfo.enterHref}>Войти в вебинар</a>);
 				}
@@ -255,7 +256,7 @@ var EventInfo = React.createClass({
 					<div className="event-info__body">
 						<i className={"icon icon--big "+iconClass+" event-info__icon"}></i>
 						<div className="event-info__main-info">
-							<h1 className="event-info__name">{this.state.event.name}</h1>
+							<TextOverflow className={"event-info__name"} value={this.state.event.name} rowsCount={3} />
 							<p className="event-info__state">Статус : {status}</p>
 							<p className="event-info__time">Дата проведения : {dateTime}</p>
 							<p className={"event-info__map " + isDisplayPlaceClass}>

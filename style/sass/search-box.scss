@@ -4,18 +4,19 @@
     position: relative;
 
     .search-box__search-input {
-        height: 35px;
+        line-height: 35px;
         padding: 0px 15px 0px 30px;
         border: 1px solid #B6B6B6;
         background-color: #646464;
         color: #fff;
         border-radius: 1px;
         outline: none;
+        font-size: inherit;
     }
     .search-box__search-icon {
         position: absolute;
         left: 8px;
-        line-height: 30px;
+        line-height: 35px;
         color: #B6B6B6;
     }
 }

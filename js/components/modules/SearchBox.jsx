@@ -38,7 +38,7 @@ var SearchBox = React.createClass({
 		return (
 			<div className={"search-box " + className}>
 				<input onChange={this.handleChange} onBlur={this.handleblur} onKeyDown={this.handleSearch} className="search-box__search-input" type="text" value={this.state.value} placeholder="Поиск..." />
-				<span className="search-box__search-icon glyphicon glyphicon-search"></span>
+				<span className="search-box__search-icon fa fa-search"></span>
 			</div>
 		);
 	}

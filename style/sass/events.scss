@@ -6,110 +6,125 @@ html, body{
 	height: 100%;
 };
 
-.container{
-	width: 1200px;
-	margin: 0 auto;
-	height: 720px;
-}
+.events {
+    a {
+        color: #0097A7;
+    }
 
-.event-btn {
-	color: #ff5252;
-    border: 1px solid #ff5252;
-    outline: none;
-    background-color: #fff;
-    cursor: pointer;
-    padding: 5px 8px;
+    .container{
+        width: 1200px;
+        margin: 0 auto;
+        height: 720px;
+    }
 
-    &:hover, &:active, &:visited {
-        text-decoration: none;
+    .event-btn {
         color: #ff5252;
-    }
-}
+        border: 1px solid #ff5252;
+        outline: none;
+        background-color: #fff;
+        cursor: pointer;
+        padding: 5px 8px;
+        text-decoration: none;
 
-.close-btn {
-	padding: 0;
-    cursor: pointer;
-    background: 0 0;
-    border: 0;
-    -webkit-appearance: none;
-
-	float: right;
-    font-size: 24px;
-    font-weight: 700;
-    line-height: 1;
-    color: #000;
-    text-shadow: 0 1px 0 #fff;
-    opacity: .2;
-    filter: alpha(opacity=20);
-    outline: none;
-
-    &:hover {
-    	color: #000;
-	    text-decoration: none;
-	    cursor: pointer;
-	    opacity: .5;
-	    filter: alpha(opacity=50);
-    }
-}
-
-.icon {
-    display: block;
-    background-position: right center;
-    background-repeat: no-repeat;
-    background-size: 100%;
-
-    width: 80px;
-    height: 80px;
-
-    &.icon--type--webinar {
-        background-image: url("/react/events/build/icons/webinar.png");
+        &:hover, &:active, &:visited {
+            text-decoration: none;
+            color: #ff5252;
+        }
     }
 
-    &.icon--type--fulltime {
-        background-image: url("/react/events/build/icons/teacher.png");
+    .close-btn {
+        padding: 0;
+        cursor: pointer;
+        background: 0 0;
+        border: 0;
+        -webkit-appearance: none;
+
+        float: right;
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 1;
+        color: #000;
+        text-shadow: 0 1px 0 #fff;
+        opacity: .2;
+        filter: alpha(opacity=20);
+        outline: none;
+
+        &:hover {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+            opacity: .5;
+            filter: alpha(opacity=50);
+        }
     }
 
-    &.icon--type--webinar-record {
-        background-image: url("/react/events/build/icons/webinar_record.png");
-    }
-
-    &.icon--small {
-        width: 20px;
-        height: 20px;
-    }
-
-    &.icon--big {
-        width: 152px;
-        height: 152px;
-    }
-}
-
-.overlay-loading {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    background-color: rgba(91,91,91,.26);
-    z-index: 150;
-    top: 0;
-    display: none;
-
-    &:before {
-        content: "";
-        position: absolute;
-        background-image: url("/react/events/build/icons/loading6.gif");
-        background-position: center center;
+    .icon {
+        display: block;
+        background-position: right center;
         background-repeat: no-repeat;
         background-size: 100%;
-        display: block;
-        width: 32px;
-        height: 32px;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+
+        width: 80px;
+        height: 80px;
+
+        &.icon--type--webinar {
+            background-image: url("/react/events/build/icons/webinar.png");
+        }
+
+        &.icon--type--fulltime {
+            background-image: url("/react/events/build/icons/teacher.png");
+        }
+
+        &.icon--type--webinar-record {
+            background-image: url("/react/events/build/icons/webinar_record.png");
+        }
+
+        &.icon--small {
+            width: 20px;
+            height: 20px;
+        }
+
+        &.icon--big {
+            width: 152px;
+            height: 152px;
+        }
     }
 
-    &.overlay-loading--show {
-        display: block;
+    .overlay-loading {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        background-color: rgba(91,91,91,.26);
+        z-index: 150;
+        top: 0;
+        display: none;
+
+        &:before {
+            content: "";
+            position: absolute;
+            background-image: url("/react/events/build/icons/loading6.gif");
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: 100%;
+            display: block;
+            width: 32px;
+            height: 32px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        &.overlay-loading--show {
+            display: block;
+        }
     }
 }
+
+
+
+
+
+
+
+
 
