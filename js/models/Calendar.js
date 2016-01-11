@@ -1,3 +1,4 @@
+var User = require('./User');
 var ShortEvent = require('./ShortEvent');
 var DateUtils = require('../utils/event/DateUtils');
 var CalendarEventStatuses = require('../utils/event/CalendarEventStatuses');
@@ -13,7 +14,8 @@ module.exports = function(args){
 		});
 	}
 
-	this.userId = args.userId || '';
+	this.user = args.user || new User();
+	this.groups = args.groups || [];
 	this.currentDate = new Date(args.currentDate);
 	this.events = args.events || [ 
 		new ShortEvent({ name:'Первое мероприятие', startDate: 'Tue, 16 Dec 2015 18:40:10 +0300', status: 'plan', place:'Москва' }),
