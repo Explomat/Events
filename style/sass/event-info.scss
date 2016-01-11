@@ -14,7 +14,6 @@
 	    left: 12.5%;
 	    width: 75%;
 	    height: 85%;
-	    padding: 16px;
 	    background: #fff;
 	    z-index: 3;
 	    border-radius: 3px;
@@ -22,10 +21,13 @@
 	    box-sizing: border-box;
 
 		.event-info__header{
-
+			padding: 16px;
 		}
 
 		.event-info__body {
+			height: 85%;
+			padding: 0 16px;
+			
 			.event-info__icon{
 			    float: left;
 			    width: 152px;
@@ -42,7 +44,7 @@
 			}
 
 			.event-info__main-info{
-		        max-width: calc(100% - 210px);
+		        width: calc(100% - 210px);
 			    padding: 16px 0 0 16px;
 			    display: inline-block;
 			    box-sizing: border-box;
@@ -196,29 +198,36 @@
 		
 		
 		.event-info__footer {
-			.error-block {
-				display: none;
+			display: table;
+			padding: 16px;
 
-				&.error-block--show {
-					display: block;
-				}
-			}
+			.event-info__info-block {
+				position: relative;
+				top: -16px;
+				padding: 8px;
+				border-radius: 4px;
+				visibility: hidden;
+				display: table-cell;
+				word-break: break-all;
+    			font-size: 0.9em;
+			    width: 100%;
+			    color: #8a6d3b;
+			    background-color: #fcf8e3;
+			    border-color: #faebcc;
 
-			.info-block {
-				display: none;
-
-				&.info-block--show {
-					display: block;
+				&.event-info__info-block--show {
+					visibility: visible;
 				}
 			}
 
 			.event-info__buttons{
-				position: absolute;
-			    bottom: 16px;
-			    right: 16px;
+			    display: table-cell;
+			  	white-space: nowrap;
+			  	vertical-align: top;
 
 			    .event-info__btn {
 	    			margin-left: 8px;
+	    			font-size: 1rem;
 			    }
 			}
 		}

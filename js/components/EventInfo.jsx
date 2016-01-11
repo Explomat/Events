@@ -13,7 +13,6 @@ var DateUtils = require('../utils/event/DateUtils');
 function getEventInfoState() {
 	return {
 		event: EventInfoStore.getData(),
-		error: EventInfoStore.getError(),
 		info: EventInfoStore.getInfo()
 	}
 }
@@ -158,6 +157,8 @@ var EventInfoBody = React.createClass({
 
 var EventInfo = React.createClass({
 
+	displayName: 'EventInfo',
+
 	componentDidMount: function() {
 		EventInfoStore.addChangeListener(this._onChange);
 	},
@@ -230,10 +231,6 @@ var EventInfo = React.createClass({
 		Hasher.setHash('calendar');
 	},
 
-	handleCloseError: function(){
-		EventInfoActions.clearError();
-	},
-
 	handleCloseInfo: function(){
 		EventInfoActions.clearInfo();
 	},
@@ -245,8 +242,7 @@ var EventInfo = React.createClass({
 		var iconClass = this.state.event.type === EventTypes.keys.webinar ? 'icon--type--webinar': 'icon--type--fulltime';
 		var isDisplayPlaceClass = isWebinar ? 'event-info__map--hide': '';
 		var buttons = this.getButtons();
-		var errorClass = this.state.error ? 'error-block--show' : '';
-		var infoClass = this.state.info ? 'info-block--show' : '';
+		var infoClass = this.state.info ? 'event-info__info-block--show' : '';
 		return(
 			<div className="event-info-box">
 				<section className="event-info">
@@ -256,7 +252,7 @@ var EventInfo = React.createClass({
 					<div className="event-info__body">
 						<i className={"icon icon--big "+iconClass+" event-info__icon"}></i>
 						<div className="event-info__main-info">
-							<TextOverflow className={"event-info__name"} value={this.state.event.name} rowsCount={3} />
+							<TextOverflow className={"event-info__name"} value={this.state.event.name} rowsCount={2} />
 							<p className="event-info__state">Статус : {status}</p>
 							<p className="event-info__time">Дата проведения : {dateTime}</p>
 							<p className={"event-info__map " + isDisplayPlaceClass}>
@@ -267,13 +263,9 @@ var EventInfo = React.createClass({
 						<EventInfoBody members={this.state.event.members} collaborators={this.state.event.collaborators} tutors={this.state.event.tutors} lectors={this.state.event.lectors} files={this.state.event.files}/>
 					</div>
 					<div className="event-info__footer">
-						<div className={"error-block " + errorClass}>
-							<button onClick={this.handleCloseError} className="close-btn">&times;</button>
-							<span>{this.state.error}</span>
-						</div>
-						<div className={"info-block " + infoClass}>
+						<div className={"event-info__info-block " + infoClass}>
 							<button onClick={this.handleCloseInfo} className="close-btn">&times;</button>
-							<span>{this.state.info}</span>
+							<TextOverflow value={this.state.info} rowsCount={2} />
 						</div>
 						<div className="event-info__buttons">
 							{buttons}

@@ -27,13 +27,13 @@ var EventInfoActions = {
 			}
 			else {
 				AppDispatcher.handleAction({
-					actionType: EventInfoConstants.CHANGE_ERROR_EVENTINFO,
+					actionType: EventInfoConstants.CHANGE_INFO_EVENTINFO,
 					text: err
 				});
 			}
 		},function(err){
 			AppDispatcher.handleAction({
-				actionType: EventInfoConstants.CHANGE_ERROR_EVENTINFO,
+				actionType: EventInfoConstants.CHANGE_INFO_EVENTINFO,
 				text: err
 			});
 		});
@@ -49,22 +49,15 @@ var EventInfoActions = {
 			}
 			else {
 				AppDispatcher.handleAction({
-					actionType: EventInfoConstants.CHANGE_ERROR_EVENTINFO,
+					actionType: EventInfoConstants.CHANGE_INFO_EVENTINFO,
 					text: err
 				});
 			}
 		},function(err){
 			AppDispatcher.handleAction({
-				actionType: EventInfoConstants.CHANGE_ERROR_EVENTINFO,
+				actionType: EventInfoConstants.CHANGE_INFO_EVENTINFO,
 				text: err
 			});
-		});
-	},
-
-	clearError: function(){
-		AppDispatcher.handleAction({
-			actionType: EventInfoConstants.CHANGE_ERROR_EVENTINFO,
-			text: null
 		});
 	},
 

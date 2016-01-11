@@ -4,7 +4,7 @@ var EventInfoConstants = require('../constants/EventInfoConstants');
 var EventInfo = require('../models/EventInfo');
 var extend = require('extend');
 
-var _eventInfo = {}, _error = null, _info = null;
+var _eventInfo = {}, _info = null;
 
 function loadData(data) {
 	_eventInfo = new EventInfo(data);
@@ -26,10 +26,6 @@ function removeCollaborator(userId){
 	}
 }
 
-function changeError(text){
-	_error = text;
-}
-
 function changeInfo(text){
 	_info = text;
 }
@@ -39,11 +35,7 @@ var EventInfoStore = extend({}, EventEmitter.prototype, {
 	getData: function(){
 		return _eventInfo;
 	},
-
-	getError: function(){
-		return _error;
-	},
-
+	
 	getInfo: function(){
 		return _info;
 	},
@@ -86,10 +78,6 @@ EventInfoStore.dispatchToken = AppDispatcher.register(function(payload) {
 			break;
 		case EventInfoConstants.REMOVE_COLLABORATOR_EVENTINFO:
 			removeCollaborator(action.userId);
-			isEmit = true;
-			break;
-		case EventInfoConstants.CHANGE_ERROR_EVENTINFO:
-			changeError(action.text);
 			isEmit = true;
 			break;
 		case EventInfoConstants.CHANGE_INFO_EVENTINFO:
