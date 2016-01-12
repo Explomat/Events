@@ -1,6 +1,6 @@
 <%
 	var actionsDenied = {
-		createRequest: 'createRequest', 
+		createRequest: 'createRequest',
 		removeCollaborator: 'removeCollaborator'
 	}
 
@@ -353,6 +353,7 @@
 	function createRequest(queryObjects) {
 		var curEventCard = Int(queryObjects.event_id); // ID мероприятия
 		var repeatRequests = XQuery("sql: select req.id from requests as req where req.status_id = 'active' and req.person_id="+curUserID+" and req.object_id = "+curEventCard)
+		alert("кол-во" + ArrayCount(repeatRequests))
 		if (ArrayCount(repeatRequests) == 0 ) {
 			var curUserCard = OpenDoc(UrlFromDocID(curUserID)); // Сотруник подавший заявку
 			var requestTypeId = Int(5984338634217761421); // id заявки на мероприятие
@@ -372,7 +373,7 @@
 				return e;
 			}
 		} else {
-			return 'Вы уже подавали заявку на данное мероприятия, для её подтверждения обратитесь к ответственному за мероприятие.';
+			return 'Вы уже подавали заявку на данное мероприятия, для её подтверждения обратитесь к ответственному за мероприятие';
 		}
 	}
 
@@ -385,5 +386,6 @@
 			return e;
 		}
 	}
+
 
 %>
