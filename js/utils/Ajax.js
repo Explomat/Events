@@ -1,5 +1,20 @@
 var Promise = require('es6-promise').Promise;
 var AJAX_TIME_OVER = 10000;
+var CACHE_MAX_REQUESTS = 10;
+var cache = {};
+
+function isCacheOverflow(){
+    return Object.keys(cache).length > CACHE_MAX_REQUESTS;
+}
+
+function getCacheRequest(url){
+    if (isCacheOverflow()) {
+        cache = {};
+        return null;
+    }
+    else if (cache[url]) return cache[url];
+    return null;
+}
 
 module.exports = {
 
@@ -41,9 +56,12 @@ module.exports = {
     },
 
     sendRequest: function(url, data, isSync, xmlHttpRequest, requestType) {
-        return new Promise(function(resolve, reject){
-            if (!url)
-                reject(Error("Unknown url"));
+        var cacheRequest = getCacheRequest(url);
+        if (cacheRequest) return cacheRequest;
+
+        cache[url] = new Promise(function(resolve, reject){
+            if (!url) reject(Error("Unknown url"));
+
             var xmlHttp = xmlHttpRequest || this.getXmlHttp();
             requestType = requestType || 'GET';
             isSync = isSync || true;
@@ -72,5 +90,6 @@ module.exports = {
                 }, AJAX_TIME_OVER);
             }
         }.bind(this));
+        return cache[url];
     }
 }     
