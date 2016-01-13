@@ -30,13 +30,13 @@
     .calendar-header__left-block {
       display: inline-block;
       text-align: left;
-      width: 50%
+      width: 40%
     }
 
     .calendar-header__right-block{
       display: inline-block;
       text-align: right;
-      width: 50%;
+      width: 60%;
     }
 
     .calendar-header__months, .calendar-header__years, .calendar-header__status, .calendar-header__search, .calendar-header__business-type {
@@ -132,6 +132,10 @@
             cursor: default;
             position: static;
             z-index: 4;
+
+            &>.day{
+              display: none;
+            } 
           }
 
           &.calendar-table__day--weekday{
