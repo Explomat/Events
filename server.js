@@ -5,7 +5,7 @@
 	}
 
 	var componentsDenied = {
-		
+		BusinessTypeFilter: 'BusinessTypeFilter'
 	}
 
 	var groups = [
@@ -32,8 +32,8 @@
 
 		{
 			name: 'event_all',
-			actionsDenied: [],
-			componentsDenied: [],
+			actionsDenied: [ actionsDenied.createRequest, actionsDenied.removeCollaborator ],
+			componentsDenied: [ componentsDenied.BusinessTypeFilter ],
 			priority: 3
 		}
 	]
@@ -77,7 +77,7 @@
 	}
 
 	function getGroupByMaxPriority(_groups){
-		if (!IsArray(_groups) && _groups.length == 0) return null;
+		if (!IsArray(_groups) || _groups.length == 0) return null;
 
 		var min = _groups[_groups.length - 1].priority;
 		var index = _groups.length - 1;
@@ -338,15 +338,21 @@
 		var currentDate = Date();
 		var currentYear = Year(currentDate);
 		var currentMonth = Month(currentDate);
+		var curPersonCard = OpenDoc(UrlFromDocID(curUserID));
+		var personBusinessType = curPersonCard.TopElem.custom_elems.ObtainChildByKey('id_business_list').value == 'CL' ? 
+		'CITILINK' : curPersonCard.TopElem.custom_elems.ObtainChildByKey('id_business_list').value == 'MERLION' ? 'MERLION' : 'CITILINK';
 		var userGroup = getGroupByMaxPriority(getMatchedUserGroups(curUserID));
+		userGroup = userGroup == null ? getGroupByName('event_all') : userGroup;
 		return stringifyWT({
 			user: {
 				id: curUserID,
-				group: userGroup == null ? getGroupByName('event_all') : userGroup
+				componentsDenied: userGroup.componentsDenied,
+				actionsDenied: userGroup.actionsDenied,
+				businessType: personBusinessType
 			},
-			groups: groups,
 			currentDate: StrMimeDate(currentDate),
-			events: getEvents({year: currentYear, month: currentMonth})
+			events: getEvents({year: currentYear, month: currentMonth}),
+
 		});
 	}
 

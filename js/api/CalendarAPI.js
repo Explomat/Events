@@ -27,8 +27,8 @@ module.exports = {
 		});*/
 	},
 
-	getEvents: function(year, month){
-		return Ajax.sendRequest(Config.url.createPath({action_name: 'getEventsData', year: year, month: month + 1})).then(function(data){
+	getEvents: function(year, month, businessType){
+		return Ajax.sendRequest(Config.url.createPath({action_name: 'getEventsData', year: year, month: month + 1, business_type: businessType})).then(function(data){
 			return JSON.parse(data);
 		});
 

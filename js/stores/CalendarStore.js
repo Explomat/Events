@@ -41,6 +41,12 @@ function changeYear(year, events){
 	_calendar.filterEvents = _filterEvents(_calendar.events);
 }
 
+function changeBusinessType(businessType, events){
+	_calendar.selectedBusinessType = businessType;
+	_calendar.events = prepareEvents(events);
+	_calendar.filterEvents = _filterEvents(_calendar.events);
+}
+
 function selectDate(date){
 	_calendar.selectedDate = date;
 }
@@ -63,6 +69,10 @@ var CalendarStore = extend({}, EventEmitter.prototype, {
 
 	getUserId: function(){
 		return _calendar.user.id;
+	},
+
+	getUserComponentsDenied: function(){
+		return _calendar.user.componentsDenied;
 	},
 
 	emitChange: function() {
@@ -91,6 +101,9 @@ CalendarStore.dispatchToken = AppDispatcher.register(function(payload) {
 			break;
 		case CalendarConstants.CHANGE_CALENDAR_YEAR:
 			changeYear(action.year, action.events);
+			break;
+		case CalendarConstants.CHANGE_CALENDAR_BUSINESSTYPE:
+			changeBusinessType(action.businessType, action.events);
 			break;
 		case CalendarConstants.CHANGE_CALENDAR_STATUS:
 			changeStatus(action.status);

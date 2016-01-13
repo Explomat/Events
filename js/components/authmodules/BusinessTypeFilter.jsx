@@ -1,0 +1,19 @@
+var React = require('react');
+var DropDown = require('../modules/DropDown');
+
+var BusinessTypeFilter = React.createClass({
+
+	handleChangeBusinessType: function(e, payload, text, index) {
+		if (this.props.onChange) {
+			this.props.onChange(e, payload, text, index);
+		}
+	},
+
+	render: function() {
+		return (
+			<DropDown onChange={this.handleChangeBusinessType} items={this.props.items} selectedPayload={this.props.selectedPayload} className={"calendar-header__business-type"} classNameButton={"calendar-header__business-type-button"}/>
+		);
+	}
+});
+
+module.exports = BusinessTypeFilter;

@@ -39,7 +39,7 @@
       width: 50%;
     }
 
-    .calendar-header__months, .calendar-header__years, .calendar-header__status, .calendar-header__search {
+    .calendar-header__months, .calendar-header__years, .calendar-header__status, .calendar-header__search, .calendar-header__business-type {
       display: inline-block;
       background-color: #646464;
       color: #000;
@@ -56,7 +56,7 @@
 
     }
 
-    .calendar-header__months-button, .calendar-header__years-button, .calendar-header__status-button{
+    .calendar-header__months-button, .calendar-header__years-button, .calendar-header__status-button, .calendar-header__business-type-button{
       background-color: #646464;
       color: #fff;
     }

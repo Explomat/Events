@@ -11,12 +11,10 @@
 	function getMatch(input, actionName) {
 		var objRegExp = initRegExp(actionName);
 		var matches = objRegExp.Execute(input);
-		var firstMatch = null;
-		try {
-			firstMatch = matches.item(0);
+		if (matches.Count > 0) {
+			return matches.item(0).Value;
 		}
-		catch(e) { return null; }
-		return firstMatch.Value;
+		return null;
 	}
 
 	function changeSourceCode(matchString, inputStr) {

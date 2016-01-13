@@ -1,11 +1,13 @@
 var React = require('react');
+var Auth = require('./Auth');
+var BusinessTypeFilter = require('../authmodules/BusinessTypeFilter');
 var DropDown = require('./DropDown');
 var SearchBox = require('./SearchBox');
 var TextOverflow = require('./TextOverflow');
 var DateUtils = require('../../utils/event/DateUtils');
 var EventUtils = require('../../utils/event/EventUtils');
-var EventStatuses = require('../../utils/event/EventStatuses');
 var EventTypes = require('../../utils/event/EventTypes');
+var CalendarStore = require('../../stores/CalendarStore');
 var CalendarActions = require('../../actions/CalendarActions');
 var Hasher = require('../../utils/Hasher');
 var Config = require('../../config');
@@ -88,13 +90,19 @@ var Filters = React.createClass({
 	handleChangeMonth: function(e, payload, text, index){
 		if (payload === this.props.selectedMonthIndex) return;
 		if (this.props.onChangeMonth) this.props.onChangeMonth(payload);
-		CalendarActions.changeMonth(index, this.props.selectedYear);
+		CalendarActions.changeMonth(index, this.props.selectedYear, this.props.selectedBusinessType);
 	},
 
 	handleChangeYear: function(e, payload, text, index){
 		if (payload === this.props.selectedYear) return;
 		if (this.props.onChangeYear) this.props.onChangeYear(payload);
-		CalendarActions.changeYear(payload, this.props.selectedMonthIndex);
+		CalendarActions.changeYear(payload, this.props.selectedMonthIndex, this.props.selectedBusinessType);
+	},
+
+	handleChangeBusinessType: function(e, payload, text, index){
+		if (payload === this.props.selectedBusinessType) return;
+		if (this.props.onChangeBusinessType) this.props.onChangeBusinessType(payload);
+		CalendarActions.changeBusinessType(this.props.selectedMonthIndex, this.props.selectedYear, payload);
 	},
 
 	handleChangeStatus: function(e, payload, text, index){
@@ -106,6 +114,7 @@ var Filters = React.createClass({
 	},
 
 	render: function() {
+		var componentsDenied = CalendarStore.getUserComponentsDenied();
 		return (
 			<header className="calendar-header">
 				<div className="calendar-header__left-block">
@@ -113,6 +122,9 @@ var Filters = React.createClass({
 					<DropDown onChange={this.handleChangeYear} items={this.props.years} selectedPayload={this.props.selectedYear} className={"calendar-header__years"} classNameButton={"calendar-header__years-button"}/>
 				</div>
 				<div className="calendar-header__right-block">
+					<Auth componentsDenied={componentsDenied}>
+						<BusinessTypeFilter onChange={this.handleChangeBusinessType} items={this.props.businessTypes} selectedPayload={this.props.selectedBusinessType}/>
+					</Auth>
 					<DropDown onChange={this.handleChangeStatus} items={this.props.statuses} selectedPayload={this.props.selectedStatus} className={"calendar-header__status"} classNameButton={"calendar-header__status-button"}/>
 					<SearchBox onSearch={this.handleChangeSearchText} value={this.props.searchText} className={"calendar-header__search"} />
 				</div>
@@ -238,9 +250,11 @@ var CalendarView = React.createClass({
 			currentDate: this.props.currentDate,
 			years: this.props.years,
 			months: this.props.months,
+			businessTypes: this.props.businessTypes,
 			statuses: this.props.statuses,
 			selectedYear: this.props.selectedYear,
 			selectedMonthIndex: this.props.selectedMonthIndex,
+			selectedBusinessType: this.props.selectedBusinessType,
 			selectedStatus: this.props.selectedStatus,
 			searchText: this.props.searchText
 		}
@@ -288,11 +302,7 @@ var CalendarView = React.createClass({
 		CalendarActions.selectDate(date);
 	},
 
-	handleChangeMonth: function(){
-		this.setState({ isLoading: true });
-	},
-
-	handleChangeYear: function(){
+	handleLoading: function(){
 		this.setState({ isLoading: true });
 	},
 
@@ -303,7 +313,7 @@ var CalendarView = React.createClass({
 			<div className="container">
 				<SideBar selectedDate={this.props.selectedDate} events={this.props.filterEvents}/>
 				<main className="calendar">
-					<Filters {...filtersProps} onChangeMonth={this.handleChangeMonth} onChangeYear={this.handleChangeYear}/>
+					<Filters {...filtersProps} onChangeMonth={this.handleLoading} onChangeYear={this.handleLoading} onChangeBusinessType={this.handleLoading}/>
 					<div className="calendar-table__wrapper">
 						<div className="calendar-table">
 							<div className="calendar-table__header">
