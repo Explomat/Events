@@ -41,8 +41,7 @@
 			endIndex++;
 		}while(countOpenedBrackets > countClosedBarckets)
 		
-		var outStr = StrRangePos(inputStr, 2, startIndex - 1) + StrRangePos(inputStr, middleIndex + 1, endIndex - 1) + StrRangePos(inputStr, endIndex + 1, inputStr.length - 2);
-		return outStr;
+		return StrRangePos(inputStr, 2, startIndex - 1) + StrRangePos(inputStr, middleIndex + 1, endIndex - 1) + StrRangePos(inputStr, endIndex + 1, inputStr.length - 2);
 	}
 
 

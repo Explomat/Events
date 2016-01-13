@@ -9,10 +9,7 @@ var Auth = {
 
 	_isDenied: function(name){
 		var componentsDenied = this.props.componentsDenied;
-		for (var i = componentsDenied.length - 1; i >= 0; i--) {
-			if (componentsDenied[i] === name) return true;
-		};
-		return false;
+		return (name in componentsDenied);
 	},
 
 	render: function() {
