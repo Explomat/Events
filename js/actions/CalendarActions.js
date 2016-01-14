@@ -11,8 +11,8 @@ var CalendarActions = {
 		});
 	},
 
-	changeYear: function(year, monthIndex, businessType){
-		CalendarAPI.getEvents(year, monthIndex, businessType).then(function(events){
+	changeYear: function(year, monthIndex, businessType, region){
+		CalendarAPI.getEvents(year, monthIndex, businessType, region).then(function(events){
 			AppDispatcher.handleAction({
 				actionType: CalendarConstants.CHANGE_CALENDAR_YEAR,
 				year: year,
@@ -21,8 +21,8 @@ var CalendarActions = {
 		});
 	},
 
-	changeMonth: function(monthIndex, year, businessType) {
-		CalendarAPI.getEvents(year, monthIndex, businessType).then(function(events){
+	changeMonth: function(monthIndex, year, businessType, region) {
+		CalendarAPI.getEvents(year, monthIndex, businessType, region).then(function(events){
 			AppDispatcher.handleAction({
 				actionType: CalendarConstants.CHANGE_CALENDAR_MONTH,
 				monthIndex: monthIndex,
@@ -31,11 +31,21 @@ var CalendarActions = {
 		});
 	},
 
-	changeBusinessType: function(monthIndex, year, businessType){
-		CalendarAPI.getEvents(year, monthIndex, businessType).then(function(events){
+	changeBusinessType: function(monthIndex, year, businessType, region){
+		CalendarAPI.getEvents(year, monthIndex, businessType, region).then(function(events){
 			AppDispatcher.handleAction({
 				actionType: CalendarConstants.CHANGE_CALENDAR_BUSINESSTYPE,
 				businessType: businessType,
+				events: events
+			});
+		});
+	},
+
+	changeRegion: function(monthIndex, year, businessType, region){
+		CalendarAPI.getEvents(year, monthIndex, businessType, region).then(function(events){
+			AppDispatcher.handleAction({
+				actionType: CalendarConstants.CHANGE_CALENDAR_REGION,
+				region: region,
 				events: events
 			});
 		});

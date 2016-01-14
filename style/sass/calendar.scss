@@ -30,16 +30,16 @@
     .calendar-header__left-block {
       display: inline-block;
       text-align: left;
-      width: 40%
+      width: 21%
     }
 
     .calendar-header__right-block{
       display: inline-block;
       text-align: right;
-      width: 60%;
+      width: 79%;
     }
 
-    .calendar-header__months, .calendar-header__years, .calendar-header__status, .calendar-header__search, .calendar-header__business-type {
+    .calendar-header__months, .calendar-header__years, .calendar-header__status, .calendar-header__search, .calendar-header__business-type, .calendar-header__regions {
       display: inline-block;
       background-color: #646464;
       color: #000;
@@ -56,7 +56,7 @@
 
     }
 
-    .calendar-header__months-button, .calendar-header__years-button, .calendar-header__status-button, .calendar-header__business-type-button{
+    .calendar-header__months-button, .calendar-header__years-button, .calendar-header__status-button, .calendar-header__business-type-button, .calendar-header__regions-button{
       background-color: #646464;
       color: #fff;
     }

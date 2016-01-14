@@ -3,7 +3,7 @@ var keyMirror = require('keyMirror');
 module.exports = {
 
 	values: {
-		ALL: 'Все',
+		ALL: 'Все типы',
 		CITILINK: 'CITILINK',
 		MERLION: 'MERLION'
 	},

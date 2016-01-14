@@ -47,6 +47,12 @@ function changeBusinessType(businessType, events){
 	_calendar.filterEvents = _filterEvents(_calendar.events);
 }
 
+function changeRegion(region, events){
+	_calendar.selectedRegion = region;
+	_calendar.events = prepareEvents(events);
+	_calendar.filterEvents = _filterEvents(_calendar.events);
+}
+
 function selectDate(date){
 	_calendar.selectedDate = date;
 }
@@ -104,6 +110,9 @@ CalendarStore.dispatchToken = AppDispatcher.register(function(payload) {
 			break;
 		case CalendarConstants.CHANGE_CALENDAR_BUSINESSTYPE:
 			changeBusinessType(action.businessType, action.events);
+			break;
+		case CalendarConstants.CHANGE_CALENDAR_REGION:
+			changeRegion(action.region, action.events);
 			break;
 		case CalendarConstants.CHANGE_CALENDAR_STATUS:
 			changeStatus(action.status);

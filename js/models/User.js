@@ -4,6 +4,7 @@ module.exports = function(args){
 	var args = args || {};
 
 	this.id = args.id || UUID.generate();
+	this.region = args.region || '';
 	this.businessType = args.businessType || '';
 	this.actionsDenied = args.actionsDenied || [],
 	this.componentsDenied = args.componentsDenied || []

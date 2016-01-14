@@ -5,8 +5,18 @@
 	}
 
 	var componentsDenied = {
-		BusinessTypeFilter: 'BusinessTypeFilter'
+		BusinessTypeFilter: 'BusinessTypeFilter',
+		RegionsFilter: 'RegionsFilter'
 	}
+
+	function getObjectValues(obj){
+		var values = [];
+		for (var o in obj){
+			values.push(obj[o]);
+		}
+		return values;
+	}
+
 
 	var groups = [
 		{
@@ -25,15 +35,15 @@
 
 		{
 			name: 'event_user',
-			actionsDenied: [],
-			componentsDenied: [],
+			actionsDenied: getObjectValues(actionsDenied),
+			componentsDenied: getObjectValues(componentsDenied),
 			priority: 2
 		},
 
 		{
 			name: 'event_all',
-			actionsDenied: [ actionsDenied.createRequest, actionsDenied.removeCollaborator ],
-			componentsDenied: [ componentsDenied.BusinessTypeFilter ],
+			actionsDenied: [],
+			componentsDenied: [componentsDenied.BusinessTypeFilter],
 			priority: 3
 		}
 	]
@@ -251,12 +261,20 @@
 	}
 
 	function getEvents(queryObjects) {
+
 		var curPersonCard = OpenDoc(UrlFromDocID(curUserID))
 		var curUser = curPersonCard.TopElem;
 		var selectedYear = Int(queryObjects.year);
 		var selectedMonth = Int(queryObjects.month);
-		var personBusinessType = curPersonCard.TopElem.custom_elems.ObtainChildByKey('id_business_list').value == 'CL' ? 
-		'CITILINK' : curPersonCard.TopElem.custom_elems.ObtainChildByKey('id_business_list').value == 'MERLION' ? 'MERLION' : 'CITILINK' 
+		if (queryObjects.HasProperty('business_type')) {
+			var personBusinessType = queryObjects.business_type
+		} else {
+			var personBusinessType = curPersonCard.TopElem.custom_elems.ObtainChildByKey('id_business_list').value == 'CL' ? 
+		'CITILINK' : curPersonCard.TopElem.custom_elems.ObtainChildByKey('id_business_list').value == 'MERLION' ? 'MERLION' : 'CITILINK';
+		}
+		if (personBusinessType == 'ALL') {
+			personBusinessType = '';
+		}
 		var firstDate = StrXmlDate(Date("1."+selectedMonth+"."+selectedYear));
 		var lastDate = StrXmlDate(getLastDate(selectedYear, selectedMonth));
 
@@ -286,11 +304,12 @@
 					events.place_id as place_id
 				from events 
 				where events.is_public = 'true' and
-					events.code = '"+personBusinessType+"' and 
+					events.code LIKE '%"+personBusinessType+"%' and 
 					(events.start_date < '"+lastDate+"' and
 					events.start_date >= '"+firstDate+"') and
 					events.status_id <> 'cancel'
 			");
+
 
 		var eventsArray = [];
 		for (e in getEventArray) {
@@ -343,16 +362,21 @@
 		'CITILINK' : curPersonCard.TopElem.custom_elems.ObtainChildByKey('id_business_list').value == 'MERLION' ? 'MERLION' : 'CITILINK';
 		var userGroup = getGroupByMaxPriority(getMatchedUserGroups(curUserID));
 		userGroup = userGroup == null ? getGroupByName('event_all') : userGroup;
+		var getRegionsArray = XQuery("sql: select regions.name from regions");
+
+		var regionsArray = ArrayExtract(ArrayDirect(XQuery("sql: select regions.name from regions")), 'This.name.Value');
+
 		return stringifyWT({
 			user: {
 				id: curUserID,
 				componentsDenied: userGroup.componentsDenied,
 				actionsDenied: userGroup.actionsDenied,
-				businessType: personBusinessType
+				businessType: personBusinessType,
+				region: curPersonCard.TopElem.custom_elems.ObtainChildByKey('office_code').value + ''
 			},
 			currentDate: StrMimeDate(currentDate),
 			events: getEvents({year: currentYear, month: currentMonth}),
-
+			regions: regionsArray
 		});
 	}
 

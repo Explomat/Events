@@ -3,8 +3,14 @@ var React = require('react');
 var Auth = React.createClass({
 
 	propTypes: {
-		componentsDenied: React.PropTypes.array.isRequired,
-		children: React.PropTypes.oneOfType([React.PropTypes.element, React.PropTypes.array]).isRequired
+		componentsDenied: React.PropTypes.array,
+		children: React.PropTypes.element
+	},
+
+	getDefaultProps: function(){
+		return {
+			componentsDenied: []
+		}
 	},
 
 	_isDenied: function(name){
@@ -15,14 +21,9 @@ var Auth = React.createClass({
 	render: function() {
 		var children = this.props.children;
 		if (!Array.isArray(children)) {
-			if (this._isDenied(children.type.displayName)) return null;
-			return children;
-		} 
-		return (
-			children.map(function(child){
-				return this._isDenied(child.type.displayName) ? null : child;
-			}.bind(this))
-		);
+			return this._isDenied(children.type.displayName) ? null : children;
+		}
+		return null; 
 	}
 });
 

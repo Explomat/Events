@@ -1,6 +1,7 @@
 var React = require('react');
 var Auth = require('./Auth');
 var BusinessTypeFilter = require('../authmodules/BusinessTypeFilter');
+var RegionsFilter = require('../authmodules/RegionsFilter');
 var DropDown = require('./DropDown');
 var SearchBox = require('./SearchBox');
 var TextOverflow = require('./TextOverflow');
@@ -90,19 +91,25 @@ var Filters = React.createClass({
 	handleChangeMonth: function(e, payload, text, index){
 		if (payload === this.props.selectedMonthIndex) return;
 		if (this.props.onChangeMonth) this.props.onChangeMonth(payload);
-		CalendarActions.changeMonth(index, this.props.selectedYear, this.props.selectedBusinessType);
+		CalendarActions.changeMonth(index, this.props.selectedYear, this.props.selectedBusinessType, this.props.selectedRegion);
 	},
 
 	handleChangeYear: function(e, payload, text, index){
 		if (payload === this.props.selectedYear) return;
 		if (this.props.onChangeYear) this.props.onChangeYear(payload);
-		CalendarActions.changeYear(payload, this.props.selectedMonthIndex, this.props.selectedBusinessType);
+		CalendarActions.changeYear(payload, this.props.selectedMonthIndex, this.props.selectedBusinessType, this.props.selectedRegion);
+	},
+
+	handleChangeRegion: function(e, payload, text, index){
+		if (payload === this.props.selectedRegion) return;
+		if (this.props.onChangeRegion) this.props.onChangeRegion(payload);
+		CalendarActions.changeRegion(this.props.selectedMonthIndex, this.props.selectedYear, this.props.selectedBusinessType, payload);
 	},
 
 	handleChangeBusinessType: function(e, payload, text, index){
 		if (payload === this.props.selectedBusinessType) return;
 		if (this.props.onChangeBusinessType) this.props.onChangeBusinessType(payload);
-		CalendarActions.changeBusinessType(this.props.selectedMonthIndex, this.props.selectedYear, payload);
+		CalendarActions.changeBusinessType(this.props.selectedMonthIndex, this.props.selectedYear, payload, this.props.selectedRegion);
 	},
 
 	handleChangeStatus: function(e, payload, text, index){
@@ -124,6 +131,9 @@ var Filters = React.createClass({
 				<div className="calendar-header__right-block">
 					<Auth componentsDenied={componentsDenied}>
 						<BusinessTypeFilter onChange={this.handleChangeBusinessType} items={this.props.businessTypes} selectedPayload={this.props.selectedBusinessType}/>
+					</Auth>
+					<Auth componentsDenied={componentsDenied}>
+						<RegionsFilter onChange={this.handleChangeRegion} items={this.props.regions} selectedPayload={this.props.selectedRegion}/>
 					</Auth>
 					<DropDown onChange={this.handleChangeStatus} items={this.props.statuses} selectedPayload={this.props.selectedStatus} className={"calendar-header__status"} classNameButton={"calendar-header__status-button"}/>
 					<SearchBox onSearch={this.handleChangeSearchText} value={this.props.searchText} className={"calendar-header__search"} />
@@ -251,10 +261,12 @@ var CalendarView = React.createClass({
 			years: this.props.years,
 			months: this.props.months,
 			businessTypes: this.props.businessTypes,
+			regions: this.props.regions,
 			statuses: this.props.statuses,
 			selectedYear: this.props.selectedYear,
 			selectedMonthIndex: this.props.selectedMonthIndex,
 			selectedBusinessType: this.props.selectedBusinessType,
+			selectedRegion: this.props.selectedRegion,
 			selectedStatus: this.props.selectedStatus,
 			searchText: this.props.searchText
 		}
@@ -313,7 +325,7 @@ var CalendarView = React.createClass({
 			<div className="container">
 				<SideBar selectedDate={this.props.selectedDate} events={this.props.filterEvents}/>
 				<main className="calendar">
-					<Filters {...filtersProps} onChangeMonth={this.handleLoading} onChangeYear={this.handleLoading} onChangeBusinessType={this.handleLoading}/>
+					<Filters {...filtersProps} onChangeMonth={this.handleLoading} onChangeYear={this.handleLoading} onChangeBusinessType={this.handleLoading} onChangeRegion={this.handleLoading}/>
 					<div className="calendar-table__wrapper">
 						<div className="calendar-table">
 							<div className="calendar-table__header">

@@ -3,7 +3,7 @@ var keyMirror = require('keyMirror');
 module.exports = {
 
 	values: {
-		all: 'Все',
+		all: 'Все статусы',
 		close: 'Завершено',
 		active: 'Проводится',
 		plan: 'Планируется'

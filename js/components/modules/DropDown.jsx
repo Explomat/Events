@@ -54,7 +54,7 @@ var DropDown = {
 	},
 
 	_getSelectedItemText: function(items, payload){
-		if (!payload) return items[0].text;
+		if (!payload && Array.isArray(items) && items.length > 0) return items[0].text;
 		for (var i = items.length - 1; i >= 0; i--) {
 			if (items[i].payload.toString() === payload.toString())
 				return items[i].text;

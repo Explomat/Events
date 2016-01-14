@@ -17,5 +17,17 @@ module.exports = {
 			{ payload: 1, text: 'Ответственные' },
 			{ payload: 2, text: 'Преподаватели' }
 		]
+	},
+
+	prepareRegions: function(arr){
+		var array = [{payload: 'ALL', text: 'Все регионы'}];
+		arr.forEach(function(item){
+			if (item.payload && item.text) return array.push(item);
+			array.push({
+				payload: item,
+				text: item
+			});
+		});
+		return array;
 	}
 }
