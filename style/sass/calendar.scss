@@ -12,7 +12,6 @@
 
   .calendar-header{
     position: relative;
-    z-index: 100;
     padding: 0 16px 0 16px;
     box-shadow: 2px 2px 10px 0 lighten($headerColor, 20%);
     line-height: 60px;
@@ -30,13 +29,13 @@
     .calendar-header__left-block {
       display: inline-block;
       text-align: left;
-      width: 21%
+      width: 23%
     }
 
     .calendar-header__right-block{
       display: inline-block;
       text-align: right;
-      width: 79%;
+      width: 77%;
     }
 
     .calendar-header__months, .calendar-header__years, .calendar-header__status, .calendar-header__search, .calendar-header__business-type, .calendar-header__regions {
@@ -46,6 +45,10 @@
       width: auto;
       display: inline-block;
       margin-right: 32px;
+    }
+
+    .calendar-header__regions, .calendar-header__business-type, .calendar-header__status, {
+      width: 115px;
     }
 
     .calendar-header__search {

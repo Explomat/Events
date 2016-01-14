@@ -20,14 +20,12 @@ module.exports = {
 	},
 
 	prepareRegions: function(arr){
-		var array = [{payload: 'ALL', text: 'Все регионы'}];
-		arr.forEach(function(item){
-			if (item.payload && item.text) return array.push(item);
-			array.push({
+		return arr.map(function(item){
+			if (item.payload && item.text) return item;
+			return {
 				payload: item,
 				text: item
-			});
+			};
 		});
-		return array;
 	}
 }

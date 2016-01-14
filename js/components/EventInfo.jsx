@@ -218,7 +218,7 @@ var EventInfo = React.createClass({
 				}
 				index++;
 			}
-			if (webinarInfo && status === EventStatuses.keys.close) {
+			if (webinarInfo && webinarInfo.href && status === EventStatuses.keys.close) {
 				buttons.push(<a key={index} className="event-btn event-info__btn" target="__blank" href={webinarInfo.href}>Посмотреть запись</a>);
 			}
 		}

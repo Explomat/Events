@@ -1,4 +1,12 @@
 <%
+	function getObjectValues(obj){
+		var values = [];
+		for (o in obj){
+			values.push(obj[o]);
+		}
+		return values;
+	}
+
 	var actionsDenied = {
 		createRequest: 'createRequest',
 		removeCollaborator: 'removeCollaborator'
@@ -9,19 +17,10 @@
 		RegionsFilter: 'RegionsFilter'
 	}
 
-	function getObjectValues(obj){
-		var values = [];
-		for (var o in obj){
-			values.push(obj[o]);
-		}
-		return values;
-	}
-
-
 	var groups = [
 		{
 			name: 'event_admin',
-			actionsDenied: [ actionsDenied.createRequest ],
+			actionsDenied: [],
 			componentsDenied: [],
 			priority: 0
 		},
@@ -35,15 +34,15 @@
 
 		{
 			name: 'event_user',
-			actionsDenied: getObjectValues(actionsDenied),
-			componentsDenied: getObjectValues(componentsDenied),
+			actionsDenied: [],
+			componentsDenied: [],
 			priority: 2
 		},
 
 		{
 			name: 'event_all',
-			actionsDenied: [],
-			componentsDenied: [componentsDenied.BusinessTypeFilter],
+			actionsDenied: getObjectValues(actionsDenied),
+			componentsDenied: getObjectValues(componentsDenied),
 			priority: 3
 		}
 	]
@@ -266,6 +265,7 @@
 		var curUser = curPersonCard.TopElem;
 		var selectedYear = Int(queryObjects.year);
 		var selectedMonth = Int(queryObjects.month);
+		var region = queryObjects.HasProperty('region') ? queryObjects.region : curUser.custom_elems.ObtainChildByKey('office_code').value;
 		if (queryObjects.HasProperty('business_type')) {
 			var personBusinessType = queryObjects.business_type
 		} else {
@@ -310,6 +310,7 @@
 					events.status_id <> 'cancel'
 			");
 
+		var userGroup = getGroupByMaxPriority(getMatchedUserGroups(curUserID));
 
 		var eventsArray = [];
 		for (e in getEventArray) {
@@ -330,21 +331,33 @@
 				place_id: e.place_id 
 			});
 		}
-
-		var xarrPlacesIds = [];
-		if(curUser.position_parent_id.HasValue && curUser.position_parent_id.ForeignElem != undefined)
-		{
-			iParentId = curUser.position_parent_id;
-			do
+		if (userGroup == null ) {
+			var xarrPlacesIds = [];
+			if(curUser.position_parent_id.HasValue && curUser.position_parent_id.ForeignElem != undefined)
 			{
-				teSub = OpenDoc(UrlFromDocID( iParentId )).TopElem;
-				if(teSub.place_id.HasValue)
-					xarrPlacesIds.push(teSub.place_id);
-				iParentId = teSub.parent_object_id;
+				iParentId = curUser.position_parent_id;
+				do
+				{
+					teSub = OpenDoc(UrlFromDocID( iParentId )).TopElem;
+					if(teSub.place_id.HasValue)
+						xarrPlacesIds.push(teSub.place_id);
+					iParentId = teSub.parent_object_id;
+				}
+				while( teSub.parent_object_id.HasValue && teSub.parent_object_id.ForeignElem != undefined )			
 			}
-			while( teSub.parent_object_id.HasValue && teSub.parent_object_id.ForeignElem != undefined )			
+			eventsArray = ArraySelect(eventsArray, "This.place_id.HasValue && ArrayOptFind(xarrPlacesIds, 'This == ' + This.place_id) != undefined");
+		} else {
+			if (region != "Все регионы") {
+				var xarrPlacesIds = [];
+				var findRegionID = ArrayOptFirstElem(XQuery("sql: select * from regions where regions.name = '"+ region+"'")).id
+				var regionsArray = XQuery("sql: select places.id from places where places.region_id ="+findRegionID);
+				for (teSub in regionsArray) {
+					xarrPlacesIds.push(teSub.id);
+				}
+				eventsArray = ArraySelect(eventsArray, "This.place_id.HasValue && ArrayOptFind(xarrPlacesIds, 'This == ' + This.place_id) != undefined");
+			}
+			
 		}
-		eventsArray = ArraySelect(eventsArray, "This.place_id.HasValue && ArrayOptFind(xarrPlacesIds, 'This == ' + This.place_id) != undefined");
 
 		return eventsArray;
 	}
@@ -362,9 +375,11 @@
 		'CITILINK' : curPersonCard.TopElem.custom_elems.ObtainChildByKey('id_business_list').value == 'MERLION' ? 'MERLION' : 'CITILINK';
 		var userGroup = getGroupByMaxPriority(getMatchedUserGroups(curUserID));
 		userGroup = userGroup == null ? getGroupByName('event_all') : userGroup;
-		var getRegionsArray = XQuery("sql: select regions.name from regions");
 
-		var regionsArray = ArrayExtract(ArrayDirect(XQuery("sql: select regions.name from regions")), 'This.name.Value');
+		var regionsArray = ['Все регионы'];
+		for (reg in ArraySort(XQuery("sql: select regions.name from regions"),'name','+')) {
+			regionsArray.push(reg.name + '');
+		}
 
 		return stringifyWT({
 			user: {
