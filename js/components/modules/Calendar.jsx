@@ -135,7 +135,7 @@ var Filters = React.createClass({
 					<Auth componentsDenied={componentsDenied}>
 						<RegionsFilter onChange={this.handleChangeRegion} items={this.props.regions} selectedPayload={this.props.selectedRegion}/>
 					</Auth>
-					<DropDown onChange={this.handleChangeStatus} items={this.props.statuses} selectedPayload={this.props.selectedStatus} className={"calendar-header__status"} classNameButton={"calendar-header__status-button"}/>
+					<DropDown onChange={this.handleChangeStatus} items={this.props.statuses} selectedPayload={this.props.selectedStatus} deviders={[1]} className={"calendar-header__status"} classNameButton={"calendar-header__status-button"}/>
 					<SearchBox onSearch={this.handleChangeSearchText} value={this.props.searchText} className={"calendar-header__search"} />
 				</div>
 			</header>

@@ -11,7 +11,7 @@ var BusinessTypeFilter = React.createClass({
 
 	render: function() {
 		return (
-			<DropDown onChange={this.handleChangeBusinessType} items={this.props.items} selectedPayload={this.props.selectedPayload} className={"calendar-header__business-type"} classNameButton={"calendar-header__business-type-button"}/>
+			<DropDown onChange={this.handleChangeBusinessType} items={this.props.items} selectedPayload={this.props.selectedPayload} deviders={[1]} className={"calendar-header__business-type"} classNameButton={"calendar-header__business-type-button"}/>
 		);
 	}
 });

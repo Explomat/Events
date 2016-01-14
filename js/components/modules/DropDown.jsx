@@ -77,7 +77,7 @@ var DropDown = {
 	},
 
 	componentDidMount: function() {
-		document.addEventListener('click', this.handleBlur);
+		document.addEventListener('click', this.handleBlur, true);
 	},
 
 	handleChange: function(e, payload, text, index) {
@@ -102,7 +102,7 @@ var DropDown = {
 			list.push(<ItemDescription key={0} text={this.props.description} />);
 		}
 		this.props.items.forEach(function(item, index){
-			if (index % 2 == 0 && index !== 0 && this.props.deviders.indexOf(index) !== -1){
+			if (index !== 0 && this.props.deviders.indexOf(index) !== -1){
 				list.push(<li key={"divider"+ index + 1} className="dropdown-list__devider"></li>);
 			}
 			var selected = this.props.selectedPayload.toString() === item.payload.toString() ? true : false;

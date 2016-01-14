@@ -11,7 +11,7 @@ var RegionsFilter = React.createClass({
 
 	render: function() {
 		return (
-			<DropDown onChange={this.handleChangeRegion} items={this.props.items} selectedPayload={this.props.selectedPayload} className={"calendar-header__regions"} classNameButton={"calendar-header__regions-button"}/>
+			<DropDown onChange={this.handleChangeRegion} items={this.props.items} selectedPayload={this.props.selectedPayload} deviders={[1]} className={"calendar-header__regions"} classNameButton={"calendar-header__regions-button"}/>
 		);
 	}
 });

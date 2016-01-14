@@ -37,6 +37,7 @@ function changeMonth(monthIndex, events){
 
 function changeYear(year, events){
 	_calendar.selectedYear = year;
+	_calendar.selectedMonthIndex = 0;
 	_calendar.events = prepareEvents(events);
 	_calendar.filterEvents = _filterEvents(_calendar.events);
 }
