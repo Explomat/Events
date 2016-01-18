@@ -10,7 +10,6 @@ var EventUtils = require('../../utils/event/EventUtils');
 var EventTypes = require('../../utils/event/EventTypes');
 var CalendarStore = require('../../stores/CalendarStore');
 var CalendarActions = require('../../actions/CalendarActions');
-var Hasher = require('../../utils/Hasher');
 var Config = require('../../config');
 
 var EventSideBar = React.createClass({
@@ -18,11 +17,7 @@ var EventSideBar = React.createClass({
 	getTime: function(){
 		return DateUtils.getTime(this.props.startDate) + ' - ' + DateUtils.getTime(this.props.finishDate);
 	},
-
-	handleViewEvent: function(){
-		Hasher.setHash('event/view/' + this.props.id);
-	},
-
+	
 	render: function(){
 		var time = this.getTime();
 		var typeIconClass = this.props.type === EventTypes.keys.webinar ? 'icon--type--webinar': 'icon--type--fulltime';
@@ -36,7 +31,7 @@ var EventSideBar = React.createClass({
 					<i className="info-icon fa fa-map-marker"></i>
 					<p className="timetable__event-info timetable__event-info--place">{this.props.place}</p>
 				</div>
-				<button onClick={this.handleViewEvent} className="event-btn timetable__event-details-btn">Подробнее</button>
+				<a href={"#event/view/" + this.props.id} className="event-btn timetable__event-details-btn">Подробнее</a>
 			</section>
 		);
 	}
