@@ -39,7 +39,7 @@ module.exports = function(args){
 	this.selectedMonthIndex = (args.selectedMonthIndex !== undefined && args.selectedMonthIndex !== null) ? args.selectedMonthIndex : this.currentDate.getMonth();
 	this.selectedDate = args.selectedDate ? new Date(args.selectedDate) : this.currentDate;
 	this.selectedBusinessType = args.selectedBusinessType ? args.selectedBusinessType : this.user.businessType === '' ? CalendarBusinessTypes.keys.all : this.user.businessType;
-	this.selectedRegion = this.user.region || '';
+	this.selectedRegion = args.selectedRegion || this.user.region;
 	this.selectedStatus = args.selectedStatus ? args.selectedStatus : CalendarEventStatuses.keys.all;
 	this.searchText = args.searchText ? args.searchText : '';
 }
