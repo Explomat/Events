@@ -60,8 +60,7 @@ module.exports = {
         if (cacheRequest) return cacheRequest;
 
         cache[url] = new Promise(function(resolve, reject){
-            if (!url) reject(Error("Unknown url"));
-            url = encodeURI(url);
+            if (!url) return reject(Error("Unknown url"));
 
             var xmlHttp = xmlHttpRequest || this.getXmlHttp();
             requestType = requestType || 'GET';
