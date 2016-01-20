@@ -43,7 +43,11 @@ var EventInfoStore = extend({}, EventEmitter.prototype, {
 	isUserInEvent: function(userId){
 		return _eventInfo.collaborators.find(function(col){
 			return userId == col.id;
-		});
+		}) || _eventInfo.tutors.find(function(t){
+			return userId == t.id;
+		}) || _eventInfo.lectors.find(function(l){
+			return userId == l.id;
+		})
 	},
 
 	getWebinarInfo: function(){
