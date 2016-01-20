@@ -11,7 +11,7 @@ module.exports = {
 		var calendarData = Storage.getItem('calendar');
 		if (calendarData) return Promise.resolve(calendarData);
 		
-		return Ajax.sendRequest(Config.url.createPath({action_name: 'getData'})).then(function(data){
+		return Ajax.sendRequest(Config.url.createPath({action_name: 'getData'}), null, false).then(function(data){
 			var calendarData = JSON.parse(data);
 			Storage.setItem('calendar', calendarData);
 			return calendarData;
@@ -25,7 +25,7 @@ module.exports = {
 	},
 
 	getEvents: function(year, month, businessType, region){
-		return Ajax.sendRequest(encodeURI(Config.url.createPath({action_name: 'getEventsData', year: year, month: month + 1, business_type: businessType, region: region}))).then(function(data){
+		return Ajax.sendRequest(Config.url.createPath({action_name: 'getEventsData', year: year, month: month + 1, business_type: businessType, region: region}), null, false).then(function(data){
 			return JSON.parse(data);
 		});
 

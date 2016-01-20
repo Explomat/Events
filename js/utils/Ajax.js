@@ -55,12 +55,13 @@ module.exports = {
         });
     },
 
-    sendRequest: function(url, data, isSync, xmlHttpRequest, requestType) {
+    sendRequest: function(url, data, isCache, isSync, xmlHttpRequest, requestType) {
         var cacheRequest = getCacheRequest(url);
         if (cacheRequest) return cacheRequest;
-
+        if (!url) return Promise.reject(Error("Unknown url"));
+        url = isCache === false ? encodeURI(url + "&r=" + Math.round(Math.random() * 10000)) : encodeURI(url);
+        
         cache[url] = new Promise(function(resolve, reject){
-            if (!url) return reject(Error("Unknown url"));
 
             var xmlHttp = xmlHttpRequest || this.getXmlHttp();
             requestType = requestType || 'GET';
@@ -90,6 +91,7 @@ module.exports = {
                 }, AJAX_TIME_OVER);
             }
         }.bind(this));
+        
         return cache[url];
     }
 }     

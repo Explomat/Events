@@ -225,6 +225,16 @@
 			  	white-space: nowrap;
 			  	vertical-align: top;
 
+			  	.event-info__buttons-start{
+			  		background-color: #ff5252;
+			  		color: #fff;
+			  	}
+
+			  	.event-info__buttons-finish {
+			  		background-color: #ff5252;
+			  		color: #fff;
+			  	}
+
 			    .event-info__btn {
 	    			margin-left: 8px;
 	    			font-size: 1rem;

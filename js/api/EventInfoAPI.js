@@ -8,15 +8,12 @@ var Ajax = require('../utils/Ajax');
 module.exports = {
 
 	getData: function(eventId){
-		return Ajax.sendRequest(Config.url.createPath({action_name: 'getEventInfo', event_id: eventId})).then(function(data){
+		return Ajax.sendRequest(Config.url.createPath({action_name: 'getEventInfo', event_id: eventId}), null, false).then(function(data){
 			try {
 				return JSON.parse(data);
 			}
 			catch(e){}
 		});
-		/*return new Promise(function(resolve, reject){
-			resolve(new EventInfo());
-		});*/
 	},
 
 	createRequest: function(eventId){
@@ -27,6 +24,18 @@ module.exports = {
 
 	removeCollaborator: function(eventId) {
 		return Ajax.sendRequest(Config.url.createPath({action_name: 'removeCollaborator', event_id: eventId})).then(function(error){
+			return error;
+		});
+	},
+
+	startEvent: function(eventId) {
+		return Ajax.sendRequest(Config.url.createPath({action_name: 'startEvent', event_id: eventId})).then(function(error){
+			return error;
+		});
+	},
+
+	finishEvent: function(eventId) {
+		return Ajax.sendRequest(Config.url.createPath({action_name: 'finishEvent', event_id: eventId})).then(function(error){
 			return error;
 		});
 	}

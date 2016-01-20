@@ -1,6 +1,7 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var EventInfoConstants = require('../constants/EventInfoConstants');
+var EventStatuses = require('../utils/event/EventStatuses');
 var EventInfo = require('../models/EventInfo');
 var extend = require('extend');
 
@@ -26,6 +27,16 @@ function removeCollaborator(userId){
 	}
 }
 
+function startEvent(text){
+	_eventInfo.status = EventStatuses.keys.active;
+	_info = text;
+}
+
+function finishEvent(text){
+	_eventInfo.status = EventStatuses.keys.close;
+	_info = text;
+}
+
 function changeInfo(text){
 	_info = text;
 }
@@ -41,13 +52,34 @@ var EventInfoStore = extend({}, EventEmitter.prototype, {
 	},
 
 	isUserInEvent: function(userId){
+		var collaborator = _eventInfo.collaborators.find(function(col){
+			return userId == col.id;
+		});
+		var tutor = _eventInfo.tutors.find(function(t){
+			return userId == t.id;
+		});
+		var lector = _eventInfo.lectors.find(function(l){
+			return userId == l.id;
+		});
+		return collaborator !== undefined || tutor !== undefined || lector !== undefined;
+	},
+
+	isUserInCollaborators: function(userId){
 		return _eventInfo.collaborators.find(function(col){
 			return userId == col.id;
-		}) || _eventInfo.tutors.find(function(t){
+		}) !== undefined;
+	},
+
+	isUserInTutors: function(userId) {
+		return  _eventInfo.tutors.find(function(t){
 			return userId == t.id;
-		}) || _eventInfo.lectors.find(function(l){
+		}) !== undefined;
+	},
+
+	isUserInLectors: function(userId) {
+		return _eventInfo.lectors.find(function(l){
 			return userId == l.id;
-		})
+		}) !== undefined;
 	},
 
 	getWebinarInfo: function(){
@@ -82,6 +114,14 @@ EventInfoStore.dispatchToken = AppDispatcher.register(function(payload) {
 			break;
 		case EventInfoConstants.REMOVE_COLLABORATOR_EVENTINFO:
 			removeCollaborator(action.userId);
+			isEmit = true;
+			break;
+		case EventInfoConstants.START_EVENT_EVENTINFO:
+			startEvent(action.text);
+			isEmit = true;
+			break;
+		case EventInfoConstants.FINISH_EVENT_EVENTINFO:
+			finishEvent(action.text);
 			isEmit = true;
 			break;
 		case EventInfoConstants.CHANGE_INFO_EVENTINFO:

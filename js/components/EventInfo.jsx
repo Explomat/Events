@@ -188,6 +188,14 @@ var EventInfo = React.createClass({
 		EventInfoActions.removeCollaborator(this.state.event.id, CalendarStore.getUserId());
 	},
 
+	handleStartEvent: function(){
+		EventInfoActions.startEvent(this.state.event.id);
+	},
+
+	handleFinishEvent: function(){
+		EventInfoActions.finishEvent(this.state.event.id);
+	},
+
 	getButtons: function(){
 		var buttons = [];
 		var status = this.state.event.status;
@@ -195,18 +203,34 @@ var EventInfo = React.createClass({
 		var userId = CalendarStore.getUserId();
 		var isWebinar = type === EventTypes.keys.webinar;
 		var isUserInEvent = EventInfoStore.isUserInEvent(userId);
+
+		var isUserInCollaborators = EventInfoStore.isUserInCollaborators(userId);
+		var isUserInTutors = EventInfoStore.isUserInTutors(userId);
+		var isUserInLectors = EventInfoStore.isUserInLectors(userId);
 		var index = 0;
 
 		if (isUserInEvent){
-			if (status === EventStatuses.keys.close)
+			if (status === EventStatuses.keys.close){
 				buttons.push(<a key={index} className="event-btn event-info__btn" target="__blank" href={this.state.event.reportHref}>Добавить отзыв</a>);
-			else if (status === EventStatuses.keys.plan) {
+				index++;
+			}
+			else if (status === EventStatuses.keys.plan && isUserInCollaborators) {
 				buttons.push(<button onClick={this.handleRemoveCollaborator} key={index} className="event-btn event-info__btn">Отказаться от участия</button>);
+				index++;
+			}
+			else if (status === EventStatuses.keys.plan && (isUserInTutors || isUserInLectors)) {
+				buttons.push(<button onClick={this.handleStartEvent} key={index} className="event-btn event-info__btn event-info__buttons-start">Начать мероприятие</button>);
+				index++;
+			}
+			else if (status === EventStatuses.keys.active && (isUserInTutors || isUserInLectors)) {
+				buttons.push(<button onClick={this.handleFinishEvent} key={index} className="event-btn event-info__btn event-info__buttons-finish">Завершить мероприятие</button>);
+				index++;
 			}
 		}
 		else {
 			if (status === EventStatuses.keys.plan) {
 				buttons.push(<button onClick={this.handleCreateRequest} key={index} className="event-btn event-info__btn">Подать заявку</button>);
+				index++;
 			}
 		}
 
