@@ -61,6 +61,7 @@ module.exports = {
 
         cache[url] = new Promise(function(resolve, reject){
             if (!url) reject(Error("Unknown url"));
+            url = encodeURI(url);
 
             var xmlHttp = xmlHttpRequest || this.getXmlHttp();
             requestType = requestType || 'GET';

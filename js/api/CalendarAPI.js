@@ -25,7 +25,7 @@ module.exports = {
 	},
 
 	getEvents: function(year, month, businessType, region){
-		return Ajax.sendRequest(encodeURI(Config.url.createPath({action_name: 'getEventsData', year: year, month: month + 1, business_type: businessType, region: region}))).then(function(data){
+		return Ajax.sendRequest(Config.url.createPath({action_name: 'getEventsData', year: year, month: month + 1, business_type: businessType, region: region})).then(function(data){
 			return JSON.parse(data);
 		});
 
