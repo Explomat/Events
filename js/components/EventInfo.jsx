@@ -140,7 +140,7 @@ var EventInfoBody = React.createClass({
 		var membersCount = (collaborators || tutors || lectors).length;
 		var files = this.getFiles();
 		return (
-			<div className="event-info__body-info">
+			<div className="event-info__body-info clearfix">
 				<div className="members">
 					<DropDown onChange={this.handleChangeMembers} items={this.props.members} selectedPayload={this.state.selectedPayload} className={"members__dropdown"} classNameButton={"members__dropdown-button"}/>
 					<span className="members__count">({membersCount})</span>
@@ -286,7 +286,7 @@ var EventInfo = React.createClass({
 						</div>
 						<EventInfoBody members={this.state.event.members} collaborators={this.state.event.collaborators} tutors={this.state.event.tutors} lectors={this.state.event.lectors} files={this.state.event.files}/>
 					</div>
-					<div className="event-info__footer">
+					<div className="event-info__footer clearfix">
 						<div className={"event-info__info-block " + infoClass}>
 							<button onClick={this.handleCloseInfo} className="close-btn">&times;</button>
 							<TextOverflow value={this.state.info} rowsCount={2} />
