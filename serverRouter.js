@@ -44,7 +44,7 @@
 
 
 	var query = Request.Query;
-	var reqSourceCode = ArrayOptFirstElem(XQuery("sql:select ct.data.value('custom_web_template/html','varchar(MAX)') as source_code from custom_web_template ct where ct.id="+query.server_id));
+	var reqSourceCode = ArrayOptFirstElem(XQuery("sql:select ct.data.value('(custom_web_template/html)[1]','varchar(MAX)') as source_code from custom_web_template ct where ct.id="+query.server_id));
 	if (reqSourceCode != undefined) {
 		var sourceCode = String(reqSourceCode.source_code);
 		var actionName = String(query.action_name);
