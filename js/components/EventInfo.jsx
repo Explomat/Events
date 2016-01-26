@@ -286,7 +286,7 @@ var EventInfo = React.createClass({
 						</div>
 						<EventInfoBody members={this.state.event.members} collaborators={this.state.event.collaborators} tutors={this.state.event.tutors} lectors={this.state.event.lectors} files={this.state.event.files}/>
 					</div>
-					<div className="event-info__footer clearfix">
+					<div className="event-info__footer">
 						<div className={"event-info__info-block " + infoClass}>
 							<button onClick={this.handleCloseInfo} className="close-btn">&times;</button>
 							<TextOverflow value={this.state.info} rowsCount={2} />
