@@ -132,7 +132,20 @@
 		return DateNewTime(RawSecondsToDate(Int(DateToRawSeconds(myDate)) - 1));
 	}
 
+	
+
 	function getEventInfo (queryObjects) {
+		function _isEventExist(eventId){
+			var curEventID = null;
+			try { curEventID = Int(eventId); }
+			catch(e) { return false; }
+			return ArraySelectAll(XQuery("sql: select events.id from events where events.id=" +curEventID)).length > 0;
+		}
+		
+		if (!_isEventExist(queryObjects.event_id)) {
+			return 'Данного мероприятия не существует!';
+		}
+
 		var curEventID = Int(queryObjects.event_id);
 		var curEventCard = OpenDoc(UrlFromDocID(curEventID));
 		var reportHref = '/view_doc.html?mode=response&response_object_id='+curEventID+'&response_type_code=response_event';
@@ -148,7 +161,7 @@
 		if (curEventCard.TopElem.type_id)
 
 		var eventType = curEventCard.TopElem.type_id == 'webinar' ? 'webinar' : 'full_time';
-		if (eventType == 'webinar' && curEventCard.TopElem.show_record) {
+		if (eventType == 'webinar' && curEventCard.TopElem.show_record &&  curEventCard.TopElem.record.recorder_id != null) {
 			var webinarDownloadInfo = {
 					id : Int(curEventCard.TopElem.record.recorder_id),
 					href : '/vclass/vcplayer.html?cid=' + curEventID +'&download=1',
@@ -206,7 +219,7 @@
 					lectorMail = lectorData.TopElem.email != '' ? lectorData.TopElem.email : "отсутсвует";
 
 					lectorsArray.push({
-						id : Int(lector.lector_id),
+						id : Int(lectorCard.TopElem.person_id),
 						fullname : lectorCard.TopElem.person_fullname + '',
 						email : lectorMail + '',
 						phone : lectorPhoneNumber + '',
@@ -432,5 +445,21 @@
 		}
 	}
 
+	function startEvent(queryObjects) {
+		try {
+			tools.event_start(queryObjects.event_id)
+		} catch (e) {
+			return e;
+		}
+	}
+
+
+	function finishEvent(queryObjects) {
+		try {
+			tools.event_finish(queryObjects.event_id)
+		} catch (e) {
+			return e;
+		}
+	}
 
 %>

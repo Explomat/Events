@@ -12,7 +12,7 @@ module.exports = {
 			try {
 				return JSON.parse(data);
 			}
-			catch(e){}
+			catch(e){ throw data; }
 		});
 	},
 
