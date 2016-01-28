@@ -66,7 +66,8 @@ var EventInfoActions = {
 			if (!err) {
 				AppDispatcher.handleAction({
 					actionType: EventInfoConstants.START_EVENT_EVENTINFO,
-					text: 'Вы успешно запустили ракету'
+					eventId: eventId,
+					text: 'Вы успешно стартовали мероприятие.'
 				});
 			}
 			else {
@@ -88,7 +89,8 @@ var EventInfoActions = {
 			if (!err) {
 				AppDispatcher.handleAction({
 					actionType: EventInfoConstants.FINISH_EVENT_EVENTINFO,
-					text: 'Вы успешно завершили мероприятие'
+					eventId: eventId,
+					text: 'Вы успешно завершили мероприятие.'
 				});
 			}
 			else {

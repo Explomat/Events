@@ -1,8 +1,10 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
-var CalendarAPI = require('../api/CalendarAPI');
+//var CalendarAPI = require('../api/CalendarAPI');
 var CalendarConstants = require('../constants/CalendarConstants');
+var EventInfoConstants = require('../constants/EventInfoConstants');
 var CalendarEventStatuses = require('../utils/event/CalendarEventStatuses');
+var EventStatuses = require('../utils/event/EventStatuses')
 var Calendar = require('../models/Calendar');
 var ShortEvent = require('../models/ShortEvent');
 var extend = require('extend');
@@ -67,6 +69,20 @@ function changeSearchText(text){
 	_calendar.filterEvents = _filterEvents(_calendar.events);
 }
 
+function startEvent(eventId) {
+	var shortEvent = _calendar.events.find(function(e){
+		return e.id === eventId;
+	});
+	if (shortEvent) shortEvent.status = EventStatuses.keys.active;
+}
+
+function finishEvent(eventId) {
+	var shortEvent = _calendar.events.find(function(e){
+		return e.id === eventId;
+	});
+	if (shortEvent) shortEvent.status = EventStatuses.keys.close;
+}
+
 var CalendarStore = extend({}, EventEmitter.prototype, {
 	
 	getData: function(){
@@ -123,12 +139,21 @@ CalendarStore.dispatchToken = AppDispatcher.register(function(payload) {
 		case CalendarConstants.SELECT_CALENDAR_DATE:
 			selectDate(action.date);
 			break;
+
+		//listen constants from other store
+		case EventInfoConstants.START_EVENT_EVENTINFO:
+			startEvent(action.eventId);
+			break;
+		case EventInfoConstants.FINISH_EVENT_EVENTINFO:
+			finishEvent(action.eventId);
+			break;
+		//---------------------------------------
 		default:
 			return true;
 	}
 
 	CalendarStore.emitChange();
-	CalendarAPI.saveToStorage(_calendar);
+	//CalendarAPI.saveToStorage(_calendar);
 	return true;
 });
 

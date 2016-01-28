@@ -6,11 +6,19 @@ var EventInfoAPI = require('../api/EventInfoAPI');
 var EventInfoActions = require('../actions/EventInfoActions');
 var Config = require('../config');
 
+var isLoaded = false;
+
 module.exports = {
 
+	isLoaded: function () {
+		return isLoaded;
+	},
+
 	start: function(id){
+
 		var app = document.getElementById(Config.dom.eventViewModalId) || document.body;
-		ReactDOM.unmountComponentAtNode(app);
+		this.stop(app);
+		isLoaded = true;
 
 		EventInfoAPI.getData(id).then(function(eventData){
 			EventInfoActions.receiveData(eventData);
@@ -18,5 +26,11 @@ module.exports = {
 		}, function(err){
 			ReactDOM.render(React.createElement(Error, {error: err}), app);
 		});
+	},
+
+	stop: function () {
+		var app = document.getElementById(Config.dom.eventViewModalId) || document.body;
+		if (app) ReactDOM.unmountComponentAtNode(app);
+		isLoaded = false;
 	}
 }
