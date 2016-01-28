@@ -20,6 +20,10 @@ module.exports = {
 		modalId: 'modal'
 	},
 
+	img: {
+		eventNotFound: '/react/events/build/icons/event_not_found.png'
+	},
+
 	hashes: {
 		calendar: 'calendar',
 		eventView: 'event/view/{id}'

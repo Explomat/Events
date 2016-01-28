@@ -1,7 +1,7 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var EventInfo = require('../components/EventInfo');
-var Error = require('../components/Error');
+var EventError = require('../components/EventError');
 var EventInfoAPI = require('../api/EventInfoAPI');
 var EventInfoActions = require('../actions/EventInfoActions');
 var Config = require('../config');
@@ -24,7 +24,7 @@ module.exports = {
 			EventInfoActions.receiveData(eventData);
 			ReactDOM.render(React.createElement(EventInfo), app);
 		}, function(err){
-			ReactDOM.render(React.createElement(Error, {error: err}), app);
+			ReactDOM.render(React.createElement(EventError, {error: err}), app);
 		});
 	},
 
