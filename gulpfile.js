@@ -26,7 +26,7 @@ gulp.task('build-remote-css', function() {
     .pipe(autoprefixer({ browsers: ['IE 9', 'last 2 versions'] }))
     .pipe(cleanss({keepBreaks: false}))
     .pipe(concat('style.min.css'))
-    .pipe(gulp.dest('\\\\10.1.20.67\\c$\\WebSoft\\WebTutorServer\\wt\\web\\react\\events\\build\\style'));
+    .pipe(gulp.dest('\\\\10.1.20.67\\c$\\WebSoft\\WebTutorServer\\wt\\web\\react\\events_test\\build\\style'));
 });
 
 gulp.task('build-js', function() {
@@ -48,7 +48,7 @@ gulp.task('build-remote-js', function() {
         extensions: ['.jsx']
     }))
     .pipe(rename('bundle.js'))
-    .pipe(gulp.dest('\\\\10.1.20.67\\c$\\WebSoft\\WebTutorServer\\wt\\web\\react\\events\\build\\js'));
+    .pipe(gulp.dest('\\\\10.1.20.67\\c$\\WebSoft\\WebTutorServer\\wt\\web\\react\\events_test\\build\\js'));
 });
 
 

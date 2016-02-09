@@ -25,6 +25,10 @@ window.onload = function(){
 	    else EventInfoController.start(id);
 	});
 
+	Router.addRoute(Config.hashes.eventEdit, function(id){
+		EventEditController.start(id);
+	});
+
 	function init(curHash){
 		//Storage.clear();
 		curHash = curHash === '' ? Config.hashes.calendar : curHash;

@@ -26,7 +26,8 @@ module.exports = {
 
 	hashes: {
 		calendar: 'calendar',
-		eventView: 'event/view/{id}'
+		eventView: 'event/view/{id}',
+		eventEdit: 'event/edit/{id}'
 	},
 
 	setServerId: function(_serverId){
