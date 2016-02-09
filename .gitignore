@@ -4,4 +4,3 @@ node_modules/
 build/js/bundle.*.js
 build/style/
 npm-debug.log
-gulpfile.js

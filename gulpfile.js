@@ -11,13 +11,22 @@ var rename = require("gulp-rename");
 var uglify = require('gulp-uglify');
 var autoprefixer = require('gulp-autoprefixer');
 
-gulp.task('build-scss', function() {
+gulp.task('build-css', function() {
   gulp.src(['./style/css/*.css', './style/sass/*.scss'])
     .pipe(sass().on('error', sass.logError))
     .pipe(autoprefixer({ browsers: ['IE 9', 'last 2 versions'] }))
     .pipe(cleanss({keepBreaks: false}))
     .pipe(concat('style.min.css'))
     .pipe(gulp.dest('./build/style'));
+});
+
+gulp.task('build-remote-css', function() {
+  gulp.src(['./style/css/*.css', './style/sass/*.scss'])
+    .pipe(sass().on('error', sass.logError))
+    .pipe(autoprefixer({ browsers: ['IE 9', 'last 2 versions'] }))
+    .pipe(cleanss({keepBreaks: false}))
+    .pipe(concat('style.min.css'))
+    .pipe(gulp.dest('\\\\10.1.20.67\\c$\\WebSoft\\WebTutorServer\\wt\\web\\react\\events\\build\\style'));
 });
 
 gulp.task('build-js', function() {
@@ -30,6 +39,18 @@ gulp.task('build-js', function() {
     .pipe(rename('bundle.js'))
     .pipe(gulp.dest('./build/js'));
 });
+
+gulp.task('build-remote-js', function() {
+    gulp.src('./js/main.js')
+    .pipe(browserify({
+        transform: [reactify], // We want to convert JSX to normal javascript
+        debug: true, // Gives us sourcemapping
+        extensions: ['.jsx']
+    }))
+    .pipe(rename('bundle.js'))
+    .pipe(gulp.dest('\\\\10.1.20.67\\c$\\WebSoft\\WebTutorServer\\wt\\web\\react\\events\\build\\js'));
+});
+
 
 gulp.task('deploy', ['build-scss'], function() {
 	gulp.src('./js/main.js')
@@ -64,6 +85,8 @@ gulp.task('deploy', ['build-scss'], function() {
     .pipe(rename('bundle.min.js'))
     .pipe(gulp.dest('./build/js'));
 });
+
+
 
 
 gulp.task('default', ['build-scss', 'build-js']);
