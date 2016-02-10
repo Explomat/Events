@@ -19,13 +19,14 @@ module.exports = {
 		var app = document.getElementById(Config.dom.appId) || document.body;
 		this.stop(app);
 		isLoaded = true;
+		ReactDOM.render(React.createElement(EventEdit), app);
 
-		EventEditAPI.getData(id).then(function(eventData){
+		/*EventEditAPI.getData(id).then(function(eventData){
 			EventEditActions.receiveData(eventData);
 			ReactDOM.render(React.createElement(EventEdit), app);
 		}, function(err){
 			ReactDOM.render(React.createElement(EventError, {error: err}), app);
-		});
+		});*/
 	},
 
 	stop: function () {

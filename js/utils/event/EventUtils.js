@@ -1,14 +1,36 @@
 module.exports = {
 
+	getNumEnding: function(num, endings){
+	    var sEnding, i;
+	    num = num % 100;
+	    if (num >= 11 && num <= 19) {
+	        sEnding = endings[2];
+	    }
+	    else {
+	        i = num % 10;
+	        switch (i)
+	        {
+	            case 1: 
+	            	sEnding = endings[0]; 
+	            	break;
+	            case 2:
+	            case 3:
+	            case 4: 
+	            	sEnding = endings[1]; 
+	            	break;
+	            default: 
+	            	sEnding = endings[2];
+	        }
+	    }
+	    return sEnding;
+	},
+
 	getInducingEvent: function (_num) {
+
+		var eventEndings = ['мероприятие', 'мероприятия', 'мероприятий']
 		var num = Number(_num);
-		if (isNaN(num)) return 'мероприятий';
-		var numStr = num.toString();
-		var lastNum = Number(numStr.substring(numStr.length - 1));
-		if (lastNum === 0) return 'мероприятий';
-		else if (lastNum === 1) return 'мероприятие';
-		else if (lastNum >=2 && lastNum <=4) return 'мероприятия';
-		else if (lastNum >=5 && lastNum <=9) return 'мероприятий';
+		if (isNaN(num)) return eventEndings[2];
+		return this.getNumEnding(num, eventEndings);
 	},
 
 	getMembers: function(){

@@ -5,6 +5,7 @@ var Config = require('./Config');
 var BasicController = require('./controllers/BasicController');
 var CalendarController = require('./controllers/CalendarController');
 var EventInfoController = require('./controllers/EventInfoController');
+var EventEditController = require('./controllers/EventEditController');
 
 window.onload = function(){
 

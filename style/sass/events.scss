@@ -117,6 +117,58 @@
             display: block;
         }
     }
+
+    .toggle{
+      display:none;
+      &-btn{
+        display: inline-block;
+      }
+      &__checkbox{
+        position:relative;
+        overflow:hidden;
+        display:block;
+        background:linear-gradient(#ddd, #eee);
+        border-radius:12px;
+        width:40px;
+        height:24px;
+        cursor:pointer;
+        transition:background .2s ease;
+
+        &:after
+        {
+          content:'';
+          position:absolute;
+          left:1px;
+          height:22px;
+          width:22px;
+          top:1px;
+          border-radius:100%;
+          background:linear-gradient(#ddd, #aaa);
+          transition:all .2s ease;
+          z-index:2;
+        }
+        &:before
+        {
+          content:'';
+          position:absolute;
+          left:-40px;
+          top:0px;
+          width:40px;
+          border-radius:12px;
+          height:24px;
+
+          background:linear-gradient(#4AC94D, #5FE462);      
+          z-index:1;
+          transition:all .2s ease;
+        }
+      }
+      &:checked ~ &__checkbox:before{
+        left:0px;
+      }
+      &:checked ~ &__checkbox:after{
+        left:17px;
+      }
+    }
 }
 
 

@@ -1,5 +1,4 @@
 var EventTypes = require('../utils/event/EventTypes');	
-var EventStatuses = require('../utils/event/EventStatuses');
 var EventUtils = require('..//utils/event/EventUtils');
 var Collaborator = require('./Collaborator');
 var WebinarInfo = require('./WebinarInfo');
@@ -13,12 +12,16 @@ module.exports = function(args){
 	args.startDate = args.startDate || Date();
 	args.finishDate = args.finishDate || Date();
 
-	this.id = args.id || UUID.generate();
+	this.id = args.id || null;
+
+	//base settings
 	this.name = args.name || 'Нет названия';
 	this.type = args.type || EventTypes.keys.full_time;
+	this.codes = args.codes || [];
 	this.startDate = new Date(args.startDate);
+	this.startTime = args.startTime || '';
 	this.finishDate = new Date(args.finishDate);
-	this.status = args.status || EventStatuses.keys.plan;
+	this.finishTime = args.finishTime || '';
 	this.place = args.place || '';
 	this.reportHref = args.reportHref || "#";
 

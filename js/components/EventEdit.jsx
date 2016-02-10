@@ -7,21 +7,95 @@ function getEventInfoState() {
 }
 
 var SideBar = React.createClass({
-	<aside className="side-mnu">
-		<div className="side-mnu__header">
-			<i className="fa fa-angle-left backward-icon"></i>
-			<span className="header-txt">Редактирование</span>
-		</div>
-		<label className="side-mnu__tab-label">Основные</label>
-		<label className="side-mnu__tab-label">Заявки</label>
-		<label className="side-mnu__tab-label">Участники</label>
-		<label className="side-mnu__tab-label">Ответственные</label>
-		<label className="side-mnu__tab-label">Тестирование</label>
-		<label className="side-mnu__tab-label">Электронные курсы</label>
-		<label className="side-mnu__tab-label">Материалы библиотеки</label>
-		<label className="side-mnu__tab-label">Файлы</label>
 
-	</aside>
+	handleSelectTab: function(){
+
+	},
+
+	render: function(){
+		return (
+			<aside className="side-mnu">
+				<div className="side-mnu__header">
+					<i className="fa fa-angle-left backward-icon"></i>
+					<span className="header-txt">Редактирование</span>
+				</div>
+				<div className="side-mnu__body">
+					<label className="side-mnu__tab-label" onClick={this.handleSelectTab}>Основные</label>
+					<label className="side-mnu__tab-label" onClick={this.handleSelectTab}>Заявки</label>
+					<label className="side-mnu__tab-label" onClick={this.handleSelectTab}>Участники</label>
+					<label className="side-mnu__tab-label" onClick={this.handleSelectTab}>Ответственные</label>
+					<label className="side-mnu__tab-label" onClick={this.handleSelectTab}>Тестирование</label>
+					<label className="side-mnu__tab-label" onClick={this.handleSelectTab}>Электронные курсы</label>
+					<label className="side-mnu__tab-label" onClick={this.handleSelectTab}>Материалы библиотеки</label>
+					<label className="side-mnu__tab-label" onClick={this.handleSelectTab}>Файлы</label>
+				</div>
+			</aside>
+		);
+	}
+});
+
+var Base = React.createClass({
+	render: function(){
+		return (
+			<div>Base</div>
+		);
+	}
+});
+
+var Requests = React.createClass({
+	render: function(){
+		return (
+			<div>Requests</div>
+		);
+	}
+});
+
+var Members = React.createClass({
+	render: function(){
+		return (
+			<div>Members</div>
+		);
+	}
+});
+
+var Tutors = React.createClass({
+	render: function(){
+		return (
+			<div>Tutors</div>
+		);
+	}
+});
+
+var Testing = React.createClass({
+	render: function(){
+		return (
+			<div>Testing</div>
+		);
+	}
+});
+
+var Courses = React.createClass({
+	render: function(){
+		return (
+			<div>Courses</div>
+		);
+	}
+});
+
+var LibraryMaterials = React.createClass({
+	render: function(){
+		return (
+			<div>LibraryMaterials</div>
+		);
+	}
+});
+
+var Files = React.createClass({
+	render: function(){
+		return (
+			<div>Files</div>
+		);
+	}
 });
 
 var EventEdit = React.createClass({
@@ -29,11 +103,11 @@ var EventEdit = React.createClass({
 	displayName: 'EventEdit',
 
 	componentDidMount: function() {
-		EventInfoStore.addChangeListener(this._onChange);
+		EventEditStore.addChangeListener(this._onChange);
 	},
 
 	componentWillUnmount: function() {
-		EventInfoStore.removeChangeListener(this._onChange);
+		EventEditStore.removeChangeListener(this._onChange);
 	},
 
 	_onChange: function() {
@@ -81,8 +155,8 @@ var EventEdit = React.createClass({
 										<div className="edit-event-table__cell">Ситилинк имени Столыпина в Мухосранске</div>
 										<div className="edit-event-table__cell">
 											<div className="toggle-btn">
-												<input type="checkbox" id="togg_check" className="toggle" value="off">
-												<label for="togg_check" className="toggle__checkbox"></label>
+												<input type="checkbox" id="togg_check" className="toggle" value="off"/>
+												<label className="toggle__checkbox"></label>
 											</div>
 										</div>
 									</div>
