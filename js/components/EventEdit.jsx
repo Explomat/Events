@@ -1,6 +1,7 @@
 var React = require('react');
 var Hasher = require('../utils/Hasher');
 var EventEditStore = require('../stores/EventEditStore');
+var CheckBox = require('./modules/CheckBox');
 
 function getEventEditState() {
 	return EventEditStore.getData();
@@ -22,14 +23,14 @@ var SideBar = React.createClass({
 					<span className="header-txt">Редактирование</span>
 				</div>
 				<div className="side-mnu__body">
-					<label className="side-mnu__tab-label" onClick={this.handleSelectTab} data-name="Base">Основные</label>
-					<label className="side-mnu__tab-label" onClick={this.handleSelectTab} data-name="Requests">Заявки</label>
-					<label className="side-mnu__tab-label" onClick={this.handleSelectTab} data-name="Members">Участники</label>
-					<label className="side-mnu__tab-label" onClick={this.handleSelectTab} data-name="Tutors">Ответственные</label>
-					<label className="side-mnu__tab-label" onClick={this.handleSelectTab} data-name="Testing">Тестирование</label>
-					<label className="side-mnu__tab-label" onClick={this.handleSelectTab} data-name="Courses">Электронные курсы</label>
-					<label className="side-mnu__tab-label" onClick={this.handleSelectTab} data-name="LibraryMaterials">Материалы библиотеки</label>
-					<label className="side-mnu__tab-label" onClick={this.handleSelectTab} data-name="Files">Файлы</label>
+					<label className={"side-mnu__tab-label " + this.props.selectedTab === "Base" ? "side-mnu__tab-label--selected": "" } onClick={this.handleSelectTab} data-name="Base">Основные</label>
+					<label className={"side-mnu__tab-label "} onClick={this.handleSelectTab} data-name="Requests">Заявки</label>
+					<label className={"side-mnu__tab-label "} onClick={this.handleSelectTab} data-name="Members">Участники</label>
+					<label className={"side-mnu__tab-label "} onClick={this.handleSelectTab} data-name="Tutors">Ответственные</label>
+					<label className={"side-mnu__tab-label "} onClick={this.handleSelectTab} data-name="Testing">Тестирование</label>
+					<label className={"side-mnu__tab-label "} onClick={this.handleSelectTab} data-name="Courses">Электронные курсы</label>
+					<label className={"side-mnu__tab-label "} onClick={this.handleSelectTab} data-name="LibraryMaterials">Материалы библиотеки</label>
+					<label className={"side-mnu__tab-label "} onClick={this.handleSelectTab} data-name="Files">Файлы</label>
 				</div>
 			</aside>
 		);
@@ -47,7 +48,9 @@ var Base = React.createClass({
 var Requests = React.createClass({
 	render: function(){
 		return (
-			<div>Requests</div>
+			<div>
+				<CheckBox label={"Автоматически включать в состав участников"} />
+			</div>
 		);
 	}
 });
@@ -137,8 +140,13 @@ var EventEdit = React.createClass({
 		var tabView = this.getTabView(this.state.selectedTab);
 		return(
 			<div className="container">
-				<SideBar onSelect={this.handleSelectTab}/>
-				{tabView}
+				<SideBar onSelect={this.handleSelectTab} selectedTab={this.state.selectedTab}/>
+				<div className="calendar">
+					<header className ="calendar-header">
+						<span>{this.state.selectedTab}</span>
+					</header>
+					{tabView}
+				</div>
 			</div>
 		);
 	}
