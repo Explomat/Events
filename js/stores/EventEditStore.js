@@ -1,7 +1,7 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var EventEditConstants = require('../constants/EventEditConstants');
-var EventEdit = require('../models/EventEdit');
+var EventEdit = require('../models/eventedit/EventEdit');
 var extend = require('extend');
 
 var _eventEdit = {};

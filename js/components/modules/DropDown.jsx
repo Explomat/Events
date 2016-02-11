@@ -81,7 +81,7 @@ var DropDown = {
 	},
 
 	handleChange: function(e, payload, text, index) {
-		if (this.props.onChange) {
+		if (this.props.onChange && this.props.selectedPayload !== payload) {
 			this.props.onChange(e, payload, text, index);
 		}
 	},

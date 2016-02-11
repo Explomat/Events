@@ -84,25 +84,21 @@ var Filters = React.createClass({
 	},
 
 	handleChangeMonth: function(e, payload, text, index){
-		if (payload === this.props.selectedMonthIndex) return;
 		if (this.props.onChangeMonth) this.props.onChangeMonth(payload);
 		CalendarActions.changeMonth(index, this.props.selectedYear, this.props.selectedBusinessType, this.props.selectedRegion);
 	},
 
 	handleChangeYear: function(e, payload, text, index){
-		if (payload === this.props.selectedYear) return;
 		if (this.props.onChangeYear) this.props.onChangeYear(payload);
 		CalendarActions.changeYear(payload, this.props.selectedMonthIndex, this.props.selectedBusinessType, this.props.selectedRegion);
 	},
 
 	handleChangeRegion: function(e, payload, text, index){
-		if (payload === this.props.selectedRegion) return;
 		if (this.props.onChangeRegion) this.props.onChangeRegion(payload);
 		CalendarActions.changeRegion(this.props.selectedMonthIndex, this.props.selectedYear, this.props.selectedBusinessType, payload);
 	},
 
 	handleChangeBusinessType: function(e, payload, text, index){
-		if (payload === this.props.selectedBusinessType) return;
 		if (this.props.onChangeBusinessType) this.props.onChangeBusinessType(payload);
 		CalendarActions.changeBusinessType(this.props.selectedMonthIndex, this.props.selectedYear, payload, this.props.selectedRegion);
 	},

@@ -30,6 +30,10 @@ $headerColor: #646464;
       &:first-of-type{
         padding-top: 32px;
       }
+
+      &.side-mnu__tab-label--selected {
+        color: red;
+      }
     }
   }
 }

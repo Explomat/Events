@@ -2,6 +2,13 @@ var React = require('react');
 var Hasher = require('../utils/Hasher');
 var EventEditStore = require('../stores/EventEditStore');
 var CheckBox = require('./modules/CheckBox');
+var DatePicker = require('react-datepicker');
+
+var moment = require('moment');
+require('moment/locale/ru');
+
+console.log(moment(new Date()));
+console.log(moment("12-25-1995", "MM-DD-YYYY"));
 
 function getEventEditState() {
 	return EventEditStore.getData();
@@ -11,8 +18,9 @@ var SideBar = React.createClass({
 
 	handleSelectTab: function(e){
 		var target = e.target;
-		if (this.props.onSelect) 
-			this.props.onSelect(target.getAttribute('data-name'));
+		if (this.props.onSelect) {
+			this.props.onSelect({ key: target.getAttribute('data-name'), value: target.text });
+		}
 	},
 
 	render: function(){
@@ -23,14 +31,14 @@ var SideBar = React.createClass({
 					<span className="header-txt">Редактирование</span>
 				</div>
 				<div className="side-mnu__body">
-					<label className={"side-mnu__tab-label " + this.props.selectedTab === "Base" ? "side-mnu__tab-label--selected": "" } onClick={this.handleSelectTab} data-name="Base">Основные</label>
-					<label className={"side-mnu__tab-label "} onClick={this.handleSelectTab} data-name="Requests">Заявки</label>
-					<label className={"side-mnu__tab-label "} onClick={this.handleSelectTab} data-name="Members">Участники</label>
-					<label className={"side-mnu__tab-label "} onClick={this.handleSelectTab} data-name="Tutors">Ответственные</label>
-					<label className={"side-mnu__tab-label "} onClick={this.handleSelectTab} data-name="Testing">Тестирование</label>
-					<label className={"side-mnu__tab-label "} onClick={this.handleSelectTab} data-name="Courses">Электронные курсы</label>
-					<label className={"side-mnu__tab-label "} onClick={this.handleSelectTab} data-name="LibraryMaterials">Материалы библиотеки</label>
-					<label className={"side-mnu__tab-label "} onClick={this.handleSelectTab} data-name="Files">Файлы</label>
+					<label className={"side-mnu__tab-label " + (this.props.selectedTab === "Base" ? "side-mnu__tab-label--selected": "") } onClick={this.handleSelectTab} data-name="Base">Основные</label>
+					<label className={"side-mnu__tab-label " + (this.props.selectedTab === "Requests" ? "side-mnu__tab-label--selected": "") } onClick={this.handleSelectTab} data-name="Requests">Заявки</label>
+					<label className={"side-mnu__tab-label " + (this.props.selectedTab === "Collaborators" ? "side-mnu__tab-label--selected": "") } onClick={this.handleSelectTab} data-name="Collaborators">Участники</label>
+					<label className={"side-mnu__tab-label " + (this.props.selectedTab === "Tutors" ? "side-mnu__tab-label--selected": "") } onClick={this.handleSelectTab} data-name="Tutors">Ответственные</label>
+					<label className={"side-mnu__tab-label " + (this.props.selectedTab === "Testing" ? "side-mnu__tab-label--selected": "") } onClick={this.handleSelectTab} data-name="Testing">Тестирование</label>
+					<label className={"side-mnu__tab-label " + (this.props.selectedTab === "Courses" ? "side-mnu__tab-label--selected": "") } onClick={this.handleSelectTab} data-name="Courses">Электронные курсы</label>
+					<label className={"side-mnu__tab-label " + (this.props.selectedTab === "LibraryMaterials" ? "side-mnu__tab-label--selected": "") } onClick={this.handleSelectTab} data-name="LibraryMaterials">Материалы библиотеки</label>
+					<label className={"side-mnu__tab-label " + (this.props.selectedTab === "Files" ? "side-mnu__tab-label--selected": "") } onClick={this.handleSelectTab} data-name="Files">Файлы</label>
 				</div>
 			</aside>
 		);
@@ -38,9 +46,28 @@ var SideBar = React.createClass({
 });
 
 var Base = React.createClass({
+	
+	handleChange: function(e){
+		console.log(e);
+	},
+
+	getInitialState: function() {
+	    return {
+	      startDate: moment()
+		};
+	},
+
+	handleChange: function(date) {
+		this.setState({
+		  startDate: date
+		});
+	},
+
 	render: function(){
 		return (
-			<div>Base</div>
+			<div>
+				<DatePicker selected={this.state.startDate} onChange={this.handleChange} weekdays={['Пн','Вт','Ср','Чт','Пт','Сб', 'Вс']} weekStart='0'/>
+			</div>
 		);
 	}
 });
@@ -50,15 +77,17 @@ var Requests = React.createClass({
 		return (
 			<div>
 				<CheckBox label={"Автоматически включать в состав участников"} />
+				<CheckBox label={"Необходимо подтверждение от непосредственного руководителя"} />
+				<CheckBox label={"Необходимо подтверждение от ответственного за мероприятие"} />
 			</div>
 		);
 	}
 });
 
-var Members = React.createClass({
+var Collaborators = React.createClass({
 	render: function(){
 		return (
-			<div>Members</div>
+			<div>Collaborators</div>
 		);
 	}
 });
@@ -106,7 +135,7 @@ var Files = React.createClass({
 var EventEdit = React.createClass({
 
 	componentWillMount: function(){
-		this.sideBarComponents = {'Base': Base, 'Requests': Requests, 'Members': Members, 'Tutors': Tutors, 'Testing': Testing, 'Courses': Courses, 'LibraryMaterials': LibraryMaterials, 'Files': Files};
+		this.sideBarComponents = {'Base': Base, 'Requests': Requests, 'Collaborators': Collaborators, 'Tutors': Tutors, 'Testing': Testing, 'Courses': Courses, 'LibraryMaterials': LibraryMaterials, 'Files': Files};
 	},
 
 	componentDidMount: function() {
@@ -123,7 +152,7 @@ var EventEdit = React.createClass({
 
 	getInitialState: function () {
 		var state = getEventEditState();
-		state.selectedTab = 'Base';
+		state.selectedTab = { key: 'Base', value: 'Основные' };
 		return state;
 	},
 
@@ -137,13 +166,13 @@ var EventEdit = React.createClass({
 	},
 
 	render: function(){
-		var tabView = this.getTabView(this.state.selectedTab);
+		var tabView = this.getTabView(this.state.selectedTab.key);
 		return(
 			<div className="container">
-				<SideBar onSelect={this.handleSelectTab} selectedTab={this.state.selectedTab}/>
+				<SideBar onSelect={this.handleSelectTab} selectedTab={this.state.selectedTab.key}/>
 				<div className="calendar">
 					<header className ="calendar-header">
-						<span>{this.state.selectedTab}</span>
+						<span>{this.state.selectedTab.value}</span>
 					</header>
 					{tabView}
 				</div>
