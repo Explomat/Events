@@ -3,12 +3,10 @@ var Hasher = require('../utils/Hasher');
 var EventEditStore = require('../stores/EventEditStore');
 var CheckBox = require('./modules/CheckBox');
 var DatePicker = require('react-datepicker');
+var SelectItem = require('./modules/selectItem/SelectItem');
 
 var moment = require('moment');
 require('moment/locale/ru');
-
-console.log(moment(new Date()));
-console.log(moment("12-25-1995", "MM-DD-YYYY"));
 
 function getEventEditState() {
 	return EventEditStore.getData();
@@ -170,6 +168,7 @@ var EventEdit = React.createClass({
 		return(
 			<div className="container">
 				<SideBar onSelect={this.handleSelectTab} selectedTab={this.state.selectedTab.key}/>
+				<SelectItem />
 				<div className="calendar">
 					<header className ="calendar-header">
 						<span>{this.state.selectedTab.value}</span>

@@ -1,5 +1,4 @@
 var React = require('react');
-var UI = require('../../utils/UI');
 
 var ModalBoxContent = React.createClass({
 
@@ -183,9 +182,9 @@ var ModalBox = React.createClass({
     },
 
     shift: function(){
-    	var coordinates = UI.getElementCoordinates(this.refs.modal);
-    	var shiftX = this.props.positionX - coordinates.positionX;
-    	var shiftY = this.props.positionY - coordinates.positionY;
+    	var coordinates = this.refs.modal.getBoundingClientRect();
+    	var shiftX = this.props.positionX - coordinates.left;
+    	var shiftY = this.props.positionY - coordinates.top;
 		var x = Number(shiftX);
 		var y = Number(shiftY);
 		this.refs.modal.style.transform = 'scale(' + this.props.scale +')';

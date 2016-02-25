@@ -1,0 +1,50 @@
+.select-item {
+	.select-item__modal-box {
+		width: 1050px;
+	}
+
+	.caret{
+		display: inline-block;
+	    width: 0;
+	    height: 0;
+	    margin-left: 2px;
+	    vertical-align: middle;
+	    border-top: 4px dashed;
+	    border-right: 4px solid transparent;
+	    border-left: 4px solid transparent;
+	    transition: all 0.3s ease-out;
+
+		&.rotate {
+			transform: rotate(180deg);
+		}
+	}
+
+	.items {
+		width: 70%;
+		float: left;
+		border-right: 1px solid #ccc;
+
+		.items__header {
+			.header-row {
+				.header-row__col-name {
+					margin-right: 5px;
+				}
+			}
+		}
+
+		.items__body{
+			font-size: 13px;
+		}
+
+		.body-row {
+			.body-row__col {
+				padding: 8px 0;
+			}
+		}
+	}
+
+	.selected-items {
+		width: 30%;
+		float: right;
+	}
+}
