@@ -22,6 +22,7 @@ var EventSideBar = React.createClass({
 	render: function(){
 		var time = this.getTime();
 		var typeIconClass = this.props.type === EventTypes.keys.webinar ? 'icon--type--webinar': 'icon--type--fulltime';
+		var statusIconClass = 'status-icon--' + this.props.status;
 		return(
 			<section className="timetable__event clearfix">
 				<div className="timetable__event-info-wrapper">
@@ -29,10 +30,8 @@ var EventSideBar = React.createClass({
 					<p className="timetable__event-info timetable__event-info--time">{time}</p>
 					<i className={"icon icon--small "+ typeIconClass +" info-icon"}></i>
 					<TextOverflow className={"timetable__event-info timetable__event-info--name"} value={this.props.name} rowsCount={2} />
-					<div className="timetable__status">
-						<i className="info-icon fa fa-fire"></i>
-						<p className="timetable__event-info timetable__event-info--region">{EventStatuses.values[this.props.status]}</p>
-					</div>
+					<i className={"fa fa-circle info-icon status-icon " + statusIconClass}></i>
+					<p className="timetable__event-info timetable__event-info--region">{EventStatuses.values[this.props.status]}</p>
 				</div>
 				<a href={"#event/view/" + this.props.id} className="event-btn timetable__event-details-btn">Подробнее</a>
 			</section>

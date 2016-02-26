@@ -68,6 +68,19 @@
 					color: $elementsColor;
 				}
 
+				.status-icon {
+
+					&.status-icon--active {
+						color: #8EEC99;
+					}
+					&.status-icon--close {
+						color: #DEDEDE;
+					}
+					&.status-icon--plan {
+						color: #8ED3EC;
+					}
+				}
+
 				.timetable__event-info{
 					font-size: .9em;
 					margin-top: 0;
