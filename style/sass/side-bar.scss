@@ -75,14 +75,14 @@
 					margin-left: 44px;
 					word-break: break-all;
 
-					&.timetable__event-info--time{
+					&.--time{
 						font-weight: bold;
 					}
-					&.timetable__event-info--name{
+					&.--name{
 						padding-right: 8px;
-						margin-bottom: 8px
+						margin-bottom: 8px;
 					}
-					&.timetable__event-info--place{
+					&.--region{
 						display: inline-block;
 						margin: 0 8px 8px 0;
 					}

@@ -22,7 +22,9 @@ var Collaborator = React.createClass({
 	render: function() {
 		return (
 			<div className="event-item">
-				<i className="event-item__icon fa fa-user"></i>
+				<div className="event-item__icon">
+					<img className="event-item__icon-img" src={this.props.imgHref} />
+				</div>
 				<div className="event-wrapper">
 					<a href={this.props.href} title={this.props.fullname} target="__blank" className="event-wrapper__fullname">{this.props.fullname}</a>
 				</div>
@@ -36,7 +38,9 @@ var Tutor = React.createClass({
 	render: function() {
 		return (
 			<div className="event-item">
-				<i className="event-item__icon fa fa-user"></i>
+				<div className="event-item__icon">
+					<img className="event-item__icon-img" src={this.props.imgHref} />
+				</div>
 				<div className="event-wrapper">
 					<a href={this.props.href} title={this.props.fullname} target="__blank" className="event-wrapper__fullname">{this.props.fullname}</a>
 					<i className="event-wrapper__phone-icon fa fa-phone"></i>
@@ -54,7 +58,9 @@ var Lector = React.createClass({
 	render: function() {
 		return (
 			<div className="event-item">
-				<i className="event-item__icon fa fa-user"></i>
+				<div className="event-item__icon">
+					<img className="event-item__icon-img" src={this.props.imgHref} />
+				</div>
 				<div className="event-wrapper">
 					<a href={this.props.href} title={this.props.fullname} target="__blank" className="event-wrapper__fullname">{this.props.fullname}</a>
 					<i className="event-wrapper__phone-icon fa fa-phone"></i>

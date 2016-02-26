@@ -69,7 +69,7 @@ var Row = React.createClass({
 
 	handleAddItem: function(){
 		if (this.context.onAddItem){
-			this.context.onAddItem(this.props.id, this.props.cols[0]);
+			this.context.onAddItem(this.props.id, this.props.cols);
 		}
 	},
 
@@ -131,12 +131,55 @@ var Items = React.createClass({
 	}
 });
 
+var SelectedItem = React.createClass({
+
+	contextTypes: {
+		onRemoveItem: React.PropTypes.func
+	},
+
+	propTypes: {
+		id: React.PropTypes.string, 
+		cols: React.PropTypes.array
+	},
+
+	handleRemoveItem: function(){
+		if (this.context.onRemoveItem){
+			this.context.onRemoveItem(this.props.id, this.props.cols);
+		}
+	},
+
+	render: function(){
+		return(
+			<div>
+				<label>{this.props.cols[0]}</label>
+				<button onClick={this.handleRemoveItem}>-</button>
+			</div>
+		);
+	}
+});
+
 var SelectedItems = React.createClass({
+
+	propTypes: {
+		items: React.PropTypes.array //[{id:'', cols: [{}, ...]}, ...]
+	},
+
+	getDefaultProps: function(){
+		return {
+			items: []
+		}
+	},
+
+	getItemsMarkup: function(){
+		return this.props.items.map(function(item, index){
+			return <SelectedItem key={index} {...item}/>
+		});
+	},
 
 	render: function() {
 		return(
 			<div className="selected-items">
-				
+				{this.getItemsMarkup()}
 			</div>
 		);
 	}
@@ -146,18 +189,20 @@ var SelectItem = React.createClass({
 
 	childContextTypes: {
 		onSort: React.PropTypes.func,
-		onAddItem: React.PropTypes.func
+		onAddItem: React.PropTypes.func,
+		onRemoveItem: React.PropTypes.func
 	},
 
     getChildContext: function() {
     	return {
     		onSort: this.onSort,
-    		onAddItem: this.onAddItem
+    		onAddItem: this.onAddItem,
+    		onRemoveItem: this.onRemoveItem
     	};
   	},
 
 	propTypes: {
-		items: React.PropTypes.array,
+		items: React.PropTypes.object,
 		selectedItems: React.PropTypes.array,
 		query: React.PropTypes.string,
 		title: React.PropTypes.string
@@ -240,12 +285,23 @@ var SelectItem = React.createClass({
 		this.setState({items: items});
 	},
 
-	onAddItem: function(id, name){
+	onAddItem: function(id, cols){
 		var items = this.state.items;
 		var selectedItems = this.state.selectedItems;
-		selectedItems.push({ id: id, name: name });
+		selectedItems.push({ id: id, cols: cols });
 
 		items.rows = items.rows.filter(function(r){
+			return r.id !== id;
+		});
+		this.setState({ items: items, selectedItems: selectedItems});
+	},
+
+	onRemoveItem: function(id, cols){
+		var items = this.state.items;
+		var selectedItems = this.state.selectedItems;
+		items.rows.push({ id: id, cols: cols });
+
+		selectedItems = selectedItems.filter(function(r){
 			return r.id !== id;
 		});
 		this.setState({ items: items, selectedItems: selectedItems});
@@ -280,6 +336,7 @@ var SelectItem = React.createClass({
 		return {
 			items: { headerCols: [], rows: [] },
 			selectedItems: [],
+			title: ' '
 		}
 	},
 

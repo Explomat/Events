@@ -108,14 +108,26 @@
 				    		padding: 8px 0 8px 0;
 
 							.event-item__icon {
-								padding: 2px 5px;
+							    width: 50px;
+							    height: 50px;
+							    border-radius: 50%;
+							    overflow: hidden;
+							    display: inline-block;
+							    vertical-align: middle;
+
+
+								/* padding: 2px 5px;
 							    border: 2px solid #969696;
 							    color: #646464;
 							    border-radius: 50%;
 							    display: inline-block;
 							    font-size: 1.7em;
 							    text-align: center;
-							    vertical-align: middle;
+							    vertical-align: middle; */
+
+							    .event-item__icon-img {
+							    	max-width: 100%;
+							    }
 							}
 
 							.event-wrapper {
@@ -123,7 +135,7 @@
 							    vertical-align: middle;
 							    font-size: .8em;
 							    margin-left: 8px;
-							    width: 85%;
+							    width: 80%;
 
 								.event-wrapper__fullname {
 									display: block;

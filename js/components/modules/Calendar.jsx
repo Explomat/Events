@@ -8,6 +8,7 @@ var TextOverflow = require('./TextOverflow');
 var DateUtils = require('../../utils/event/DateUtils');
 var EventUtils = require('../../utils/event/EventUtils');
 var EventTypes = require('../../utils/event/EventTypes');
+var EventStatuses = require('../../utils/event/EventStatuses');
 var CalendarStore = require('../../stores/CalendarStore');
 var CalendarActions = require('../../actions/CalendarActions');
 var Config = require('../../config');
@@ -28,8 +29,10 @@ var EventSideBar = React.createClass({
 					<p className="timetable__event-info timetable__event-info--time">{time}</p>
 					<i className={"icon icon--small "+ typeIconClass +" info-icon"}></i>
 					<TextOverflow className={"timetable__event-info timetable__event-info--name"} value={this.props.name} rowsCount={2} />
-					<i className="info-icon fa fa-map-marker"></i>
-					<p className="timetable__event-info timetable__event-info--place">{this.props.place}</p>
+					<div className="timetable__status">
+						<i className="info-icon fa fa-fire"></i>
+						<p className="timetable__event-info timetable__event-info--region">{EventStatuses.values[this.props.status]}</p>
+					</div>
 				</div>
 				<a href={"#event/view/" + this.props.id} className="event-btn timetable__event-details-btn">Подробнее</a>
 			</section>

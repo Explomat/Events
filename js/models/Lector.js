@@ -8,4 +8,5 @@ module.exports = function(args){
 	this.email = args.email || 'Нет электронного адреса';
 	this.phone = args.phone || 'Нет телефона';
 	this.href = args.href || '#';
+	this.imgHref = args.imgHref || '#';
 }
