@@ -1,10 +1,12 @@
 var React = require('react');
 
-var SearchBox = React.createClass({
+var SearchBar = React.createClass({
 
 	propsTypes: {
 		value: React.PropTypes.string,
-		className: React.PropTypes.string
+		className: React.PropTypes.string,
+		classNameInput: React.PropTypes.string,
+		onSearch: React.PropTypes.func
 	},
 
 	getInitialState: function(){
@@ -35,13 +37,14 @@ var SearchBox = React.createClass({
 
 	render: function() {
 		var className = this.props.className ? this.props.className : '';
+		var classNameInput = this.props.classNameInput ? this.props.classNameInput : '';
 		return (
 			<div className={"search-box " + className}>
-				<input onChange={this.handleChange} onBlur={this.handleblur} onKeyDown={this.handleSearch} className="search-box__search-input" type="text" value={this.state.value} placeholder="Поиск..." />
+				<input onChange={this.handleChange} onBlur={this.handleblur} onKeyDown={this.handleSearch} className={"search-box__search-input " + classNameInput} type="text" value={this.state.value} placeholder="Поиск..." />
 				<span className="search-box__search-icon fa fa-search"></span>
 			</div>
 		);
 	}
 });
 
-module.exports = SearchBox;
+module.exports = SearchBar;

@@ -19,7 +19,7 @@ var SelectedItem = React.createClass({
 
 	render: function(){
 		return(
-			<div>
+			<div className="selected-items__item">
 				<label>{this.props.cols[0]}</label>
 				<button onClick={this.handleRemoveItem}>-</button>
 			</div>

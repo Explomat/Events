@@ -1,13 +1,14 @@
 var React = require('react');
 var SelectedItems = require('./SelectedItems');
 var Items = require('./Items');
+var Filters = require('./Filters');
 //var Ajax = require('../../utils/Ajax');
 
 var items = {
-	headerCols: [{ name: 'a', type: 'string' }, { name: 'b', type: 'string'}, { name: 'c', type: 'string' }],
+	headerCols: [{ name: 'a', type: 'string' }, { name: 'b', type: 'string'}, { name: 'c', type: 'integer' }],
 	rows: [
-		{ id: 1, cols: ['Матвеев Савва Янович', 'должность_должность', 'подразделение_подразделение']},
-		{ id: 2, cols: ['Габдуллин Дамир Габдульбариевич', 'Группа дистанционного обучения', 'Руководитель группы']}
+		{ id: 1, cols: ['Матвеев Савва Янович', 'должность_должность', '1']},
+		{ id: 2, cols: ['Габдуллин Дамир Габдульбариевич', 'Группа дистанционного обучения', '2']}
 	]
 }
 
@@ -36,10 +37,43 @@ var SelectItems = React.createClass({
 
 	types: {'integer': 'integer', 'date': 'date'},
 
+	getInitialState: function() {
+		return {
+			items: this.props.items,
+			selectedItems: this.props.selectedItems,
+			page: 1
+		}
+	},
+
+	getDefaultProps: function(){
+		return {
+			items: { headerCols: [], rows: [] },
+			selectedItems: [],
+			title: ' '
+		}
+	},
+
+	componentDidMount: function(){
+		/*this._getItems(this.state.page).then(function(items){
+			this.setState({items: items});
+		}.bind(this))*/
+		items.rows = items.rows.map(function(r){
+			var cols = r.cols.map(function(c, index){
+				return this._castType(c, items.headerCols[index].type);
+			}.bind(this));
+			return {
+				id: r.id,
+				cols: cols
+			}
+		}.bind(this));
+		items.rows = this._filterItems(items.rows, this.state.selectedItems);
+		this.setState({items: items});
+	},
+
 	_castType: function(val, type){
 
 		function isInteger(val) {
-			return /\d+/.test(val);
+			return isNaN(parseInt(val)) === false;
 		}
 
 		function isDate(val){
@@ -99,7 +133,7 @@ var SelectItems = React.createClass({
 		var isAsc = isAscending ? 1 : -1;
 		var rows = this.state.items.rows;
 		rows.sort(function(first, second){
-			return first[index] > second[index] ? isAsc : first[index] === second[index] ? 0 : -(isAsc);
+			return first.cols[index] > second.cols[index] ? isAsc : first.cols[index] === second.cols[index] ? 0 : -(isAsc);
 		});
 		this.setState({items: items});
 	},
@@ -126,39 +160,6 @@ var SelectItems = React.createClass({
 		this.setState({ items: items, selectedItems: selectedItems});
 	},
 
-	componentDidMount: function(){
-		/*this._getItems(this.state.page).then(function(items){
-			this.setState({items: items});
-		}.bind(this))*/
-		items.rows = items.rows.map(function(r){
-			var cols = r.cols.map(function(c, index){
-				return this._castType(c, items.headerCols[index].type);
-			}.bind(this));
-			return {
-				id: r.id,
-				cols: cols
-			}
-		}.bind(this));
-		items.rows = this._filterItems(items.rows, this.state.selectedItems);
-		this.setState({items: items});
-	},
-
-	getInitialState: function() {
-		return {
-			items: this.props.items,
-			selectedItems: this.props.selectedItems,
-			page: 1
-		}
-	},
-
-	getDefaultProps: function(){
-		return {
-			items: { headerCols: [], rows: [] },
-			selectedItems: [],
-			title: ' '
-		}
-	},
-
 	render: function() {
 		return (
 			<div className="select-item modal-box" style={{display: "block"}}>
@@ -169,6 +170,7 @@ var SelectItems = React.createClass({
 							<span>{this.props.title}</span>
 						</div>
 						<div className="select-item__body modal-box__body clearfix">
+							<Filters />
 							<Items {...this.state.items} />
 							<SelectedItems items = {this.state.selectedItems} />
 						</div>
