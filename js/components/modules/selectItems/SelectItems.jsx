@@ -1,4 +1,6 @@
 var React = require('react');
+var SelectedItems = require('./SelectedItems');
+var Items = require('./Items');
 //var Ajax = require('../../utils/Ajax');
 
 var items = {
@@ -9,183 +11,7 @@ var items = {
 	]
 }
 
-var HeaderCol = React.createClass({
-
-	contextTypes: {
-		onSort: React.PropTypes.func
-	},
-
-	propTypes: {
-		name: React.PropTypes.string,
-		type: React.PropTypes.string,
-		onSort: React.PropTypes.func
-	},
-
-	getInitialState: function(){
-		return {
-			isRotate: false
-		}
-	},
-
-	getDefaultProps: function(){
-		return {
-			name: ''
-		}
-	},
-
-	handleSort: function(){
-		if (this.context.onSort) {
-			this.context.onSort(this.props.index, this.state.isRotate);
-			this.setState({isRotate: !this.state.isRotate});
-		}
-	},
-
-	render: function(){
-		var caretClassName = this.state.isRotate ? "rotate" : "";
-		return(
-			<th onClick={this.handleSort}>
-				<span className="header-row__col-name">{this.props.name}</span>
-				<span className={"caret " + caretClassName}></span>
-			</th>
-		);
-	}
-});
-
-var Row = React.createClass({
-
-	contextTypes: {
-		onAddItem: React.PropTypes.func
-	},
-
-	propTypes: {
-		cols: React.PropTypes.array
-	},
-
-	getDefaultProps: function(){
-		return {
-			cols: []
-		}
-	},
-
-	handleAddItem: function(){
-		if (this.context.onAddItem){
-			this.context.onAddItem(this.props.id, this.props.cols);
-		}
-	},
-
-	getMarkup: function(){
-		var cols = this.props.cols;
-		return (
-			<tr className="body-row">
-				<td>
-					<button onClick={this.handleAddItem}>+</button>
-				</td>
-				{cols.map(function(c, index){
-					return <td key={index} className="body-row__col">{c}</td>
-				})}
-			</tr>
-		);
-	},
-
-	render: function(){
-		return this.getMarkup();
-	}
-});
-
-var Items = React.createClass({
-
-	propTypes: {
-		headerCols: React.PropTypes.array.isRequired,
-		rows: React.PropTypes.array.isRequired
-	},
-
-	getColsMarkup: function(){
-		var headerCols = this.props.headerCols;
-		var markUpCols = [<th key={0}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>];
-		headerCols.forEach(function(c, index){
-			markUpCols.push(<HeaderCol key={index + 1} name={c.name} index={index}/>);
-		});
-		return markUpCols;
-	},
-
-	getRowsMarkUp: function(){
-		var rows = this.props.rows;
-		return rows.map(function(r, index){
-			return <Row key={index} id={r.id} cols={r.cols} />
-		});
-	},
-
-	render: function() {
-		var cols = this.getColsMarkup();
-		var rows = this.getRowsMarkUp();
-		return(
-			<table className="items">
-				<thead className="items__header">
-					<tr className="header-row">{cols}</tr>
-				</thead>
-				<tbody className="items__body">
-					{rows}
-				</tbody>
-			</table>
-		);
-	}
-});
-
-var SelectedItem = React.createClass({
-
-	contextTypes: {
-		onRemoveItem: React.PropTypes.func
-	},
-
-	propTypes: {
-		id: React.PropTypes.string, 
-		cols: React.PropTypes.array
-	},
-
-	handleRemoveItem: function(){
-		if (this.context.onRemoveItem){
-			this.context.onRemoveItem(this.props.id, this.props.cols);
-		}
-	},
-
-	render: function(){
-		return(
-			<div>
-				<label>{this.props.cols[0]}</label>
-				<button onClick={this.handleRemoveItem}>-</button>
-			</div>
-		);
-	}
-});
-
-var SelectedItems = React.createClass({
-
-	propTypes: {
-		items: React.PropTypes.array //[{id:'', cols: [{}, ...]}, ...]
-	},
-
-	getDefaultProps: function(){
-		return {
-			items: []
-		}
-	},
-
-	getItemsMarkup: function(){
-		return this.props.items.map(function(item, index){
-			return <SelectedItem key={index} {...item}/>
-		});
-	},
-
-	render: function() {
-		return(
-			<div className="selected-items">
-				{this.getItemsMarkup()}
-			</div>
-		);
-	}
-});
-
-var SelectItem = React.createClass({
+var SelectItems = React.createClass({
 
 	childContextTypes: {
 		onSort: React.PropTypes.func,
@@ -208,16 +34,12 @@ var SelectItem = React.createClass({
 		title: React.PropTypes.string
 	},
 
-	types: {'integer': 'integer', 'string': 'string', 'boolean': 'boolean', 'date': 'date'},
+	types: {'integer': 'integer', 'date': 'date'},
 
 	_castType: function(val, type){
 
 		function isInteger(val) {
 			return /\d+/.test(val);
-		}
-
-		function isBoolean(val){
-			return val === 'true' || val === 'false';
 		}
 
 		function isDate(val){
@@ -229,9 +51,6 @@ var SelectItem = React.createClass({
 			case this.types.integer:
 				if (isInteger(val))
 					return Number(val);
-			case this.types.boolean:
-				if (isBoolean(val))
-					return val === 'true' ? true : false;
 			case this.types.date:
 				if (isDate(val))
 					return new Date(val);
@@ -363,4 +182,4 @@ var SelectItem = React.createClass({
 	}
 });
 
-module.exports = SelectItem;
+module.exports = SelectItems;

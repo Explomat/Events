@@ -3,7 +3,7 @@ var Hasher = require('../utils/Hasher');
 var EventEditStore = require('../stores/EventEditStore');
 var CheckBox = require('./modules/CheckBox');
 var DatePicker = require('react-datepicker');
-var SelectItem = require('./modules/selectItem/SelectItem');
+var SelectItem = require('./modules/selectItems/SelectItems');
 
 var moment = require('moment');
 require('moment/locale/ru');
@@ -168,7 +168,7 @@ var EventEdit = React.createClass({
 		return(
 			<div className="container">
 				<SideBar onSelect={this.handleSelectTab} selectedTab={this.state.selectedTab.key}/>
-				<SelectItem />
+				<SelectItem title={"Выберите участников"}/>
 				<div className="calendar">
 					<header className ="calendar-header">
 						<span>{this.state.selectedTab.value}</span>
