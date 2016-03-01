@@ -2,11 +2,12 @@ var React = require('react');
 var Hasher = require('../utils/Hasher');
 var EventEditStore = require('../stores/EventEditStore');
 var CheckBox = require('./modules/CheckBox');
-var DateTime = require('react-datetimepicker-bootstrap');
+var DatePicker = require('react-datepicker');
+var InputMoment = require('input-moment');
 var SelectItem = require('./modules/selectItems/SelectItems');
 
 var moment = require('moment');
-//require('moment/locale/ru');
+require('moment/locale/ru');
 
 function getEventEditState() {
 	return EventEditStore.getData();
@@ -56,15 +57,13 @@ var Base = React.createClass({
 	},
 
 	handleChange: function(date) {
-		this.setState({
-		  startDate: date
-		});
+		this.setState({startDate: date});
 	},
 
 	render: function(){
 		return (
 			<div>
-				<DateTimePicker id={"datetimepicker"} />
+				<InputMoment moment={this.state.startDate} onChange={this.handleChange} onSave={this.handleSave} />
 			</div>
 		);
 	}
