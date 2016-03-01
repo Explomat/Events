@@ -2,11 +2,11 @@ var React = require('react');
 var Hasher = require('../utils/Hasher');
 var EventEditStore = require('../stores/EventEditStore');
 var CheckBox = require('./modules/CheckBox');
-var DatePicker = require('react-datepicker');
+var DateTime = require('react-datetimepicker-bootstrap');
 var SelectItem = require('./modules/selectItems/SelectItems');
 
 var moment = require('moment');
-require('moment/locale/ru');
+//require('moment/locale/ru');
 
 function getEventEditState() {
 	return EventEditStore.getData();
@@ -64,7 +64,7 @@ var Base = React.createClass({
 	render: function(){
 		return (
 			<div>
-				<DatePicker selected={this.state.startDate} onChange={this.handleChange} weekdays={['Пн','Вт','Ср','Чт','Пт','Сб', 'Вс']} weekStart='0'/>
+				<DateTimePicker id={"datetimepicker"} />
 			</div>
 		);
 	}
@@ -151,6 +151,7 @@ var EventEdit = React.createClass({
 	getInitialState: function () {
 		var state = getEventEditState();
 		state.selectedTab = { key: 'Base', value: 'Основные' };
+		state.isShowModal = false;
 		return state;
 	},
 
@@ -163,17 +164,31 @@ var EventEdit = React.createClass({
 		this.setState({selectedTab: tabName})
 	},
 
+	handleCloseModal: function(){
+		this.setState({isShowModal: false});
+	},
+
+	handleShowModal: function(){
+		this.setState({isShowModal: true});
+	},
+
+	handleSaveItems: function(items){
+		this.setState({isShowModal: false});
+	},
+
 	render: function(){
 		var tabView = this.getTabView(this.state.selectedTab.key);
+		var modal = this.state.isShowModal ? <SelectItem title={"Выберите участников"} onClose={this.handleCloseModal} onSave={this.handleSaveItems}/> : null;
 		return(
 			<div className="container">
 				<SideBar onSelect={this.handleSelectTab} selectedTab={this.state.selectedTab.key}/>
-				<SelectItem title={"Выберите участников"}/>
 				<div className="calendar">
 					<header className ="calendar-header">
 						<span>{this.state.selectedTab.value}</span>
 					</header>
 					{tabView}
+					{modal}
+					<button onClick={this.handleShowModal}>Open modal</button>
 				</div>
 			</div>
 		);

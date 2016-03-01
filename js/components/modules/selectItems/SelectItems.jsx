@@ -32,7 +32,8 @@ var SelectItems = React.createClass({
 		items: React.PropTypes.object,
 		selectedItems: React.PropTypes.array,
 		query: React.PropTypes.string,
-		title: React.PropTypes.string
+		title: React.PropTypes.string,
+		onClose: React.PropTypes.func
 	},
 
 	types: {'integer': 'integer', 'date': 'date'},
@@ -160,10 +161,22 @@ var SelectItems = React.createClass({
 		this.setState({ items: items, selectedItems: selectedItems});
 	},
 
+	handleClose: function(){
+		if (this.props.onClose){
+			this.props.onClose();
+		}
+	},
+
+	handleSave: function(){
+		if (this.props.onSave){
+			this.props.onSave(this.state.selectedItems);
+		}
+	},
+
 	render: function() {
 		return (
-			<div className="select-item modal-box" style={{display: "block"}}>
-				<div className="select-item__modal-box modal-box__dialog">
+			<div className="select-items modal-box" style={{display: "block"}}>
+				<div className="select-items__modal-box modal-box__dialog">
 					<div className="modal-box__content">
 						<div className="select-item__header modal-box__header">
 							<button type="button" className="close-btn" onClick={this.handleClose}>&times;</button>

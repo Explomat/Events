@@ -1,6 +1,29 @@
-.select-item {
-	.select-item__modal-box {
+.select-items {
+	.select-items__modal-box {
 		width: 1050px;
+	}
+
+	.filters {
+		.filters__searchBar {
+			display: inline-block;
+		}
+
+		.filters__searchBar-input {
+			background-color: #fff;
+    		color: #000;
+		}
+
+		.filters__paging {
+			display: inline-block;
+		
+			.input {
+				outline: 0;
+			}
+		}
+
+		.filters__notValid {
+			border: 1px solid red;
+		}
 	}
 
 	.caret{
