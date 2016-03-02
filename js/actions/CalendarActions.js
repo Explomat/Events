@@ -71,6 +71,13 @@ var CalendarActions = {
 			date: date
 		});
 	},
+
+	loading: function(isLoading){
+		AppDispatcher.handleAction({
+			actionType: CalendarConstants.LOADING_CALENDAR_DATA,
+			isLoading: isLoading
+		});
+	}
 }
 
 module.exports = CalendarActions;

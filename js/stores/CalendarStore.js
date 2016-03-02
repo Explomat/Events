@@ -35,24 +35,28 @@ function changeMonth(monthIndex, events){
 	_calendar.selectedMonthIndex = monthIndex;
 	_calendar.events = prepareEvents(events);
 	_calendar.filterEvents = _filterEvents(_calendar.events);
+	loading(false);
 }
 
 function changeYear(year, events){
 	_calendar.selectedYear = year;
 	_calendar.events = prepareEvents(events);
 	_calendar.filterEvents = _filterEvents(_calendar.events);
+	loading(false);
 }
 
 function changeBusinessType(businessType, events){
 	_calendar.selectedBusinessType = businessType;
 	_calendar.events = prepareEvents(events);
 	_calendar.filterEvents = _filterEvents(_calendar.events);
+	loading(false);
 }
 
 function changeRegion(region, events){
 	_calendar.selectedRegion = region;
 	_calendar.events = prepareEvents(events);
 	_calendar.filterEvents = _filterEvents(_calendar.events);
+	loading(false);
 }
 
 function selectDate(date){
@@ -67,6 +71,10 @@ function changeStatus(status){
 function changeSearchText(text){
 	_calendar.searchText = text;
 	_calendar.filterEvents = _filterEvents(_calendar.events);
+}
+
+function loading(isLoading){
+	_calendar.isLoading = isLoading;
 }
 
 function startEvent(eventId) {
@@ -138,6 +146,9 @@ CalendarStore.dispatchToken = AppDispatcher.register(function(payload) {
 			break;
 		case CalendarConstants.SELECT_CALENDAR_DATE:
 			selectDate(action.date);
+			break;
+		case CalendarConstants.LOADING_CALENDAR_DATA:
+			loading(action.isLoading);
 			break;
 
 		//listen constants from other store

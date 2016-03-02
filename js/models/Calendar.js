@@ -42,4 +42,5 @@ module.exports = function(args){
 	this.selectedRegion = args.selectedRegion || this.user.region;
 	this.selectedStatus = args.selectedStatus ? args.selectedStatus : CalendarEventStatuses.keys.all;
 	this.searchText = args.searchText ? args.searchText : '';
+	this.isLoading = false;
 }

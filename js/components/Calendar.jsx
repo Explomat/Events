@@ -223,9 +223,7 @@ var CalendarView = React.createClass({
 	},
 
 	getInitialState: function () {
-		var state = getState();
-		state.isLoading = false;
-		return state;
+		return getState();
 	},
 
 	getDefaultProps: function(){
@@ -320,7 +318,7 @@ var CalendarView = React.createClass({
 	},
 
 	handleLoading: function(){
-		this.setState({ isLoading: true });
+		CalendarActions.loading(true);
 	},
 
 	render: function() {
