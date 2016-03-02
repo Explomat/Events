@@ -1,6 +1,19 @@
+@import '../../../modal/src/style/modal';
+
 .select-items {
+	
 	.select-items__modal-box {
 		width: 1050px;
+
+		.select-items__content {
+
+			.select-item__header{
+			}
+			.select-item__body{
+			}
+			.select-item__footer{
+			}
+		}
 	}
 
 	.filters {

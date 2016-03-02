@@ -4,7 +4,7 @@ var EventEditStore = require('../stores/EventEditStore');
 var CheckBox = require('./modules/CheckBox');
 var DatePicker = require('react-datepicker');
 var InputMoment = require('input-moment');
-var SelectItem = require('./modules/selectItems/SelectItems');
+var SelectItem = require('./modules/selectItems/index');
 
 var moment = require('moment');
 require('moment/locale/ru');
