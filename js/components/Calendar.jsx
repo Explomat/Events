@@ -1,17 +1,21 @@
 var React = require('react');
-var Auth = require('./Auth');
-var BusinessTypeFilter = require('../authmodules/BusinessTypeFilter');
-var RegionsFilter = require('../authmodules/RegionsFilter');
-var DropDown = require('./DropDown');
-var SearchBar = require('./SearchBar');
-var TextOverflow = require('./TextOverflow');
-var DateUtils = require('../../utils/event/DateUtils');
-var EventUtils = require('../../utils/event/EventUtils');
-var EventTypes = require('../../utils/event/EventTypes');
-var EventStatuses = require('../../utils/event/EventStatuses');
-var CalendarStore = require('../../stores/CalendarStore');
-var CalendarActions = require('../../actions/CalendarActions');
-var Config = require('../../config');
+var Auth = require('./modules/Auth');
+var BusinessTypeFilter = require('./authmodules/BusinessTypeFilter');
+var RegionsFilter = require('./authmodules/RegionsFilter');
+var DropDown = require('./modules/DropDown');
+var SearchBar = require('./modules/SearchBar');
+var TextOverflow = require('./modules/TextOverflow');
+var DateUtils = require('../utils/event/DateUtils');
+var EventUtils = require('../utils/event/EventUtils');
+var EventTypes = require('../utils/event/EventTypes');
+var EventStatuses = require('../utils/event/EventStatuses');
+var CalendarStore = require('../stores/CalendarStore');
+var CalendarActions = require('../actions/CalendarActions');
+var Config = require('../config');
+
+function getState() {
+	return CalendarStore.getData();
+}
 
 var EventSideBar = React.createClass({
 
@@ -30,8 +34,8 @@ var EventSideBar = React.createClass({
 					<p className="timetable__event-info timetable__event-info--time">{time}</p>
 					<i className={"icon icon--small "+ typeIconClass +" info-icon"}></i>
 					<TextOverflow className={"timetable__event-info timetable__event-info--name"} value={this.props.name} rowsCount={2} />
-					<i className={"fa fa-circle info-icon status-icon " + statusIconClass}></i>
-					<p className="timetable__event-info timetable__event-info--region">{EventStatuses.values[this.props.status]}</p>
+					<i className="fa fa-map-marker info-icon"></i>
+					<p className="timetable__event-info timetable__event-info--region">{this.props.place}</p>
 				</div>
 				<a href={"#event/view/" + this.props.id} className="event-btn timetable__event-details-btn">Подробнее</a>
 			</section>
@@ -196,28 +200,6 @@ var CalendarCell = React.createClass({
 
 var CalendarView = React.createClass({
 
-	_getDay: function(date){
-		if (!date) return -1;
-
-		var day = date.getDay();
-		if (day === 0) day = 7;
-		return day - 1;
-	},
-
-	_getLastDateInMonth: function(date) {
-		return new Date(date.getFullYear(), date.getMonth() + 1, 0);
-	},
-
-	_getEventsForDate: function(date){
-		var _events = [];
-		var filterEvents = this.props.filterEvents;
-		for (var i = filterEvents.length - 1; i >= 0; i--) {
-			var ev = filterEvents[i];
-			if (DateUtils.compare(ev.startDate, date)) _events.push(ev);
-		};
-		return _events;
-	},
-
 	propsTypes: {
 		currentDate: function(props, propName){
 			if (typeof(props[propName] !== Date)) {
@@ -232,10 +214,18 @@ var CalendarView = React.createClass({
 		events: React.PropTypes.array
 	},
 
-	getInitialState: function(){
-		return {
-			isLoading: false
-		}
+	componentDidMount: function() {
+		CalendarStore.addChangeListener(this._onChange);
+	},
+
+	componentWillUnmount: function() {
+		CalendarStore.removeChangeListener(this._onChange);
+	},
+
+	getInitialState: function () {
+		var state = getState();
+		state.isLoading = false;
+		return state;
 	},
 
 	getDefaultProps: function(){
@@ -244,31 +234,53 @@ var CalendarView = React.createClass({
 		}
 	},
 
-	componentWillReceiveProps: function(nextProps){
-		this.setState({isLoading: false});
+	_onChange: function() {
+		this.setState(getState());
+	},
+
+	_getDay: function(date){
+		if (!date) return -1;
+
+		var day = date.getDay();
+		if (day === 0) day = 7;
+		return day - 1;
+	},
+
+	_getLastDateInMonth: function(date) {
+		return new Date(date.getFullYear(), date.getMonth() + 1, 0);
+	},
+
+	_getEventsForDate: function(date){
+		var _events = [];
+		var filterEvents = this.state.filterEvents;
+		for (var i = filterEvents.length - 1; i >= 0; i--) {
+			var ev = filterEvents[i];
+			if (DateUtils.compare(ev.startDate, date)) _events.push(ev);
+		};
+		return _events;
 	},
 
 	getFiltersProps: function(){
 		return {
-			currentDate: this.props.currentDate,
-			years: this.props.years,
-			months: this.props.months,
-			businessTypes: this.props.businessTypes,
-			regions: this.props.regions,
-			statuses: this.props.statuses,
-			selectedYear: this.props.selectedYear,
-			selectedMonthIndex: this.props.selectedMonthIndex,
-			selectedBusinessType: this.props.selectedBusinessType,
-			selectedRegion: this.props.selectedRegion,
-			selectedStatus: this.props.selectedStatus,
-			searchText: this.props.searchText
+			currentDate: this.state.currentDate,
+			years: this.state.years,
+			months: this.state.months,
+			businessTypes: this.state.businessTypes,
+			regions: this.state.regions,
+			statuses: this.state.statuses,
+			selectedYear: this.state.selectedYear,
+			selectedMonthIndex: this.state.selectedMonthIndex,
+			selectedBusinessType: this.state.selectedBusinessType,
+			selectedRegion: this.state.selectedRegion,
+			selectedStatus: this.state.selectedStatus,
+			searchText: this.state.searchText
 		}
 	},
 
 	getRows: function(){
 		var rows = [];
-		var currentDate = this.props.currentDate;
-		var startDate = new Date(this.props.selectedYear, this.props.selectedMonthIndex);
+		var currentDate = this.state.currentDate;
+		var startDate = new Date(this.state.selectedYear, this.state.selectedMonthIndex);
 		//var lastDate = this._getLastDateInMonth(currentDate);
 		var startWeekDay = this._getDay(startDate);
 		//var lastWeekDay = this._getDay(lastDate);
@@ -291,7 +303,7 @@ var CalendarView = React.createClass({
 					day: curDay,
 					date: new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate()),
 					isCurrentDay: DateUtils.compare(currentDate, startDate),
-					isSelectedDay: DateUtils.compare(this.props.selectedDate, startDate),
+					isSelectedDay: DateUtils.compare(this.state.selectedDate, startDate),
 					events: isCurrentMonth ? this._getEventsForDate(startDate) : []
 				}
 				cells.push(<CalendarCell key={j} {...dayProps}/>);
@@ -316,7 +328,7 @@ var CalendarView = React.createClass({
 		var isLoadingClass = this.state.isLoading ? 'overlay-loading--show ': '';
 		return (
 			<div className="container">
-				<SideBar selectedDate={this.props.selectedDate} events={this.props.filterEvents}/>
+				<SideBar selectedDate={this.state.selectedDate} events={this.state.filterEvents}/>
 				<main className="calendar">
 					<Filters {...filtersProps} onChangeMonth={this.handleLoading} onChangeYear={this.handleLoading} onChangeBusinessType={this.handleLoading} onChangeRegion={this.handleLoading}/>
 					<div className="calendar-table__wrapper">

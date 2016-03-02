@@ -157,4 +157,5 @@ CalendarStore.dispatchToken = AppDispatcher.register(function(payload) {
 	return true;
 });
 
+window.CalendarStore = CalendarStore;
 module.exports = CalendarStore;

@@ -1,6 +1,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-var CalendarView = require('../components/CalendarView');
+var Calendar = require('../components/Calendar');
 var CalendarAPI = require('../api/CalendarAPI');
 var CalendarActions = require('../actions/CalendarActions');
 var Config = require('../config');
@@ -20,7 +20,7 @@ module.exports = {
 
 		return CalendarAPI.getData().then(function(calendarData){
 			CalendarActions.receiveData(calendarData);
-			ReactDOM.render(React.createElement(CalendarView), app);
+			ReactDOM.render(React.createElement(Calendar), app);
 		}.bind(this), function(err){
 			console.log(err);
 		});
