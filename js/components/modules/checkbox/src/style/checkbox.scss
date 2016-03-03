@@ -1,5 +1,3 @@
-@import 'variables';
-
 .checkbox-box {
     padding: 5px;
 
@@ -12,8 +10,8 @@
         cursor: pointer;
         width: 100%;
         font-weight: 400;
-        color: $primaryTextColor;
-        font-size: $fontSizeLarge;
+        color: #212121;
+        font-size: 16px;
         margin-bottom: 0;
         -moz-user-select: none;
         -webkit-user-select: none;

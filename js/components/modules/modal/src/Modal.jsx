@@ -33,8 +33,7 @@ var ModalBoxHeader = React.createClass({
 
 	contextTypes: {
         delay: React.PropTypes.number.isRequired,
-        parent: React.PropTypes.any.isRequired,
-        showParentScroll: React.PropTypes.func
+        parent: React.PropTypes.any.isRequired
     },
 
 	getDefaultProps: function(){
@@ -53,7 +52,7 @@ var ModalBoxHeader = React.createClass({
 				this.props.onClose();
 			}
 		}.bind(this), this.context.delay);
-		this.context.showParentScroll();
+		//this.context.showParentScroll();
 	},
 
 	render: function(){
@@ -100,8 +99,7 @@ var ModalBoxFooter = React.createClass({
 
 	contextTypes: {
         delay: React.PropTypes.number.isRequired,
-        parent: React.PropTypes.any.isRequired,
-        showParentScroll: React.PropTypes.func
+        parent: React.PropTypes.any.isRequired
     },
 
 	getDefaultProps: function(){
@@ -121,7 +119,7 @@ var ModalBoxFooter = React.createClass({
 				this.props.onSave();
 			}
 		}.bind(this), this.context.delay);
-		this.context.showParentScroll();
+		//this.context.showParentScroll();
 	},
 
 	render: function(){
@@ -148,8 +146,7 @@ var ModalBox = React.createClass({
 
     childContextTypes: {
 		delay: React.PropTypes.number.isRequired,
-		parent: React.PropTypes.any,
-		showParentScroll: React.PropTypes.func
+		parent: React.PropTypes.any
 	},
 
     getDefaultProps: function(){
@@ -166,8 +163,7 @@ var ModalBox = React.createClass({
     getChildContext: function() {
         return { 
         	delay: this.props.delay || 350,
-        	parent: this,
-        	showParentScroll: this.showParentScroll
+        	parent: this
         };
     },
 
@@ -196,27 +192,33 @@ var ModalBox = React.createClass({
     },
 
     hideParentScroll: function(){
-    	var _html = document.getElementsByTagName('html')[0]; 
+    	/*var _html = document.getElementsByTagName('html')[0]; 
     	var _body = document.getElementsByTagName('body')[0];
     	_html.style.overflowY = 'hidden';
-    	_body.style.overflowY = 'hidden';
+    	_body.style.overflowY = 'hidden';*/
     },
 
     showParentScroll: function(){
-    	var _html = document.getElementsByTagName('html')[0]; 
+    	/*var _html = document.getElementsByTagName('html')[0]; 
     	var _body = document.getElementsByTagName('body')[0];
     	_html.style.overflowY = 'auto';
-    	_body.style.overflowY = 'auto';
+    	_body.style.overflowY = 'auto';*/
     },
 
 	componentDidMount: function() {
 		this.shift();
 		setTimeout(this.toggle, 0);
-		this.hideParentScroll();
+		if (this.props.onDidMount) {
+			this.props.onDidMount();
+		}
+		//this.hideParentScroll();
 	},
 
 	componentWillUnmount: function(){
-		this.showParentScroll();
+		if (this.props.onWillUnmount) {
+			this.props.onWillUnmount();
+		}
+		//this.showParentScroll();
 	},
 
 	render: function(){

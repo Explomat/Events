@@ -1,0 +1,26 @@
+{
+  "name": "input-moment",
+  "version": "0.1.0",
+  "description": "React datetime picker powered by momentjs",
+  "main": "index.js",
+
+  "author": "Wang Zuo",
+  "license": "ISC",
+
+  "peerDependencies": {
+    "moment": "^2.10.6"
+  },
+
+  "dependencies": {
+    "blacklist": "^1.1.2",
+    "classnames": "^2.2.0",
+    "lodash": "^3.10.1",
+    "react-input-slider": "^1.5.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wangzuo/input-moment.git"
+  },
+
+  "homepage": "https://github.com/wangzuo/input-moment#readme"
+}

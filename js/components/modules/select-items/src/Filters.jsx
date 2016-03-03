@@ -1,6 +1,6 @@
 var React = require('react');
-var SearchBar = require('../../SearchBar');
-var TextBase = require('../../TextLabel').TextBase;
+var SearchBar = require('../../search-bar/index');
+var TextBase = require('../../text-label/index').TextBase;
 var extend = require('extend');
 
 var Paging = React.createClass(extend({}, TextBase, {

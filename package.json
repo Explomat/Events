@@ -13,15 +13,17 @@
     "start": "node node_modules/webserver/webserver.js"
   },
   "dependencies": {
+    "blacklist": "^1.1.2",
+    "classnames": "^2.2.3",
     "es6-promise": "^2.3.0",
     "extend": "^3.0.0",
     "flux": "^2.0.3",
-    "input-moment": "^0.1.0",
     "keymirror": "^0.1.1",
+    "lodash": "^4.6.1",
     "moment": "^2.11.2",
     "react": "^0.14.2",
-    "react-datepicker": "^0.23.2",
     "react-dom": "^0.14.2",
+    "react-input-slider": "^1.5.0",
     "signals": "^1.0.0"
   },
   "devDependencies": {
@@ -37,8 +39,5 @@
     "react-tools": "^0.13.3",
     "reactify": "^1.1.1",
     "webserver": "^1.1.2"
-  },
-  "peerDependencies": {
-    "moment": "^2.11.2"
   }
 }

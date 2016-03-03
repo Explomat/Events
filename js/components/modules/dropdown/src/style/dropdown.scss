@@ -1,5 +1,3 @@
-@import 'variables';
-
 .dropdown-box {
 	position: relative;
     display: inline-block;
@@ -41,7 +39,7 @@
             line-height: 32px;
 
             &:hover {
-                background-color: $hoverColor;
+                background-color: #E6F4FA;
             }
 
             &.dropdown-list__item_selected {
@@ -49,7 +47,7 @@
             }
 
             &.dropdown-list__item_description {
-                color: $deviderColor;
+                color: #B6B6B6;
             }
         }
 
@@ -57,7 +55,7 @@
             height: 1px;
             margin: 10px 0;
             overflow: hidden;
-            background-color: $deviderColor;
+            background-color: #B6B6B6;
         }
     }
 
@@ -70,7 +68,7 @@
         position: absolute;
         right: 0;
         top: calc(50% - 2px);
-        color: $deviderColor;
+        color: #B6B6B6;
     }
 
     .dropdown-box__default-item {
@@ -78,7 +76,7 @@
         position: relative;
         border: none;
         background-color: #fff;
-        border-bottom: 1px solid $deviderColor;
+        border-bottom: 1px solid #B6B6B6;
         line-height: 32px;
         padding-left: 0px;
         text-align: left;

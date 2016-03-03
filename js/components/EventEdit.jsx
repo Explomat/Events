@@ -1,10 +1,9 @@
 var React = require('react');
 var Hasher = require('../utils/Hasher');
 var EventEditStore = require('../stores/EventEditStore');
-var CheckBox = require('./modules/CheckBox');
-var DatePicker = require('react-datepicker');
-var InputMoment = require('input-moment');
-var SelectItem = require('./modules/selectItems/index');
+var CheckBox = require('./modules/checkbox/index');
+var InputMoment = require('./modules/input-moment/index');
+var SelectItem = require('./modules/select-items/index');
 
 var moment = require('moment');
 require('moment/locale/ru');
