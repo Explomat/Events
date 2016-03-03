@@ -1,4 +1,5 @@
 var React = require('react');
+require('!style!css!sass!./style/checkbox.scss');
 
 var CheckBoxView = React.createClass({
 

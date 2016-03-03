@@ -1,5 +1,5 @@
 var React = require('react');
-var DropDown = require('../modules/DropDown');
+var DropDown = require('../modules/dropdown/index');
 
 var RegionsFilter = React.createClass({
 
