@@ -175,19 +175,19 @@ var SelectItems = React.createClass({
 
 	render: function() {
 		return (
-			<div className="select-items modal-box" style={{display: "block"}}>
-				<div className="select-items__modal-box modal-box__dialog">
-					<div className="select-items__content modal-box__content">
-						<div className="select-item__header modal-box__header">
+			<div className="select-items" style={{display: "block"}}>
+				<div className="select-items__modal-box">
+					<div className="select-items__content">
+						<div className="select-item__header">
 							<button type="button" className="close-btn" onClick={this.handleClose}>&times;</button>
 							<span>{this.props.title}</span>
 						</div>
-						<div className="select-item__body modal-box__body clearfix">
+						<div className="select-item__body clearfix">
 							<Filters />
 							<Items {...this.state.items} />
 							<SelectedItems items = {this.state.selectedItems} />
 						</div>
-						<div className="select-item__footer modal-box__footer">
+						<div className="select-item__footer">
 							<button type="button" className="event-btn event-btn--reverse" onClick={this.handleSave}>Сохранить</button>
 						</div>
 					</div>

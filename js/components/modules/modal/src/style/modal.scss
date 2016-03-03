@@ -14,7 +14,12 @@
 @mixin modal-box__dialog {
     position: relative;
     width: auto;
-    margin: 10px;
+    margin: 10px auto;
+
+   /*  @media (min-width: 768px) {
+        width: 600px;
+        margin: 30px auto;
+    } */
 }
 
 @mixin modal-box__content {
@@ -76,11 +81,6 @@
         }
         &.modal-box__dialog_close {
             transition: all .3s ease-in;
-        }
-
-        @media (min-width: 768px) {
-            width: 600px;
-            margin: 30px auto;
         }
     }
 
