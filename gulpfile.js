@@ -21,16 +21,6 @@ gulp.task('build-css', function() {
 });
 
 gulp.task('build-remote-css', function() {
-  gulp.src(['./style/css/*.css', './style/sass/*.scss'])
-    .pipe(sass().on('error', sass.logError))
-    .pipe(autoprefixer({ browsers: ['IE 9', 'last 2 versions'] }))
-    .pipe(cleanss({keepBreaks: false}))
-    .pipe(concat('style.min.css'))
-    .pipe(gulp.dest('\\\\10.1.20.67\\c$\\WebSoft\\WebTutorServer\\wt\\web\\react\\events_test\\build\\style'))
-    .pipe(gulp.dest('./build/style'));
-});
-
-gulp.task('build-remote-css1', function() {
   gulp.src(['./style/css/*.css', './js/components/modules/**/*.scss', './style/sass/*.scss'])
     .pipe(sass().on('error', sass.logError))
     .pipe(autoprefixer({ browsers: ['IE 9', 'last 2 versions'] }))

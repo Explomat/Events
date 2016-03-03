@@ -1,17 +1,22 @@
 @import '../../../modal/src/style/modal';
 
 .select-items {
-	
+	@include modal-box;
+
 	.select-items__modal-box {
+		@include modal-box__dialog;
 		width: 1050px;
 
 		.select-items__content {
-
+			@include modal-box__content;
 			.select-item__header{
+				@include modal-box__header;
 			}
 			.select-item__body{
+				@include modal-box__body;
 			}
 			.select-item__footer{
+				@include modal-box__footer;
 			}
 		}
 	}
