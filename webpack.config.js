@@ -18,6 +18,10 @@ module.exports = {
     module: {
         loaders: [
             {
+                test: /\.(eot|woff|woff2|ttf|svg|png|jpg)$/,
+                loader: 'url-loader?limit=10000&name=[name]-[hash].[ext]'
+            },
+            {
                 test: /\.css$/,
                 loader: ExtractTextPlugin.extract("style-loader", "css-loader")
             },

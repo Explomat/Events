@@ -24,7 +24,8 @@
     "react": "^0.14.2",
     "react-dom": "^0.14.2",
     "react-input-slider": "^1.5.0",
-    "signals": "^1.0.0"
+    "signals": "^1.0.0",
+    "url-loader": "^0.5.7"
   },
   "devDependencies": {
     "babel-core": "^6.6.4",
@@ -33,6 +34,7 @@
     "babel-preset-react": "^6.5.0",
     "css-loader": "^0.23.1",
     "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.8.5",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^3.1.0",
     "gulp-browserify": "^0.5.1",
@@ -47,6 +49,7 @@
     "reactify": "^1.1.1",
     "sass-loader": "^3.1.2",
     "style-loader": "^0.13.0",
+    "url-loader": "^0.5.7",
     "webpack": "^1.12.14",
     "webserver": "^1.1.2"
   }
