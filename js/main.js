@@ -7,6 +7,7 @@ var CalendarController = require('./controllers/CalendarController');
 var EventInfoController = require('./controllers/EventInfoController');
 var EventEditController = require('./controllers/EventEditController');
 
+
 window.onload = function(){
 
 	Router.addRoute(Config.hashes.calendar, function(){

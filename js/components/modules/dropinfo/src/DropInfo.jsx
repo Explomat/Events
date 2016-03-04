@@ -1,4 +1,5 @@
 var React = require('react');
+require('./style/dropinfo.scss');
 
 var DropInfoHeader = React.createClass({
 

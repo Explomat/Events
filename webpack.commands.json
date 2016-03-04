@@ -1,0 +1,2 @@
+webpack --profile --json > stats.json //создания файла для просмотра структура на вебе - http://webpack.github.io/analyse/#modules
+webpack --display-error-details //для вывода дополнительной информации

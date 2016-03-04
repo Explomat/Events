@@ -1,3 +1,4 @@
+var webpack = require('webpack');
 var ExtractTextPlugin = require ('extract-text-webpack-plugin');
 var path = require('path');
 
@@ -5,8 +6,8 @@ module.exports = {
     entry: './js/main',
     devtool: 'source-map',
     output: {
-        path: '\\\\10.1.20.67\\c$\\WebSoft\\WebTutorServer\\wt\\web\\react\\events_test\\build\\js',
-        filename: 'bundle.js'   
+        path: '\\\\10.1.20.67\\c$\\WebSoft\\WebTutorServer\\wt\\web\\react\\events_test\\build',
+        filename: './js/bundle.js'   
     },
     resolve: {
         modulesDirectories: ['node_modules'],
@@ -21,7 +22,7 @@ module.exports = {
 
             {
                 test: /\.scss$/,
-                loader: ExtractTextPlugin.extract('style-loader', 'sass-loader')
+                loader: ExtractTextPlugin.extract('css!sass')
             },
             {
                 test: /\.jsx$/,
@@ -34,7 +35,8 @@ module.exports = {
         ]
     },
     plugins: [
-        new ExtractTextPlugin('style.min.css', 'style.min.css')
+        new ExtractTextPlugin('./style/style.min.css'),
+        new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ru/)
     ]
 }
     

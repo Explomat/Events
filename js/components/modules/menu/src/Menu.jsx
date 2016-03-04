@@ -1,4 +1,5 @@
 var React = require('react');
+require('./style/menu.scss');
 
 function getHashIndex(hash, routes){
     for (var i = routes.length - 1; i >= 0; i--) {

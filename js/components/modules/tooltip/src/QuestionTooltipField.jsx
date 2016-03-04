@@ -2,6 +2,8 @@ var React = require('react');
 var QuestionTooltipLeft = require('./QuestionTooltip').QuestionTooltipLeft;
 var QuestionTooltipRight = require('./QuestionTooltip').QuestionTooltipRight;
 
+require('./style/tooltip.scss');
+
 var QuestionTooltipFieldLeft = React.createClass({
 
 	getDefaultProps: function(){

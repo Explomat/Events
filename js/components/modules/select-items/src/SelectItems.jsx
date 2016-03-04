@@ -4,6 +4,8 @@ var Items = require('./Items');
 var Filters = require('./Filters');
 //var Ajax = require('../../utils/Ajax');
 
+require('./style/select-items.scss');
+
 var items = {
 	headerCols: [{ name: 'a', type: 'string' }, { name: 'b', type: 'string'}, { name: 'c', type: 'integer' }],
 	rows: [

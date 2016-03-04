@@ -4,6 +4,7 @@ var EventEditStore = require('../stores/EventEditStore');
 var CheckBox = require('./modules/checkbox/index');
 var InputMoment = require('./modules/input-moment/index');
 var SelectItem = require('./modules/select-items/index');
+var moment = require('moment');
 
 
 function getEventEditState() {

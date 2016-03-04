@@ -1,5 +1,7 @@
 var React = require('react');
 
+require('./style/text-overflow.scss');
+
 var TextOverflow = React.createClass({
 
 	_changeDisplayDots: function(){

@@ -1,7 +1,7 @@
 var React = require('react');
-require('!style!css!sass!./style/checkbox.scss');
+require('./style/checkbox.scss');
 
-var CheckBoxView = React.createClass({
+var CheckBox = React.createClass({
 
 	propsTypes: {
 		checked: React.PropTypes.bool,
@@ -42,4 +42,4 @@ var CheckBoxView = React.createClass({
 	}
 });
 
-module.exports = CheckBoxView;
+module.exports = CheckBox;

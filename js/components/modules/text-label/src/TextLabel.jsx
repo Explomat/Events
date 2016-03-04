@@ -1,6 +1,8 @@
 var React = require('react');
 var extend = require('extend');
 
+require('./style/text-label.scss');
+
 var TextBase = {
 
 	propTypes: {

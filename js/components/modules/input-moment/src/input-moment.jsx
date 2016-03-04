@@ -1,8 +1,9 @@
 var cx = require('classnames');
-var moment = require('moment');
 var React = require('react');
 var Calendar = require('./calendar');
 var Time = require('./time');
+
+require('./style/input-moment.scss');
 
 module.exports = React.createClass({
   displayName: 'InputMoment',

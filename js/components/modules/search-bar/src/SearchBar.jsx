@@ -1,4 +1,5 @@
 var React = require('react');
+require('./style/search-bar.scss');
 
 var SearchBar = React.createClass({
 

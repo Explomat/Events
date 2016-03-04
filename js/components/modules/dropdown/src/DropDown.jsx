@@ -1,4 +1,5 @@
 var React = require('react');
+require('./style/dropdown.scss');
 
 var ItemDescription = React.createClass({
 	render: function() {

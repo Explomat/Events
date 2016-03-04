@@ -1,4 +1,5 @@
 var React = require('react');
+require('./style/modal.scss');
 
 var ModalBoxContent = React.createClass({
 
