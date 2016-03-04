@@ -1,6 +1,5 @@
 var Router = require('./utils/Crossroads');
 var Hasher = require('./utils/Hasher');
-//var Storage = require('./utils/Storage');
 var Config = require('./config');
 var BasicController = require('./controllers/BasicController');
 var CalendarController = require('./controllers/CalendarController');

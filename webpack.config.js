@@ -2,6 +2,8 @@ var webpack = require('webpack');
 var ExtractTextPlugin = require ('extract-text-webpack-plugin');
 var path = require('path');
 
+var production = JSON.parse(process.env.PROD_ENV || '0');
+
 module.exports = {
     entry: './js/main',
     devtool: 'source-map',
@@ -36,7 +38,8 @@ module.exports = {
     },
     plugins: [
         new ExtractTextPlugin('./style/style.min.css'),
-        new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ru/)
+        new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ru/),
+        new webpack.optimize.UglifyJsPlugin({minimize: true})
     ]
 }
     
