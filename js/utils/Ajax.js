@@ -27,6 +27,7 @@ module.exports = {
         }
         if (!xmlHttp && typeof(XMLHttpRequest) != 'undefined')
             xmlHttp = new XMLHttpRequest();
+        xmlHttp.withCredentials = true;
         return xmlHttp;
     },
 

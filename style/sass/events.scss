@@ -39,6 +39,10 @@
         }
     }
 
+    .caret {
+        
+    }
+
     .close-btn {
         padding: 0;
         cursor: pointer;
@@ -76,15 +80,15 @@
         height: 80px;
 
         &.icon--type--webinar {
-            background-image: url("/react/events/build/icons/webinar.png");
+            background-image: url("/build/icons/webinar.png");
         }
 
         &.icon--type--fulltime {
-            background-image: url("/react/events/build/icons/teacher.png");
+            background-image: url("/build/icons/teacher.png");
         }
 
         &.icon--type--webinar-record {
-            background-image: url("/react/events/build/icons/webinar_record.png");
+            background-image: url("/icons/webinar_record.png");
         }
 
         &.icon--small {
@@ -110,7 +114,7 @@
         &:before {
             content: "";
             position: absolute;
-            background-image: url("/react/events/build/icons/loading6.gif");
+            background-image: url("/build/icons/loading6.gif");
             background-position: center center;
             background-repeat: no-repeat;
             background-size: 100%;
