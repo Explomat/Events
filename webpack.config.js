@@ -9,7 +9,7 @@ module.exports = {
         main: './js/main',
         react: ['react']
     },
-    devtool: 'source-map',
+    devtool: 'cheap-inline-module-source-map',
     output: {
         path: 'build/js',
         filename: './bundle.js'   
@@ -20,13 +20,17 @@ module.exports = {
     },
     module: {
         loaders: [
-            /*{
-                test: /\.(eot|woff|woff2|ttf|svg|png|jpg)$/,
-                loader: 'url-loader?limit=10000&name=[name]-[hash].[ext]'
-            },*/
+            { 
+                test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+                loader: "url-loader?name=../fonts/[name].[ext]&limit=10000&mimetype=application/font-woff" 
+            },
+            { 
+                test: /\.(ttf|eot|svg|png|jpg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, 
+                loader: 'file?name=../fonts/[name].[ext]'
+            },
             {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+                loader: ExtractTextPlugin.extract("css-loader")
             },
 
             {
@@ -36,7 +40,7 @@ module.exports = {
             {
                 test: /\.jsx$/,
                 loader: 'babel',
-                exclude: /(node_modules|bower_components)/,
+                exclude: /node_modules/,
                 query: {
                     cacheDirectory: true,
                     presets: ['es2015', 'react']
@@ -45,11 +49,12 @@ module.exports = {
         ]
     },
     plugins: [
+        new webpack.NoErrorsPlugin(),
         new webpack.optimize.CommonsChunkPlugin({
             name: 'react',
             filename: 'react.js'
         }),
-        new ExtractTextPlugin('../style/style.min.css'),
+        new ExtractTextPlugin('../style/style.min.css', { allChunks: true }),
         new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ru/)
         //new webpack.optimize.UglifyJsPlugin({minimize: true})
     ]

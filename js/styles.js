@@ -1,5 +1,5 @@
 require('../style/css/m-calendar.css');
-//require('../style/css/font-awesome.min.css');
+require('../style/css/font-awesome.css');
 //require('../style/css/ionicons.min.css');
 
 
