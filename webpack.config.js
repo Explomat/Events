@@ -42,7 +42,7 @@ module.exports = {
                 loader: ExtractTextPlugin.extract('css!sass')
             },
             {
-                test: /\.jsx$/,
+                test: /(\.jsx$)|(\.js$)/,
                 loader: 'babel',
                 exclude: /node_modules/,
                 query: {

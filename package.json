@@ -25,8 +25,7 @@
     "react": "^0.14.2",
     "react-dom": "^0.14.2",
     "react-input-slider": "^1.5.0",
-    "signals": "^1.0.0",
-    "url-loader": "^0.5.7"
+    "signals": "^1.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.6.4",

@@ -13,7 +13,6 @@ function loadData(data) {
 
 function disposeData(){
 	_eventInfo = null;
-	_error = null;
 	_info = null;
 }
 

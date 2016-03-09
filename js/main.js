@@ -44,6 +44,7 @@ window.onload = function(){
 	function parseHash(newHash){
 		//changeTabClass('#' + newHash);
 		Router.parse(newHash);
+		console.log(newHash);
 	}
 
 	Hasher.changed.add(parseHash); //parse hash changes
