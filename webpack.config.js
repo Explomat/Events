@@ -1,6 +1,6 @@
 var webpack = require('webpack');
 var ExtractTextPlugin = require ('extract-text-webpack-plugin');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
+//var HtmlWebpackPlugin = require('html-webpack-plugin');
 var path = require('path');
 
 var production = JSON.parse(process.env.NODE_ENV || 'false');
@@ -8,14 +8,14 @@ var devTools = production ? 'source-map' : 'cheap-inline-module-source-map';
 
 module.exports = {
     entry: {
-        main: './js/main',
+        main: ['webpack-dev-server/client?http://localhost:3000/', 'webpack/hot/only-dev-server', './js/main'],
         react: ['react']
     },
     devtool: devTools,
     output: {
         path: path.join(__dirname, 'build'),
-        publicPath: '/build',
-        filename: 'js/bundle.[hash].js',
+        publicPath: 'http://localhost:8080/build/',
+        filename: 'js/bundle.js',
         library: '[name]'   
     },
     resolve: {
@@ -26,11 +26,11 @@ module.exports = {
         loaders: [
             { 
                 test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-                loader: "url-loader?name=../fonts/[name].[ext]&limit=10000&mimetype=application/font-woff" 
+                loader: "url-loader?name=fonts/[name].[ext]&limit=10000&mimetype=application/font-woff" 
             },
             { 
                 test: /\.(ttf|eot|svg|png|jpg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, 
-                loader: 'file?name=../fonts/[name].[ext]'
+                loader: 'file?name=fonts/[name].[ext]'
             },
             {
                 test: /\.css$/,
@@ -42,21 +42,16 @@ module.exports = {
                 loader: ExtractTextPlugin.extract('css!sass')
             },
             {
-                test: /(\.jsx$)|(\.js$)/,
-                loader: 'babel',
-                exclude: /node_modules/,
-                query: {
-                    cacheDirectory: true,
-                    presets: ['es2015', 'react']
-                }
+                test: /\.jsx$/,
+                loaders: ['react-hot', 'babel'],
+                include: path.join(__dirname, 'js/components')
             }
         ]
     },
 
     devServer: {
-        host: 'localhost',
-        port: 8080,
-        contentBase: path.join(__dirname, 'backend')
+        port: 3000,
+        hot: true
     },
 
     plugins: [
@@ -65,14 +60,15 @@ module.exports = {
             name: 'react',
             filename: 'js/react.js'
         }),
-        new ExtractTextPlugin('style/style.[hash].min.css', { allChunks: true }),
+        new ExtractTextPlugin('style/style.min.css', { allChunks: true }),
         new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ru/),
-        new HtmlWebpackPlugin({
+        new webpack.HotModuleReplacementPlugin()
+        /*new HtmlWebpackPlugin({
             title: 'Events',
             filename: '../backend/index.html',
             template: './backend/template.html'
-        })
-        //new webpack.optimize.UglifyJsPlugin({minimize: true})
+        })*/
     ]
 }
+
     

@@ -198,7 +198,7 @@ var CalendarCell = React.createClass({
 	}
 })
 
-var CalendarView = React.createClass({
+var Calendar = React.createClass({
 
 	propsTypes: {
 		currentDate: function(props, propName){
@@ -355,4 +355,4 @@ var CalendarView = React.createClass({
 	}
 });
 
-module.exports = CalendarView;
+module.exports = Calendar;

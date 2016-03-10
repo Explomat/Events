@@ -44,14 +44,13 @@ window.onload = function(){
 	function parseHash(newHash){
 		//changeTabClass('#' + newHash);
 		Router.parse(newHash);
-		console.log(newHash);
 	}
 
 	Hasher.changed.add(parseHash); //parse hash changes
 	Hasher.initialized.add(init); //parse initial hash
 	
 	Hasher.prependHash = '';
-	Hasher.init(); //start listening for history change
+	Hasher.init();
 }
 
 

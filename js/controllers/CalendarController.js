@@ -7,7 +7,7 @@ var Config = require('../config');
 
 var isLoaded = false;
 
-module.exports = {
+var exp = {
 
 	isLoaded: function () {
 		return isLoaded;
@@ -32,3 +32,14 @@ module.exports = {
 		isLoaded = false;
 	}
 }
+
+if(module.hot) {
+	module.hot.accept('../components/Calendar', function() {
+		Calendar = require('../components/Calendar').default;
+		exp.start();
+	});
+}
+
+
+module.exports = exp;
+
