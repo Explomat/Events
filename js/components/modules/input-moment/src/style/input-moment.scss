@@ -18,8 +18,8 @@
 
 .m-input-moment {
   display: inline-block;
-  width: 330px;
-  padding: 12px 15px;
+  width: 250px;
+  padding: 6px 8px;
   border-radius: 3px;
   border: 1px solid $color-gray;
 
@@ -33,8 +33,8 @@
       width: 50%;
       color: $color-blue;
       text-align: center;
-      font-size: 16px;
-      padding: 7px;
+      font-size: 14px;
+      padding: 5px;
       border: 1px solid $color-blue;
       border-radius: 3px;
 
@@ -57,15 +57,11 @@
 
   .tab {
     display: none;
-    height: 310px;
+    height: 243px;
 
     &.is-active {
       display: block;
     }
-  }
-
-  .tabs {
-    margin-bottom: 11px;
   }
 
   .btn-save {

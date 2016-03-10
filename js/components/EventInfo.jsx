@@ -5,8 +5,8 @@ var CalendarStore = require('../stores/CalendarStore');
 var EventInfoActions = require('../actions/EventInfoActions');
 var EventStatuses = require('../utils/event/EventStatuses');
 var EventTypes = require('../utils/event/EventTypes');	
-var DropDown = require('./modules/dropdown/index');
-var TextOverflow = require('./modules/text-overflow/index');
+var DropDown = require('./modules/dropdown');
+var TextOverflow = require('./modules/text-overflow');
 var FileTypes = require('../utils/event/FileTypes');
 var DateUtils = require('../utils/event/DateUtils');
 

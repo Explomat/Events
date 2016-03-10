@@ -1,10 +1,11 @@
 var React = require('react');
 var Hasher = require('../utils/Hasher');
 var EventEditStore = require('../stores/EventEditStore');
-var CheckBox = require('./modules/checkbox/index');
-var InputMoment = require('./modules/input-moment/index');
-var SelectItem = require('./modules/select-items/index');
+var CheckBox = require('./modules/checkbox');
+var InputCalendar = require('./modules/input-calendar');
+var SelectItem = require('./modules/select-items');
 var moment = require('moment');
+moment.locale('ru');
 
 
 function getEventEditState() {
@@ -60,9 +61,13 @@ var Base = React.createClass({
 
 	render: function(){
 		return (
-			<div>
-				<InputMoment moment={this.state.startDate} onChange={this.handleChange} onSave={this.handleSave} />
-			</div>
+			<InputCalendar 
+				moment={this.state.startDate} 
+				onChange={this.handleChange} 
+				onSave={this.handleSave} 
+				prevMonthIcon={'fa fa-angle-left'}
+				nextMonthIcon={'fa fa-angle-right'}
+			/>
 		);
 	}
 });

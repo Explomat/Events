@@ -1,0 +1,17 @@
+.input-calendar {
+  
+
+  .input-calendar__date {
+
+  }
+
+  .input-calendar__calendar{
+    display: none;
+    
+    &.input-calendar__calendar--show {
+      display: block;
+      position: absolute;
+      background-color: #fff;
+    }
+  }
+}
