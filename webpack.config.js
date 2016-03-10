@@ -8,13 +8,13 @@ var devTools = production ? 'source-map' : 'cheap-inline-module-source-map';
 
 module.exports = {
     entry: {
-        main: ['webpack-dev-server/client?http://localhost:3000/', 'webpack/hot/only-dev-server', './js/main'],
+        main: ['webpack-dev-server/client?http://localhost:8080/', 'webpack/hot/only-dev-server', './js/main'],
         react: ['react']
     },
     devtool: devTools,
     output: {
         path: path.join(__dirname, 'build'),
-        publicPath: 'http://localhost:8080/build/',
+        publicPath: '/build/',
         filename: 'js/bundle.js',
         library: '[name]'   
     },
@@ -43,14 +43,14 @@ module.exports = {
             },
             {
                 test: /\.jsx$/,
-                loaders: ['react-hot', 'babel'],
+                loaders: ['react-hot', 'babel?presets[]=es2015&presets[]=react'],
                 include: path.join(__dirname, 'js/components')
             }
         ]
     },
 
     devServer: {
-        port: 3000,
+        port: 8080,
         hot: true
     },
 
