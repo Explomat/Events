@@ -31,7 +31,7 @@ var SelectItems = React.createClass({
   	},
 
 	propTypes: {
-		items: React.PropTypes.object,
+		items: React.PropTypes.array,
 		selectedItems: React.PropTypes.array,
 		query: React.PropTypes.string,
 		title: React.PropTypes.string,
@@ -42,6 +42,7 @@ var SelectItems = React.createClass({
 
 	getInitialState() {
 		return {
+			headerCols: this.props.headerCols,
 			items: this.props.items,
 			selectedItems: this.props.selectedItems,
 			search: '',
@@ -51,25 +52,28 @@ var SelectItems = React.createClass({
 
 	getDefaultProps(){
 		return {
-			items: { headerCols: [], rows: [] },
+			headerCols: [],
+			items: [],
 			selectedItems: [],
 			title: ' '
 		}
 	},
 
 	componentDidMount(){
-		this._getItems(this.props.query, this.state.page, this.state.search);
-		/*items.rows = items.rows.map(function(r){
-			var cols = r.cols.map(function(c, index){
-				return this._castType(c, items.headerCols[index].type);
-			}.bind(this));
-			return {
-				id: r.id,
-				cols: cols
-			}
-		}.bind(this));
-		items.rows = this._filterItems(items.rows, this.state.selectedItems);
-		this.setState({items: items});*/
+		var self = this;
+		this._getItems(this.props.query, this.state.page, this.state.search).then(data => {
+			data.items = data.items.map(item => {
+				Object.keys(item.data).forEach((col, index) => {
+					self._castType(item.data[col], data.headerCols[index].type);
+				})
+				return {
+					id: item.id,
+					data: item.data
+				}
+			});
+			data.items = this._filterItems(data.items, this.state.selectedItems);
+			this.setState({items: data.items, headerCols: data.headerCols})
+		})
 	},
 
 	_castType(val, type){
@@ -111,50 +115,45 @@ var SelectItems = React.createClass({
 	},
 
 	_getItems(query, page, search){
-		Ajax.sendRequest(query + '&page=' + page + '&search=' + search).then(function(_items){
-			var items = JSON.parse(_items);
-
-			items.rows = items.rows.map(function(r){
-				var cols = r.cols.map(function(c, index){
-					return this._castType(c, items.headerCols[index].type);
-				}.bind(this));
-				return {
-					id: r.id,
-					cols: cols
-				}
-			}.bind(this));
-
-			items.rows = this._filterItems(items.rows, this.state.selectedItems);
-			return items;
+		return Ajax.sendRequest(query + '&page=' + page + '&search=' + search).then(function(_items){
+			return JSON.parse(_items);
 		}).catch(function(err){
 			return [];
 		});
 	},
 
 	onSort(index, isAscending){
+		function getFieldByIndex(data, index){
+			return Object.keys(data).filter(function(key, _index){
+				return index === _index;
+			});
+		}
+
 		var isAsc = isAscending ? 1 : -1;
-		var rows = this.state.items.rows;
-		rows.sort(function(first, second){
-			return first.cols[index] > second.cols[index] ? isAsc : first.cols[index] === second.cols[index] ? 0 : -(isAsc);
+		var items = this.state.items;
+		items.sort(function(first, second){
+			var firstField = getFieldByIndex(first.data, index);
+			var secondFiled = getFieldByIndex(second.data, index);
+			return firstField > secondFiled ? isAsc : firstField === secondFiled ? 0 : -(isAsc);
 		});
 		this.setState({items: items});
 	},
 
-	onAddItem(id, cols){
+	onAddItem(id, data){
 		var items = this.state.items;
 		var selectedItems = this.state.selectedItems;
-		selectedItems.push({ id: id, cols: cols });
+		selectedItems.push({ id: id, data: data });
 
-		items.rows = items.rows.filter(function(r){
-			return r.id !== id;
+		items = items.filter(function(item){
+			return item.id !== id;
 		});
 		this.setState({ items: items, selectedItems: selectedItems});
 	},
 
-	onRemoveItem(id, cols){
+	onRemoveItem(id, data){
 		var items = this.state.items;
 		var selectedItems = this.state.selectedItems;
-		items.rows.push({ id: id, cols: cols });
+		items.push({ id: id, data: data });
 
 		selectedItems = selectedItems.filter(function(r){
 			return r.id !== id;
@@ -175,6 +174,7 @@ var SelectItems = React.createClass({
 	},
 
 	render() {
+		var a = 10;
 		return (
 			<div className="select-items" style={{display: "block"}}>
 				<div className="select-items__modal-box">
@@ -185,7 +185,7 @@ var SelectItems = React.createClass({
 						</div>
 						<div className="select-item__body clearfix">
 							<Filters page={this.state.page} search={this.state.search}/>
-							<Items {...this.state.items} />
+							<Items items={this.state.items} headerCols={this.state.headerCols}/>
 							<SelectedItems items = {this.state.selectedItems} />
 						</div>
 						<div className="select-item__footer">

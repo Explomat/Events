@@ -42,37 +42,37 @@ var HeaderCol = React.createClass({
 	}
 });
 
-var Row = React.createClass({
+var Item = React.createClass({
 
 	contextTypes: {
 		onAddItem: React.PropTypes.func
 	},
 
 	propTypes: {
-		cols: React.PropTypes.array
+		data: React.PropTypes.object
 	},
 
 	getDefaultProps: function(){
 		return {
-			cols: []
+			data: {}
 		}
 	},
 
 	handleAddItem: function(){
 		if (this.context.onAddItem){
-			this.context.onAddItem(this.props.id, this.props.cols);
+			this.context.onAddItem(this.props.id, this.props.data);
 		}
 	},
 
 	getMarkup: function(){
-		var cols = this.props.cols;
+		var data = this.props.data;
 		return (
 			<tr className="body-row">
 				<td>
 					<button onClick={this.handleAddItem}>+</button>
 				</td>
-				{cols.map(function(c, index){
-					return <td key={index} className="body-row__col">{c}</td>
+				{Object.keys(data).map(function(c, index){
+					return <td key={index} className="body-row__col">{data[c]}</td>
 				})}
 			</tr>
 		);
@@ -87,7 +87,7 @@ var Items = React.createClass({
 
 	propTypes: {
 		headerCols: React.PropTypes.array.isRequired,
-		rows: React.PropTypes.array.isRequired
+		items: React.PropTypes.array.isRequired
 	},
 
 	getColsMarkup: function(){
@@ -100,22 +100,23 @@ var Items = React.createClass({
 	},
 
 	getRowsMarkUp: function(){
-		var rows = this.props.rows;
-		return rows.map(function(r, index){
-			return <Row key={index} id={r.id} cols={r.cols} />
+		var items = this.props.items;
+		var a = 10;
+		return items.map(function(r, index){
+			return <Item key={index} id={r.id} data={r.data} />
 		});
 	},
 
 	render: function() {
 		var cols = this.getColsMarkup();
-		var rows = this.getRowsMarkUp();
+		var items = this.getRowsMarkUp();
 		return(
 			<table className="items">
 				<thead className="items__header">
 					<tr className="header-row">{cols}</tr>
 				</thead>
 				<tbody className="items__body">
-					{rows}
+					{items}
 				</tbody>
 			</table>
 		);

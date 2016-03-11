@@ -8,19 +8,25 @@ var SelectedItem = React.createClass({
 
 	propTypes: {
 		id: React.PropTypes.string, 
-		cols: React.PropTypes.array
+		data: React.PropTypes.object
 	},
 
-	handleRemoveItem: function(){
+	handleRemoveItem(){
 		if (this.context.onRemoveItem){
-			this.context.onRemoveItem(this.props.id, this.props.cols);
+			this.context.onRemoveItem(this.props.id, this.props.data);
 		}
+	},
+
+	_getFirstField() {
+		return Object.keys(this.props.data).filter((key, index) => {
+			return index === 0;
+		}).map(key => { return this.props.data[key] })
 	},
 
 	render: function(){
 		return(
 			<div className="selected-items__item">
-				<label>{this.props.cols[0]}</label>
+				<label>{this._getFirstField()}</label>
 				<button onClick={this.handleRemoveItem}>-</button>
 			</div>
 		);
@@ -33,19 +39,19 @@ var SelectedItems = React.createClass({
 		items: React.PropTypes.array //[{id:'', cols: [{}, ...]}, ...]
 	},
 
-	getDefaultProps: function(){
+	getDefaultProps(){
 		return {
 			items: []
 		}
 	},
 
-	getItemsMarkup: function(){
+	getItemsMarkup(){
 		return this.props.items.map(function(item, index){
 			return <SelectedItem key={index} {...item}/>
 		});
 	},
 
-	render: function() {
+	render() {
 		return(
 			<div className="selected-items">
 				{this.getItemsMarkup()}
