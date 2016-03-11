@@ -2,7 +2,7 @@ var React = require('react');
 var SelectedItems = require('./SelectedItems');
 var Items = require('./Items');
 var Filters = require('./Filters');
-//var Ajax = require('../../utils/Ajax');
+var Ajax = require('../../../../utils/Ajax');
 
 require('./style/select-items.scss');
 
@@ -22,7 +22,7 @@ var SelectItems = React.createClass({
 		onRemoveItem: React.PropTypes.func
 	},
 
-    getChildContext: function() {
+    getChildContext(){
     	return {
     		onSort: this.onSort,
     		onAddItem: this.onAddItem,
@@ -40,15 +40,16 @@ var SelectItems = React.createClass({
 
 	types: {'integer': 'integer', 'date': 'date'},
 
-	getInitialState: function() {
+	getInitialState() {
 		return {
 			items: this.props.items,
 			selectedItems: this.props.selectedItems,
+			search: '',
 			page: 1
 		}
 	},
 
-	getDefaultProps: function(){
+	getDefaultProps(){
 		return {
 			items: { headerCols: [], rows: [] },
 			selectedItems: [],
@@ -56,11 +57,9 @@ var SelectItems = React.createClass({
 		}
 	},
 
-	componentDidMount: function(){
-		/*this._getItems(this.state.page).then(function(items){
-			this.setState({items: items});
-		}.bind(this))*/
-		items.rows = items.rows.map(function(r){
+	componentDidMount(){
+		this._getItems(this.props.query, this.state.page, this.state.search);
+		/*items.rows = items.rows.map(function(r){
 			var cols = r.cols.map(function(c, index){
 				return this._castType(c, items.headerCols[index].type);
 			}.bind(this));
@@ -70,10 +69,10 @@ var SelectItems = React.createClass({
 			}
 		}.bind(this));
 		items.rows = this._filterItems(items.rows, this.state.selectedItems);
-		this.setState({items: items});
+		this.setState({items: items});*/
 	},
 
-	_castType: function(val, type){
+	_castType(val, type){
 
 		function isInteger(val) {
 			return isNaN(parseInt(val)) === false;
@@ -96,7 +95,7 @@ var SelectItems = React.createClass({
 		}
 	},
 
-	_filterItems: function(items, selectedItems) {
+	_filterItems(items, selectedItems) {
 		if (selectedItems.length === 0) return items;
 
 		function isContains(items, item) {
@@ -111,8 +110,8 @@ var SelectItems = React.createClass({
 		});
 	},
 
-	_getItems: function(page){
-		Ajax.sendRequest(query + '&page=' + page).then(function(_items){
+	_getItems(query, page, search){
+		Ajax.sendRequest(query + '&page=' + page + '&search=' + search).then(function(_items){
 			var items = JSON.parse(_items);
 
 			items.rows = items.rows.map(function(r){
@@ -132,7 +131,7 @@ var SelectItems = React.createClass({
 		});
 	},
 
-	onSort: function(index, isAscending){
+	onSort(index, isAscending){
 		var isAsc = isAscending ? 1 : -1;
 		var rows = this.state.items.rows;
 		rows.sort(function(first, second){
@@ -141,7 +140,7 @@ var SelectItems = React.createClass({
 		this.setState({items: items});
 	},
 
-	onAddItem: function(id, cols){
+	onAddItem(id, cols){
 		var items = this.state.items;
 		var selectedItems = this.state.selectedItems;
 		selectedItems.push({ id: id, cols: cols });
@@ -152,7 +151,7 @@ var SelectItems = React.createClass({
 		this.setState({ items: items, selectedItems: selectedItems});
 	},
 
-	onRemoveItem: function(id, cols){
+	onRemoveItem(id, cols){
 		var items = this.state.items;
 		var selectedItems = this.state.selectedItems;
 		items.rows.push({ id: id, cols: cols });
@@ -163,19 +162,19 @@ var SelectItems = React.createClass({
 		this.setState({ items: items, selectedItems: selectedItems});
 	},
 
-	handleClose: function(){
+	handleClose(){
 		if (this.props.onClose){
 			this.props.onClose();
 		}
 	},
 
-	handleSave: function(){
+	handleSave(){
 		if (this.props.onSave){
 			this.props.onSave(this.state.selectedItems);
 		}
 	},
 
-	render: function() {
+	render() {
 		return (
 			<div className="select-items" style={{display: "block"}}>
 				<div className="select-items__modal-box">
@@ -185,7 +184,7 @@ var SelectItems = React.createClass({
 							<span>{this.props.title}</span>
 						</div>
 						<div className="select-item__body clearfix">
-							<Filters />
+							<Filters page={this.state.page} search={this.state.search}/>
 							<Items {...this.state.items} />
 							<SelectedItems items = {this.state.selectedItems} />
 						</div>

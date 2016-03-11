@@ -3,8 +3,9 @@ var Hasher = require('../utils/Hasher');
 var EventEditStore = require('../stores/EventEditStore');
 var CheckBox = require('./modules/checkbox');
 var InputCalendar = require('./modules/input-calendar');
-var SelectItem = require('./modules/select-items');
+var SelectItems = require('./modules/select-items');
 var moment = require('moment');
+var Config = require('../config');
 moment.locale('ru');
 
 
@@ -162,6 +163,14 @@ var EventEdit = React.createClass({
 		return Component ? <Component /> : null;
 	},
 
+	getModal: function(){
+		return this.state.isShowModal ? <SelectItems
+											query={'http://study.merlion.ru/custom_web_template.html?object_id=6238833803725312131&server_id=6257108030223689633&action_name=getCollaborators'}
+											title={"Выберите участников"} 
+											onClose={this.handleCloseModal} 
+											onSave={this.handleSaveItems}/> : null;
+	},
+
 	handleSelectTab: function(tabName){
 		this.setState({selectedTab: tabName})
 	},
@@ -180,7 +189,7 @@ var EventEdit = React.createClass({
 
 	render: function(){
 		var tabView = this.getTabView(this.state.selectedTab.key);
-		var modal = this.state.isShowModal ? <SelectItem title={"Выберите участников"} onClose={this.handleCloseModal} onSave={this.handleSaveItems}/> : null;
+		var modal = this.getModal();
 		return(
 			<div className="container">
 				<SideBar onSelect={this.handleSelectTab} selectedTab={this.state.selectedTab.key}/>

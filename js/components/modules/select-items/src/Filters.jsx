@@ -56,7 +56,7 @@ var Filters = React.createClass({
 	render: function() {
 		return (
 			<div className="filters">
-				<SearchBar value={this.props.searchValue} className={"filters__searchBar"} classNameInput={"filters__searchBar-input"}/>
+				<SearchBar value={this.props.search} className={"filters__searchBar"} classNameInput={"filters__searchBar-input"}/>
 				<Paging page={this.props.page} />
 			</div>
 		);
