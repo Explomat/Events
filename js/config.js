@@ -1,13 +1,47 @@
-var serverId = '6230716351040721570';
 var routerId = '6238833803725312131';
 var customBaseUrl = 'http://study.merlion.ru/custom_web_template.html';
+
+var servers = [
+	{
+		id: '6230716351040721570',
+		actions: [
+			'getData',
+			'getEventsData',
+			'getEventInfo',
+			'createRequest',
+			'removeCollaborator',
+			'startEvent',
+			'finishEvent'
+		]
+	},
+	{
+		id: '6257108030223689633',
+		actions: [
+			'getEventEdit',
+			'getCollaborators'
+		]
+	}
+]
 
 module.exports = {
 
 	url: {
-		defaultPath: customBaseUrl.concat('?object_id=').concat(routerId).concat('&server_id='.concat(serverId)),
-		createPath: function(obj){
-			return this.defaultPath.concat(Object.keys(obj).map(function(k){
+		getServerId(_action) {
+			var _servers = servers.filter(s => {
+				var actions = s.actions.filter(action => {
+					return action === _action;
+				});
+				return actions.length > 0;
+			}).map(s => { return s.id; });
+			return _servers.length > 0 ? _servers[0] : '';
+		},
+
+		createPath(obj){
+			if (!('action_name' in obj)) obj.action_name = '';
+			var serverId = this.getServerId(obj.action_name);
+			var basePath = customBaseUrl.concat('?object_id=').concat(routerId).concat('&server_id='.concat(serverId));
+
+			return this.basePath.concat(Object.keys(obj).map(function(k){
 				return '&'.concat(k).concat('=').concat(obj[k]);
 			}).join(''));
 		}
@@ -30,19 +64,15 @@ module.exports = {
 		eventEdit: 'event/edit/{id}'
 	},
 
-	setServerId: function(_serverId){
-		serverId = _serverId;
-	},
-
-	setRouterId: function(_routerId){
+	setRouterId(_routerId){
 		routerId = _routerId;
 	},
 
-	setCustomBaseUrl: function(_customBaseUrl){
+	setCustomBaseUrl(_customBaseUrl){
 		customBaseUrl = _customBaseUrl;
 	},
 
-	setProductionMode: function () {
+	setProductionMode() {
 		process.env.NODE_ENV = 'production';
 	}
 }

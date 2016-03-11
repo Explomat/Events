@@ -165,7 +165,7 @@ var EventEdit = React.createClass({
 
 	getModal: function(){
 		return this.state.isShowModal ? <SelectItems
-											query={'http://study.merlion.ru/custom_web_template.html?object_id=6238833803725312131&server_id=6257108030223689633&action_name=getCollaborators'}
+											query={Config.url.createPath({action_name: 'getCollaborators'})}
 											title={"Выберите участников"} 
 											onClose={this.handleCloseModal} 
 											onSave={this.handleSaveItems}/> : null;
