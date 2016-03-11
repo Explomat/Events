@@ -43,7 +43,7 @@ module.exports = {
             },
             {
                 test: /\.jsx$/,
-                loaders: ['react-hot', 'babel?presets[]=es2015&presets[]=react'],
+                loaders: ['react-hot', 'babel?presets[]=es2015&presets[]=react&presets[]=stage-0'],
                 include: path.join(__dirname, 'js/components')
             },
             {

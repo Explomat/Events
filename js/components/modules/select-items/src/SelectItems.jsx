@@ -131,7 +131,7 @@ var SelectItems = React.createClass({
 
 		var isAsc = isAscending ? 1 : -1;
 		var items = this.state.items;
-		items.sort(function(first, second){
+		items.sort((first, second) => {
 			var firstField = getFieldByIndex(first.data, index);
 			var secondFiled = getFieldByIndex(second.data, index);
 			return firstField > secondFiled ? isAsc : firstField === secondFiled ? 0 : -(isAsc);
@@ -144,7 +144,7 @@ var SelectItems = React.createClass({
 		var selectedItems = this.state.selectedItems;
 		selectedItems.push({ id: id, data: data });
 
-		items = items.filter(function(item){
+		items = items.filter(item => {
 			return item.id !== id;
 		});
 		this.setState({ items: items, selectedItems: selectedItems});
@@ -155,7 +155,7 @@ var SelectItems = React.createClass({
 		var selectedItems = this.state.selectedItems;
 		items.push({ id: id, data: data });
 
-		selectedItems = selectedItems.filter(function(r){
+		selectedItems = selectedItems.filter(r => {
 			return r.id !== id;
 		});
 		this.setState({ items: items, selectedItems: selectedItems});
@@ -174,7 +174,6 @@ var SelectItems = React.createClass({
 	},
 
 	render() {
-		var a = 10;
 		return (
 			<div className="select-items" style={{display: "block"}}>
 				<div className="select-items__modal-box">
