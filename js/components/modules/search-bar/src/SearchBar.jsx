@@ -1,42 +1,42 @@
-var React = require('react');
-require('./style/search-bar.scss');
+import React from 'react';
+import './style/search-bar.scss';
 
 var SearchBar = React.createClass({
 
-	propsTypes: {
+	propTypes: {
 		value: React.PropTypes.string,
 		className: React.PropTypes.string,
 		classNameInput: React.PropTypes.string,
 		onSearch: React.PropTypes.func
 	},
 
-	getInitialState: function(){
+	getInitialState(){
 		return {
 			value: this.props.value
 		}
 	},
 
-	componentWillReceiveProps: function(nextProps){
+	componentWillReceiveProps(nextProps){
 		this.setState({value: nextProps.value});
 	},
 
-	handleChange: function(e){
+	handleChange(e){
 		this.setState({value: e.target.value});
 	},
 
-	handleblur: function(e){
+	handleblur(e){
 		if (this.props.onSearch){
 			this.props.onSearch(e.target.value);
 		}
 	},
 
-	handleSearch: function(e){
+	handleSearch(e){
 		if (e.keyCode === 13 && this.props.onSearch){
 			this.props.onSearch(e.target.value);
 		}
 	},
 
-	render: function() {
+	render() {
 		var className = this.props.className ? this.props.className : '';
 		var classNameInput = this.props.classNameInput ? this.props.classNameInput : '';
 		return (

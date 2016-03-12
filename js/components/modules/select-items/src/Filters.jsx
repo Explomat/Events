@@ -10,37 +10,37 @@ var Paging = React.createClass(extend({}, TextBase, {
 		onChange: React.PropTypes.number
 	},
 
-	getDefaultProps: function() {
+	getDefaultProps() {
 		return {
 			value: 1,
-			isValid: function(val){
+			isValid(val){
 				return /^[1-9]{1,}(\d+)?$/.test(val);
 			},
 			notValidClass: 'filters__notValid'
 		}
 	},
 
-	componentWillReceiveProps: function(nextProps){
+	componentWillReceiveProps(nextProps){
 		this.setState({value: nextProps.value});
 	},
 
-	_changePage: function(page){
+	_changePage(page){
 		if (this.props.onChange) {
 			this.props.onChange(page);
 			this.setState({value: Number(page)});
 		}
 	},
 
-	handleChangeDecrementPage: function(){
+	handleChangeDecrementPage(){
 		if (this.state.value <= 1) return;
 		this._changePage(this.state.value - 1);
 	},
 
-	handleChangeIncrementPage: function(){
+	handleChangeIncrementPage(){
 		this._changePage(this.state.value + 1);
 	},
 
-	render: function(){
+	render(){
 		return (
 			<div className="filters__paging">
 				<i className="fa fa-arrow-left" onClick={this.handleChangeDecrementPage}></i>
@@ -53,11 +53,11 @@ var Paging = React.createClass(extend({}, TextBase, {
 
 var Filters = React.createClass({
 
-	render: function() {
+	render() {
 		return (
 			<div className="filters">
-				<SearchBar value={this.props.search} className={"filters__searchBar"} classNameInput={"filters__searchBar-input"}/>
-				<Paging page={this.props.page} />
+				<SearchBar onSearch={this.props.onSearch} value={this.props.search} className={"filters__searchBar"} classNameInput={"filters__searchBar-input"}/>
+				<Paging onChange={this.props.onChange} page={this.props.page} />
 			</div>
 		);
 	}

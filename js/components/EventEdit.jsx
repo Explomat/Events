@@ -1,11 +1,11 @@
-var React = require('react');
-var Hasher = require('../utils/Hasher');
-var EventEditStore = require('../stores/EventEditStore');
-var CheckBox = require('./modules/checkbox');
-var InputCalendar = require('./modules/input-calendar');
-var SelectItems = require('./modules/select-items');
-var moment = require('moment');
-var Config = require('../config');
+import React from 'react';
+import Hasher from '../utils/Hasher';
+import EventEditStore from '../stores/EventEditStore';
+import CheckBox from './modules/checkbox';
+import InputCalendar from './modules/input-calendar';
+import SelectItems from './modules/select-items';
+import moment from 'moment';
+import Config from '../config';
 moment.locale('ru');
 
 

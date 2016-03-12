@@ -1,37 +1,37 @@
-var React = require('react');
+import React from 'react';
 
-var HeaderCol = React.createClass({
+class HeaderCol extends React.Component {
 
-	contextTypes: {
+	constructor(props){
+		super(props);
+		this.handleSort = this.handleSort.bind(this);
+	} 	
+
+	static contextTypes = {
 		onSort: React.PropTypes.func
-	},
+	}
 
-	propTypes: {
+	static propTypes = {
 		name: React.PropTypes.string,
 		type: React.PropTypes.string,
 		onSort: React.PropTypes.func
-	},
+	}
+	state = {
+		isRotate: false
+	}
 
-	getInitialState: function(){
-		return {
-			isRotate: false
-		}
-	},
+	static defaultProps = {
+		name: ''
+	}
 
-	getDefaultProps: function(){
-		return {
-			name: ''
-		}
-	},
-
-	handleSort: function(){
+	handleSort(){
 		if (this.context.onSort) {
 			this.context.onSort(this.props.index, this.state.isRotate);
 			this.setState({isRotate: !this.state.isRotate});
 		}
-	},
+	}
 
-	render: function(){
+	render(){
 		var caretClassName = this.state.isRotate ? "rotate" : "";
 		return(
 			<th onClick={this.handleSort}>
@@ -40,74 +40,76 @@ var HeaderCol = React.createClass({
 			</th>
 		);
 	}
-});
+};
 
-var Item = React.createClass({
+class Item extends React.Component {
 
-	contextTypes: {
+	constructor(props){
+		super(props);
+		this.handleAddItem = this.handleAddItem.bind(this);
+	} 	
+
+	static contextTypes = {
 		onAddItem: React.PropTypes.func
-	},
+	}
 
-	propTypes: {
+	static propTypes = {
 		data: React.PropTypes.object
-	},
+	}
 
-	getDefaultProps: function(){
-		return {
-			data: {}
-		}
-	},
+	static defaultProps = {
+		data: {}
+	}
 
-	handleAddItem: function(){
+	handleAddItem(){
 		if (this.context.onAddItem){
 			this.context.onAddItem(this.props.id, this.props.data);
 		}
-	},
+	}
 
-	getMarkup: function(){
+	getMarkup(){
 		var data = this.props.data;
 		return (
 			<tr className="body-row">
 				<td>
 					<button onClick={this.handleAddItem}>+</button>
 				</td>
-				{Object.keys(data).map(function(c, index){
+				{Object.keys(data).map((c, index) => {
 					return <td key={index} className="body-row__col">{data[c]}</td>
 				})}
 			</tr>
 		);
-	},
+	}
 
-	render: function(){
+	render(){
 		return this.getMarkup();
 	}
-});
+};
 
-var Items = React.createClass({
+class Items extends React.Component { 	
 
-	propTypes: {
+	static propTypes = {
 		headerCols: React.PropTypes.array.isRequired,
 		items: React.PropTypes.array.isRequired
-	},
+	}
 
-	getColsMarkup: function(){
+	getColsMarkup(){
 		var headerCols = this.props.headerCols;
 		var markUpCols = [<th key={0}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>];
-		headerCols.forEach(function(c, index){
+		headerCols.forEach((c, index) => {
 			markUpCols.push(<HeaderCol key={index + 1} name={c.name} index={index}/>);
 		});
 		return markUpCols;
-	},
+	}
 
-	getRowsMarkUp: function(){
+	getRowsMarkUp(){
 		var items = this.props.items;
-		var a = 10;
-		return items.map(function(r, index){
+		return items.map((r, index) => {
 			return <Item key={index} id={r.id} data={r.data} />
 		});
-	},
+	}
 
-	render: function() {
+	render() {
 		var cols = this.getColsMarkup();
 		var items = this.getRowsMarkUp();
 		return(
@@ -121,6 +123,6 @@ var Items = React.createClass({
 			</table>
 		);
 	}
-});
+};
 
-module.exports = Items;
+export default Items;

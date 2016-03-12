@@ -1,5 +1,5 @@
 var routerId = '6238833803725312131';
-var customBaseUrl = 'http://study.merlion.ru/custom_web_template.html';
+var customBaseUrl = 'http://edu.merlion.ru/custom_web_template.html';
 
 var servers = [
 	{
@@ -41,7 +41,7 @@ module.exports = {
 			var serverId = this.getServerId(obj.action_name);
 			var basePath = customBaseUrl.concat('?object_id=').concat(routerId).concat('&server_id='.concat(serverId));
 
-			return this.basePath.concat(Object.keys(obj).map(function(k){
+			return basePath.concat(Object.keys(obj).map(function(k){
 				return '&'.concat(k).concat('=').concat(obj[k]);
 			}).join(''));
 		}

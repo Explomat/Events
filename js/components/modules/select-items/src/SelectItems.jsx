@@ -1,10 +1,10 @@
-var React = require('react');
-var SelectedItems = require('./SelectedItems');
-var Items = require('./Items');
-var Filters = require('./Filters');
-var Ajax = require('../../../../utils/Ajax');
+import React from 'react';
+import SelectedItems from './SelectedItems';
+import Items from './Items';
+import Filters from './Filters';
+import Ajax from '../../../../utils/Ajax';
 
-require('./style/select-items.scss');
+import './style/select-items.scss';
 
 var items = {
 	headerCols: [{ name: 'a', type: 'string' }, { name: 'b', type: 'string'}, { name: 'c', type: 'integer' }],
@@ -13,14 +13,22 @@ var items = {
 		{ id: 2, cols: ['Габдуллин Дамир Габдульбариевич', 'Группа дистанционного обучения', '2']}
 	]
 }
+class SelectItems extends React.Component {
 
-var SelectItems = React.createClass({
+	constructor(props) {
+		super(props);
+		this.onSort = this.onSort.bind(this);
+		this.onAddItem = this.onAddItem.bind(this);
+		this.onRemoveItem = this.onRemoveItem.bind(this);
+		this.handleClose = this.handleClose.bind(this);
+		this.handleSave = this.handleSave.bind(this);
+	}
 
-	childContextTypes: {
+	static childContextTypes = {
 		onSort: React.PropTypes.func,
 		onAddItem: React.PropTypes.func,
 		onRemoveItem: React.PropTypes.func
-	},
+	}
 
     getChildContext(){
     	return {
@@ -28,38 +36,40 @@ var SelectItems = React.createClass({
     		onAddItem: this.onAddItem,
     		onRemoveItem: this.onRemoveItem
     	};
-  	},
+  	}
 
-	propTypes: {
+	static propTypes = {
 		items: React.PropTypes.array,
 		selectedItems: React.PropTypes.array,
 		query: React.PropTypes.string,
 		title: React.PropTypes.string,
 		onClose: React.PropTypes.func
-	},
+	}
 
-	types: {'integer': 'integer', 'date': 'date'},
+	types = {'integer': 'integer', 'date': 'date'}
 
-	getInitialState() {
-		return {
-			headerCols: this.props.headerCols,
-			items: this.props.items,
-			selectedItems: this.props.selectedItems,
-			search: '',
-			page: 1
-		}
-	},
+	state =  {
+		isLoading: false,
+		headerCols: this.props.headerCols,
+		items: this.props.items,
+		selectedItems: this.props.selectedItems,
+		search: '',
+		page: 1
+	}
 
-	getDefaultProps(){
-		return {
-			headerCols: [],
-			items: [],
-			selectedItems: [],
-			title: ' '
-		}
-	},
+	static defaultProps = {
+		headerCols: [],
+		items: [],
+		selectedItems: [],
+		title: ' '
+	}
+
+	componentWillUnmount(){
+		console.log(1);
+	}
 
 	componentDidMount(){
+		this.setState({isLoading: true});
 		var self = this;
 		this._getItems(this.props.query, this.state.page, this.state.search).then(data => {
 			data.items = data.items.map(item => {
@@ -72,9 +82,9 @@ var SelectItems = React.createClass({
 				}
 			});
 			data.items = this._filterItems(data.items, this.state.selectedItems);
-			this.setState({items: data.items, headerCols: data.headerCols})
+			this.setState({items: data.items, headerCols: data.headerCols, isLoading: false})
 		})
-	},
+	}
 
 	_castType(val, type){
 
@@ -97,7 +107,7 @@ var SelectItems = React.createClass({
 			default:
 				return val.toString();
 		}
-	},
+	}
 
 	_filterItems(items, selectedItems) {
 		if (selectedItems.length === 0) return items;
@@ -109,22 +119,22 @@ var SelectItems = React.createClass({
 			return false;
 		}
 
-		return items.filter(function(i, index){
+		return items.filter((i, index) => {
 			return !isContains(selectedItems, i);
 		});
-	},
+	}
 
 	_getItems(query, page, search){
-		return Ajax.sendRequest(query + '&page=' + page + '&search=' + search).then(function(_items){
+		return Ajax.sendRequest(query + '&page=' + page + '&search=' + search).then(_items => {
 			return JSON.parse(_items);
 		}).catch(function(err){
 			return [];
 		});
-	},
+	}
 
 	onSort(index, isAscending){
 		function getFieldByIndex(data, index){
-			return Object.keys(data).filter(function(key, _index){
+			return Object.keys(data).filter((key, _index) => {
 				return index === _index;
 			});
 		}
@@ -137,7 +147,7 @@ var SelectItems = React.createClass({
 			return firstField > secondFiled ? isAsc : firstField === secondFiled ? 0 : -(isAsc);
 		});
 		this.setState({items: items});
-	},
+	}
 
 	onAddItem(id, data){
 		var items = this.state.items;
@@ -148,7 +158,7 @@ var SelectItems = React.createClass({
 			return item.id !== id;
 		});
 		this.setState({ items: items, selectedItems: selectedItems});
-	},
+	}
 
 	onRemoveItem(id, data){
 		var items = this.state.items;
@@ -159,21 +169,22 @@ var SelectItems = React.createClass({
 			return r.id !== id;
 		});
 		this.setState({ items: items, selectedItems: selectedItems});
-	},
+	}
 
 	handleClose(){
 		if (this.props.onClose){
 			this.props.onClose();
 		}
-	},
+	}
 
 	handleSave(){
 		if (this.props.onSave){
 			this.props.onSave(this.state.selectedItems);
 		}
-	},
+	}
 
 	render() {
+		var isLoadingClass = this.state.isLoading ? 'overlay-loading--show ': '';
 		return (
 			<div className="select-items" style={{display: "block"}}>
 				<div className="select-items__modal-box">
@@ -183,6 +194,7 @@ var SelectItems = React.createClass({
 							<span>{this.props.title}</span>
 						</div>
 						<div className="select-item__body clearfix">
+							<div className={"overlay-loading " + isLoadingClass + " loading"}></div>
 							<Filters page={this.state.page} search={this.state.search}/>
 							<Items items={this.state.items} headerCols={this.state.headerCols}/>
 							<SelectedItems items = {this.state.selectedItems} />
@@ -195,6 +207,5 @@ var SelectItems = React.createClass({
 			</div>
 		);
 	}
-});
-
-module.exports = SelectItems;
+}
+export default SelectItems;

@@ -1,29 +1,29 @@
-var React = require('react');
+import React from 'react';
 
-var SelectedItem = React.createClass({
+class SelectedItem extends React.Component { 
 
-	contextTypes: {
+	static contextTypes = {
 		onRemoveItem: React.PropTypes.func
-	},
+	}
 
-	propTypes: {
+	static propTypes = {
 		id: React.PropTypes.string, 
 		data: React.PropTypes.object
-	},
+	}
 
 	handleRemoveItem(){
 		if (this.context.onRemoveItem){
 			this.context.onRemoveItem(this.props.id, this.props.data);
 		}
-	},
+	}
 
 	_getFirstField() {
 		return Object.keys(this.props.data).filter((key, index) => {
 			return index === 0;
 		}).map(key => { return this.props.data[key] })
-	},
+	}
 
-	render: function(){
+	render(){
 		return(
 			<div className="selected-items__item">
 				<label>{this._getFirstField()}</label>
@@ -31,25 +31,23 @@ var SelectedItem = React.createClass({
 			</div>
 		);
 	}
-});
+};
 
-var SelectedItems = React.createClass({
+class SelectedItems extends React.Component { 
 
-	propTypes: {
+	static propTypes = {
 		items: React.PropTypes.array //[{id:'', cols: [{}, ...]}, ...]
-	},
+	}
 
-	getDefaultProps(){
-		return {
-			items: []
-		}
-	},
+	static defaultProps = {
+		items: []
+	}
 
 	getItemsMarkup(){
-		return this.props.items.map(function(item, index){
+		return this.props.items.map((item, index) => {
 			return <SelectedItem key={index} {...item}/>
 		});
-	},
+	}
 
 	render() {
 		return(
@@ -58,6 +56,6 @@ var SelectedItems = React.createClass({
 			</div>
 		);
 	}
-});
+};
 
-module.exports = SelectedItems;
+export default SelectedItems;

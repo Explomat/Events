@@ -1,17 +1,17 @@
-var React = require('react');
-var Auth = require('./modules/Auth');
-var BusinessTypeFilter = require('./authmodules/BusinessTypeFilter');
-var RegionsFilter = require('./authmodules/RegionsFilter');
-var DropDown = require('./modules/dropdown');
-var SearchBar = require('./modules/search-bar');
-var TextOverflow = require('./modules/text-overflow');
-var DateUtils = require('../utils/event/DateUtils');
-var EventUtils = require('../utils/event/EventUtils');
-var EventTypes = require('../utils/event/EventTypes');
-var EventStatuses = require('../utils/event/EventStatuses');
-var CalendarStore = require('../stores/CalendarStore');
-var CalendarActions = require('../actions/CalendarActions');
-var Config = require('../config');
+import React from 'react';
+import Auth from './modules/Auth';
+import BusinessTypeFilter from './authmodules/BusinessTypeFilter';
+import RegionsFilter from './authmodules/RegionsFilter';
+import DropDown from './modules/dropdown';
+import SearchBar from './modules/search-bar';
+import TextOverflow from './modules/text-overflow';
+import DateUtils from '../utils/event/DateUtils';
+import EventUtils from '../utils/event/EventUtils';
+import EventTypes from '../utils/event/EventTypes';
+import EventStatuses from '../utils/event/EventStatuses';
+import CalendarStore from '../stores/CalendarStore';
+import CalendarActions from '../actions/CalendarActions';
+import Config from '../config';
 
 function getState() {
 	return CalendarStore.getData();

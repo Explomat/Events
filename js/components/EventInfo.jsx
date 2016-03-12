@@ -1,14 +1,14 @@
-var React = require('react');
-var Hasher = require('../utils/Hasher');
-var EventInfoStore = require('../stores/EventInfoStore');
-var CalendarStore = require('../stores/CalendarStore');
-var EventInfoActions = require('../actions/EventInfoActions');
-var EventStatuses = require('../utils/event/EventStatuses');
-var EventTypes = require('../utils/event/EventTypes');	
-var DropDown = require('./modules/dropdown');
-var TextOverflow = require('./modules/text-overflow');
-var FileTypes = require('../utils/event/FileTypes');
-var DateUtils = require('../utils/event/DateUtils');
+import React from 'react';
+import Hasher from '../utils/Hasher';
+import EventInfoStore from '../stores/EventInfoStore';
+import CalendarStore from '../stores/CalendarStore';
+import EventInfoActions from '../actions/EventInfoActions';
+import EventStatuses from '../utils/event/EventStatuses';
+import EventTypes from '../utils/event/EventTypes';
+import DropDown from './modules/dropdown';
+import TextOverflow from './modules/text-overflow';
+import FileTypes from '../utils/event/FileTypes';
+import DateUtils from '../utils/event/DateUtils';
 
 function getEventInfoState() {
 	return {
@@ -17,9 +17,8 @@ function getEventInfoState() {
 	}
 }
 
-var Collaborator = React.createClass({
-
-	render: function() {
+class Collaborator extends React.Component { 	
+	render() {
 		return (
 			<div className="event-item">
 				<div className="event-item__icon">
@@ -31,31 +30,10 @@ var Collaborator = React.createClass({
 			</div>
 		);
 	}
-});
+};
 
-var Tutor = React.createClass({
-
-	render: function() {
-		return (
-			<div className="event-item">
-				<div className="event-item__icon">
-					<img className="event-item__icon-img" src={this.props.imgHref} />
-				</div>
-				<div className="event-wrapper">
-					<a href={this.props.href} title={this.props.fullname} target="__blank" className="event-wrapper__fullname">{this.props.fullname}</a>
-					<i className="event-wrapper__phone-icon fa fa-phone"></i>
-					<span className="event-wrapper__phone">{this.props.phone}</span>
-					<i className="event-wrapper__mail-icon fa fa-envelope"></i>
-					<span className="event-wrapper__mail">{this.props.email}</span>
-				</div>
-			</div>
-		);
-	}
-});
-
-var Lector = React.createClass({
-
-	render: function() {
+class Tutor extends React.Component {
+	render() {
 		return (
 			<div className="event-item">
 				<div className="event-item__icon">
@@ -71,11 +49,29 @@ var Lector = React.createClass({
 			</div>
 		);
 	}
-});
+};
 
-var File = React.createClass({
+class Lector extends React.Component {
+	render() {
+		return (
+			<div className="event-item">
+				<div className="event-item__icon">
+					<img className="event-item__icon-img" src={this.props.imgHref} />
+				</div>
+				<div className="event-wrapper">
+					<a href={this.props.href} title={this.props.fullname} target="__blank" className="event-wrapper__fullname">{this.props.fullname}</a>
+					<i className="event-wrapper__phone-icon fa fa-phone"></i>
+					<span className="event-wrapper__phone">{this.props.phone}</span>
+					<i className="event-wrapper__mail-icon fa fa-envelope"></i>
+					<span className="event-wrapper__mail">{this.props.email}</span>
+				</div>
+			</div>
+		);
+	}
+};
 
-	render: function() {
+class File extends React.Component {
+	render() {
 		var fileTypeClass = FileTypes.values[this.props.type] || FileTypes.values.unknown;
 		return (
 			<div className="file-item">
@@ -84,61 +80,59 @@ var File = React.createClass({
 			</div>
 		);
 	}
-});
+};
 
-var EventInfoBody = React.createClass({
+class EventInfoBody extends React.Component {
 
-	propTypes: {
+	static propTypes = {
 		members: React.PropTypes.array.isRequired,
 		collaborators: React.PropTypes.array,
 		tutors: React.PropTypes.array,
 		lectors: React.PropTypes.array,
 		files: React.PropTypes.array
-	},
+	}
 
-	getInitialState: function(){
-		return {
-			selectedPayload: this.props.members[0].payload
-		}
-	},
+	state = {
+		selectedPayload: this.props.members[0].payload
+	}
 
-	handleChangeMembers: function(e, payload, text, index){
+	handleChangeMembers(e, payload, text, index){
 		this.setState({selectedPayload: payload});
-	},
+	}
 
-	getCollaborators: function(){
+	getCollaborators(){
 		if (!this.props.collaborators) return null;
-		return this.props.collaborators.map(function(col, index){
+		return this.props.collaborators.map((col, index) => {
 			return <Collaborator key={index} {...col}/>
 		});
-	},
+	}
 
-	getTutors: function(){
+	getTutors(){
 		if (!this.props.tutors) return null;
-		return this.props.tutors.map(function(t, index){
+		return this.props.tutors.map((t, index) => {
 			return <Tutor key={index} {...t}/>
 		});
-	},
+	}
 
-	getLectors: function(){
+	getLectors(){
 		if (!this.props.lectors) return null;
-		return this.props.lectors.map(function(l, index){
+		return this.props.lectors.map((l, index) => {
 			return <Lector key={index} {...l}/>
 		});
-	},
+	}
 
-	getFiles: function(){
+	getFiles(){
 		if (!this.props.files) return null;
-		return this.props.files.map(function(f, index){
+		return this.props.files.map((f, index) => {
 			return <File key={index} {...f}/>
 		});
-	},
+	}
 
-	getMembersMarkUp: function(collaborators, tutors, lectors){
+	getMembersMarkUp(collaborators, tutors, lectors){
 		return <div className="items">{collaborators || tutors || lectors}</div>
-	},
+	}
 
-	render: function() {
+	render() {
 		var collaborators = this.state.selectedPayload === 0 ? this.getCollaborators() : null;
 		var tutors = this.state.selectedPayload === 1 ? this.getTutors() : null;
 		var lectors = this.state.selectedPayload === 2 ? this.getLectors() : null;
@@ -159,50 +153,46 @@ var EventInfoBody = React.createClass({
 			</div>
 		);
 	}
-})
+};
 
-var EventInfo = React.createClass({
+class EventInfo extends React.Component {
 
-	displayName: 'EventInfo',
-
-	componentDidMount: function() {
+	componentDidMount() {
 		EventInfoStore.addChangeListener(this._onChange);
-	},
+	}
 
-	componentWillUnmount: function() {
+	componentWillUnmount() {
 		EventInfoActions.disposeData();
 		EventInfoStore.removeChangeListener(this._onChange);
-	},
+	}
 
-	_onChange: function() {
+	_onChange() {
 		this.setState(getEventInfoState());
-	},
+	}
 
-	getInitialState: function () {
-		return getEventInfoState();
-	},
+	state = getEventInfoState()
 
-	getDateTime: function(){
+	getDateTime(){
 		return DateUtils.getDateTime(this.state.event.startDate) + ' - ' + DateUtils.getDateTime(this.state.event.finishDate);
-	},
+	}
 
-	handleCreateRequest: function(){
+	handleCreateRequest(){
 		EventInfoActions.createRequest(this.state.event.id);
-	},
+	}
 
-	handleRemoveCollaborator: function(){
+	handleRemoveCollaborator(){
 		EventInfoActions.removeCollaborator(this.state.event.id, CalendarStore.getUserId());
-	},
+	}
 
-	handleStartEvent: function(){
+	handleStartEvent(){
 		EventInfoActions.startEvent(this.state.event.id);
-	},
+	}
 
-	handleFinishEvent: function(){
+	handleFinishEvent(){
 		EventInfoActions.finishEvent(this.state.event.id);
-	},
+	}
 
-	getButtons: function(){
+	getButtons(){
 		var buttons = [];
 		var status = this.state.event.status;
 		var type = this.state.event.type;
@@ -253,19 +243,19 @@ var EventInfo = React.createClass({
 			}
 		}
 		return buttons;
-	},
+	}
 
-	handleClose: function(){
+	handleClose(){
 		EventInfoActions.disposeData();
 		EventInfoStore.removeChangeListener(this._onChange);
 		Hasher.setHash('calendar');
-	},
+	}
 
-	handleCloseInfo: function(){
+	handleCloseInfo(){
 		EventInfoActions.clearInfo();
-	},
+	}
 
-	render: function(){
+	render(){
 		var isWebinar = this.state.event.type === EventTypes.keys.webinar;
 		var dateTime = this.getDateTime();
 		var status = EventStatuses.values[this.state.event.status];
@@ -305,6 +295,6 @@ var EventInfo = React.createClass({
 			</div>
 		);
 	}
-});
+};
 
-module.exports = EventInfo;
+export default EventInfo;
