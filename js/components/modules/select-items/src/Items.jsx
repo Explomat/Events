@@ -93,6 +93,18 @@ class Items extends React.Component {
 		items: React.PropTypes.array.isRequired
 	}
 
+	state = {
+		isLoading: false
+	}
+
+	componentDidMount(){
+		this.setState({isLoading: true});
+	}
+
+	componentWillReceiveProps(){
+		this.setState({isLoading: false});
+	}
+
 	getColsMarkup(){
 		var headerCols = this.props.headerCols;
 		var markUpCols = [<th key={0}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>];
@@ -112,15 +124,20 @@ class Items extends React.Component {
 	render() {
 		var cols = this.getColsMarkup();
 		var items = this.getRowsMarkUp();
+		var isLoadingClass = this.state.isLoading ? 'overlay-loading--show ': '';
 		return(
-			<table className="items">
-				<thead className="items__header">
-					<tr className="header-row">{cols}</tr>
-				</thead>
-				<tbody className="items__body">
-					{items}
-				</tbody>
-			</table>
+			<div className="items-wrapper">
+				<table className="items">
+					<thead className="items__header">
+						<tr className="header-row">{cols}</tr>
+					</thead>
+					<tbody className="items__body">
+						{items}
+					</tbody>
+				</table>
+				<div className={"overlay-loading " + isLoadingClass}></div>
+			</div>
+			
 		);
 	}
 };

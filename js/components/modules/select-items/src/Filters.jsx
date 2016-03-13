@@ -53,11 +53,16 @@ var Paging = React.createClass(extend({}, TextBase, {
 
 var Filters = React.createClass({
 
+	propTypes: {
+		onChangeSearch: React.PropTypes.func,
+		onChangePage: React.PropTypes.func
+	},
+
 	render() {
 		return (
 			<div className="filters">
-				<SearchBar onSearch={this.props.onSearch} value={this.props.search} className={"filters__searchBar"} classNameInput={"filters__searchBar-input"}/>
-				<Paging onChange={this.props.onChange} page={this.props.page} />
+				<SearchBar onSearch={this.props.onChangeSearch} value={this.props.search} className={"filters__searchBar"} classNameInput={"filters__searchBar-input"}/>
+				<Paging onChange={this.props.onChangePage} page={this.props.page} />
 			</div>
 		);
 	}
