@@ -6,6 +6,7 @@ import InputCalendar from './modules/input-calendar';
 import SelectItems from './modules/select-items';
 import moment from 'moment';
 import Config from '../config';
+import merge from 'merge';
 moment.locale('ru');
 
 
@@ -13,16 +14,21 @@ function getEventEditState() {
 	return EventEditStore.getData();
 }
 
-var SideBar = React.createClass({
+class SideBar extends React.Component {
+	
+	constructor(props){
+		super(props);
+		this.handleSelectTab = this.handleSelectTab.bind(this);
+	} 
 
-	handleSelectTab: function(e){
+	handleSelectTab(e){
 		var target = e.target;
 		if (this.props.onSelect) {
-			this.props.onSelect({ key: target.getAttribute('data-name'), value: target.text });
+			this.props.onSelect({ key: target.getAttribute('data-name'), value: target.innerText });
 		}
-	},
+	}
 
-	render: function(){
+	render(){
 		return (
 			<aside className="side-mnu">
 				<div className="side-mnu__header">
@@ -42,25 +48,29 @@ var SideBar = React.createClass({
 			</aside>
 		);
 	}
-});
+};
 
-var Base = React.createClass({
-	
-	handleChange: function(e){
-		console.log(e);
-	},
+class Base extends React.Component {
 
-	getInitialState: function() {
-	    return {
-	      startDate: moment()
-		};
-	},
+	constructor(props){
+		super(props);
+		this.handleChange = this.handleChange.bind(this);
+		this.handleSave = this.handleSave.bind(this);
+	}
 
-	handleChange: function(date) {
+	state = {
+		startDate: moment()
+	}
+
+	handleSave(){
+
+	}
+
+	handleChange(date) {
 		this.setState({startDate: date});
-	},
+	}
 
-	render: function(){
+	render(){
 		return (
 			<InputCalendar 
 				moment={this.state.startDate} 
@@ -71,10 +81,11 @@ var Base = React.createClass({
 			/>
 		);
 	}
-});
+};
 
-var Requests = React.createClass({
-	render: function(){
+class Requests extends React.Component {
+
+	render(){
 		return (
 			<div>
 				<CheckBox label={"Автоматически включать в состав участников"} />
@@ -83,110 +94,116 @@ var Requests = React.createClass({
 			</div>
 		);
 	}
-});
+};
 
-var Collaborators = React.createClass({
-	render: function(){
+class Collaborators extends React.Component {
+	render(){
 		return (
 			<div>Collaborators</div>
 		);
 	}
-});
+};
 
-var Tutors = React.createClass({
-	render: function(){
+class Tutors extends React.Component{
+	render(){
 		return (
 			<div>Tutors</div>
 		);
 	}
-});
+};
 
-var Testing = React.createClass({
-	render: function(){
+class Testing extends React.Component{
+	render(){
 		return (
 			<div>Testing</div>
 		);
 	}
-});
+};
 
-var Courses = React.createClass({
-	render: function(){
+class Courses extends React.Component{
+	render(){
 		return (
 			<div>Courses</div>
 		);
 	}
-});
+};
 
-var LibraryMaterials = React.createClass({
-	render: function(){
+class LibraryMaterials extends React.Component{
+	render(){
 		return (
 			<div>LibraryMaterials</div>
 		);
 	}
-});
+};
 
-var Files = React.createClass({
-	render: function(){
+class Files extends React.Component{
+	render(){
 		return (
 			<div>Files</div>
 		);
 	}
-});
+};
 
-var EventEdit = React.createClass({
+class EventEdit extends React.Component{
 
-	componentWillMount: function(){
+	constructor(props){
+		super(props);
 		this.sideBarComponents = {'Base': Base, 'Requests': Requests, 'Collaborators': Collaborators, 'Tutors': Tutors, 'Testing': Testing, 'Courses': Courses, 'LibraryMaterials': LibraryMaterials, 'Files': Files};
-	},
+		this._onChange = this._onChange.bind(this);
+		this.getTabView = this.getTabView.bind(this);
+		this.getModal = this.getModal.bind(this);
+		this.handleSelectTab = this.handleSelectTab.bind(this);
+		this.handleCloseModal = this.handleCloseModal.bind(this);
+		this.handleShowModal = this.handleShowModal.bind(this);
+		this.handleSaveItems = this.handleSaveItems.bind(this);
+	}
 
-	componentDidMount: function() {
+	state =  merge(getEventEditState(), {
+		selectedTab: { key: 'Base', value: 'Основные' },
+		isShowModal: false
+	})
+
+	componentDidMount() {
 		EventEditStore.addChangeListener(this._onChange);
-	},
+	}
 
-	componentWillUnmount: function() {
+	componentWillUnmount() {
 		EventEditStore.removeChangeListener(this._onChange);
-	},
+	}
 
-	_onChange: function() {
+	_onChange() {
 		this.setState(getEventEditState());
-	},
+	}
 
-	getInitialState: function () {
-		var state = getEventEditState();
-		state.selectedTab = { key: 'Base', value: 'Основные' };
-		state.isShowModal = false;
-		return state;
-	},
-
-	getTabView: function(tabName){
+	getTabView(tabName){
 		var Component = this.sideBarComponents[tabName];
 		return Component ? <Component /> : null;
-	},
+	}
 
-	getModal: function(){
+	getModal(){
 		return this.state.isShowModal ? <SelectItems
 											query={Config.url.createPath({action_name: 'getCollaborators'})}
 											onClose={this.handleCloseModal} 
 											onSave={this.handleSaveItems}/> : null;
-	},
+	}
 
-	handleSelectTab: function(tabName){
+	handleSelectTab(tabName){
 		this.setState({selectedTab: tabName})
-	},
+	}
 
-	handleCloseModal: function(){
+	handleCloseModal(){
 		this.setState({isShowModal: false});
-	},
+	}
 
-	handleShowModal: function(){
+	handleShowModal(){
 		this.setState({isShowModal: true});
-	},
+	}
 
-	handleSaveItems: function(items){
+	handleSaveItems(items){
 		this.setState({isShowModal: false});
-	},
+	}
 
-	render: function(){
+	render(){
 		var tabView = this.getTabView(this.state.selectedTab.key);
 		var modal = this.getModal();
 		return(
@@ -203,6 +220,6 @@ var EventEdit = React.createClass({
 			</div>
 		);
 	}
-});
+};
 
 module.exports = EventEdit;

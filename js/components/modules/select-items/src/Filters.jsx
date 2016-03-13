@@ -1,13 +1,13 @@
-var React = require('react');
-var SearchBar = require('../../search-bar/index');
-var TextBase = require('../../text-label/index').TextBase;
-var extend = require('extend');
+import React from 'react';
+import SearchBar from'../../search-bar';
+import {TextBase} from '../../text-label';
+import extend from 'extend';
 
 var Paging = React.createClass(extend({}, TextBase, {
 
 	propTypes: {
 		value: React.PropTypes.number,
-		onChange: React.PropTypes.number
+		onChange: React.PropTypes.func
 	},
 
 	getDefaultProps() {
@@ -51,21 +51,20 @@ var Paging = React.createClass(extend({}, TextBase, {
 	}
 }));
 
-var Filters = React.createClass({
-
-	propTypes: {
-		onChangeSearch: React.PropTypes.func,
-		onChangePage: React.PropTypes.func
-	},
+class Filters extends React.Component {
+	
+	static propTypes = {
+		onSearch: React.PropTypes.func,
+		onPage: React.PropTypes.func
+	}
 
 	render() {
 		return (
 			<div className="filters">
-				<SearchBar onSearch={this.props.onChangeSearch} value={this.props.search} className={"filters__searchBar"} classNameInput={"filters__searchBar-input"}/>
-				<Paging onChange={this.props.onChangePage} page={this.props.page} />
+				<SearchBar onSearch={this.props.onSearch} value={this.props.search} className={"filters__searchBar"} classNameInput={"filters__searchBar-input"}/>
+				<Paging onChange={this.props.onPage} page={this.props.page} />
 			</div>
 		);
 	}
-});
-
-module.exports = Filters;
+};
+export default Filters;

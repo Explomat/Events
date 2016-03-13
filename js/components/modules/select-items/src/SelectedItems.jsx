@@ -2,6 +2,11 @@ import React from 'react';
 
 class SelectedItem extends React.Component { 
 
+	constructor(props){
+		super(props);
+		this.handleRemoveItem = this.handleRemoveItem.bind(this);
+	}
+
 	static contextTypes = {
 		onRemoveItem: React.PropTypes.func
 	}
