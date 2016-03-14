@@ -25,7 +25,7 @@ var SearchBar = React.createClass({
 	},
 
 	handleblur(e){
-		if (this.props.onSearch){
+		if (this.props.onSearch && this.state.value !== this.props.value){
 			this.props.onSearch(e.target.value);
 		}
 	},

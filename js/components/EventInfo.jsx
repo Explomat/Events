@@ -84,6 +84,11 @@ class File extends React.Component {
 
 class EventInfoBody extends React.Component {
 
+	constructor(props){
+		super(props);
+		this.handleChangeMembers = this.handleChangeMembers.bind(this);
+	}
+
 	static propTypes = {
 		members: React.PropTypes.array.isRequired,
 		collaborators: React.PropTypes.array,
@@ -156,6 +161,16 @@ class EventInfoBody extends React.Component {
 };
 
 class EventInfo extends React.Component {
+
+	constructor(props){
+		super(props);
+		this.handleClose = this.handleClose.bind(this);
+		this.handleCreateRequest = this.handleCreateRequest.bind(this);
+		this.handleRemoveCollaborator = this.handleRemoveCollaborator.bind(this);
+		this.handleStartEvent = this.handleStartEvent.bind(this);
+		this.handleFinishEvent = this.handleFinishEvent.bind(this);
+		this.handleClose = this.handleClose.bind(this);
+	}
 
 	componentDidMount() {
 		EventInfoStore.addChangeListener(this._onChange);
@@ -296,5 +311,4 @@ class EventInfo extends React.Component {
 		);
 	}
 };
-
 export default EventInfo;

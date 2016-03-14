@@ -19,11 +19,11 @@ function getState() {
 
 var EventSideBar = React.createClass({
 
-	getTime: function(){
+	getTime(){
 		return DateUtils.getTime(this.props.startDate) + ' - ' + DateUtils.getTime(this.props.finishDate);
 	},
 	
-	render: function(){
+	render(){
 		var time = this.getTime();
 		var typeIconClass = this.props.type === EventTypes.keys.webinar ? 'icon--type--webinar': 'icon--type--fulltime';
 		var statusIconClass = 'status-icon--' + this.props.status;
@@ -49,19 +49,19 @@ var SideBar = React.createClass({
 		events: React.PropTypes.array
 	},
 
-	getDefaultProps: function () {
+	getDefaultProps () {
 		return {
 			events: []
 		}
 	},
 
-	getSelectedEvents: function(selectedDate, events){
+	getSelectedEvents(selectedDate, events){
 		return this.props.events.filter(function(ev){
 			return DateUtils.compare(selectedDate, ev.startDate);
 		})
 	},
 
-	render: function() {
+	render() {
 		var selectedDate = this.props.selectedDate.toLocaleDateString('ru', {year: 'numeric', month: 'long', day: 'numeric'});
 		var selectedEvents = this.getSelectedEvents(this.props.selectedDate, this.props.events);
 		var isDisplayMessageClass = selectedEvents.length === 0 ? 'timetable__message--show' : '';
@@ -89,35 +89,35 @@ var Filters = React.createClass({
 		selectedMonthIndex: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]).isRequired
 	},
 
-	handleChangeMonth: function(e, payload, text, index){
+	handleChangeMonth(e, payload, text, index){
 		if (this.props.onChangeMonth) this.props.onChangeMonth(payload);
 		CalendarActions.changeMonth(index, this.props.selectedYear, this.props.selectedBusinessType, this.props.selectedRegion);
 	},
 
-	handleChangeYear: function(e, payload, text, index){
+	handleChangeYear(e, payload, text, index){
 		if (this.props.onChangeYear) this.props.onChangeYear(payload);
 		CalendarActions.changeYear(payload, this.props.selectedMonthIndex, this.props.selectedBusinessType, this.props.selectedRegion);
 	},
 
-	handleChangeRegion: function(e, payload, text, index){
+	handleChangeRegion(e, payload, text, index){
 		if (this.props.onChangeRegion) this.props.onChangeRegion(payload);
 		CalendarActions.changeRegion(this.props.selectedMonthIndex, this.props.selectedYear, this.props.selectedBusinessType, payload);
 	},
 
-	handleChangeBusinessType: function(e, payload, text, index){
+	handleChangeBusinessType(e, payload, text, index){
 		if (this.props.onChangeBusinessType) this.props.onChangeBusinessType(payload);
 		CalendarActions.changeBusinessType(this.props.selectedMonthIndex, this.props.selectedYear, payload, this.props.selectedRegion);
 	},
 
-	handleChangeStatus: function(e, payload, text, index){
+	handleChangeStatus(e, payload, text, index){
 		CalendarActions.changeStatus(payload);
 	},
 
-	handleChangeSearchText: function(val){
+	handleChangeSearchText(val){
 		CalendarActions.changeSearchText(val);
 	},
 
-	render: function() {
+	render() {
 		var componentsDenied = CalendarStore.getUserComponentsDenied();
 		return (
 			<header className="calendar-header">
@@ -148,7 +148,7 @@ var CalendarCell = React.createClass({
 		events: React.PropTypes.array
 	},
 
-	getDefaultProps: function(){
+	getDefaultProps(){
 		return {
 			day: '',
 			isCurrentDay: false,
@@ -156,13 +156,13 @@ var CalendarCell = React.createClass({
 		}
 	},
 
-	handleClick: function(){
+	handleClick(){
 		if (this.props.onClick){
 			this.props.onClick(this.props.date);
 		}
 	},
 
-	getEventsMarkup: function () {
+	getEventsMarkup() {
 		var events = [];
 		var eventsCount = this.props.events.length;
 		var eventsCountLimit = eventsCount <= 2 ? eventsCount : 2;
@@ -181,7 +181,7 @@ var CalendarCell = React.createClass({
 		return events;
 	},
 
-	render: function(){
+	render(){
 		var cellClassName = this.props.isCurrentDay ? 'day__number--current' : '';
 		var isHoverClass = !this.props.onClick && !this.props.day ? 'calendar-table__day--no-hover' : '';
 		var isSelectedClass = this.props.isSelectedDay ? 'calendar-table__day--selected' : '';
@@ -201,12 +201,12 @@ var CalendarCell = React.createClass({
 var Calendar = React.createClass({
 
 	propsTypes: {
-		currentDate: function(props, propName){
+		currentDate(props, propName){
 			if (typeof(props[propName] !== Date)) {
 				return new Error('Validation for \'currentDate\' failed!');
 			}
 		},
-		selectedDate: function(props, propName){
+		selectedDate(props, propName){
 			if (typeof(props[propName] !== Date)) {
 				return new Error('Validation for \'currentDate\' failed!');
 			}
@@ -214,29 +214,29 @@ var Calendar = React.createClass({
 		events: React.PropTypes.array
 	},
 
-	componentDidMount: function() {
+	componentDidMount() {
 		CalendarStore.addChangeListener(this._onChange);
 	},
 
-	componentWillUnmount: function() {
+	componentWillUnmount() {
 		CalendarStore.removeChangeListener(this._onChange);
 	},
 
-	getInitialState: function () {
+	getInitialState () {
 		return getState();
 	},
 
-	getDefaultProps: function(){
+	getDefaultProps(){
 		return {
 			events: []
 		}
 	},
 
-	_onChange: function() {
+	_onChange() {
 		this.setState(getState());
 	},
 
-	_getDay: function(date){
+	_getDay(date){
 		if (!date) return -1;
 
 		var day = date.getDay();
@@ -244,11 +244,11 @@ var Calendar = React.createClass({
 		return day - 1;
 	},
 
-	_getLastDateInMonth: function(date) {
+	_getLastDateInMonth(date) {
 		return new Date(date.getFullYear(), date.getMonth() + 1, 0);
 	},
 
-	_getEventsForDate: function(date){
+	_getEventsForDate(date){
 		var _events = [];
 		var filterEvents = this.state.filterEvents;
 		for (var i = filterEvents.length - 1; i >= 0; i--) {
@@ -258,7 +258,7 @@ var Calendar = React.createClass({
 		return _events;
 	},
 
-	getFiltersProps: function(){
+	getFiltersProps(){
 		return {
 			currentDate: this.state.currentDate,
 			years: this.state.years,
@@ -275,7 +275,7 @@ var Calendar = React.createClass({
 		}
 	},
 
-	getRows: function(){
+	getRows(){
 		var rows = [];
 		var currentDate = this.state.currentDate;
 		var startDate = new Date(this.state.selectedYear, this.state.selectedMonthIndex);
@@ -313,15 +313,15 @@ var Calendar = React.createClass({
 	},
 
 
-	handleSelectDate: function(date){
+	handleSelectDate(date){
 		CalendarActions.selectDate(date);
 	},
 
-	handleLoading: function(){
+	handleLoading(){
 		CalendarActions.loading(true);
 	},
 
-	render: function() {
+	render() {
 		var filtersProps = this.getFiltersProps();
 		var isLoadingClass = this.state.isLoading ? 'overlay-loading--show ': '';
 		return (
@@ -355,4 +355,4 @@ var Calendar = React.createClass({
 	}
 });
 
-module.exports = Calendar;
+export default Calendar;

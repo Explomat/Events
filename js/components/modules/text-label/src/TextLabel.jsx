@@ -46,7 +46,7 @@ var TextBase = {
 			e.target.classList.remove(this.props.notValidClass);
 		var val = e.target.value;
 		this.setState({value: e.target.value});
-		if (this.props.onChange && this.props.isValid(val)) {
+		if (this.props.onChange && this.props.isValid(val) && this.state.value !== this.props.value) {
 			this.props.onChange(val);
 		}
 	},
@@ -59,7 +59,7 @@ var TextBase = {
 			val = this.props.value;
 		}
 
-		if (this.props.onBlur)
+		if (this.props.onBlur && this.state.value !== this.props.value)
 			this.props.onBlur(val);
 	}
 }

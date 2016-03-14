@@ -8,7 +8,7 @@ var devTools = production ? 'source-map' : 'cheap-inline-module-source-map';
 
 module.exports = {
     entry: {
-        main: ['webpack-dev-server/client?http://localhost:8080/', 'webpack/hot/only-dev-server', './js/main'],
+        main: ['webpack-dev-server/client?http://0.0.0.0:8080/', 'webpack/hot/only-dev-server', './js/main'],
         react: ['react']
     },
     devtool: devTools,
@@ -56,6 +56,7 @@ module.exports = {
     },
 
     devServer: {
+        host: '0.0.0.0',
         port: 8080,
         hot: true
     },

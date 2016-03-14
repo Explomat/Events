@@ -23,6 +23,7 @@
 	}
 
 	.filters {
+		margin-bottom: 20px;
 		.filters__searchBar {
 			display: inline-block;
 		}
@@ -34,9 +35,22 @@
 
 		.filters__paging {
 			display: inline-block;
+		    vertical-align: top;
+		    margin-left: 16px;
+		    
 		
-			.input {
+			.page {
 				outline: 0;
+			    height: 32px;
+			    line-height: 32px;
+			    margin: 0 8px;
+			    text-align:center;
+			    float:left;
+			    width:50%;
+			}
+			.pages-count {
+				text-align:center;
+				padding:9px;
 			}
 		}
 
@@ -47,35 +61,71 @@
 
 	.selected-items {
 		font-size: 13px;
-		width: 30%;
+		width: calc(30% - 5px);
 		float: right;
+		height: calc(100% - 30px);
+		overflow-y: auto;
+		overflow-x: hidden;
+
+		.item {
+			padding: 4px;
+			position: relative;
+
+			.item__button{
+				width: 8%;
+				font-size: 10px;
+				margin-right: 5px;
+			}
+
+			.item__text {
+				display: inline-block;
+				width: calc(92% - 5px);
+			}
+		}
 	}
 
 	.items-wrapper {
 		position: relative;
 		width: 70%;
-		height: 100%;
+		height: calc(100% - 50px);
 		overflow-y: auto;
 		overflow-x: hidden;
 		border-right: 1px solid #ccc;
 		float: left;
 
-		.items {
-			.items__header {
-				.header-row {
-					.header-row__col-name {
-						margin-right: 5px;
-					}
+		.items-wrapper__header {
+			table-layout: fixed;
+			width: 98.3%;
+
+			.header-row {
+				th:first-child {
+					width: 23px;
+				}
+				.header-row__col-name {
+					margin-right: 5px;
 				}
 			}
+		}
 
-			.items__body{
-				font-size: 13px;
-			}
+		.items-wrapper__body {
+			.items {
+				border-spacing: 0;
+    			border-collapse: collapse;
+				.items__body{
+					font-size: 13px;
+				}
 
-			.body-row {
-				.body-row__col {
-					padding: 8px 0;
+				.body-row {
+					&.body-row--selected {
+						background-color: #ccc;
+					}
+					.body-row__col {
+						padding: 8px 5px;
+					}
+					.body-row__add-btn {
+						font-size: 10px;
+						margin-right: 5px;
+					}
 				}
 			}
 		}

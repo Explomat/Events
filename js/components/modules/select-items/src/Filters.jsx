@@ -13,8 +13,9 @@ var Paging = React.createClass(extend({}, TextBase, {
 	getDefaultProps() {
 		return {
 			value: 1,
+			pagesCount: 1,
 			isValid(val){
-				return /^[1-9]{1,}(\d+)?$/.test(val);
+				return /^[1-9]{1,}(\d+)?$/.test(val) && Number(val) <= this.pagesCount;
 			},
 			notValidClass: 'filters__notValid'
 		}
@@ -24,10 +25,9 @@ var Paging = React.createClass(extend({}, TextBase, {
 		this.setState({value: nextProps.value});
 	},
 
-	_changePage(page){
-		if (this.props.onChange) {
-			this.props.onChange(page);
-			this.setState({value: Number(page)});
+	_changePage(val){
+		if (this.props.onBlur){
+			this.props.onBlur(val);
 		}
 	},
 
@@ -37,14 +37,23 @@ var Paging = React.createClass(extend({}, TextBase, {
 	},
 
 	handleChangeIncrementPage(){
+		if ((this.state.value + 1) > this.props.pagesCount) return;
 		this._changePage(this.state.value + 1);
+	},
+
+	handleKeyDown(e){
+		if (e.keyCode === 13){
+			e.target.blur();
+			this._changePage(e.target.value);
+		}
 	},
 
 	render(){
 		return (
 			<div className="filters__paging">
 				<i className="fa fa-arrow-left" onClick={this.handleChangeDecrementPage}></i>
-				<input type="text" className="input" value={this.state.value} onChange={this.handleChange} onBlur={this.handleBlur} />
+				<input ref="page" type="text" className="page" value={this.state.value} onKeyDown={this.handleKeyDown} onBlur={this.handleBlur} onChange={this.handleChange}/>
+				<span className="pages-count">{this.props.pagesCount}</span>
 				<i className="fa fa-arrow-right" onClick={this.handleChangeIncrementPage}></i>
 			</div>
 		);
@@ -62,7 +71,7 @@ class Filters extends React.Component {
 		return (
 			<div className="filters">
 				<SearchBar onSearch={this.props.onSearch} value={this.props.search} className={"filters__searchBar"} classNameInput={"filters__searchBar-input"}/>
-				<Paging onChange={this.props.onPage} page={this.props.page} />
+				<Paging onBlur={this.props.onPage} value={Number(this.props.page)} pagesCount={Number(this.props.pagesCount)}/>
 			</div>
 		);
 	}

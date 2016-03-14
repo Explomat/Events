@@ -30,9 +30,11 @@ class SelectedItem extends React.Component {
 
 	render(){
 		return(
-			<div className="selected-items__item">
-				<label>{this._getFirstField()}</label>
-				<button onClick={this.handleRemoveItem}>-</button>
+			<div className="item">
+				<button className="item__button event-btn" onClick={this.handleRemoveItem}>
+					<i className="fa fa-minus"></i>
+				</button>
+				<label className="item__text">{this._getFirstField()}</label>
 			</div>
 		);
 	}

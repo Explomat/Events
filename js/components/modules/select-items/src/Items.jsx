@@ -1,4 +1,6 @@
 import React from 'react';
+import {some} from 'lodash';
+import cx from 'classnames';
 
 class HeaderCol extends React.Component {
 
@@ -54,11 +56,13 @@ class Item extends React.Component {
 	}
 
 	static propTypes = {
-		data: React.PropTypes.object
+		data: React.PropTypes.object,
+		isSelected: React.PropTypes.bool
 	}
 
 	static defaultProps = {
-		data: {}
+		data: {},
+		isSelected: false
 	}
 
 	handleAddItem(){
@@ -69,10 +73,13 @@ class Item extends React.Component {
 
 	getMarkup(){
 		var data = this.props.data;
+		var classes = cx('body-row', {'body-row--selected': this.props.isSelected });
 		return (
-			<tr className="body-row">
+			<tr className={classes}>
 				<td>
-					<button onClick={this.handleAddItem}>+</button>
+					<button onClick={this.handleAddItem} className="event-btn body-row__add-btn">
+						<i className="fa fa-plus"></i>
+					</button>
 				</td>
 				{Object.keys(data).map((c, index) => {
 					return <td key={index} className="body-row__col">{data[c]}</td>
@@ -89,25 +96,20 @@ class Item extends React.Component {
 class Items extends React.Component { 	
 
 	static propTypes = {
-		headerCols: React.PropTypes.array.isRequired,
-		items: React.PropTypes.array.isRequired
+		headerCols: React.PropTypes.array,
+		items: React.PropTypes.array,
+		selectedItems: React.PropTypes.array
 	}
 
-	state = {
-		isLoading: false
-	}
-
-	componentDidMount(){
-		this.setState({isLoading: true});
-	}
-
-	componentWillReceiveProps(){
-		this.setState({isLoading: false});
+	static defaultProps = {
+		headerCols: [],
+		items: [],
+		selectedItems: []
 	}
 
 	getColsMarkup(){
-		var headerCols = this.props.headerCols;
-		var markUpCols = [<th key={0}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>];
+		let headerCols = this.props.headerCols;
+		let markUpCols = [<th key={0}></th>];
 		headerCols.forEach((c, index) => {
 			markUpCols.push(<HeaderCol key={index + 1} name={c.name} index={index}/>);
 		});
@@ -115,26 +117,33 @@ class Items extends React.Component {
 	}
 
 	getRowsMarkUp(){
-		var items = this.props.items;
-		return items.map((r, index) => {
-			return <Item key={index} id={r.id} data={r.data} />
+		let items = this.props.items;
+		let selectedItems = this.props.selectedItems;
+		return items.map((i, index) => {
+			let isSelected = some(selectedItems, i);
+			return <Item key={index} id={i.id} data={i.data} isSelected={isSelected}/>
 		});
 	}
 
 	render() {
-		var cols = this.getColsMarkup();
-		var items = this.getRowsMarkUp();
-		var isLoadingClass = this.state.isLoading ? 'overlay-loading--show ': '';
+		let cols = this.getColsMarkup();
+		let items = this.getRowsMarkUp();
+		let isLoadingClass = this.props.isLoading ? 'overlay-loading--show ': '';
 		return(
 			<div className="items-wrapper">
-				<table className="items">
-					<thead className="items__header">
+				<table className="items-wrapper__header">
+					<thead>
 						<tr className="header-row">{cols}</tr>
 					</thead>
-					<tbody className="items__body">
-						{items}
-					</tbody>
 				</table>
+				<div className="items-wrapper__body">
+					<table className="items">
+						<tbody className="items__body">
+							{items}
+						</tbody>
+					</table>
+				</div>
+				
 				<div className={"overlay-loading " + isLoadingClass}></div>
 			</div>
 			

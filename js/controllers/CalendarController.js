@@ -20,7 +20,7 @@ var exp = {
 
 		return CalendarAPI.getData().then(function(calendarData){
 			CalendarActions.receiveData(calendarData);
-			ReactDOM.render(React.createElement(Calendar), app);
+			ReactDOM.render(React.createElement(Calendar.default), app);
 		}.bind(this), function(err){
 			console.log(err);
 		});
@@ -39,7 +39,6 @@ if(module.hot) {
 		exp.start();
 	});
 }
-
 
 module.exports = exp;
 

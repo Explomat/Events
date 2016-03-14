@@ -3,7 +3,7 @@ import SelectedItems from './SelectedItems';
 import Items from './Items';
 import Filters from './Filters';
 import Ajax from '../../../../utils/Ajax';
-
+import {some} from 'lodash';
 import './style/select-items.scss';
 
 var items = {
@@ -18,6 +18,8 @@ class SelectItems extends React.Component {
 	
 	constructor(props){
 		super(props);
+		this.types = {'integer': 'integer', 'date': 'date'}
+
 		this.onSort = this.onSort.bind(this);
 		this.onAddItem = this.onAddItem.bind(this);
 		this.onRemoveItem = this.onRemoveItem.bind(this);
@@ -25,6 +27,8 @@ class SelectItems extends React.Component {
 		this.handleSave = this.handleSave.bind(this);
 		this.handleChangeSearch = this.handleChangeSearch.bind(this);
 		this.handleChangePage = this.handleChangePage.bind(this);
+		this._setData = this._setData.bind(this);
+		this._castType = this._castType.bind(this);
 	} 
 
 	static childContextTypes = {
@@ -49,14 +53,14 @@ class SelectItems extends React.Component {
 		onClose: React.PropTypes.func
 	}
 
-	types: {'integer': 'integer', 'date': 'date'}
-
 	state = {
 		headerCols: this.props.headerCols || [],
 		items: this.props.items || [],
 		selectedItems: this.props.selectedItems || [],
 		search: '',
-		page: 1
+		page: 1,
+		pagesCount: 1,
+		isLoading: true
 	}
 
 	static defaultProps = {
@@ -65,11 +69,11 @@ class SelectItems extends React.Component {
 
 	componentDidMount(){
 		var self = this;
-		var _items = this._filterItems(items.items, this.state.selectedItems);
-		this.setState({items: _items, headerCols: items.headerCols});
-		/*this._getData(this.props.query, this.state.page, this.state.search).then(data => {
+		/*var _items = this._filterItems(items.items, this.state.selectedItems);
+		this.setState({items: _items, headerCols: items.headerCols});*/
+		this._getData(this.props.query, this.state.page, this.state.search).then(data => {
 			self._setData(data);
-		});*/
+		});
 	}
 
 	_castType(val, type){
@@ -95,21 +99,6 @@ class SelectItems extends React.Component {
 		}
 	}
 
-	_filterItems(items, selectedItems) {
-		if (selectedItems.length === 0) return items;
-
-		function isContains(items, item) {
-			for (var i = items.length - 1; i >= 0; i--) {
-				if (items[i].id === item.id) return true;
-			};
-			return false;
-		}
-
-		return items.filter((i, index) => {
-			return !isContains(selectedItems, i);
-		});
-	}
-
 	_getData(query, page, search){
 		return Ajax.sendRequest(query + '&page=' + page + '&search=' + search).then(_items => {
 			return JSON.parse(_items);
@@ -119,6 +108,7 @@ class SelectItems extends React.Component {
 	}
 
 	_setData(data){
+		var self = this;
 		if (!data || !data.items || !data.headerCols) return;
 		data.items = data.items.map(item => {
 			Object.keys(item.data).forEach((col, index) => {
@@ -129,8 +119,7 @@ class SelectItems extends React.Component {
 				data: item.data
 			}
 		});
-		data.items = this._filterItems(data.items, this.state.selectedItems);
-		this.setState({items: data.items, headerCols: data.headerCols})
+		this.setState({items: data.items, headerCols: data.headerCols, pagesCount: data.pagesCount, isLoading: false});
 	}
 
 	onSort(index, isAscending){
@@ -153,23 +142,20 @@ class SelectItems extends React.Component {
 	onAddItem(id, data){
 		var _items = this.state.items;
 		var _selectedItems = this.state.selectedItems;
-		_selectedItems = _selectedItems.concat([{ id: id, data: data }]);
 
-		_items = _items.filter(item => {
-			return item.id !== id;
-		});
+		if (some(_selectedItems, { id: id, data: data })) return;
+		_selectedItems.push({ id: id, data: data });
 		this.setState({ items: _items, selectedItems: _selectedItems});
 	}
 
 	onRemoveItem(id, data){
 		var _items = this.state.items;
 		var _selectedItems = this.state.selectedItems;
-		_items.push({ id: id, data: data });
 
 		_selectedItems = _selectedItems.filter(r => {
 			return r.id !== id;
 		});
-		this.setState({ items: _items, selectedItems: _selectedItems});
+		this.setState({ selectedItems: _selectedItems });
 	}
 
 	handleClose(){
@@ -185,14 +171,16 @@ class SelectItems extends React.Component {
 	}
 
 	handleChangeSearch(search){
-		this.state.search = search;
-		this._getData(this.props.query, this.state.page, search).then(data => {
+		var self = this;
+		this.setState({search: search, isLoading: true, page: 1});
+		this._getData(this.props.query, 1, search).then(data => {
 			self._setData(data);
 		});
 	}
 
 	handleChangePage(page){
-		this.state.page = page;
+		var self = this;
+		this.setState({page: page, isLoading: true});
 		this._getData(this.props.query, page, this.state.search).then(data => {
 			self._setData(data);
 		});
@@ -210,10 +198,11 @@ class SelectItems extends React.Component {
 						<div className="select-item__body clearfix">
 							<Filters 
 								page={this.state.page} 
+								pagesCount={this.state.pagesCount}
 								search={this.state.search} 
 								onSearch={this.handleChangeSearch}
 								onPage={this.handleChangePage}/>
-							<Items items={this.state.items} headerCols={this.state.headerCols}/>
+							<Items items={this.state.items} selectedItems={this.state.selectedItems} headerCols={this.state.headerCols} isLoading={this.state.isLoading}/>
 							<SelectedItems items = {this.state.selectedItems} />
 						</div>
 						<div className="select-item__footer">

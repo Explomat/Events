@@ -6,7 +6,7 @@ import InputCalendar from './modules/input-calendar';
 import SelectItems from './modules/select-items';
 import moment from 'moment';
 import Config from '../config';
-import merge from 'merge';
+import {merge} from 'lodash';
 moment.locale('ru');
 
 
@@ -77,8 +77,7 @@ class Base extends React.Component {
 				onChange={this.handleChange} 
 				onSave={this.handleSave} 
 				prevMonthIcon={'fa fa-angle-left'}
-				nextMonthIcon={'fa fa-angle-right'}
-			/>
+				nextMonthIcon={'fa fa-angle-right'}/>
 		);
 	}
 };
@@ -182,6 +181,7 @@ class EventEdit extends React.Component{
 
 	getModal(){
 		return this.state.isShowModal ? <SelectItems
+											title={"Test"}
 											query={Config.url.createPath({action_name: 'getCollaborators'})}
 											onClose={this.handleCloseModal} 
 											onSave={this.handleSaveItems}/> : null;
@@ -222,4 +222,4 @@ class EventEdit extends React.Component{
 	}
 };
 
-module.exports = EventEdit;
+export default EventEdit;

@@ -69,7 +69,7 @@ module.exports = {
             isSync = isSync || true;
 
             xmlHttp.open(requestType, url, isSync);
-            xmlHttp.setRequestHeader("Authorization", 'Basic ' + btoa('matveev.s:matveev.s'));
+            //xmlHttp.setRequestHeader("Authorization", 'Basic ' + btoa('matveev.s:matveev.s'));
             xmlHttp.onreadystatechange = function() {
               if (xmlHttp.readyState == 4) {
                 if (timeout)

@@ -19,7 +19,7 @@ module.exports = {
 		var app = document.getElementById(Config.dom.appId) || document.body;
 		this.stop(app);
 		isLoaded = true;
-		ReactDOM.render(React.createElement(EventEdit), app);
+		ReactDOM.render(React.createElement(EventEdit.default), app);
 
 		/*EventEditAPI.getData(id).then(function(eventData){
 			EventEditActions.receiveData(eventData);

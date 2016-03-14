@@ -22,9 +22,9 @@ module.exports = {
 
 		EventInfoAPI.getData(id).then(function(eventData){
 			EventInfoActions.receiveData(eventData);
-			ReactDOM.render(React.createElement(EventInfo), app);
+			ReactDOM.render(React.createElement(EventInfo.default), app);
 		}, function(err){
-			ReactDOM.render(React.createElement(EventError, {error: err}), app);
+			ReactDOM.render(React.createElement(EventError.default, {error: err}), app);
 		});
 	},
 
