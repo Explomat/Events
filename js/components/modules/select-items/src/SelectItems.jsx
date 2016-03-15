@@ -4,6 +4,7 @@ import Items from './Items';
 import Filters from './Filters';
 import Ajax from '../../../../utils/Ajax';
 import {some} from 'lodash';
+import cx from 'classnames';
 import './style/select-items.scss';
 
 var items = {
@@ -20,7 +21,8 @@ class SelectItems extends React.Component {
 	
 	constructor(props){
 		super(props);
-		this.types = {'integer': 'integer', 'date': 'date'}
+		this.types = {'integer': 'integer', 'date': 'date'};
+		this.errors = { MAX_SELECTED_ITEMS: 'Вы не можете выбрать более одного элемента!' };
 
 		this.onSort = this.onSort.bind(this);
 		this.onAddItem = this.onAddItem.bind(this);
@@ -31,6 +33,7 @@ class SelectItems extends React.Component {
 		this.handleChangePage = this.handleChangePage.bind(this);
 		this._setData = this._setData.bind(this);
 		this._castType = this._castType.bind(this);
+		this.handleCloseError = this.handleCloseError.bind(this);
 	} 
 
 	static childContextTypes = {
@@ -50,6 +53,7 @@ class SelectItems extends React.Component {
 	static propTypes = {
 		items: React.PropTypes.array,
 		selectedItems: React.PropTypes.array,
+		maxSelectedItems: React.PropTypes.number,
 		query: React.PropTypes.string,
 		title: React.PropTypes.string,
 		onClose: React.PropTypes.func,
@@ -60,10 +64,13 @@ class SelectItems extends React.Component {
 		headerCols: this.props.headerCols || [],
 		items: this.props.items || [],
 		selectedItems: this.props.selectedItems || [],
+		maxSelectedItems: Number.MAX_VALUE,
 		search: '',
 		page: 1,
 		pagesCount: 1,
-		isLoading: true
+		isLoading: true,
+		error: '',
+		isShowError: false
 	}
 
 	static defaultProps = {
@@ -160,6 +167,10 @@ class SelectItems extends React.Component {
 		var _items = this.state.items;
 		var _selectedItems = this.state.selectedItems;
 
+		if (_selectedItems.length >= this.props.maxSelectedItems){
+			this.setState({error: this.errors.MAX_SELECTED_ITEMS, isShowError: true});
+			return;
+		}
 		if (some(_selectedItems, { id: id, data: data })) return;
 		_selectedItems.push({ id: id, data: data });
 		this.setState({ items: _items, selectedItems: _selectedItems});
@@ -203,7 +214,17 @@ class SelectItems extends React.Component {
 		});
 	}
 
+	handleCloseError(){
+		this.setState({error: '', isShowError: false});
+	}
+
 	render() {
+		var errorClass = cx({
+			'alert': true,
+			'alert--info': true,
+			'select-item__error': true,
+			'select-item__error--show': this.state.isShowError
+		});
 		return (
 			<div className="select-items" style={{display: "block"}}>
 				<div className="select-items__modal-box">
@@ -223,6 +244,10 @@ class SelectItems extends React.Component {
 							<SelectedItems items = {this.state.selectedItems} />
 						</div>
 						<div className="select-item__footer">
+							<div className={errorClass}>
+								<button type="button" className="close-btn" onClick={this.handleCloseError}>&times;</button>
+								<span>{this.state.error}</span>
+							</div>
 							<button type="button" className="event-btn event-btn--reverse" onClick={this.handleSave}>Сохранить</button>
 						</div>
 					</div>

@@ -18,9 +18,6 @@ class HeaderCol extends React.Component {
 		type: React.PropTypes.string,
 		onSort: React.PropTypes.func
 	}
-	state = {
-		isRotate: false
-	}
 
 	static defaultProps = {
 		name: ''
@@ -28,17 +25,17 @@ class HeaderCol extends React.Component {
 
 	handleSort(){
 		if (this.context.onSort) {
-			this.context.onSort(this.props.index, this.state.isRotate);
-			this.setState({isRotate: !this.state.isRotate});
+			let caret = this.refs.caret;
+			this.context.onSort(this.props.index, caret.classList.contains('caret--rotate'));
+			caret.classList.toggle('caret--rotate');
 		}
 	}
 
 	render(){
-		var caretClassName = this.state.isRotate ? "rotate" : "";
 		return(
 			<th onClick={this.handleSort} className="header-row__col">
 				<span className="header-row__col-name">{this.props.name}</span>
-				<span className={"caret " + caretClassName}></span>
+				<span ref="caret" className="caret header-row__caret"></span>
 			</th>
 		);
 	}

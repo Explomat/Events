@@ -18,6 +18,17 @@
 			}
 			.select-item__footer{
 				@include modal-box__footer;
+
+				.select-item__error {
+					display: none;
+					float: left;
+			        width: 50%;
+			        text-align: left;
+			        
+					&.select-item__error--show {
+						display: inline-block;
+					}
+				}
 			}
 		}
 	}
@@ -88,9 +99,9 @@
 			}
 
 			.item__button{
-				width: 8%;
+				width: 25.5px;
 				font-size: 10px;
-				margin-right: 5px;
+				margin-right: 7.5px;
 			}
 
 			.item__text {
@@ -123,12 +134,21 @@
 				.header-row__col {
 					padding: 8px 5px;
 					cursor: pointer;
+					position: relative;
 
 					&:hover {
 						background-color: #f2f2f2;
 					}
+					&:hover > .header-row__caret {
+						display: inline-block;
+					}
 					.header-row__col-name {
 						margin-right: 5px;
+					}
+					.header-row__caret {
+						display: none;
+						position: absolute;
+						top: calc(50% - 2px);
 					}
 				}
 
@@ -146,6 +166,7 @@
 				border-spacing: 0;
     			border-collapse: collapse;
     			width: 100%;
+    			table-layout: fixed;
 
 				.items__body{
 					font-size: 13px;
@@ -153,6 +174,10 @@
 
 				.body-row {
 					cursor: pointer;
+
+					& > td:first-child {
+						width: 32px;
+					}
 
 					&:hover {
 						background-color:#F2F2F2;
@@ -162,7 +187,6 @@
 					}
 					.body-row__add-btn {
 						font-size: 10px;
-						margin-right: 5px;
 
 						&.body-row__add-btn--selected {
 						    border: none;

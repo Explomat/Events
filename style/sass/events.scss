@@ -54,6 +54,25 @@
         border-top: 4px dashed;
         border-right: 4px solid transparent;
         border-left: 4px solid transparent;
+        transition: all 0.3s ease-out 0.02s;
+
+        &.caret--rotate {
+            transform: rotate(180deg);
+        }
+    }
+
+    .alert {
+        
+        padding: 5px;
+        margin-bottom: 20px;
+        border: 1px solid transparent;
+
+        &.alert--info {
+            color: #8a6d3b;
+            background-color: #fcf8e3;
+            border-color: #faebcc;
+        }
+        
     }
 
     .close-btn {

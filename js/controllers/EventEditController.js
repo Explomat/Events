@@ -1,6 +1,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-var EventEdit = require('../components/EventEdit');
+var EventEdit = require('../components/event-edit');
 var EventError = require('../components/EventError');
 var EventEditAPI = require('../api/EventEditAPI');
 var EventEditActions = require('../actions/EventEditActions');
