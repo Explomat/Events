@@ -39,6 +39,12 @@
         }
     }
 
+    .oneline {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
     .caret {
         display: inline-block;
         width: 0;

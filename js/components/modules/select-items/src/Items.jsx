@@ -36,7 +36,7 @@ class HeaderCol extends React.Component {
 	render(){
 		var caretClassName = this.state.isRotate ? "rotate" : "";
 		return(
-			<th onClick={this.handleSort}>
+			<th onClick={this.handleSort} className="header-row__col">
 				<span className="header-row__col-name">{this.props.name}</span>
 				<span className={"caret " + caretClassName}></span>
 			</th>
@@ -73,16 +73,24 @@ class Item extends React.Component {
 
 	getMarkup(){
 		var data = this.props.data;
-		var classes = cx('body-row', {'body-row--selected': this.props.isSelected });
+		var classesButton = cx({
+			'body-row__add-btn': true,
+			'event-btn': !this.props.isSelected,
+			'body-row__add-btn--selected': this.props.isSelected
+		});
+		var classesIcon = cx({
+			'fa fa-plus': !this.props.isSelected,
+			'fa fa-check': this.props.isSelected
+		});
 		return (
-			<tr className={classes}>
+			<tr className="body-row" onClick={this.handleAddItem}>
 				<td>
-					<button onClick={this.handleAddItem} className="event-btn body-row__add-btn">
-						<i className="fa fa-plus"></i>
+					<button className={classesButton}>
+						<i className={classesIcon}></i>
 					</button>
 				</td>
 				{Object.keys(data).map((c, index) => {
-					return <td key={index} className="body-row__col">{data[c]}</td>
+					return <td key={index} className="body-row__col oneline">{data[c]}</td>
 				})}
 			</tr>
 		);

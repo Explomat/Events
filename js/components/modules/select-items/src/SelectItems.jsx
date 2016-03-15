@@ -7,10 +7,12 @@ import {some} from 'lodash';
 import './style/select-items.scss';
 
 var items = {
-	headerCols: [{ name: 'a', type: 'string' }],
+	headerCols: [{ name: 'a', type: 'integer' }],
 	items: [
-		{ id: '1', data: {fullname: 'Матвеев Савва Янович'} },
-		{ id: '2', data: {fullname: 'Габдуллин Дамир Габдульбариевич'} }
+		{ id: '1', data: {fullname: '1'} },
+		{ id: '2', data: {fullname: '2'} },
+		{ id: '3', data: {fullname: '3'} },
+		{ id: '4', data: {fullname: '4'} }
 	]
 }
 
@@ -50,7 +52,8 @@ class SelectItems extends React.Component {
 		selectedItems: React.PropTypes.array,
 		query: React.PropTypes.string,
 		title: React.PropTypes.string,
-		onClose: React.PropTypes.func
+		onClose: React.PropTypes.func,
+		onSave: React.PropTypes.func
 	}
 
 	state = {
@@ -69,8 +72,16 @@ class SelectItems extends React.Component {
 
 	componentDidMount(){
 		var self = this;
-		/*var _items = this._filterItems(items.items, this.state.selectedItems);
-		this.setState({items: _items, headerCols: items.headerCols});*/
+		/*var _items = items.items.map(item => {
+			Object.keys(item.data).forEach((col, index) => {
+				item.data[col] = self._castType(item.data[col], items.headerCols[index].type);
+			})
+			return {
+				id: item.id,
+				data: item.data
+			}
+		});
+		this.setState({items: _items, headerCols: items.headerCols, isLoading: false});*/
 		this._getData(this.props.query, this.state.page, this.state.search).then(data => {
 			self._setData(data);
 		});
@@ -89,11 +100,13 @@ class SelectItems extends React.Component {
 		if (val === undefined || val === null || !(type in this.types)) return val.toString();
 		switch(type) {
 			case this.types.integer:
-				if (isInteger(val))
+				if (isInteger(val) === true){
 					return Number(val);
+				}
 			case this.types.date:
-				if (isDate(val))
+				if (isDate(val) === true){
 					return new Date(val);
+				}
 			default:
 				return val.toString();
 		}
@@ -112,7 +125,7 @@ class SelectItems extends React.Component {
 		if (!data || !data.items || !data.headerCols) return;
 		data.items = data.items.map(item => {
 			Object.keys(item.data).forEach((col, index) => {
-				self._castType(item.data[col], data.headerCols[index].type);
+				item.data[col] = self._castType(item.data[col], data.headerCols[index].type);
 			})
 			return {
 				id: item.id,
@@ -124,9 +137,10 @@ class SelectItems extends React.Component {
 
 	onSort(index, isAscending){
 		function getFieldByIndex(data, index){
-			return Object.keys(data).filter((key, _index) => {
+			var keys = Object.keys(data).filter((key, _index) => {
 				return index === _index;
 			});
+			return keys.length > 0 ? data[keys[0]] : null;
 		}
 
 		var isAsc = isAscending ? 1 : -1;
@@ -134,7 +148,10 @@ class SelectItems extends React.Component {
 		items.sort((first, second) => {
 			var firstField = getFieldByIndex(first.data, index);
 			var secondFiled = getFieldByIndex(second.data, index);
-			return firstField > secondFiled ? isAsc : firstField === secondFiled ? 0 : -(isAsc);
+			if (firstField && secondFiled){
+				return firstField > secondFiled ? isAsc : firstField === secondFiled ? 0 : -(isAsc);
+			}
+			return 0;
 		});
 		this.setState({items: items});
 	}
