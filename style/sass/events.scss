@@ -45,6 +45,14 @@
         overflow: hidden;
     }
 
+    .clearfix {
+        &:before, &:after {
+            content: '';
+            display: table;
+            clear: both;
+        }
+    }
+
     .caret {
         display: inline-block;
         width: 0;

@@ -1,0 +1,47 @@
+$elementsColor: #FF5252;
+$headerColor: #646464;
+
+.side-bar{
+  width: 235px;
+  display: inline-block;
+  height: 100%;
+  box-shadow: 2px 2px 10px 0 lighten($headerColor, 20%);
+
+  .side-bar__header{
+    padding: 0 16px;
+    cursor: pointer;
+    line-height: 60px;
+    color: #FFF;
+    background-color: $headerColor;
+    font-size: 1.1em;
+    margin: 0;
+
+    .backward-icon{
+      font-size: 1.5em;
+    }
+
+    .header-txt{
+      padding-left: 16px;
+    }
+  }
+  .side-bar__body {
+    background-color: #fff;
+    height: calc(100% - 60px);
+
+    .side-bar__tab-label{
+      display: block;
+      font-weight: bold;
+      display: block;
+      padding: 16px 16px;
+      cursor: pointer;
+
+      &:first-of-type{
+        padding-top: 32px;
+      }
+
+      &.side-bar__tab-label--selected {
+        color: red;
+      }
+    }
+  }
+}

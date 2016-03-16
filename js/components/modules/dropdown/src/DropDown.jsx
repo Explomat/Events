@@ -1,16 +1,6 @@
 var React = require('react');
 require('./style/dropdown.scss');
 
-var ItemDescription = React.createClass({
-	render: function() {
-		return (
-			<li className="dropdown-list__item dropdown-list__item_description">
-				<span>{this.props.text}</span>
-			</li>
-		);
-	}
-});
-
 var Item = React.createClass({
 
 	handleChange: function(e) {
@@ -55,6 +45,7 @@ var DropDown = {
 	},
 
 	_getSelectedItemText: function(items, payload){
+		if (!payload && this.props.description) return this.props.description;
 		if (!payload && Array.isArray(items) && items.length > 0) return items[0].text;
 		for (var i = items.length - 1; i >= 0; i--) {
 			if (items[i].payload.toString() === payload.toString())
@@ -99,9 +90,6 @@ var DropDown = {
 
 	getList: function(){
 		var list = [];
-		if (this.props.description && !this.props.selectedPayload) {
-			list.push(<ItemDescription key={0} text={this.props.description} />);
-		}
 		this.props.items.forEach(function(item, index){
 			if (index !== 0 && this.props.deviders.indexOf(index) !== -1){
 				list.push(<li key={"divider"+ index + 1} className="dropdown-list__devider"></li>);
@@ -125,12 +113,13 @@ var DropDown = {
 		var className = this.props.className ? this.props.className : '';
 		var classNameChild = this.props.classNameChild ? this.props.classNameChild : '';
 		var classNameButton = this.props.classNameButton ? this.props.classNameButton : '';
+		var classNameTitle = this.props.description && !this.props.selectedPayload ? 'dropdown-box__description': '';
 		var isTypeDisplayStyle = { display: this.state.display ? "block" : "none" };
 		var list = this.getList();
 		return (
 			<div className={"dropdown-box " + className}>
 				<button className={"dropdown-box__default-item " + classNameButton} type="button" onClick={this.handleToogelDisplay}>
-					<span className="dropdown-box__title">{this._getSelectedItemText(this.props.items, this.props.selectedPayload)}</span>
+					<span className={"dropdown-box__title " + classNameTitle}>{this._getSelectedItemText(this.props.items, this.props.selectedPayload)}</span>
 					<span className="dropdown-box__caret caret"></span>
 				</button>
 				<ul className={"dropdown-list " + classNameChild} style={isTypeDisplayStyle}>{list}</ul>

@@ -22,7 +22,7 @@ class SelectItems extends React.Component {
 	constructor(props){
 		super(props);
 		this.types = {'integer': 'integer', 'date': 'date'};
-		this.errors = { MAX_SELECTED_ITEMS: 'Вы не можете выбрать более одного элемента!' };
+		this.errors = { MAX_SELECTED_ITEMS: `Вы не можете выбрать более ${this.props.maxSelectedItems} элемента(ов)!` };
 
 		this.onSort = this.onSort.bind(this);
 		this.onAddItem = this.onAddItem.bind(this);
@@ -74,7 +74,8 @@ class SelectItems extends React.Component {
 	}
 
 	static defaultProps = {
-		title: ''
+		title: '',
+		isDisplay: false
 	}
 
 	componentDidMount(){

@@ -1,0 +1,17 @@
+.event-edit-base {
+	width: 50%;
+	margin: 0 auto;
+
+	.event-edit-base__date-time {
+		margin-top: 40px;
+
+		.date {
+			width: 88%;
+    		margin-left: 12%;
+
+			& > *:first-child {
+				margin-bottom: 10px;
+			}
+		}
+	}
+}

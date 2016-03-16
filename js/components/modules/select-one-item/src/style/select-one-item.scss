@@ -1,0 +1,37 @@
+@import '../../../text-label/src/style/text-label';
+
+.select-one-item {
+    @include input-box;
+
+    .select-one-item__input {
+        @include input-box__input;
+    }
+
+    .select-one-item__label{
+        @include input-box__label;
+        transition: none;
+    }
+
+    .select-one-item__icon{
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+
+        &.select-one-item__icon--up {
+            bottom: 10px;
+        }
+    }
+}
+
+.select-one-item__input_not-empty + .select-one-item__label {
+    color: $darkPrimaryColor;
+    font-size: $fontSizeXs;
+    transform: translateY(-25px);
+}
+
+    
+
+    
+
+
+

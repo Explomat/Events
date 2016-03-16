@@ -64,42 +64,53 @@ $fontSizeXs: 12px;
     }
 }
 
-.input-box{
+@mixin input-box {
     position: relative;
     outline: 0;
+}
+
+@mixin input-box__input {
+    padding: 5px;
+    box-sizing: border-box;
+    border: none;
+    border-bottom: 1px solid rgba(0,0,0,.26);
+    margin-top: 20px;
+    outline: 0;
+    height: 35px;
+    width: 100%;
+    color: $primaryTextColor;
+
+    &:focus {
+        border-color: $darkPrimaryColor;
+        border-width: 2px;
+    }
+}
+
+@mixin input-box__label {
+    font-family: sans-serif;
+    margin-top: 30px;
+    position: absolute;
+    left: 0;
+    pointer-events: none;
+    color: $secondaryTextColor;
+    transition: all 0.2s ease;
+    font-weight: lighter;
+    font-size: $fontSizeSm;
+
+    &:hover {
+        cursor: text;
+    }
+}
+
+.input-box{
+    @include input-box;
 
     .input-box__input {
-        padding: 5px;
-        box-sizing: border-box;
-        border: none;
-        border-bottom: 1px solid rgba(0,0,0,.26);
-        margin-top: 20px;
-        outline: 0;
-        height: 35px;
-        width: 100%;
-        color: $primaryTextColor;
-
-        &:focus {
-            border-color: $darkPrimaryColor;
-            border-width: 2px;
-        }
+        @include input-box__input;
     }
 
     .input-box__label {
-        font-family: sans-serif;
-        margin-top: 30px;
-        position: absolute;
-        left: 0;
-        pointer-events: none;
-        color: $secondaryTextColor;
-        transition: all 0.2s ease;
-        font-weight: lighter;
-        font-size: $fontSizeSm;
-
-        &:hover {
-            cursor: text;
-        }
-
+        @include input-box__label;
     }
 }
 

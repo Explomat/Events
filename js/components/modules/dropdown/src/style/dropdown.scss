@@ -4,6 +4,10 @@
     vertical-align: middle;
     width: 100%;
 
+    .dropdown-box__description {
+        color: #727272;
+    }
+
     .dropdown-list {
         position: absolute;
         top: 0;
@@ -44,10 +48,6 @@
 
             &.dropdown-list__item_selected {
                 color: red;
-            }
-
-            &.dropdown-list__item_description {
-                color: #B6B6B6;
             }
         }
 
