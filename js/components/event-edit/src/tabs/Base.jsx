@@ -16,36 +16,20 @@ class Base extends React.Component {
 	constructor(props){
 		super(props);
 		this.handleChangeDate = this.handleChangeDate.bind(this);
-		this.handleCloseModal = this.handleCloseModal.bind(this);
-		this.handleShowModal = this.handleShowModal.bind(this);
 		this.handleSaveItems = this.handleSaveItems.bind(this);
 		this.handleChangeEventType = this.handleChangeEventType.bind(this);
+		this.handleChangeOrg = this.handleChangeOrg.bind(this);
+		this.handleChangeEducation = this.handleChangeEducation.bind(this);
 	}
 
 	state = {
 		startDate: moment(),
-		isShowModal: false
+		selectedItemOrg: null,
+		selectedItemEducation: null
 	}
 
 	handleChangeDate(date) {
 		this.setState({startDate: date});
-	}
-
-	getModal(){
-		return this.state.isShowModal ? <SelectItems
-											title={"Обучающая организация"}
-											maxSelectedItems={3}
-											query={Config.url.createPath({action_name: 'getCollaborators'})}
-											onClose={this.handleCloseModal} 
-											onSave={this.handleSaveItems}/> : null;
-	}
-
-	handleCloseModal(){
-		this.setState({isShowModal: false});
-	}
-
-	handleShowModal(){
-		this.setState({isShowModal: true});
 	}
 
 	handleSaveItems(items){
@@ -56,11 +40,18 @@ class Base extends React.Component {
 
 	}
 
+	handleChangeOrg(item) {
+		this.setState({selectedItemOrg: item});
+	}
+
+	handleChangeEducation(item){
+		this.setState({selectedItemEducation: item});
+	}
+
 	render(){
-		var modal = this.getModal();
 		return (
 			<div className="event-edit-base">
-				<TextView value={this.props.value} placeholder={"Название"} />
+				<TextView value={this.props.value} placeholder={"Название"} className="event-edit-base__name"/>
 				<DropDown 
 					description={"Тип мероприятия"}
 					onChange={this.handleChangeEventType} 
@@ -72,7 +63,7 @@ class Base extends React.Component {
 					items={this.props.eventTypes} 
 					selectedPayload={this.props.selectedEventType}/>
 				<div className="event-edit-base__date-time">
-					<i className="fa fa-clock-o"></i>
+					<i className="fa fa-clock-o icon-clock"></i>
 					<div className="date">
 						<InputCalendar 
 							moment={this.state.startDate} 
@@ -86,13 +77,19 @@ class Base extends React.Component {
 							nextMonthIcon={'fa fa-angle-right'}/>
 					</div>
 				</div>
-				{modal}
-				<SelectOneItem 
-					value={""} 
+				<SelectOneItem
+					selectedItem={this.state.selectedItemOrg} 
 					placeholder={"Обучающая организация"} 
-					title={"Обучающая организация"} 
-					query={Config.url.createPath({action_name: 'getCollaborators'})}/>
-				<button onClick={this.handleShowModal}>Open modal</button>
+					modalTitle={"Обучающая организация"} 
+					query={Config.url.createPath({action_name: 'getCollaborators'})}
+					onChange={this.handleChangeOrg}/>
+				<SelectOneItem
+					selectedItem={this.state.selectedItemEducation} 
+					placeholder={"Учебная программа"} 
+					modalTitle={"Учебная программа"} 
+					query={Config.url.createPath({action_name: 'getCollaborators'})}
+					onChange={this.handleChangeEducation}/>
+				<TextView value={this.props.value} placeholder={"Место проведения"} />
 			</div>
 		);
 	}

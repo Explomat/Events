@@ -5,6 +5,7 @@
 
     .select-one-item__input {
         @include input-box__input;
+        cursor: pointer;
     }
 
     .select-one-item__label{
@@ -16,6 +17,7 @@
         position: absolute;
         bottom: 5px;
         right: 5px;
+        color: #727272;
 
         &.select-one-item__icon--up {
             bottom: 10px;

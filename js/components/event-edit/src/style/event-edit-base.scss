@@ -1,10 +1,22 @@
 .event-edit-base {
 	width: 50%;
+	height: 100%;
 	margin: 0 auto;
+	padding: .1px;
+
+	& > * {
+        margin-bottom: 20px;
+    }
+
+    .event-edit-base__name{
+    	margin-top: 20px;
+    }
 
 	.event-edit-base__date-time {
 		margin-top: 40px;
-
+		.icon-clock {
+			color: #727272;
+		}
 		.date {
 			width: 88%;
     		margin-left: 12%;

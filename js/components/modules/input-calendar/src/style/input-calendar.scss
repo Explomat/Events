@@ -1,5 +1,6 @@
 .input-calendar {
   width: 100%;
+  font-size: 13px;
 
   .input-calendar__date {
     width: 100%;
@@ -8,7 +9,8 @@
 
   .input-calendar__calendar{
     display: none;
-    
+    z-index: 1;
+
     &.input-calendar__calendar--show {
       display: block;
       position: absolute;
