@@ -2,6 +2,7 @@
 
 .select-items {
 	@include modal-box;
+	display: block;
 
 	.select-items__modal-box {
 		@include modal-box__dialog;

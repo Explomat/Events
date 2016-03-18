@@ -1,0 +1,75 @@
+@import '../../../modal/src/style/modal';
+
+.tree {
+    @include modal-box;
+    display: block;
+
+    .tree__modal-box {
+        @include modal-box__dialog;
+        width: 600px;
+
+        .tree__content {
+            @include modal-box__content;
+            .tree__header{
+                @include modal-box__header;
+            }
+            .tree__body{
+                @include modal-box__body;
+                height: 400px;
+                overflow: auto;
+
+                .category-tree {
+                    margin: 0;
+                    padding: 0;
+
+                    .item {
+                        list-style-type: none;
+                        margin-bottom: 10px;
+
+                        .item:first-child {
+                            margin-top: 10px;
+                        }
+
+                        &:before {
+                            content: "";
+                            display: inline-block;
+                            font-size: 13px;
+                            height: 11px;
+                            line-height: 7px;
+                            margin: 3px 7px 0 0;
+                            text-align: center;
+                            vertical-align: top;
+                            width: 11px;
+                        }
+
+                        &.item--selected > .item__description {
+                            background-color: #d9edf7;
+                            color: #000;
+                            padding: 7px 7px;
+                        }
+
+                        .item__icon {
+                            font-size: 13px;
+                            padding: 8px;
+                            cursor: pointer;
+                        }
+
+                        .item__description {
+                            color: #000;
+                            cursor: default;
+
+                            .description-map {
+                                .description-map_arrow {
+                                    padding: 0 15px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .tree__footer{
+                @include modal-box__footer;
+            }
+        }
+    }
+}

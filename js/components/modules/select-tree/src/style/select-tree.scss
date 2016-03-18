@@ -1,0 +1,32 @@
+@import '../../../text-label/src/style/text-label';
+
+.select-tree {
+    @include input-box;
+
+    .select-tree__input {
+        @include input-box__input;
+        cursor: pointer;
+    }
+
+    .select-tree__label{
+        @include input-box__label;
+        transition: none;
+    }
+
+    .select-tree__icon{
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        color: #727272;
+
+        &.select-tree__icon--up {
+            bottom: 10px;
+        }
+    }
+}
+
+.select-tree__input_not-empty + .select-tree__label {
+    color: $darkPrimaryColor;
+    font-size: $fontSizeXs;
+    transform: translateY(-25px);
+}

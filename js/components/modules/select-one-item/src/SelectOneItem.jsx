@@ -78,7 +78,7 @@ class SelectOneItem extends React.Component {
 			'select-one-item__icon--up': this.props.selectedItem
 		});
 		return (
-			<div className={cx('select-one-item', this.props.className)} tabIndex={1}>
+			<div className={cx('select-one-item', this.props.className)}>
 				<input
 					readOnly 
 					className={inputClasses} 

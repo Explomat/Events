@@ -227,7 +227,7 @@ class SelectItems extends React.Component {
 			'select-item__error--show': this.state.isShowError
 		});
 		return (
-			<div className="select-items" style={{display: "block"}}>
+			<div className="select-items">
 				<div className="select-items__modal-box">
 					<div className="select-items__content">
 						<div className="select-item__header">
