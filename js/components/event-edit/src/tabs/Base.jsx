@@ -12,26 +12,29 @@ moment.locale('ru');
 import '../style/event-edit-base.scss';
 
 var places = {
-	defaultValue: { id:2, name:'For Sale' },
 	items: [
 		{
 			"id": 1,
 			"name": "All Categories",
+			"selected": true,
 			"descr": null,
 			"children": [
 				{
 				  "id": 2,
 				  "name": "For Sale",
+				  "selected": false,
 				  "descr": { "id":"d_1", "name":"Москва" },
 				  "children": [
 				    {
 				      "id": 4,
 				      "name": "Baby & Kids Stuff",
+				      "selected": false,
 				      "descr": null
 				    },
 				    {
 				      "id": 5,
 				      "name": "Music, Films, Books & Games",
+				      "selected": false,
 				      "descr": { "id":"d_4", "name":"Ярославль" }
 				    }
 				  ]
@@ -39,21 +42,25 @@ var places = {
 			    {
 			      "id": 6,
 			      "name": "Motors",
+			      "selected": false,
 			      "descr": { "id":"d_5", "name":"Москва" },
 			      "children": [
 			        {
 			          "id": 7,
 			          "name": "Car Parts & Accessories",
+			          "selected": false,
 			          "descr": { "id":"d_6", "name":"Красноярск" }
 			        },
 			        {
 			          "id": 8,
 			          "name": "Cars",
+			          "selected": false,
 			          "descr": { "id":"d_7", "name":"Москва" }
 			        },
 			        {
 			          "id": 10016,
 			          "name": "Motorbike Parts & Accessories",
+			          "selected": false,
 			          "descr": { "id":"d_8", "name":"Москва" }
 			        }
 			      ]
@@ -61,21 +68,25 @@ var places = {
 			    {
 			      "id": 9,
 			      "name": "Jobs",
+			      "selected": false,
 			      "descr": { "id":"d_9", "name":"Красноярск" },
 			      "children": [
 			        {
 			          "id": 10,
 			          "name": "Accountancy",
+			          "selected": false,
 			          "descr": { "id":"d_10", "name":"Москва" }
 			        },
 			        {
 			          "id": 11,
 			          "name": "Financial Services & Insurance",
+			          "selected": false,
 			          "descr": { "id":"d_11", "name":"Ставрополь" }
 			        },
 			        {
 			          "id": 12,
 			          "name": "Bar Staff & Management",
+			          "selected": false,
 			          "descr": { "id":"d_12", "name":"Самара" }
 			        }
 			      ]
