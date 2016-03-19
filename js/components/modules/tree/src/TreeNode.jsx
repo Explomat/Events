@@ -17,6 +17,7 @@ class TreeNode extends React.Component {
 
 	constructor(props){
 		super(props);
+		this._isMounted = true;
 		this.onChildDisplayToggle = this.onChildDisplayToggle.bind(this);
 		this.onCategorySelect = this.onCategorySelect.bind(this);
 	}
@@ -26,10 +27,16 @@ class TreeNode extends React.Component {
 	}
 
 	componentDidMount(){
-		if (this.props.selectedNode && (this.props.selectedNode.id == this.props.data.id) && (this.props.selectedNode.name == this.props.data.name) && this.props.onCategorySelect)
+		/*if (this.props.selectedNode && (this.props.selectedNode.id == this.props.data.id) && (this.props.selectedNode.name == this.props.data.name) && this.props.onCategorySelect)
+			this.props.onCategorySelect(this);*/
+		if (this.props.data.selected === true)
 			this.props.onCategorySelect(this);
 		if (this.props.isExpand)
 			this.expandNodes();
+	}
+
+	componentWillUnmount(){
+		this._isMounted = false;
 	}
 
 	onCategorySelect(ev) {

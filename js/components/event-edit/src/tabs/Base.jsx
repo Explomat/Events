@@ -16,7 +16,7 @@ var places = {
 		{
 			"id": 1,
 			"name": "All Categories",
-			"selected": true,
+			"selected": false,
 			"descr": null,
 			"children": [
 				{
@@ -28,7 +28,7 @@ var places = {
 				    {
 				      "id": 4,
 				      "name": "Baby & Kids Stuff",
-				      "selected": false,
+				      "selected": true,
 				      "descr": null
 				    },
 				    {
@@ -179,7 +179,11 @@ class Base extends React.Component {
 					modalTitle={"Учебная программа"} 
 					query={Config.url.createPath({action_name: 'getCollaborators'})}
 					onChange={this.handleChangeEducation}/>
-				<SelectTree items={places.items} placeholder={"Выберите расположение"} onSave={this.handleSavePlace}/>
+				<SelectTree 
+					items={places.items} 
+					placeholder={"Выберите расположение"} 
+					onSave={this.handleSavePlace}
+					isExpand={true}/>
 			</div>
 		);
 	}

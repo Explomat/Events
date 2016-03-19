@@ -34,30 +34,33 @@ class Tree extends React.Component {
 
 	handleSave(){
 		if (this.props.onSave)
-			this.props.onSave(this.state.selected);
+			this.props.onSave(this.state.selected.props.data);
 	}
 
 	handleClick(){
-		var out = this.state.selected ? this.state.selected.props.data : '';
+		let out = this.state.selected ? this.state.selected.props.data : '';
 		if (this.props.onClick)
 			this.props.onClick(out);
 	}
 
 	selectNode(node) {
+		let isSelected = node.state.selected ? false : true;
 		this.setState({selected: node});
-        node.setState({selected: true});
+        node.setState({selected: isSelected});
 	}
 
 	onSelect (node) {
-        if (this.state.selected) 
+        if (this.state.selected && this.state.selected._isMounted) 
             this.state.selected.setState({selected: false});
-        this.selectNode(node);
+        	this.selectNode(node);
         if (this.props.onCategorySelect) 
             this.props.onCategorySelect(node.props.data);
     }
 
     render() {
-    	if (!this.props.isShow) return null;
+    	if (!this.props.isShow) {
+    		return null;
+    	}
         return (
         	<div className="tree">
         		<div className="tree__modal-box">
