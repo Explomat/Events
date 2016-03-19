@@ -26,6 +26,15 @@ module.exports = {
         extensions: ['', '.js', '.jsx'],
     },
     module: {
+        preLoaders: [
+            {
+                test: /\.js$/,
+                loaders: ['eslint'],
+                include: [
+                  path.resolve(__dirname, "js"),
+                ],
+            }
+        ],
         loaders: [
             { 
                 test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -46,7 +55,7 @@ module.exports = {
             },
             {
                 test: /\.jsx$/,
-                loaders: ['react-hot', 'babel?presets[]=es2015&presets[]=react&presets[]=stage-0'],
+                loaders: ['react-hot', 'babel-loader'],
                 include: path.join(__dirname, 'js/components')
             },
             {

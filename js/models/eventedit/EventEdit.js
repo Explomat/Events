@@ -5,7 +5,7 @@ var Lector = require('./Lector');
 var CollaboratorTest = require('./CollaboratorTest');
 
 module.exports = function(args){
-	var args = args || {};
+	args = args || {};
 	args.startDate = args.startDate || Date();
 	args.finishDate = args.finishDate || Date();
 	args.dateRequestBegin = args.dateRequestBegin || Date(); //период подачи заявок
@@ -66,7 +66,7 @@ module.exports = function(args){
 	//testing
 	this.isAutoAssignPrevTesting = args.isAutoAssignPrevTesting || false;
 	this.isAutoAssignPostTesting = args.isAutoAssignPostTesting || false;
-	this.prevTests = [];
+	/*this.prevTests = [];
 	if (args.prevTests) {
 		this.prevTests = args.prevTests.map(function(t){
 			return new Test(t);
@@ -77,7 +77,7 @@ module.exports = function(args){
 		this.postTests = args.postTests.map(function(t){
 			return new Test(t);
 		});
-	}
+	}*/
 	this.listOfTest = [];
 	if (args.listOfTest) {
 		this.listOfTest = args.listOfTest.map(function(lt){

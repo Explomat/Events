@@ -1,20 +1,20 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var EventEdit = require('../components/event-edit');
-var EventError = require('../components/EventError');
-var EventEditAPI = require('../api/EventEditAPI');
-var EventEditActions = require('../actions/EventEditActions');
+//var EventError = require('../components/EventError');
+//var EventEditAPI = require('../api/EventEditAPI');
+//var EventEditActions = require('../actions/EventEditActions');
 var Config = require('../config');
 
 var isLoaded = false;
 
 module.exports = {
 
-	isLoaded: function () {
+	isLoaded () {
 		return isLoaded;
 	},
 
-	start: function(id){
+	start(){
 
 		var app = document.getElementById(Config.dom.appId) || document.body;
 		this.stop(app);
@@ -29,7 +29,7 @@ module.exports = {
 		});*/
 	},
 
-	stop: function () {
+	stop () {
 		var app = document.getElementById(Config.dom.appId) || document.body;
 		if (app) ReactDOM.unmountComponentAtNode(app);
 		isLoaded = false;

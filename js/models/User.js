@@ -1,7 +1,7 @@
 var UUID = require('../utils/UUID');
 
 module.exports = function(args){
-	var args = args || {};
+	args = args || {};
 
 	this.id = args.id || UUID.generate();
 	this.region = args.region || '';

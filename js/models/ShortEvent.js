@@ -3,7 +3,7 @@ var EventStatuses = require('../utils/event/EventStatuses');
 var UUID = require('../utils/UUID');
 
 module.exports = function(args){
-	var args = args || {};
+	args = args || {};
 	args.startDate = args.startDate || Date();
 	args.finishDate = args.finishDate || Date();
 

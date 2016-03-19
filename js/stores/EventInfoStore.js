@@ -22,7 +22,7 @@ function removeCollaborator(userId){
 	});
 	if (userIndex !== undefined) {
 		_eventInfo.collaborators.splice(userIndex, 1);
-		changeInfo("Вы были успешно удалены из участников");
+		changeInfo('Вы были успешно удалены из участников');
 	}
 }
 

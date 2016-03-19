@@ -6,7 +6,7 @@ var CalendarEventStatuses = require('../utils/event/CalendarEventStatuses');
 var CalendarBusinessTypes = require('../utils/event/CalendarBusinessTypes');
 
 module.exports = function(args){
-	var args = args || {};
+	args = args || {};
 	args.currentDate = args.currentDate || Date();
 	
 	if (args.events) {

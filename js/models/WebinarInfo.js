@@ -1,5 +1,5 @@
 module.exports = function(args){
-	var args = args || {};
+	args = args || {};
 	this.href = args.href || null;
 	this.enterHref = args.enterHref || '#';
 }

@@ -1,8 +1,8 @@
 var Config = require('../config');
-var Storage = require('../utils/Storage');
+//var Storage = require('../utils/Storage');
 //var EventInfo = require('../models/EventInfo');
 //var ShortEvent = require('../models/ShortEvent');
-var Promise = require('es6-promise').Promise;
+//var Promise = require('es6-promise').Promise;
 var Ajax = require('../utils/Ajax');
 
 module.exports = {

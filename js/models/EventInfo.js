@@ -9,7 +9,7 @@ var File = require('./File');
 var UUID = require('../utils/UUID');
 
 module.exports = function(args){
-	var args = args || {};
+	args = args || {};
 	args.startDate = args.startDate || Date();
 	args.finishDate = args.finishDate || Date();
 
@@ -20,7 +20,7 @@ module.exports = function(args){
 	this.finishDate = new Date(args.finishDate);
 	this.status = args.status || EventStatuses.keys.plan;
 	this.place = args.place || '';
-	this.reportHref = args.reportHref || "#";
+	this.reportHref = args.reportHref || '#';
 
 	this.collaborators = [];
 	if (args.collaborators) {

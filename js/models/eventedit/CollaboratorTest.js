@@ -1,5 +1,5 @@
 module.exports = function(args){
-	var args = args || {};
+	args = args || {};
 	args.finishDate = args.finishDate || Date();
 
 	this.id = args.id || null;

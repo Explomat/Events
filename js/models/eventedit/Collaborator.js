@@ -1,5 +1,5 @@
 module.exports = function(args){
-	var args = args || {};
+	args = args || {};
 
 	this.id = args.id || null;
 	this.fullname = args.fullname || 'Нет имени';
