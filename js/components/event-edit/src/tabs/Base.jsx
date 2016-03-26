@@ -118,7 +118,7 @@ class Base extends React.Component {
 		this.setState({startDate: date});
 	}
 
-	handleSaveItems(items){
+	handleSaveItems(/*items*/){
 		this.setState({isShowModal: false});
 	}
 
@@ -141,7 +141,7 @@ class Base extends React.Component {
 	render(){
 		return (
 			<div className="event-edit-base">
-				<TextView value={this.props.value} placeholder={"Название"} className="event-edit-base__name"/>
+				<TextView value={this.props.name} placeholder={"Название"} className="event-edit-base__name"/>
 				<DropDown 
 					description={"Тип мероприятия"}
 					onChange={this.handleChangeEventType} 

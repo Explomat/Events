@@ -10,14 +10,11 @@ import Testing from './tabs/Testing';
 import Courses from './tabs/Courses';
 import Tutors from './tabs/Tutors';
 
-import Hasher from '../../../utils/Hasher';
+//import Hasher from '../../../utils/Hasher';
 import EventEditStore from '../../../stores/EventEditStore';
-
 import {merge} from 'lodash';
 
 import './style/event-edit.scss';
-
-
 
 function getEventEditState() {
 	return EventEditStore.getData();
@@ -51,7 +48,7 @@ class EventEdit extends React.Component{
 
 	getTabView(tabName){
 		var Component = this.sideBarComponents[tabName];
-		return Component ? <Component /> : null;
+		return Component ? <Component {...this.state}/> : null;
 	}
 
 	handleSelectTab(tabName){

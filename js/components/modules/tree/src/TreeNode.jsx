@@ -46,7 +46,7 @@ class TreeNode extends React.Component {
 	    ev.stopPropagation();
 	}
 
-	expandNodes(_node) {
+	expandNodes() {
 		if (this.props.data.children) {
 	        if (this.state.children && this.state.children.length) 
 	            this.setState({children: null});

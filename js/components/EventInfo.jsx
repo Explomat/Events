@@ -101,7 +101,7 @@ class EventInfoBody extends React.Component {
 		selectedPayload: this.props.members[0].payload
 	}
 
-	handleChangeMembers(e, payload, text, index){
+	handleChangeMembers(e, payload/*, text, index*/){
 		this.setState({selectedPayload: payload});
 	}
 

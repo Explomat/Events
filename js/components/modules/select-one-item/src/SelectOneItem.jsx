@@ -1,7 +1,6 @@
 import React from 'react';
 import SelectItems from '../../select-items';
 import cx from 'classnames';
-import {merge} from 'lodash';
 import './style/select-one-item.scss';
 
 class SelectOneItem extends React.Component {

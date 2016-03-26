@@ -8,7 +8,7 @@ import TextOverflow from './modules/text-overflow';
 import DateUtils from '../utils/event/DateUtils';
 import EventUtils from '../utils/event/EventUtils';
 import EventTypes from '../utils/event/EventTypes';
-import EventStatuses from '../utils/event/EventStatuses';
+///import EventStatuses from '../utils/event/EventStatuses';
 import CalendarStore from '../stores/CalendarStore';
 import CalendarActions from '../actions/CalendarActions';
 import Config from '../config';
@@ -26,7 +26,7 @@ var EventSideBar = React.createClass({
 	render(){
 		var time = this.getTime();
 		var typeIconClass = this.props.type === EventTypes.keys.webinar ? 'icon--type--webinar': 'icon--type--fulltime';
-		var statusIconClass = 'status-icon--' + this.props.status;
+		//var statusIconClass = 'status-icon--' + this.props.status;
 		return(
 			<section className="timetable__event clearfix">
 				<div className="timetable__event-info-wrapper">
@@ -55,7 +55,7 @@ var SideBar = React.createClass({
 		}
 	},
 
-	getSelectedEvents(selectedDate, events){
+	getSelectedEvents(selectedDate/*, events*/){
 		return this.props.events.filter(function(ev){
 			return DateUtils.compare(selectedDate, ev.startDate);
 		})
@@ -94,22 +94,22 @@ var Filters = React.createClass({
 		CalendarActions.changeMonth(index, this.props.selectedYear, this.props.selectedBusinessType, this.props.selectedRegion);
 	},
 
-	handleChangeYear(e, payload, text, index){
+	handleChangeYear(e, payload){
 		if (this.props.onChangeYear) this.props.onChangeYear(payload);
 		CalendarActions.changeYear(payload, this.props.selectedMonthIndex, this.props.selectedBusinessType, this.props.selectedRegion);
 	},
 
-	handleChangeRegion(e, payload, text, index){
+	handleChangeRegion(e, payload){
 		if (this.props.onChangeRegion) this.props.onChangeRegion(payload);
 		CalendarActions.changeRegion(this.props.selectedMonthIndex, this.props.selectedYear, this.props.selectedBusinessType, payload);
 	},
 
-	handleChangeBusinessType(e, payload, text, index){
+	handleChangeBusinessType(e, payload){
 		if (this.props.onChangeBusinessType) this.props.onChangeBusinessType(payload);
 		CalendarActions.changeBusinessType(this.props.selectedMonthIndex, this.props.selectedYear, payload, this.props.selectedRegion);
 	},
 
-	handleChangeStatus(e, payload, text, index){
+	handleChangeStatus(e, payload){
 		CalendarActions.changeStatus(payload);
 	},
 

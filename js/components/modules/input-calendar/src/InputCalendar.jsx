@@ -28,7 +28,7 @@ module.exports = React.createClass({
     this.setState({isShow: !this.state.isShow});
   },
 
-  handleClickOutside: function(evt) {
+  handleClickOutside: function() {
     this.setState({isShow: false});
   },
 

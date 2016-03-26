@@ -1,14 +1,14 @@
-//var AppDispatcher = require('../dispatcher/AppDispatcher');
-//var EventEditConstants = require('../constants/EventEditConstants');
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+var EventEditConstants = require('../constants/EventEditConstants');
 
 var EventEditActions = {
 	
-	/*receiveData: function(data) {
+	receiveData: function(data) {
 		AppDispatcher.handleAction({
-			actionType: EventInfoConstants.RECEIVE_EVENTEDIT_DATA,
+			actionType: EventEditConstants.RECEIVE_EVENTEDIT_DATA,
 			data: data
 		});
-	}*/
+	}
 }
 
 module.exports = EventEditActions;

@@ -1,4 +1,5 @@
 import React from 'react';
+import CheckBox from 'components/modules/checkbox';
 
 class Requests extends React.Component {
 

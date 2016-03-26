@@ -6,6 +6,6 @@ class Tutors extends React.Component{
 			<div>Tutors</div>
 		);
 	}
-};
+}
 
 export default Tutors;

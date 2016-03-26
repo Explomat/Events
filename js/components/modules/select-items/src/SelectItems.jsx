@@ -7,7 +7,7 @@ import {some} from 'lodash';
 import cx from 'classnames';
 import './style/select-items.scss';
 
-var items = {
+/*var items = {
 	headerCols: [{ name: 'a', type: 'integer' }],
 	items: [
 		{ id: '1', data: {fullname: '1'} },
@@ -15,7 +15,7 @@ var items = {
 		{ id: '3', data: {fullname: '3'} },
 		{ id: '4', data: {fullname: '4'} }
 	]
-}
+}*/
 
 class SelectItems extends React.Component {
 	
@@ -111,10 +111,12 @@ class SelectItems extends React.Component {
 				if (isInteger(val) === true){
 					return Number(val);
 				}
+				break;
 			case this.types.date:
 				if (isDate(val) === true){
 					return new Date(val);
 				}
+				break;
 			default:
 				return val.toString();
 		}
@@ -123,7 +125,7 @@ class SelectItems extends React.Component {
 	_getData(query, page, search){
 		return Ajax.sendRequest(query + '&page=' + page + '&search=' + search).then(_items => {
 			return JSON.parse(_items);
-		}).catch(function(err){
+		}).catch(function(){
 			return [];
 		});
 	}
@@ -177,8 +179,7 @@ class SelectItems extends React.Component {
 		this.setState({ items: _items, selectedItems: _selectedItems});
 	}
 
-	onRemoveItem(id, data){
-		var _items = this.state.items;
+	onRemoveItem(id){
 		var _selectedItems = this.state.selectedItems;
 
 		_selectedItems = _selectedItems.filter(r => {

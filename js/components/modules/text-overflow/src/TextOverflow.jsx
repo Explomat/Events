@@ -21,7 +21,7 @@ var TextOverflow = React.createClass({
 		rowsCount: 1
 	},
 
-	componentDidUpdate: function(prevProps, prevState){
+	componentDidUpdate: function(){
 		this._changeDisplayDots();
 	},
 

@@ -75,7 +75,7 @@ var TextView = React.createClass({
 		}
 	},
 
-	handleDetranslate: function(e){
+	handleDetranslate: function(){
 		this.refs.lbl.classList.remove('input-box__label_translate');
 		this.refs.lbl.classList.add('input-box__label_detranslate');
 	},
@@ -108,7 +108,7 @@ var TextAreaView = React.createClass(extend(true, {}, TextBase, {
 		}
 	},
 
-	handleDetranslate: function(e){
+	handleDetranslate: function(){
 		this.refs.lbl.classList.remove('textarea-box__label_translate');
 		this.refs.lbl.classList.add('textarea-box__label_detranslate');
 	},
