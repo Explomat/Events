@@ -1,13 +1,13 @@
-var React = require('react');
-var Config = require('../config');
+import React from 'react';
+import Config from '../config';
 
-var EventError = React.createClass({
+class EventError extends React.Component {
 
-	propTypes: {
+	static propTypes = {
 		error: React.PropTypes.string.isRequired
-	},
+	}
 
-	render: function () {
+	render () {
 		return (
 			<div className="event-info-box">
 				<section className="event-info">
@@ -27,6 +27,6 @@ var EventError = React.createClass({
 			</div>
 		);
 	}
-});
+}
 
-module.exports = EventError;
+export default EventError;

@@ -20,18 +20,18 @@ function getEventEditState() {
 	return EventEditStore.getData();
 }
 
-class EventEdit extends React.Component{
+class EventEdit extends React.Component {
 
 	constructor(props){
 		super(props);
-		this.sideBarComponents = {'Base': Base, 'Requests': Requests, 'Collaborators': Collaborators, 'Tutors': Tutors, 'Testing': Testing, 'Courses': Courses, 'LibraryMaterials': LibraryMaterials, 'Files': Files};
+		this.sideBarComponents = {'base': Base, 'requests': Requests, 'collaborators': Collaborators, 'tutors': Tutors, 'testing': Testing, 'courses': Courses, 'libraryMaterials': LibraryMaterials, 'files': Files};
 		this._onChange = this._onChange.bind(this);
 		this.getTabView = this.getTabView.bind(this);
 		this.handleSelectTab = this.handleSelectTab.bind(this);
 	}
 
-	state =  merge(getEventEditState(), {
-		selectedTab: { key: 'Base', value: 'Основные' }
+	state = merge(getEventEditState(), {
+		selectedTab: { key: 'base', value: 'Основные' }
 	})
 
 	componentDidMount() {
@@ -47,8 +47,9 @@ class EventEdit extends React.Component{
 	}
 
 	getTabView(tabName){
+		var partialState = EventEditStore.getPartialData(tabName);
 		var Component = this.sideBarComponents[tabName];
-		return Component ? <Component {...this.state}/> : null;
+		return Component ? <Component {...partialState}/> : null;
 	}
 
 	handleSelectTab(tabName){

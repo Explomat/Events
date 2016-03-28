@@ -3,6 +3,7 @@
     display: inline-block;
     vertical-align: middle;
     width: 100%;
+    font-size: inherit;
 
     .dropdown-box__description {
         color: #727272;
@@ -85,5 +86,6 @@
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
+        font-size: inherit;
     }
 }

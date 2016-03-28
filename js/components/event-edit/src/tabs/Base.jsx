@@ -11,91 +11,6 @@ moment.locale('ru');
 
 import '../style/event-edit-base.scss';
 
-var places = {
-	items: [
-		{
-			"id": 1,
-			"name": "All Categories",
-			"selected": false,
-			"descr": null,
-			"children": [
-				{
-				  "id": 2,
-				  "name": "For Sale",
-				  "selected": false,
-				  "descr": { "id":"d_1", "name":"Москва" },
-				  "children": [
-				    {
-				      "id": 4,
-				      "name": "Baby & Kids Stuff",
-				      "selected": true,
-				      "descr": null
-				    },
-				    {
-				      "id": 5,
-				      "name": "Music, Films, Books & Games",
-				      "selected": false,
-				      "descr": { "id":"d_4", "name":"Ярославль" }
-				    }
-				  ]
-				},
-			    {
-			      "id": 6,
-			      "name": "Motors",
-			      "selected": false,
-			      "descr": { "id":"d_5", "name":"Москва" },
-			      "children": [
-			        {
-			          "id": 7,
-			          "name": "Car Parts & Accessories",
-			          "selected": false,
-			          "descr": { "id":"d_6", "name":"Красноярск" }
-			        },
-			        {
-			          "id": 8,
-			          "name": "Cars",
-			          "selected": false,
-			          "descr": { "id":"d_7", "name":"Москва" }
-			        },
-			        {
-			          "id": 10016,
-			          "name": "Motorbike Parts & Accessories",
-			          "selected": false,
-			          "descr": { "id":"d_8", "name":"Москва" }
-			        }
-			      ]
-			    },
-			    {
-			      "id": 9,
-			      "name": "Jobs",
-			      "selected": false,
-			      "descr": { "id":"d_9", "name":"Красноярск" },
-			      "children": [
-			        {
-			          "id": 10,
-			          "name": "Accountancy",
-			          "selected": false,
-			          "descr": { "id":"d_10", "name":"Москва" }
-			        },
-			        {
-			          "id": 11,
-			          "name": "Financial Services & Insurance",
-			          "selected": false,
-			          "descr": { "id":"d_11", "name":"Ставрополь" }
-			        },
-			        {
-			          "id": 12,
-			          "name": "Bar Staff & Management",
-			          "selected": false,
-			          "descr": { "id":"d_12", "name":"Самара" }
-			        }
-			      ]
-			    }
-			]
-		}
-	]
-}
-
 class Base extends React.Component {
 
 	constructor(props){
@@ -108,14 +23,12 @@ class Base extends React.Component {
 		this.handleSavePlace = this.handleSavePlace.bind(this);
 	}
 
-	state = {
-		startDate: moment(),
-		selectedItemOrg: null,
-		selectedItemEducation: null
+	static defaultProps = {
+		places: {nodes:[]}
 	}
 
-	handleChangeDate(date) {
-		this.setState({startDate: date});
+	handleChangeDate(/*date*/) {
+		
 	}
 
 	handleSaveItems(/*items*/){
@@ -126,12 +39,12 @@ class Base extends React.Component {
 
 	}
 
-	handleChangeOrg(item) {
-		this.setState({selectedItemOrg: item});
+	handleChangeOrg(/*item*/) {
+		
 	}
 
-	handleChangeEducation(item){
-		this.setState({selectedItemEducation: item});
+	handleChangeEducation(/*item*/){
+		
 	}
 
 	handleSavePlace(item){
@@ -145,42 +58,42 @@ class Base extends React.Component {
 				<DropDown 
 					description={"Тип мероприятия"}
 					onChange={this.handleChangeEventType} 
-					items={this.props.eventTypes} 
-					selectedPayload={this.props.selectedEventType}/>
+					items={this.props.types} 
+					selectedPayload={this.props.selectedType}/>
 				<DropDown 
 					description={"Код мероприятия"}
 					onChange={this.handleChangeEventType} 
-					items={this.props.eventTypes} 
-					selectedPayload={this.props.selectedEventType}/>
+					items={this.props.codes} 
+					selectedPayload={this.props.selectedCode}/>
 				<div className="event-edit-base__date-time">
 					<i className="fa fa-clock-o icon-clock"></i>
 					<div className="date">
 						<InputCalendar 
-							moment={this.state.startDate} 
+							moment={moment(this.props.startDateTime)} 
 							onChange={this.handleChangeDate} 
 							prevMonthIcon={'fa fa-angle-left'}
 							nextMonthIcon={'fa fa-angle-right'}/>
 						<InputCalendar 
-							moment={this.state.startDate} 
+							moment={moment(this.props.finishDateTime)} 
 							onChange={this.handleChangeDate} 
 							prevMonthIcon={'fa fa-angle-left'}
 							nextMonthIcon={'fa fa-angle-right'}/>
 					</div>
 				</div>
+				<DropDown 
+					description={"Обучающая организация"}
+					onChange={this.handleChangeEventType} 
+					items={this.props.educationOrgs} 
+					selectedPayload={this.props.selectedEducationOrgId}/>
 				<SelectOneItem
-					selectedItem={this.state.selectedItemOrg} 
-					placeholder={"Обучающая организация"} 
-					modalTitle={"Обучающая организация"} 
-					query={Config.url.createPath({action_name: 'getCollaborators'})}
-					onChange={this.handleChangeOrg}/>
-				<SelectOneItem
-					selectedItem={this.state.selectedItemEducation} 
+					selectedItem={this.props.selectedEducationMethod} 
 					placeholder={"Учебная программа"} 
 					modalTitle={"Учебная программа"} 
-					query={Config.url.createPath({action_name: 'getCollaborators'})}
+					query={Config.url.createPath({action_name: 'getEducationMethod'})}
 					onChange={this.handleChangeEducation}/>
 				<SelectTree 
-					items={places.items} 
+					nodes={this.props.places.nodes}
+					selectedNode={this.props.places.selectedNode} 
 					placeholder={"Выберите расположение"} 
 					onSave={this.handleSavePlace}
 					isExpand={true}/>

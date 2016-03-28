@@ -94,7 +94,7 @@ var DropDown = {
 			if (index !== 0 && this.props.deviders.indexOf(index) !== -1){
 				list.push(<li key={"divider"+ index + 1} className="dropdown-list__devider"></li>);
 			}
-			var selected = this.props.selectedPayload.toString() === item.payload.toString() ? true : false;
+			var selected = this.props.selectedPayload == item.payload;
 			list.push(<Item key={index + 1} selected={selected} text={item.text} payload={item.payload} onChange={this.handleChange} index={index}/>);
 		}.bind(this));
 		return list;

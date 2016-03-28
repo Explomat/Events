@@ -25,7 +25,9 @@ module.exports = {
 			EventEditActions.receiveData(eventData);
 			ReactDOM.render(React.createElement(EventEdit.default), app);
 		}, function(err){
-			ReactDOM.render(React.createElement(EventError.default, {error: err}), app);
+			ReactDOM.render(React.createElement(EventError.default, {error: err.message}), app);
+		}).catch(function(e){
+			console.error(e.stack);
 		});
 	},
 

@@ -97,7 +97,7 @@ $fontSizeXs: 12px;
     color: $secondaryTextColor;
     transition: all 0.2s ease;
     font-weight: lighter;
-    font-size: $fontSizeSm;
+    font-size: inherit;
 
     &:hover {
         cursor: text;

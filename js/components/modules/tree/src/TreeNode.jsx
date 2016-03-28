@@ -5,8 +5,7 @@ class TreeDescr extends React.Component {
 	render() {
 		if (this.props.description) {
 			return <label className="description-map">
-				<span className="description-map_arrow">&rarr;</span>
-				<span>{this.props.description.name}</span>
+				<span className="description-map__title"> ({this.props.description})</span>
 			</label>;
 		}
 		return null;
@@ -27,10 +26,10 @@ class TreeNode extends React.Component {
 	}
 
 	componentDidMount(){
-		/*if (this.props.selectedNode && (this.props.selectedNode.id == this.props.data.id) && (this.props.selectedNode.name == this.props.data.name) && this.props.onCategorySelect)
-			this.props.onCategorySelect(this);*/
-		if (this.props.data.selected === true)
+		if (this.props.selectedNode && (this.props.selectedNode.id == this.props.data.id) && this.props.onCategorySelect)
 			this.props.onCategorySelect(this);
+		/*if (this.props.data.selected === true)
+			this.props.onCategorySelect(this);*/
 		if (this.props.isExpand)
 			this.expandNodes();
 	}
@@ -61,6 +60,10 @@ class TreeNode extends React.Component {
 	    ev.stopPropagation();
 	}
 
+	_geTtitle(){
+		return `${this.props.data.name} (${this.props.data.descr})`;
+	}
+
 	render() {
 	    if (!this.state.children) this.state.children = [];
 	    let classes = cx({
@@ -74,12 +77,12 @@ class TreeNode extends React.Component {
 	    });
 	    return (
 	        <li className={classes}>
-	            <a onClick={this.onCategorySelect} className="item__description">
+	            <a title={this._geTtitle()} onClick={this.onCategorySelect} className="item__description">
 	            	<i className={iconClasses} onClick={this.onChildDisplayToggle}></i>
 	                <span>{this.props.data.name}</span>
 	                <TreeDescr description={this.props.data.descr}/>
 	            </a>
-	            <ul>
+	            <ul className="item__list">
 	                {this.state.children.map(child => {
 	                    return <TreeNode key={child.id} 
 	                            data={child} 

@@ -2,17 +2,14 @@ import keyMirror from 'keyMirror';
 import toArrayKeys from '../toArrayKeys';
 
 export default {
-	values: {
-		full_time: 'Очное',
-		webinar: 'Вебинар'
-	},
 
 	keys: keyMirror({
-		full_time: null,
-		webinar: null
+		CITILINK: null,
+		MERLION: null,
+		ASSESSMENT: null
 	}),
 
 	toArray: function() {
-		return toArrayKeys(this.values);
+		return toArrayKeys(this.keys);
 	}
 };

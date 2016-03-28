@@ -1,8 +1,8 @@
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var EventEmitter = require('events').EventEmitter;
-var EventEditConstants = require('../constants/EventEditConstants');
-var EventEdit = require('../models/eventedit/EventEdit');
-var extend = require('extend');
+import AppDispatcher from '../dispatcher/AppDispatcher';
+import {EventEmitter} from 'events';
+import EventEditConstants from '../constants/EventEditConstants';
+import EventEdit from '../models/eventedit/EventEdit';
+import extend from 'extend';
 
 var _eventEdit = {};
 
@@ -12,19 +12,23 @@ function loadData(data) {
 
 var EventEditStore = extend({}, EventEmitter.prototype, {
 	
-	getData: function(){
+	getData(){
 		return _eventEdit;
 	},
 
-	emitChange: function() {
+	getPartialData(key) {
+		return {..._eventEdit[key]}
+	},
+
+	emitChange() {
 		this.emit('change');
 	},
 
-	addChangeListener: function(callBack) {
+	addChangeListener(callBack) {
 		this.on('change', callBack);
 	},
 
-	removeChangeListener: function(callBack) {
+	removeChangeListener(callBack) {
 		this.removeListener('change', callBack);
 	}
 });
@@ -46,5 +50,4 @@ EventEditStore.dispatchToken = AppDispatcher.register(function(payload) {
 	if (isEmit) EventEditStore.emitChange();
 	return true;
 });
-
-module.exports = EventEditStore;
+export default EventEditStore;

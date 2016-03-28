@@ -1,4 +1,5 @@
-var keyMirror = require('keyMirror');
+import keyMirror from 'keyMirror';
+import toArrayKeys from '../toArrayKeys';
 
 module.exports = {
 
@@ -16,12 +17,7 @@ module.exports = {
 		plan: null
 	}),
 
-	toArray: function () {
-		return Object.keys(this.values).map(function(s){
-			return {
-				payload: s,
-				text: this.values[s]
-			}
-		}.bind(this))
+	toArray: function() {
+		return toArrayKeys(this.values);
 	}
 };

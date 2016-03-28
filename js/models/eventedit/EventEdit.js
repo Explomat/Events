@@ -1,71 +1,98 @@
-var CollaboratorRequest = require('./CollaboratorRequest');
-var Collaborator = require('./Collaborator');
-var Tutor = require('./Tutor');
-var Lector = require('./Lector');
-var CollaboratorTest = require('./CollaboratorTest');
+import CollaboratorRequest from './CollaboratorRequest';
+import Collaborator from './Collaborator';
+import Tutor from './Tutor';
+import Lector from './Lector';
+//import CollaboratorTest from './CollaboratorTest';
+import Places from './Places';
+import EventTypes from '../../utils/eventedit/EventTypes';
+import EventCodes from '../../utils/eventedit/EventCodes';
 
-module.exports = function(args){
+export default function(args){
 	args = args || {};
-	args.startDate = args.startDate || Date();
-	args.finishDate = args.finishDate || Date();
-	args.dateRequestBegin = args.dateRequestBegin || Date(); //период подачи заявок
-	args.dateRequestOver = args.dateRequestOver || Date();
+	args.base = args.base || {};
+	args.requests = args.requests || {};
+	args.collaborators = args.collaborators || {};
+	args.testing = args.testing || {};
+	args.courses = args.courses || {};
+	args.files = args.files || {};
+
+	args.base.startDateTime = args.base.startDateTime || Date();
+	args.base.finishDateTime = args.base.finishDateTime || Date();
+	args.requests.dateRequestBegin = args.requests.dateRequestBegin || Date(); //период подачи заявок
+	args.requests.dateRequestOver = args.requests.dateRequestOver || Date();
 
 	this.id = args.id || null;
 
 	//base settings
-	this.name = args.name || 'Нет названия';
-	this.types = args.types || [];
-	this.codes = args.codes || [];
-	this.isPublic = args.isPublic || false;
-	this.startDate = new Date(args.startDate);
-	this.startTime = args.startTime || '';
-	this.finishDate = new Date(args.finishDate);
-	this.finishTime = args.finishTime || '';
-	this.educationMethod = args.educationMethod || null;
-	this.educationOrg = args.educationOrg || null;
-	this.place = args.place || '';
+	this.base = {
+		name: args.base.name || '',
+		types: args.base.types || EventTypes.toArray(),
+		codes: args.base.codes || EventCodes.toArray(),
+		isPublic: args.base.isPublic || false,
+		startDateTime: new Date(args.base.startDateTime),
+		finishDateTime: new Date(args.base.finishDateTime),
+		educationOrgs: (args.base.educationOrgs || []).map(item => {
+			return {
+				payload: item.id,
+				text: item.name
+			}
+		}),
+		places: Places(args.base.places),
+
+		selectedEducationMethod: args.base.selectedEducationMethod,
+		selectedCode: args.base.selectedCode,
+		selectedType: args.base.selectedType,
+		selectedEducationOrgId: args.base.selectedEducationOrgId
+	}
 
 	//requests
-	this.dateRequestBegin = new Date(args.dateRequestBegin);
-	this.dateRequestOver = new Date(args.dateRequestOver);
-	this.isDateRequestBeforeBegin = args.isDateRequestBeforeBegin || false; //подавать заявки до начала мероприятия
-	this.isAutomaticIncludeInCollaborators = args.isAutomaticIncludeInCollaborators || false; //Автоматически включать в состав участников
-	this.isApproveByBoss = args.isApproveByBoss || false; //Необходимо подтверждение от непосредсвенного руководителя
-	this.isApproveByTutor = args.isApproveByTutor || false; //Необходимо подтверждение ответсвенного за мероприятие
-
-	this.requestCollaborators = [];
-	if (args.requestCollaborators) {
-		this.requestCollaborators = args.requestCollaborators.map(function(rq){
+	this.requests = {
+		dateRequestBegin: new Date(args.requests.dateRequestBegin),
+		dateRequestOver: new Date(args.requests.dateRequestOver),
+		isDateRequestBeforeBegin: args.requests.isDateRequestBeforeBegin || false, //подавать заявки до начала мероприятия
+		isAutomaticIncludeInCollaborators: args.requests.isAutomaticIncludeInCollaborators || false, //Автоматически включать в состав участников
+		isApproveByBoss: args.requests.isApproveByBoss || false, //Необходимо подтверждение от непосредсвенного руководителя
+		isApproveByTutor: args.requests.isApproveByTutor || false, //Необходимо подтверждение ответсвенного за мероприятие
+		requestCollaborators: []
+	}
+	if (args.requests.requestCollaborators) {
+		this.requests.requestCollaborators = args.requests.requestCollaborators.map(function(rq){
 			return new CollaboratorRequest(rq);
 		});
 	}
 
 	//collaborators
-	this.collaborators = [];
+	this.collaborators = {
+		collaborators: []
+	}
 	if (args.collaborators) {
-		this.collaborators = args.collaborators.map(function(col){
+		this.collaborators.collaborators = args.collaborators.map(function(col){
 			return new Collaborator(col);
 		});
 	}
 
 	//tutors
-	this.tutors = [];
+	this.tutors = {
+		tutors: [],
+		lectors: []
+	}
 	if (args.tutors) {
-		this.tutors = args.tutors.map(function(t){
+		this.tutors.tutors = args.tutors.tutors.map(function(t){
 			return new Tutor(t);
 		});
 	}
-	this.lectors = [];
 	if (args.lectors) {
-		this.lectors = args.lectors.map(function(l){
+		this.tutors.lectors = args.tutors.lectors.map(function(l){
 			return new Lector(l);
 		});
 	}
 
 	//testing
-	this.isAutoAssignPrevTesting = args.isAutoAssignPrevTesting || false;
-	this.isAutoAssignPostTesting = args.isAutoAssignPostTesting || false;
+	this.testing = {
+		isAutoAssignPrevTesting: args.testing.isAutoAssignPrevTesting || false,
+		isAutoAssignPostTesting: args.testing.isAutoAssignPostTesting || false
+	}
+	
 	/*this.prevTests = [];
 	if (args.prevTests) {
 		this.prevTests = args.prevTests.map(function(t){
@@ -78,10 +105,10 @@ module.exports = function(args){
 			return new Test(t);
 		});
 	}*/
-	this.listOfTest = [];
+	/*this.listOfTest = [];
 	if (args.listOfTest) {
 		this.listOfTest = args.listOfTest.map(function(lt){
 			return new CollaboratorTest(lt);
 		});
-	}
+	}*/
 }

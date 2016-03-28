@@ -23,14 +23,14 @@ class SideBar extends React.Component {
 					<span className="header-txt">Редактирование</span>
 				</div>
 				<div className="side-bar__body">
-					<label className={"side-bar__tab-label " + (this.props.selectedTab === "Base" ? "side-bar__tab-label--selected": "") } onClick={this.handleSelectTab} data-name="Base">Основные</label>
-					<label className={"side-bar__tab-label " + (this.props.selectedTab === "Requests" ? "side-bar__tab-label--selected": "") } onClick={this.handleSelectTab} data-name="Requests">Заявки</label>
-					<label className={"side-bar__tab-label " + (this.props.selectedTab === "Collaborators" ? "side-bar__tab-label--selected": "") } onClick={this.handleSelectTab} data-name="Collaborators">Участники</label>
-					<label className={"side-bar__tab-label " + (this.props.selectedTab === "Tutors" ? "side-bar__tab-label--selected": "") } onClick={this.handleSelectTab} data-name="Tutors">Ответственные</label>
-					<label className={"side-bar__tab-label " + (this.props.selectedTab === "Testing" ? "side-bar__tab-label--selected": "") } onClick={this.handleSelectTab} data-name="Testing">Тестирование</label>
-					<label className={"side-bar__tab-label " + (this.props.selectedTab === "Courses" ? "side-bar__tab-label--selected": "") } onClick={this.handleSelectTab} data-name="Courses">Электронные курсы</label>
-					<label className={"side-bar__tab-label " + (this.props.selectedTab === "LibraryMaterials" ? "side-bar__tab-label--selected": "") } onClick={this.handleSelectTab} data-name="LibraryMaterials">Материалы библиотеки</label>
-					<label className={"side-bar__tab-label " + (this.props.selectedTab === "Files" ? "side-bar__tab-label--selected": "") } onClick={this.handleSelectTab} data-name="Files">Файлы</label>
+					<label className={"side-bar__tab-label " + (this.props.selectedTab === "base" ? "side-bar__tab-label--selected": "") } onClick={this.handleSelectTab} data-name="base">Основные</label>
+					<label className={"side-bar__tab-label " + (this.props.selectedTab === "requests" ? "side-bar__tab-label--selected": "") } onClick={this.handleSelectTab} data-name="requests">Заявки</label>
+					<label className={"side-bar__tab-label " + (this.props.selectedTab === "collaborators" ? "side-bar__tab-label--selected": "") } onClick={this.handleSelectTab} data-name="collaborators">Участники</label>
+					<label className={"side-bar__tab-label " + (this.props.selectedTab === "tutors" ? "side-bar__tab-label--selected": "") } onClick={this.handleSelectTab} data-name="tutors">Ответственные</label>
+					<label className={"side-bar__tab-label " + (this.props.selectedTab === "testing" ? "side-bar__tab-label--selected": "") } onClick={this.handleSelectTab} data-name="testing">Тестирование</label>
+					<label className={"side-bar__tab-label " + (this.props.selectedTab === "courses" ? "side-bar__tab-label--selected": "") } onClick={this.handleSelectTab} data-name="courses">Электронные курсы</label>
+					<label className={"side-bar__tab-label " + (this.props.selectedTab === "libraryMaterials" ? "side-bar__tab-label--selected": "") } onClick={this.handleSelectTab} data-name="libraryMaterials">Материалы библиотеки</label>
+					<label className={"side-bar__tab-label " + (this.props.selectedTab === "files" ? "side-bar__tab-label--selected": "") } onClick={this.handleSelectTab} data-name="files">Файлы</label>
 				</div>
 			</aside>
 		);

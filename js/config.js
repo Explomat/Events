@@ -17,8 +17,9 @@ var servers = [
 	{
 		id: '6257108030223689633',
 		actions: [
-			'getEventEdit',
-			'getCollaborators'
+			'getEventEditData',
+			'getCollaborators',
+			'getEducationMethod'
 		]
 	}
 ]

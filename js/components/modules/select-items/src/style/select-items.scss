@@ -38,11 +38,13 @@
 		margin-bottom: 20px;
 		.filters__searchBar {
 			display: inline-block;
+			width: 400px;
 		}
 
 		.filters__searchBar-input {
 			background-color: #fff;
     		color: #000;
+    		width: 100%;
 		}
 
 		.filters__paging {
