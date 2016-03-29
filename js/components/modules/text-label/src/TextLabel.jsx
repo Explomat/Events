@@ -86,7 +86,7 @@ var TextView = React.createClass({
 		var className = this.props.className ? this.props.className : '';
 		return (
 			<div className={"input-box " + className} tabIndex={1} onBlur={this.handleDetranslate}>
-				<input ref="inpt" className={"input-box__input " + isNotEmptyClass + " " + isValidClass} type="text" value={this.state.value} onChange={this.handleChange} onBlur={this.handleBlur}/>
+				<input ref="inpt" type="text" value={this.state.value} className={"input-box__input " + isNotEmptyClass + " " + isValidClass} onChange={this.handleChange} onBlur={this.handleBlur}/>
                 <label ref="lbl" onClick={this.handleAddtranslate} className="input-box__label">{this.props.placeholder}</label>
 			</div>
 		);

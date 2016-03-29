@@ -1,4 +1,5 @@
 import React from 'react';
+import EventEditActions from 'actions/EventEditActions';
 import {TextView} from 'components/modules/text-label';
 import DropDown from 'components/modules/dropdown';
 import InputCalendar from 'components/modules/input-calendar';
@@ -15,55 +16,61 @@ class Base extends React.Component {
 
 	constructor(props){
 		super(props);
-		this.handleChangeDate = this.handleChangeDate.bind(this);
-		this.handleSaveItems = this.handleSaveItems.bind(this);
-		this.handleChangeEventType = this.handleChangeEventType.bind(this);
-		this.handleChangeOrg = this.handleChangeOrg.bind(this);
-		this.handleChangeEducation = this.handleChangeEducation.bind(this);
-		this.handleSavePlace = this.handleSavePlace.bind(this);
 	}
 
 	static defaultProps = {
 		places: {nodes:[]}
 	}
 
-	handleChangeDate(/*date*/) {
-		
+	handleChangeName(name){
+		EventEditActions.changeName(name);
 	}
 
-	handleSaveItems(/*items*/){
-		this.setState({isShowModal: false});
+	handleChangeType(e, payload){
+		EventEditActions.changeType(payload);
 	}
 
-	handleChangeEventType(){
-
+	handleChangeCode(e, payload){
+		EventEditActions.changeCode(payload);
 	}
 
-	handleChangeOrg(/*item*/) {
-		
+	handleChangeStartDateTime(dateTime) {
+		EventEditActions.changeStartDateTime(dateTime.format());
 	}
 
-	handleChangeEducation(/*item*/){
-		
+	handleChangeFinishDateTime(dateTime) {
+		EventEditActions.changeFinishDateTime(dateTime.format());
 	}
 
-	handleSavePlace(item){
-		console.log(item);
+	handleChangeEducationOrg(e, payload){
+		EventEditActions.changeEducationOrg(payload);
+	}
+
+	handleChangeEducationMethod(educationMethod){
+		EventEditActions.changeEducationMethod(educationMethod);
+	}
+
+	handleChangePlace(place){
+		EventEditActions.changePlace(place);
 	}
 
 	render(){
 		return (
 			<div className="event-edit-base">
-				<TextView value={this.props.name} placeholder={"Название"} className="event-edit-base__name"/>
+				<TextView
+					onBlur={this.handleChangeName} 
+					value={this.props.name} 
+					placeholder="Название" 
+					className="event-edit-base__name"/>
 				<DropDown 
-					description={"Тип мероприятия"}
-					onChange={this.handleChangeEventType} 
+					description="Тип мероприятия"
+					onChange={this.handleChangeType} 
 					items={this.props.types} 
 					selectedPayload={this.props.selectedType}
 					isReset={true}/>
 				<DropDown 
-					description={"Код мероприятия"}
-					onChange={this.handleChangeEventType} 
+					description="Код мероприятия"
+					onChange={this.handleChangeCode} 
 					items={this.props.codes} 
 					selectedPayload={this.props.selectedCode}
 					isReset={true}/>
@@ -72,33 +79,33 @@ class Base extends React.Component {
 					<div className="date">
 						<InputCalendar 
 							moment={moment(this.props.startDateTime)} 
-							onChange={this.handleChangeDate} 
-							prevMonthIcon={'fa fa-angle-left'}
-							nextMonthIcon={'fa fa-angle-right'}/>
+							onSave={this.handleChangeStartDateTime} 
+							prevMonthIcon='fa fa-angle-left'
+							nextMonthIcon='fa fa-angle-right'/>
 						<InputCalendar 
 							moment={moment(this.props.finishDateTime)} 
-							onChange={this.handleChangeDate} 
-							prevMonthIcon={'fa fa-angle-left'}
-							nextMonthIcon={'fa fa-angle-right'}/>
+							onSave={this.handleChangeFinishDateTime} 
+							prevMonthIcon='fa fa-angle-left'
+							nextMonthIcon='fa fa-angle-right'/>
 					</div>
 				</div>
 				<DropDown 
-					description={"Обучающая организация"}
-					onChange={this.handleChangeEventType} 
+					description="Обучающая организация"
+					onChange={this.handleChangeEducationOrg} 
 					items={this.props.educationOrgs} 
 					selectedPayload={this.props.selectedEducationOrgId}
 					isReset={true}/>
 				<SelectOneItem
 					selectedItem={this.props.selectedEducationMethod} 
-					placeholder={"Учебная программа"} 
-					modalTitle={"Учебная программа"} 
+					placeholder="Учебная программа" 
+					modalTitle="Учебная программа"
 					query={Config.url.createPath({action_name: 'getEducationMethod'})}
-					onChange={this.handleChangeEducation}/>
+					onSave={this.handleChangeEducationMethod}/>
 				<SelectTree 
 					nodes={this.props.places.nodes}
 					selectedNode={this.props.places.selectedNode} 
-					placeholder={"Выберите расположение"} 
-					onSave={this.handleSavePlace}
+					placeholder="Выберите расположение"
+					onSave={this.handleChangePlace}
 					isExpand={true}/>
 			</div>
 		);

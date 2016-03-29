@@ -39,9 +39,9 @@ export default function(args){
 		}),
 		places: Places(args.base.places),
 
-		selectedEducationMethod: args.base.selectedEducationMethod,
-		selectedCode: args.base.selectedCode,
 		selectedType: args.base.selectedType,
+		selectedCode: args.base.selectedCode,
+		selectedEducationMethod: args.base.selectedEducationMethod,
 		selectedEducationOrgId: args.base.selectedEducationOrgId
 	}
 

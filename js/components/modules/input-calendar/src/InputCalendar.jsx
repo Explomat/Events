@@ -32,6 +32,13 @@ module.exports = React.createClass({
     this.setState({isShow: false});
   },
 
+  handleSave: function(moment){
+    this.handleToogle();
+    if (this.props.onSave){
+      this.props.onSave(moment);
+    }
+  },
+
   render: function() {
     return (
       <div className={cx('input-calendar', this.props.className)}>
@@ -40,7 +47,7 @@ module.exports = React.createClass({
           <InputMoment 
             moment={this.props.moment} 
             onChange={this.props.onChange} 
-            onSave={this.props.onSave} 
+            onSave={this.handleSave} 
             prevMonthIcon={this.props.prevMonthIcon}
             nextMonthIcon={this.props.nextMonthIcon}
           />

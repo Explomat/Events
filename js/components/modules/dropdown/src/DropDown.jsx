@@ -70,7 +70,7 @@ var DropDown = {
 			if (items[i].payload.toString() === payload.toString())
 				return items[i].text;
 		};
-		return '';
+		return null;
 	},
 
 	_stopPropagation: function(e){
@@ -109,7 +109,10 @@ var DropDown = {
 
 	getList: function(){
 		var list = [];
-		if (this.props.isReset) list.push(<ItemReset key={"ItemReject"} onReset={this.handleChange}/>);
+		if (this.props.isReset && this.props.selectedPayload){ 
+			list.push(<ItemReset key={"ItemReject"} onReset={this.handleChange}/>);
+		}
+
 		this.props.items.forEach(function(item, index){
 			if (index !== 0 && this.props.deviders.indexOf(index) !== -1){
 				list.push(<li key={"divider"+ index + 1} className="dropdown-list__devider"></li>);

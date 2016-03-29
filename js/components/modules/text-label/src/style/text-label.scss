@@ -82,6 +82,9 @@ $fontSizeXs: 12px;
     width: 100%;
     color: $primaryTextColor;
     font-size: inherit;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    padding-right: 25px;
 
     &:focus {
         border-color: $darkPrimaryColor;

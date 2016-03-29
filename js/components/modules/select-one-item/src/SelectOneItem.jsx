@@ -16,7 +16,7 @@ class SelectOneItem extends React.Component {
 		modalTitle: React.PropTypes.string,
 		placeholder: React.PropTypes.string,
 		query: React.PropTypes.string,
-		onChange: React.PropTypes.func,
+		onSave: React.PropTypes.func,
 		selectedItem: React.PropTypes.object
 	};
 
@@ -51,8 +51,8 @@ class SelectOneItem extends React.Component {
 		if (items.length === 1){
 			item = items[0];
 		}
-		if (this.props.onChange){
-			this.props.onChange(item);
+		if (this.props.onSave){
+			this.props.onSave(item);
 		}
 		this.handleCloseModal();
 	}
@@ -76,13 +76,15 @@ class SelectOneItem extends React.Component {
 			'select-one-item__icon': true,
 			'select-one-item__icon--up': this.props.selectedItem
 		});
+		let val = this.getItemValue();
 		return (
 			<div className={cx('select-one-item', this.props.className)}>
 				<input
 					readOnly 
 					className={inputClasses} 
 					type="text" 
-					value={this.getItemValue()}
+					value={val}
+					title={val}
 					onClick={this.handleShowModal} 
 					onChange={this.handleChange}/>
                 <label className="select-one-item__label">{this.props.placeholder}</label>

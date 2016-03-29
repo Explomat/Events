@@ -67,6 +67,7 @@ class SelectTree extends React.Component {
 					className={inputClasses} 
 					type="text" 
 					value={this.props.selectedNode.name}
+					title={this.props.selectedNode.name}
 					onClick={this.handleShowModal} 
 					onChange={this.handleChange}/>
                 <label className="select-tree__label">{this.props.placeholder}</label>
