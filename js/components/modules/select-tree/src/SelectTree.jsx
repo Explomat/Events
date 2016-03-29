@@ -22,7 +22,9 @@ class SelectTree extends React.Component {
 		modalTitle: React.PropTypes.string,
 		placeholder: React.PropTypes.string,
 		nodes: React.PropTypes.array,
-		selectedNode: React.PropTypes.object
+		selectedNode: React.PropTypes.object,
+		isExpand: React.PropTypes.bool,
+		isExpandAll: React.PropTypes.bool
 	}
 
 	static defaultProps = {
@@ -75,7 +77,8 @@ class SelectTree extends React.Component {
                 	data={this.props.nodes} 
                 	selectedNode={this.props.selectedNode}
                 	isShow={this.state.isShowModal}
-                	isExpand={this.props.isExpand}/>
+                	isExpand={this.props.isExpand}
+                	isExpandAll={this.props.isExpandAll}/>
 			</div>
         );
     }

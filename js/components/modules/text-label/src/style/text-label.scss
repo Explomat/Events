@@ -40,6 +40,7 @@ $fontSizeXs: 12px;
         box-sizing: content-box;
         transition: all .3s;
         color: $primaryTextColor;
+        font-size: inherit;
 
         &:focus {
             border-color: $darkPrimaryColor;
@@ -80,6 +81,7 @@ $fontSizeXs: 12px;
     height: 35px;
     width: 100%;
     color: $primaryTextColor;
+    font-size: inherit;
 
     &:focus {
         border-color: $darkPrimaryColor;

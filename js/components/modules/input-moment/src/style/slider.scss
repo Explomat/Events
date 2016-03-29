@@ -11,7 +11,7 @@
 
   .value {
     position: absolute;
-    background-color: $color-blue;
+    background-color: $color-gray-dark;
     border-radius: 3px;
     top: 0;
     height: 100%;
@@ -31,7 +31,7 @@
       width: $slider-size + $slider-fix;
       height: $slider-size + $slider-fix;
       background-color: #fff;
-      border: 3px solid $color-blue;
+      border: 3px solid $color-gray-dark;
       border-radius: 50%;
       cursor: pointer;
     }

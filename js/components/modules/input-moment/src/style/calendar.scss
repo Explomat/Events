@@ -20,7 +20,7 @@
 
   thead {
     td {
-      color: $color-blue;
+      color: $color-gray-dark;
       font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
@@ -32,14 +32,14 @@
     color: #666666;
 
     &:hover {
-      background: $color-blue;
-      border-color: $color-blue;
+      background: $color-gray-dark;
+      border-color: $color-gray-dark;
       color: $color-white;
     }
   }
 
   .current-day {
-    color: $color-blue;
+    color: $color-red;
     font-weight: bold;
   }
 
@@ -50,7 +50,7 @@
 
   .toolbar {
     line-height: 30px;
-    color: $color-blue;
+    color: $color-gray-dark;
     text-align: center;
     margin-bottom: 13px;
 
@@ -60,9 +60,9 @@
       height: 30px;
       line-height: 30px;
       color: #ffffff;
-      border: 1px solid $color-blue;
+      border: 1px solid $color-gray-dark;
       border-radius: 50%;
-      background: $color-blue;
+      background: $color-gray-dark;
       font-size: 20px;
       padding: 0;
       text-align: center;
@@ -80,7 +80,7 @@
     }
 
     .current-date {
-      color: $color-blue;
+      color: $color-gray-dark;
     }
   }
 }

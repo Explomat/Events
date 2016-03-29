@@ -20,6 +20,7 @@ class Tree extends React.Component {
 
 	static defaultProps = {
 		isExpand: false,
+		isExpandAll: false,
 		isShow: false
 	}
 
@@ -77,6 +78,7 @@ class Tree extends React.Component {
 		                          		data={tree} 
 		                          		onCategorySelect={this.onSelect} 
 		                          		isExpand={this.props.isExpand}
+		                          		isExpandAll={this.props.isExpandAll}
 		                          		selectedNode={this.props.selectedNode}/>);
 						    	})}
 		                    </ul>

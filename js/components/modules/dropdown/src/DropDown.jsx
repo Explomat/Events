@@ -1,6 +1,23 @@
 var React = require('react');
 require('./style/dropdown.scss');
 
+var ItemReset = React.createClass({
+
+	handleReset: function(e) {
+		if (this.props.onReset)
+			this.props.onReset(e);
+	},
+
+	render: function(){
+		return (
+			<li onClick={this.handleReset} className="dropdown-list__item-reset">
+				<span>Сбросить</span>
+				<span>x</span>
+			</li>
+		);
+	}
+});
+
 var Item = React.createClass({
 
 	handleChange: function(e) {
@@ -28,13 +45,15 @@ var DropDown = {
 		selectedPayload: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]),
 		className: React.PropTypes.string,
 		classNameChild: React.PropTypes.string,
-		classNameButton: React.PropTypes.string
+		classNameButton: React.PropTypes.string,
+		isReset: React.PropTypes.bool
 	},
 
 	getDefaultProps: function(){
 		return {
 			items: [],
-			deviders: []
+			deviders: [],
+			isReset: false
 		}
 	},
 
@@ -90,6 +109,7 @@ var DropDown = {
 
 	getList: function(){
 		var list = [];
+		if (this.props.isReset) list.push(<ItemReset key={"ItemReject"} onReset={this.handleChange}/>);
 		this.props.items.forEach(function(item, index){
 			if (index !== 0 && this.props.deviders.indexOf(index) !== -1){
 				list.push(<li key={"divider"+ index + 1} className="dropdown-list__devider"></li>);

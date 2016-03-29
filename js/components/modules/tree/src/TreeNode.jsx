@@ -22,7 +22,8 @@ class TreeNode extends React.Component {
 	}
 
 	state = {
-		children: []
+		children: [],
+		isExpand: this.props.isExpand || false
 	}
 
 	componentDidMount(){
@@ -30,7 +31,7 @@ class TreeNode extends React.Component {
 			this.props.onCategorySelect(this);
 		/*if (this.props.data.selected === true)
 			this.props.onCategorySelect(this);*/
-		if (this.props.isExpand)
+		if (this.props.isExpand || this.props.isExpandAll)
 			this.expandNodes();
 	}
 
@@ -46,11 +47,12 @@ class TreeNode extends React.Component {
 	}
 
 	expandNodes() {
+		let isExpand = this.props.isExpandAll ? true : false;
 		if (this.props.data.children) {
 	        if (this.state.children && this.state.children.length) 
-	            this.setState({children: null});
+	            this.setState({children: null, isExpand: isExpand});
 	        else 
-	            this.setState({children: this.props.data.children});
+	            this.setState({children: this.props.data.children, isExpand: isExpand});
 	    }
 	}
 
@@ -87,7 +89,7 @@ class TreeNode extends React.Component {
 	                    return <TreeNode key={child.id} 
 	                            data={child} 
 	                            onCategorySelect={this.props.onCategorySelect}
-	                            isExpand={this.props.isExpand}
+	                            isExpand={this.state.isExpand}
 	                            selectedNode={this.props.selectedNode ? this.props.selectedNode : null}/>;
 	                })}
 	            </ul>

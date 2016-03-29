@@ -10,7 +10,8 @@ module.exports = React.createClass({
 
   getInitialState: function() {
     return {
-      tab: 0
+      tab: 0,
+      moment: this.props.moment
     };
   },
 
@@ -21,9 +22,28 @@ module.exports = React.createClass({
     };
   },
 
+  componentWillReceiveProps: function(nextProps){
+    this.setState({moment: nextProps.moment});
+  },
+
+  handleChangeDateTime: function(moment){
+    this.setState({moment: moment});
+  },
+
+  handleClickTab: function(tab, e) {
+    e.preventDefault();
+    this.setState({tab: tab});
+  },
+
+  handleSave: function(e) {
+    e.preventDefault();
+    var m = this.state.moment;
+    if(this.props.onSave) this.props.onSave(m);
+  },
+
   render: function() {
     var tab = this.state.tab;
-    var m = this.props.moment;
+    var m = this.state.moment;
 
     return (
       <div className="m-input-moment">
@@ -40,22 +60,23 @@ module.exports = React.createClass({
           <Calendar
             className={cx('tab', {'is-active': tab === 0})}
             moment={m}
-            onChange={this.props.onChange}
+            onChange={this.handleChangeDateTime}
             prevMonthIcon={this.props.prevMonthIcon}
             nextMonthIcon={this.props.nextMonthIcon}
           />
           <Time
             className={cx('tab', {'is-active': tab === 1})}
             moment={m}
-            onChange={this.props.onChange}
+            onChange={this.handleChangeDateTime}
           />
         </div>
+        <button 
+          type="button" 
+          className="im-btn btn-save ion-checkmark"
+          onClick={this.handleSave}>
+          Сохранить
+        </button>
       </div>
     );
-  },
-
-  handleClickTab: function(tab, e) {
-    e.preventDefault();
-    this.setState({tab: tab});
   }
 });
