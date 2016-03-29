@@ -21,10 +21,10 @@ const base = {
 		_eventEdit.base.selectedCode = code;
 	},
 	changeStartDateTime(dateTime){
-		_eventEdit.base.startDateTime = dateTime;
+		_eventEdit.base.startDateTime = new Date(dateTime);
 	},
 	changeFinishDateTime(dateTime){
-		_eventEdit.base.finishDateTime = dateTime;
+		_eventEdit.base.finishDateTime = new Date(dateTime);
 	},
 	changeEducationOrg(educationOrgId){
 		_eventEdit.base.selectedEducationOrgId = educationOrgId;

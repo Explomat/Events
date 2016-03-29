@@ -2,6 +2,10 @@ var React = require('react');
 var InputMoment = require('../../input-moment')
 var cx = require('classnames');
 var clickOutSide = require('react-onclickoutside');
+
+var moment  = require('moment');
+moment.locale('ru');
+
 require('./style/input-calendar.scss');
 
 module.exports = React.createClass({
@@ -11,41 +15,41 @@ module.exports = React.createClass({
 
   propTypes: {
     className: React.PropTypes.string,
-    moment: React.PropTypes.object,
+    date: React.PropTypes.object,
     onChange: React.PropTypes.func,
     onSave: React.PropTypes.func,
     prevMonthIcon: React.PropTypes.string,
     nextMonthIcon: React.PropTypes.string
   },
 
-  getInitialState: function(){
+  getInitialState(){
     return {
       isShow: false
     }
   },
 
-  handleToogle: function(){
+  handleToogle(){
     this.setState({isShow: !this.state.isShow});
   },
 
-  handleClickOutside: function() {
+  handleClickOutside() {
     this.setState({isShow: false});
   },
 
-  handleSave: function(moment){
+  handleSave(moment){
     this.handleToogle();
     if (this.props.onSave){
-      this.props.onSave(moment);
+      this.props.onSave(moment.format());
     }
   },
 
-  render: function() {
+  render() {
     return (
       <div className={cx('input-calendar', this.props.className)}>
-        <input onClick={this.handleToogle} type="text" className="input-calendar__date" value={this.props.moment.format('llll')} readOnly/>
+        <input onClick={this.handleToogle} type="text" className="input-calendar__date" value={moment(this.props.date).format('llll')} readOnly/>
         <div className={cx({'input-calendar__calendar': true, 'input-calendar__calendar--show': this.state.isShow})}>
           <InputMoment 
-            moment={this.props.moment} 
+            moment={moment(this.props.date)} 
             onChange={this.props.onChange} 
             onSave={this.handleSave} 
             prevMonthIcon={this.props.prevMonthIcon}

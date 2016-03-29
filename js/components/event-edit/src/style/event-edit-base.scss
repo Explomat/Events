@@ -23,11 +23,36 @@
 			color: #727272;
 		}
 		.date {
-			width: 88%;
-    		margin-left: 12%;
 
 			& > *:first-child {
 				margin-bottom: 10px;
+			}
+
+			.date__start {
+				.date__start-description{
+					width: 20%;
+					display: inline-block;
+					text-align: right;
+					padding-right: 16px;
+				}
+				.date__calendar{
+					display: inline-block;
+					width: 80%;
+				}
+			}
+
+			.date__finish {
+				.date__finish-description{
+					width: 20%;
+					display: inline-block;
+					text-align: right;
+					padding-right: 16px;
+				}
+
+				.date__calendar {
+					display: inline-block;
+					width: 80%;
+				}
 			}
 		}
 	}

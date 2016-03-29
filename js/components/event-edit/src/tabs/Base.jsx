@@ -7,8 +7,6 @@ import SelectOneItem from 'components/modules/select-one-item';
 import SelectTree from 'components/modules/select-tree';
 
 import Config from 'config';
-import moment from 'moment';
-moment.locale('ru');
 
 import '../style/event-edit-base.scss';
 
@@ -35,11 +33,11 @@ class Base extends React.Component {
 	}
 
 	handleChangeStartDateTime(dateTime) {
-		EventEditActions.changeStartDateTime(dateTime.format());
+		EventEditActions.changeStartDateTime(dateTime);
 	}
 
 	handleChangeFinishDateTime(dateTime) {
-		EventEditActions.changeFinishDateTime(dateTime.format());
+		EventEditActions.changeFinishDateTime(dateTime);
 	}
 
 	handleChangeEducationOrg(e, payload){
@@ -77,16 +75,24 @@ class Base extends React.Component {
 				<div className="event-edit-base__date-time">
 					<i className="fa fa-clock-o icon-clock"></i>
 					<div className="date">
-						<InputCalendar 
-							moment={moment(this.props.startDateTime)} 
-							onSave={this.handleChangeStartDateTime} 
-							prevMonthIcon='fa fa-angle-left'
-							nextMonthIcon='fa fa-angle-right'/>
-						<InputCalendar 
-							moment={moment(this.props.finishDateTime)} 
-							onSave={this.handleChangeFinishDateTime} 
-							prevMonthIcon='fa fa-angle-left'
-							nextMonthIcon='fa fa-angle-right'/>
+						<div className="date__start">
+							<span className="date__start-description">С</span>
+							<InputCalendar
+								className="date__calendar" 
+								date={this.props.startDateTime} 
+								onSave={this.handleChangeStartDateTime} 
+								prevMonthIcon='fa fa-angle-left'
+								nextMonthIcon='fa fa-angle-right'/>
+						</div>
+						<div className="date__finish">
+							<span className="date__finish-description">По</span>
+							<InputCalendar
+								className="date__calendar" 
+								date={this.props.finishDateTime} 
+								onSave={this.handleChangeFinishDateTime} 
+								prevMonthIcon='fa fa-angle-left'
+								nextMonthIcon='fa fa-angle-right'/>
+						</div>
 					</div>
 				</div>
 				<DropDown 
