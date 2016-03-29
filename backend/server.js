@@ -185,10 +185,12 @@
 		var collaboratorsArray = [];
 		if (ArrayCount(curEventCard.TopElem.collaborators) > 0 ) {
 			for (col in curEventCard.TopElem.collaborators) {
+				_img = col.collaborator_id.ForeignElem.pict_url.HasValue == true ? col.collaborator_id.ForeignElem.pict_url : '/download_file.html?file_id=6255254688392629294';
 				collaboratorsArray.push({
 					id : Int(col.collaborator_id), 
 					fullname : col.person_fullname + '',
-					href : '/view_doc.html?mode=collaborator&object_id=' + Int(col.collaborator_id)
+					href : '/view_doc.html?mode=collaborator&object_id=' + Int(col.collaborator_id),
+					imgHref : _img + ''
 				});
 			}
 		}
@@ -199,12 +201,14 @@
 				tutorCard = OpenDoc(UrlFromDocID(Int(tutor.collaborator_id)))
 				tutorPhoneNumber = tutorCard.TopElem.phone != '' ? tutorCard.TopElem.phone : 'отсутсвует';
 				tutorMail = tutorCard.TopElem.email != '' ? tutorCard.TopElem.email : "отсутсвует";
+				_img = tutor.collaborator_id.ForeignElem.pict_url.HasValue == true ? tutor.collaborator_id.ForeignElem.pict_url : '/download_file.html?file_id=6255254688392629294';
 				tutorsArray.push({
 					id : Int(tutor.collaborator_id),
 					fullname : tutor.person_fullname + '',
 					email : tutorMail + '',
 					phone : tutorPhoneNumber + '',
-					href : '/view_doc.html?mode=collaborator&object_id=' + Int(tutor.collaborator_id)
+					href : '/view_doc.html?mode=collaborator&object_id=' + Int(tutor.collaborator_id),
+					imgHref : _img + ''
 				});
 			}
 		}
@@ -217,13 +221,15 @@
 					lectorData = OpenDoc(UrlFromDocID(Int(lectorCard.TopElem.person_id)));
 					lectorPhoneNumber = lectorData.TopElem.phone != '' ? lectorData.TopElem.phone : "отсутсвует";
 					lectorMail = lectorData.TopElem.email != '' ? lectorData.TopElem.email : "отсутсвует";
+					_img = lectorCard.TopElem.person_id.ForeignElem.pict_url.HasValue == true ? lectorCard.TopElem.person_id.ForeignElem.pict_url : '/download_file.html?file_id=6255254688392629294';
 
 					lectorsArray.push({
 						id : Int(lectorCard.TopElem.person_id),
 						fullname : lectorCard.TopElem.person_fullname + '',
 						email : lectorMail + '',
 						phone : lectorPhoneNumber + '',
-						href : '/view_doc.html?mode=collaborator&object_id=' + Int(lectorCard.TopElem.person_id)
+						href : '/view_doc.html?mode=collaborator&object_id=' + Int(lectorCard.TopElem.person_id),
+						imgHref : _img + ''
 					});
 				} else {
 					lectorPhoneNumber = lectorCard.TopElem.phone != '' ? lectorData.TopElem.phone : "отсутсвует";
@@ -233,7 +239,8 @@
 						fullname : lectorCard.TopElem.lastname + lectorCard.TopElem.firstname + lectorCard.TopElem.middlename + '',
 						email : lectorMail + '',
 						phone : lectorPhoneNumber + '',
-						href : '/view_doc.html?mode=lector&object_id=' + Int(lector.lector_id)
+						href : '/view_doc.html?mode=lector&object_id=' + Int(lector.lector_id),
+						imgHref : '/download_file.html?file_id=6255254688392629294'
 					});
 				}
 			}
@@ -303,7 +310,7 @@
 			from event_collaborators as ec 
 		    inner join events evs on ec.event_id=evs.id 
 			where ec.collaborator_id = '"+curUserID+"' and
-				(ec.start_date < '"+lastDate+"' and
+				(CONVERT(DATETIME, CONVERT(VARCHAR(15), ec.start_date, 10)) <= '"+lastDate+"' and
 				ec.start_date >= '"+firstDate+"') and
 				ec.status_id <> 'cancel'
 
@@ -318,10 +325,13 @@
 				from events 
 				where events.is_public = 'true' and
 					events.code LIKE '%"+personBusinessType+"%' and 
-					(events.start_date < '"+lastDate+"' and
+					(CONVERT(DATETIME, CONVERT(VARCHAR(15), events.start_date, 10)) <= '"+lastDate+"' and
 					events.start_date >= '"+firstDate+"') and
 					events.status_id <> 'cancel'
 			");
+
+
+
 
 		var userGroup = getGroupByMaxPriority(getMatchedUserGroups(curUserID));
 

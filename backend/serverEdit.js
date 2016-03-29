@@ -1,6 +1,7 @@
 <%
 
 
+
 /* 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -307,13 +308,6 @@ function getFiles (queryObjects) {
 		]
 	}, 'json');
 }
-/* 
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------- Получаем данные по конкретному мероприятию -----------------------------------------------------------------------------
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-*/
 
 function getLibraryMaterials (queryObjects) {
 	var limitRows = 20;
@@ -356,16 +350,64 @@ function getLibraryMaterials (queryObjects) {
 			}
 		});
 	}
+	return {
+		pagesCount: queryPageCount + 1,
+		items: libraryMaterialsArray
+	}
+}
+
+function getEducationMethod (queryObjects) {
+	var limitRows = 20;
+	var startPage = queryObjects.HasProperty('page') ? Int(queryObjects.page) - 1 : 0; 
+	var filterText = queryObjects.HasProperty('search') ? queryObjects.search : '';
+
+	var queryPageCount = XQuery("sql:select 
+		COUNT(*)/"+limitRows+" pagesCount 
+		from education_methods
+		where education_methods.name LIKE '%"+filterText+"%'");
+
+	queryPageCount = Int(ArrayOptFirstElem(queryPageCount).pagesCount)
+
+	var basiceducationMethodsArray = XQuery("sql:select 
+		top " + limitRows + " ed.id, 
+		REPLACE(ed.name, '\"', '') as name 
+		from (
+			select ROW_NUMBER() OVER(ORDER BY education_methods.name) rowNum,* 
+			from 
+				education_methods
+			where 
+				education_methods.name LIKE '%"+filterText+"%'
+		) ed
+		where 
+			ed.rowNum > " + startPage * limitRows);
+
+	var educationMethodsArray = [];
+	for (ed in basiceducationMethodsArray) {
+		educationMethodsArray.push({ 
+			id: Int(ed.id), 
+			data: {
+				name : ed.name + ''
+			}
+		});
+	}
 	return tools.object_to_text({
 		pagesCount: queryPageCount + 1,
-		items: libraryMaterialsArray,
+		items: educationMethodsArray,
 		headerCols: [
-			{'name' : 'Название материала', 'type':'string' },
-			{'name' : 'Год издания', 'type':'integer' },
-			{'name' : 'Автор', 'type':'string' }
+			{'name' : 'Название программы', 'type':'string' }
 		]
-	}, 'json');
+	},'json');
 }
+
+/* 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------- Получаем данные по конкретному мероприятию -----------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+*/
+
+
 
 
 function getEventRequests (queryObjects) {
@@ -400,16 +442,9 @@ function getEventRequests (queryObjects) {
 				}
 			});
 		}
-		return tools.object_to_text({
-			items: requestsArray,
-			headerCols: [
-				{'name' : 'ФИО пользователя', 'type':'string' },
-				{'name' : 'Подразделение', 'type':'string' },
-				{'name' : 'Должность', 'type':'string' },
-				{'name' : 'Статус', 'type':'string' }
-			]
-		}, 'json');
-
+		return {
+			items: requestsArray
+		}
 	}
 }
 
@@ -455,16 +490,9 @@ function getEventTests (queryObjects) {
 				}
 			});
 		}
-		return tools.object_to_text({
-			items: requestsArray,
-			headerCols: [
-				{'name' : 'ФИО пользователя', 'type':'string' },
-				{'name' : 'Название теста', 'type':'string' },
-				{'name' : 'Статус', 'type':'string' },
-				{'name' : 'Балл', 'type':'integer' }
-			]
-		}, 'json');
-
+		return {
+			items: requestsArray
+		}
 	}
 }
 
@@ -510,16 +538,9 @@ function getEventCourses (queryObjects) {
 				}
 			});
 		}
-		return tools.object_to_text({
-			items: requestsArray,
-			headerCols: [
-				{'name' : 'ФИО пользователя', 'type':'string' },
-				{'name' : 'Название теста', 'type':'string' },
-				{'name' : 'Статус', 'type':'string' },
-				{'name' : 'Балл', 'type':'integer' }
-			]
-		}, 'json');
-
+		return {
+			items: requestsArray
+		}
 	}
 }
 
@@ -543,73 +564,74 @@ function getEventFiles (queryObjects) {
 			});
 		}
 
-		return tools.object_to_text({
-			items: filesArray,
-			headerCols: [
-				{'name' : 'Название файла', 'type':'string' }
-			]
-		}, 'json');
+		return {
+			items: filesArray
+		}
 	}
 }
 
+function getEventPlaces(queryObjects) {
 
-function getEventPlaces(){
-		
-	function filterTrees(trees) {
-		for (var i = 0; i < trees.length; i++) {
-			curNode = trees[i];
-			if (curNode.HasProperty('children')) {
-				trees[i] = { id:curNode.id, name: curNode.name, descr:curNode.regionName, children:curNode.children };
-				filterTrees(curNode.children);
+	var eventID = queryObjects.HasProperty('event_id') ? Int(queryObjects.event_id) : null;
+	var eventIDTE = OpenDoc(UrlFromDocID(Int(eventID))).TopElem;
+
+	if (eventID != null) {
+		function _filterTrees(trees) {
+			for (var i = 0; i < trees.length; i++) {
+				curNode = trees[i];
+				if (curNode.HasProperty('children')) {
+					trees[i] = { id:curNode.id, name: curNode.name, descr:curNode.descr, children:curNode.children };
+					_filterTrees(curNode.children);
+				}
+				else
+					trees[i] = { id:curNode.id, name:curNode.name, descr:curNode.descr };
 			}
-			else
-				trees[i] = { id:curNode.id, name:curNode.name, descr:curNode.regionName };
 		}
-	}
 
-	function getChildren(arr, id) {
-		var children = [];
-		for (var ch = arr.length - 1; ch >= 0; ch--) {
-			child = arr[ch];
-			if (!child.checked) {
-				if (String(id) == String(child.parentId)) {
-					children.push(child);
-					child.checked = true;
+		function _getChildren(arr, id) {
+			var children = [];
+			for (var ch = arr.length - 1; ch >= 0; ch--) {
+				child = arr[ch];
+				if (!child.checked) {
+					if (String(id) == String(child.parentId)) {
+						children.push(child);
+						child.checked = true;
+					}
 				}
 			}
+			return children;
 		}
-		return children;
-	}
 
-	function getGraphs(arr) { 
-		for (var nId = 0; nId < arr.length; nId++){
-			node = arr[nId];
-			stack = [ node ];
-			while(stack.length > 0) {
-				_node = stack[stack.length - 1];
-				stack.splice(stack.length - 1, 1);
-				children = getChildren(arr, _node.id);
-				if (children.length > 0) {
-					_node.children = children;
-					for (i = children.length - 1; i >= 0; i--) {
-						stack.push(children[i]);
-					};
+		function _getGraphs(arr) { 
+			for (var nId = 0; nId < arr.length; nId++){
+				node = arr[nId];
+				stack = [ node ];
+				while(stack.length > 0) {
+					_node = stack[stack.length - 1];
+					stack.splice(stack.length - 1, 1);
+					children = _getChildren(arr, _node.id);
+					if (children.length > 0) {
+						_node.children = children;
+						for (i = children.length - 1; i >= 0; i--) {
+							stack.push(children[i]);
+						};
+					}
 				}
 			}
+			return arr;
 		}
-		return arr;
-	}
 
-	function getTree(arr){
-		var  allGraphs = getGraphs(arr);
-		var trees = [];
-		for (var i = allGraphs.length - 1; i >= 0; i--) {
-			_node = allGraphs[i];
-			if (!_node.checked)
-				trees.push(_node); 
-		};
-		filterTrees(trees);
-		return trees;
+		function _getTree(arr){
+			var  allGraphs = _getGraphs(arr);
+			var trees = [];
+			for (var i = allGraphs.length - 1; i >= 0; i--) {
+				_node = allGraphs[i];
+				if (!_node.checked)
+					trees.push(_node); 
+			};
+			_filterTrees(trees);
+			return trees;
+		}
 	}
 
 	var places = [];
@@ -618,14 +640,118 @@ function getEventPlaces(){
 		name = pl.name == null ? 'null' : pl.name + '';
 		parentId = pl.parent_id == null ? 'null' : pl.parent_id + '';
 		regionName = pl.region_name == null ? '' : pl.region_name + '';
-		places.push({ id:id, name:name, parentId:parentId, regionName:regionName, checked:false });
+		places.push({ id:id, name:name, parentId:parentId, descr: regionName, checked:false });
 	}
 
-	var tree = getTree(places);
+	var tree = _getTree(places);
 	return {
-		defaultValue: { id:'6106768546989817488', name:'ALL' },
-		items: tree
+		selectedNode: { 
+			id : eventIDTE.place_id + '', 
+			name : OpenDoc(UrlFromDocID(Int(eventIDTE.place_id))).TopElem.name + ''
+		},
+		nodes: tree
 	};
+}
+
+function getEventBaseData (queryObjects) {
+	var eventID = queryObjects.HasProperty('event_id') ? Int(queryObjects.event_id) : null;
+	var eventDocTE = OpenDoc(UrlFromDocID(Int(eventID))).TopElem; 
+
+	var basicData = {
+		name : eventDocTE.name + '',
+		selectedType : eventDocTE.type_id + '',
+		selectedCode : eventDocTE.code + '',
+		startDateTime : StrMimeDate(eventDocTE.start_date) + '',
+		finishDateTime : StrMimeDate(eventDocTE.finish_date) + '',
+		educationOrgs : [{ id: '5919417932074195731', name : 'Учебный центр MERLION'}, { id: '5929396429688827825', name : 'ОоИР'}],
+		selectedEducationOrgId : Int(eventDocTE.education_org_id),
+		selectedEducationMethod : {
+			id : Int(eventDocTE.education_method_id),
+			data : {
+				name : OpenDoc(UrlFromDocID(Int(eventDocTE.education_method_id))).TopElem.name + ''
+			}	
+		},
+		places : getEventPlaces(queryObjects) 
+	}
+	return basicData
+}
+
+function getEventCollaborators (queryObjects) {
+	var eventID = queryObjects.HasProperty('event_id') ? Int(queryObjects.event_id) : null;
+
+	if (eventID != null) {
+		var collaboratorArray = [];
+		var basicCollaboratorArray = XQuery("sql: select * 
+			from 
+				event_results 
+			where 
+				event_results.event_id = " + eventID);
+		for (col in basicCollaboratorArray) {
+			collaboratorArray.push({
+				id : Int(col.person_id),
+				data : {
+					fullname : col.person_fullname + '',
+					subdivision_name : col.person_subdivision_name + '',
+					position_name : col.person_position_name + '',
+					is_assist : col.is_assist + '' 
+				}
+			});
+		}
+
+		return [collaboratorArray];
+	}
+}
+
+function getEventTutors (queryObjects) {
+	var eventID = queryObjects.HasProperty('event_id') ? Int(queryObjects.event_id) : null;
+
+	if (eventID != null) {
+		var eventDocTE = OpenDoc(UrlFromDocID(Int(eventID))).TopElem; 
+
+		var tutorsArray = [];
+		var lectorsArray = [];
+
+		for (tutor in eventDocTE.tutors) {
+			tutorsArray.push({
+				id : Int(tutor.collaborator_id),
+				data : {
+					fullname : tutor.person_fullname + '', 
+					subdivision : tutor.person_subdivision_name + '', 
+					position : tutor.person_position_name + '',
+					main : tutor.main
+				} 	 
+			})
+		}
+
+		for (lector in XQuery("sql: select event_lectors.lector_fullname, event_lectors.type, event_lectors.person_id from event_lectors where event_lectors.event_id = " + eventID )) {
+			lector_type = lector.type == 'collaborator' ? 'внутренний' : 'внешний';
+			lectorsArray.push({
+				id : Int(lector.person_id),
+				data : {
+					fullname : lector.lector_fullname + '', 
+					type : lector_type + '' 
+				} 	 
+			})
+		}
+
+		return {
+			tutors : tutorsArray,
+			lectors : lectorsArray
+		}
+	}
+}
+
+function getEventEditData (queryObjects) {
+	return tools.object_to_text({
+		base : getEventBaseData(queryObjects),
+		requests : getEventRequests(queryObjects),
+		collaborators : getEventCollaborators(queryObjects),
+		tutors : getEventTutors(queryObjects),
+		testing : getEventTests(queryObjects),
+		courses : getEventCourses(queryObjects),
+		library_materials : null,
+		files : getEventFiles(queryObjects)
+	}, 'json');
 }
 
 %>
