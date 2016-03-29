@@ -10,9 +10,9 @@ var ItemReset = React.createClass({
 
 	render: function(){
 		return (
-			<li onClick={this.handleReset} className="dropdown-list__item-reset">
+			<li onClick={this.handleReset} className="dropdown-list__item dropdown-list__item--reset">
 				<span>Сбросить</span>
-				<span>x</span>
+				<span className="reset">&times;</span>
 			</li>
 		);
 	}
@@ -26,7 +26,7 @@ var Item = React.createClass({
 	},
 
 	render: function() {
-		var classNameItem = this.props.selected ? "dropdown-list__item_selected": "";
+		var classNameItem = this.props.selected ? "dropdown-list__item--selected": "";
 		return (
 			<li className={"dropdown-list__item " + classNameItem} onClick={this.handleChange}>
 				<span>{this.props.text}</span>

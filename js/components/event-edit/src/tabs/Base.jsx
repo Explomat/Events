@@ -59,12 +59,14 @@ class Base extends React.Component {
 					description={"Тип мероприятия"}
 					onChange={this.handleChangeEventType} 
 					items={this.props.types} 
-					selectedPayload={this.props.selectedType}/>
+					selectedPayload={this.props.selectedType}
+					isReset={true}/>
 				<DropDown 
 					description={"Код мероприятия"}
 					onChange={this.handleChangeEventType} 
 					items={this.props.codes} 
-					selectedPayload={this.props.selectedCode}/>
+					selectedPayload={this.props.selectedCode}
+					isReset={true}/>
 				<div className="event-edit-base__date-time">
 					<i className="fa fa-clock-o icon-clock"></i>
 					<div className="date">
@@ -84,7 +86,8 @@ class Base extends React.Component {
 					description={"Обучающая организация"}
 					onChange={this.handleChangeEventType} 
 					items={this.props.educationOrgs} 
-					selectedPayload={this.props.selectedEducationOrgId}/>
+					selectedPayload={this.props.selectedEducationOrgId}
+					isReset={true}/>
 				<SelectOneItem
 					selectedItem={this.props.selectedEducationMethod} 
 					placeholder={"Учебная программа"} 

@@ -47,8 +47,24 @@
                 background-color: #E6F4FA;
             }
 
-            &.dropdown-list__item_selected {
+            &.dropdown-list__item--selected {
                 color: red;
+            }
+            &.dropdown-list__item--reset {
+                opacity: .5;
+                .reset {
+                    padding: 0;
+                    background: 0 0;
+                    border: 0;
+                    -webkit-appearance: none;
+                    float: right;
+                    font-size: inherit;
+                    font-weight: 700;
+                    color: #000;
+                    text-shadow: 0 1px 0 #fff;
+                    outline: none;
+                    text-decoration: none;
+                }
             }
         }
 
