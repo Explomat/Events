@@ -18,8 +18,8 @@ export default function(args){
 
 	args.base.startDateTime = args.base.startDateTime || Date();
 	args.base.finishDateTime = args.base.finishDateTime || Date();
-	args.requests.dateRequestBegin = args.requests.dateRequestBegin || Date(); //период подачи заявок
-	args.requests.dateRequestOver = args.requests.dateRequestOver || Date();
+	args.requests.requestBeginDate = args.requests.requestBeginDate || Date(); //период подачи заявок
+	args.requests.requestOverDate = args.requests.requestOverDate || Date();
 
 	this.id = args.id || null;
 
@@ -47,16 +47,16 @@ export default function(args){
 
 	//requests
 	this.requests = {
-		dateRequestBegin: new Date(args.requests.dateRequestBegin),
-		dateRequestOver: new Date(args.requests.dateRequestOver),
-		isDateRequestBeforeBegin: args.requests.isDateRequestBeforeBegin || false, //подавать заявки до начала мероприятия
+		isDateRequestBeforeBegin: args.requests.isDateRequestBeforeBegin || true, //подавать заявки до начала мероприятия
+		requestBeginDate: new Date(args.requests.requestBeginDate),
+		requestOverDate: new Date(args.requests.requestOverDate),
 		isAutomaticIncludeInCollaborators: args.requests.isAutomaticIncludeInCollaborators || false, //Автоматически включать в состав участников
 		isApproveByBoss: args.requests.isApproveByBoss || false, //Необходимо подтверждение от непосредсвенного руководителя
 		isApproveByTutor: args.requests.isApproveByTutor || false, //Необходимо подтверждение ответсвенного за мероприятие
-		requestCollaborators: []
+		requestItems: []
 	}
-	if (args.requests.requestCollaborators) {
-		this.requests.requestCollaborators = args.requests.requestCollaborators.map(function(rq){
+	if (args.requests.requestItems) {
+		this.requests.requestItems = args.requests.requestItems.map((rq) => {
 			return new CollaboratorRequest(rq);
 		});
 	}

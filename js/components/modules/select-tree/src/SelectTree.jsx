@@ -75,7 +75,8 @@ class SelectTree extends React.Component {
                 <Tree 
                 	onSave={this.handleSaveModal} 
                 	onClose={this.handleCloseModal} 
-                	data={this.props.nodes} 
+                	data={this.props.nodes}
+                	title={this.props.modalTitle} 
                 	selectedNode={this.props.selectedNode}
                 	isShow={this.state.isShowModal}
                 	isExpand={this.props.isExpand}

@@ -6,7 +6,7 @@ var CheckBox = React.createClass({
 	propsTypes: {
 		checked: React.PropTypes.bool,
 		label: React.PropTypes.string,
-		onChangeChecked: React.PropTypes.func,
+		onChange: React.PropTypes.func,
 		className: React.PropTypes.string,
 		style: React.PropTypes.object
 	},
@@ -26,8 +26,8 @@ var CheckBox = React.createClass({
     	e.nativeEvent.stopImmediatePropagation();
 
 		this.setState({checked: !this.state.checked});
-		if (this.props.onChangeChecked){
-			this.props.onChangeChecked(!this.state.checked);
+		if (this.props.onChange){
+			this.props.onChange(!this.state.checked);
 		}
 	},
 

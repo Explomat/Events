@@ -3,7 +3,7 @@ var EventEditConstants = require('../constants/EventEditConstants');
 
 var EventEditActions = {
 	
-	receiveData: function(data) {
+	receiveData(data) {
 		AppDispatcher.handleAction({
 			actionType: EventEditConstants.RECEIVE_EVENTEDIT_DATA,
 			data: data
@@ -11,55 +11,93 @@ var EventEditActions = {
 	},
 
 	//BASE
-	changeName: function(name){
+	changeName(name){
 		AppDispatcher.handleAction({
 			actionType: EventEditConstants.CHANGE_EVENTEDIT_NAME,
 			name: name
 		});
 	},
-	changeType: function(type){
+	changeType(type){
 		AppDispatcher.handleAction({
 			actionType: EventEditConstants.CHANGE_EVENTEDIT_TYPE,
 			type: type
 		});
 	},
-	changeCode: function(code){
+	changeCode(code){
 		AppDispatcher.handleAction({
 			actionType: EventEditConstants.CHANGE_EVENTEDIT_CODE,
 			code: code
 		});
 	},
-	changeStartDateTime: function(dateTime){
+	changeStartDateTime(dateTime){
 		AppDispatcher.handleAction({
 			actionType: EventEditConstants.CHANGE_EVENTEDIT_START_DATETIME,
 			dateTime: dateTime
 		});
 	},
-	changeFinishDateTime: function(dateTime){
+	changeFinishDateTime(dateTime){
 		AppDispatcher.handleAction({
 			actionType: EventEditConstants.CHANGE_EVENTEDIT_FINISH_DATETIME,
 			dateTime: dateTime
 		});
 	},
-	changeEducationOrg: function(educationOrgId){
+	changeEducationOrg(educationOrgId){
 		AppDispatcher.handleAction({
 			actionType: EventEditConstants.CHANGE_EVENTEDIT_EDUCATION_ORG,
 			educationOrgId: educationOrgId
 		});
 	},
-	changeEducationMethod: function(educationMethod){
+	changeEducationMethod(educationMethod){
 		AppDispatcher.handleAction({
 			actionType: EventEditConstants.CHANGE_EVENTEDIT_EDUCATION_METHOD,
 			educationMethod: educationMethod
 		});
 	},
-	changePlace: function(place){
+	changePlace(place){
 		AppDispatcher.handleAction({
 			actionType: EventEditConstants.CHANGE_EVENTEDIT_PLACE,
 			place: place
 		});
+	},
+
+
+	//REQUESTS
+	changeIsDateRequestBeforeBegin(checked){
+		AppDispatcher.handleAction({
+			actionType: EventEditConstants.CHANGE_EVENTEDIT_IS_DATE_REQUEST_BEFORE_BEGIN,
+			checked: checked
+		});
+	},
+	changeRequestBeginDate(date){
+		AppDispatcher.handleAction({
+			actionType: EventEditConstants.CHANGE_EVENTEDIT_REQUEST_BEGIN_DATE,
+			date: date
+		});
+	},
+	changeRequestOverDate(date){
+		AppDispatcher.handleAction({
+			actionType: EventEditConstants.CHANGE_EVENTEDIT_REQUEST_OVER_DATE,
+			date: date
+		});
+	},
+	changeIsAutomaticIncludeInCollaborators(checked){
+		AppDispatcher.handleAction({
+			actionType: EventEditConstants.CHANGE_EVENTEDIT_IS_AUTOMATIC_INCLUDE_IN_COLLABORATORS,
+			checked: checked
+		});
+	},
+	changeIsApproveByBoss(checked){
+		AppDispatcher.handleAction({
+			actionType: EventEditConstants.CHANGE_EVENTEDIT_IS_APPROVE_BY_BOSS,
+			checked: checked
+		});
+	},
+	changeIsApproveByTutor(checked){
+		AppDispatcher.handleAction({
+			actionType: EventEditConstants.CHANGE_EVENTEDIT_IS_APPROVE_BY_TUTOR,
+			checked: checked
+		});
 	}
-	//-----------------------------------------
 }
 
 module.exports = EventEditActions;

@@ -37,6 +37,27 @@ const base = {
 	}
 }
 
+const requests = {
+	changeIsDateRequestBeforeBegin(checked){
+		_eventEdit.requests.isDateRequestBeforeBegin = checked;
+	},
+	changeRequestBeginDate(date){
+		_eventEdit.requests.requestBeginDate = date;
+	},
+	changeRequestOverDate(date){
+		_eventEdit.requests.requestOverDate = date;
+	},
+	changeIsAutomaticIncludeInCollaborators(checked){
+		_eventEdit.requests.isAutomaticIncludeInCollaborators = checked;
+	},
+	changeIsApproveByBoss(checked){
+		_eventEdit.requests.isApproveByBoss = checked;
+	},
+	changeIsApproveByTutor(checked){
+		_eventEdit.requests.isApproveByTutor = checked;
+	}
+}
+
 const EventEditStore = extend({}, EventEmitter.prototype, {
 	
 	getData(){
@@ -71,6 +92,7 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			isEmit = true;
 			break;
 
+		//BASE
 		case EventEditConstants.CHANGE_EVENTEDIT_NAME:
 			base.changeName(action.name);
 			isEmit = true;
@@ -101,6 +123,32 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			break;
 		case EventEditConstants.CHANGE_EVENTEDIT_PLACE:
 			base.changePlace(action.place);
+			isEmit = true;
+			break;
+
+		//REQUESTS
+		case EventEditConstants.CHANGE_EVENTEDIT_IS_DATE_REQUEST_BEFORE_BEGIN:
+			requests.changeIsDateRequestBeforeBegin(action.checked);
+			isEmit = true;
+			break;
+		case EventEditConstants.CHANGE_EVENTEDIT_REQUEST_BEGIN_DATE:
+			requests.changeRequestBeginDate(action.date);
+			isEmit = true;
+			break;
+		case EventEditConstants.CHANGE_EVENTEDIT_REQUEST_OVER_DATE:
+			requests.changeRequestOverDate(action.date);
+			isEmit = true;
+			break;
+		case EventEditConstants.CHANGE_EVENTEDIT_IS_AUTOMATIC_INCLUDE_IN_COLLABORATORS:
+			requests.changeIsAutomaticIncludeInCollaborators(action.checked);
+			isEmit = true;
+			break;
+		case EventEditConstants.CHANGE_EVENTEDIT_IS_APPROVE_BY_BOSS:
+			requests.changeIsApproveByBoss(action.checked);
+			isEmit = true;
+			break;
+		case EventEditConstants.CHANGE_EVENTEDIT_IS_APPROVE_BY_TUTOR:
+			requests.changeIsApproveByTutor(action.checked);
 			isEmit = true;
 			break;
 		default:

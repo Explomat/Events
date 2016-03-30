@@ -1,14 +1,142 @@
 import React from 'react';
+import EventEditActions from 'actions/EventEditActions';
 import CheckBox from 'components/modules/checkbox';
+import InputCalendar from 'components/modules/input-calendar';
+import cx from 'classnames';
+
+import '../style/event-edit-requests.scss';
+
+class RequestItem extends React.Component {
+	render(){
+		let {fullname, subdivision, position} = this.props;
+		return (
+			<div className="request-list__body-row">
+				<div className="request-list__body-cell">{fullname}</div>
+				<div className="request-list__body-cell">{subdivision}</div>
+				<div className="request-list__body-cell">{position}</div>
+				<div className="request-list__body-cell">
+					<div className="buttons">
+						<button className="event-btn edit-event-table__button">
+							<i className="fa fa-plus"></i>
+						</button>
+						<button className="event-btn">
+							<i className="fa fa-minus"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+		);
+	}
+}
 
 class Requests extends React.Component {
 
+	handleChangeIsDateRequestBeforeBegin(checked){
+		EventEditActions.changeIsDateRequestBeforeBegin(checked);
+	}
+
+	handleChangeRequestBeginDate(date){
+		EventEditActions.changeRequestBeginDate(date);
+	}
+
+	handleChangeRequestOverDate(date){
+		EventEditActions.changeRequestOverDate(date);
+	}
+
+	handleChangeIsAutomaticIncludeInCollaborators(checked){
+		EventEditActions.changeIsAutomaticIncludeInCollaborators(checked);
+	}
+
+	handleChangeIsApproveByBoss(checked){
+		EventEditActions.changeIsApproveByBoss(checked);
+	}
+
+	handleChangeIsApproveByTutor(checked){
+		EventEditActions.changeIsApproveByTutor(checked);
+	}
+
 	render(){
+		let overflowClass = cx({
+			"date__overflow": true,
+			"date__overflow--display": !this.props.isDateRequestBeforeBegin
+		});
 		return (
-			<div>
-				<CheckBox label={"Автоматически включать в состав участников"} />
-				<CheckBox label={"Необходимо подтверждение от непосредственного руководителя"} />
-				<CheckBox label={"Необходимо подтверждение от ответственного за мероприятие"} />
+			<div className="event-edit-requests">
+				<div className="is-date-requests">
+					<CheckBox 
+						onChange={this.handleChangeIsDateRequestBeforeBegin} 
+						label={"Возможна подача заявок"} 
+						checked={this.props.isDateRequestBeforeBegin}/>
+					<i className="fa fa-clock-o icon-clock"></i>
+					<div className="date">
+						<div className={overflowClass}></div>
+						<div className="date__start">
+							<span className="date__start-description">С</span>
+							<InputCalendar
+								className="date__calendar" 
+								date={this.props.requestBeginDate} 
+								onSave={this.handleChangeRequestBeginDate} 
+								prevMonthIcon='fa fa-angle-left'
+								nextMonthIcon='fa fa-angle-right'/>
+						</div>
+						<div className="date__finish">
+							<span className="date__finish-description">По</span>
+							<InputCalendar
+								className="date__calendar" 
+								date={this.props.requestOverDate} 
+								onSave={this.handleChangeRequestOverDate} 
+								prevMonthIcon='fa fa-angle-left'
+								nextMonthIcon='fa fa-angle-right'/>
+						</div>
+					</div>
+				</div>
+				<CheckBox 
+					onChange={this.handleChangeIsAutomaticIncludeInCollaborators} 
+					label={"Автоматически включать в состав участников"} 
+					checked={this.props.isAutomaticIncludeInCollaborators}/>
+				<CheckBox 
+					onChange={this.handleChangeIsApproveByBoss} 
+					label={"Необходимо подтверждение от непосредственного руководителя"} 
+					checked={this.props.isApproveByBoss}/>
+				<CheckBox 
+					onChange={this.handleChangeIsApproveByTutor} 
+					label={"Необходимо подтверждение от ответственного за мероприятие"} 
+					checked={this.props.isApproveByTutor}/>
+				<div className="request-list">
+					<div className="request-list__header request-list__header--header">
+						<div className="request-list__header-row">
+							<div className="request-list__header-cell request-list__header-cell--w30">
+								<span className="request-list__header-cell-name">ФИО</span>
+								<span className="caret request-list__caret"></span>
+							</div>
+							<div className="request-list__header-cell request-list__header-cell--w25">
+								<span className="request-list__header-cell-name">Должность</span>
+								<span className="caret request-list__caret"></span>
+							</div>
+							<div className="request-list__header-cell request-list__header-cell--w25">
+								<span className="request-list__header-cell-name">Подразделение</span>
+								<span className="caret request-list__caret"></span>
+							</div>
+							<div className="request-list__header-cell request-list__header-cell--w20">
+								<span className="request-list__header-cell-name">Статус</span>
+								<span className="caret request-list__caret"></span>
+							</div>
+						</div>
+					</div>
+					<div className="request-list__table request-list__table--requests">
+						<div className="request-list__header">
+							<div className="request-list__header-row">
+								<div className="request-list__header-cell request-list__header-cell--w30">ФИО</div>
+								<div className="request-list__header-cell request-list__header-cell--w25">Должность</div>
+								<div className="request-list__header-cell request-list__header-cell--w25">Подразделение</div>
+								<div className="request-list__header-cell request-list__header-cell--w20">Статус</div>
+							</div>
+							{this.props.requestItems.map((item, index) => {
+								return <RequestItem key={index} {...item} />
+							})}
+						</div>
+					</div>
+				</div>
 			</div>
 		);
 	}

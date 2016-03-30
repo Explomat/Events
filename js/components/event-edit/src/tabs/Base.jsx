@@ -104,13 +104,14 @@ class Base extends React.Component {
 				<SelectOneItem
 					selectedItem={this.props.selectedEducationMethod} 
 					placeholder="Учебная программа" 
-					modalTitle="Учебная программа"
+					modalTitle="Выберите учебную программу"
 					query={Config.url.createPath({action_name: 'getEducationMethod'})}
 					onSave={this.handleChangeEducationMethod}/>
 				<SelectTree 
 					nodes={this.props.places.nodes}
 					selectedNode={this.props.places.selectedNode} 
-					placeholder="Выберите расположение"
+					placeholder="Расположение"
+					modalTitle="Выберите расположение"
 					onSave={this.handleChangePlace}
 					isExpand={true}/>
 			</div>

@@ -67,7 +67,9 @@ class EventEdit extends React.Component {
 					</header>
 					<div className="event-edit-container">
 						<div className="event-edit">
-							{tabView}
+							<div className="event-edit__wrapper">
+								{tabView}
+							</div>
 						</div>
 					</div>
 				</div>

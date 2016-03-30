@@ -21,7 +21,8 @@ class Tree extends React.Component {
 	static defaultProps = {
 		isExpand: false,
 		isExpandAll: false,
-		isShow: false
+		isShow: false,
+		title: ''
 	}
 
 	componentDidMount(){
@@ -68,7 +69,7 @@ class Tree extends React.Component {
         			<div className="tree__content">
 		        		<div className="tree__header">
 				        	<button type="button" className="close-btn" onClick={this.handleClose}>&times;</button>
-							<span>Test</span>
+							<span>{this.props.title}</span>
 				        </div>
 				        <div className="tree__body clearfix">
 		                    <ul className="category-tree">

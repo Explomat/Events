@@ -418,7 +418,7 @@ function getEventRequests (queryObjects) {
 		basicRequestsArray = XQuery("sql: select 
 		 requests.id as id,
 		 requests.status_id as status,
-		 requests.person_fullname as personFIO,
+		 requests.person_fullname as fullname,
 		 requests.person_id as personId,
 		 colab.position_name as position,
 		 colab.position_parent_name as subdivision
@@ -434,16 +434,14 @@ function getEventRequests (queryObjects) {
 		for (r in basicRequestsArray) {
 			requestsArray.push({ 
 				id: Int(r.id), 
-				data: {
-					name : r.personFIO + '',
-					subdivision: r.subdivision + '',
-					position: r.position + '',
-					status: r.status + ''
-				}
+				fullname : r.fullname + '',
+				subdivision: r.subdivision + '',
+				position: r.position + '',
+				status: r.status + ''
 			});
 		}
 		return {
-			items: requestsArray
+			requestItems: requestsArray
 		}
 	}
 }
