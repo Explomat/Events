@@ -5,5 +5,5 @@ module.exports = function(args){
 	this.fullname = args.fullname || 'Нет имени';
 	this.subdivision = args.subdivision || '';
 	this.position = args.position || '';
-	this.status = args.status || false;
+	this.status = args.status || '';
 }

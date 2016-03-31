@@ -55,6 +55,13 @@ const requests = {
 	},
 	changeIsApproveByTutor(checked){
 		_eventEdit.requests.isApproveByTutor = checked;
+	},
+	sortTable(key, isAsc){
+		let requestItems = _eventEdit.requests.requestItems;
+		let isAscending = isAsc ? 1 : -1;
+		requestItems.sort((first, second) => {
+			return first[key] > second[key] ? isAscending : first[key] === second[key] ? 0 : -(isAscending);
+		});
 	}
 }
 
@@ -149,6 +156,10 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			break;
 		case EventEditConstants.CHANGE_EVENTEDIT_IS_APPROVE_BY_TUTOR:
 			requests.changeIsApproveByTutor(action.checked);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_SORT_TABLE:
+			requests.sortTable(action.key, action.isAsc);
 			isEmit = true;
 			break;
 		default:

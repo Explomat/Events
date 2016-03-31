@@ -97,6 +97,13 @@ var EventEditActions = {
 			actionType: EventEditConstants.CHANGE_EVENTEDIT_IS_APPROVE_BY_TUTOR,
 			checked: checked
 		});
+	},
+	sortTable(key, isAsc){
+		AppDispatcher.handleAction({
+			actionType: EventEditConstants.EVENTEDIT_SORT_TABLE,
+			key: key,
+			isAsc: isAsc
+		});
 	}
 }
 

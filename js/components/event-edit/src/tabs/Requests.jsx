@@ -1,5 +1,6 @@
 import React from 'react';
 import EventEditActions from 'actions/EventEditActions';
+import RequestStatuses from 'utils/eventedit/RequestStatuses';
 import CheckBox from 'components/modules/checkbox';
 import InputCalendar from 'components/modules/input-calendar';
 import cx from 'classnames';
@@ -8,20 +9,36 @@ import '../style/event-edit-requests.scss';
 
 class RequestItem extends React.Component {
 	render(){
-		let {fullname, subdivision, position} = this.props;
+		let {fullname, subdivision, position, status} = this.props;
+		let buttonsClasses = cx({
+			'request-list__buttons': true,
+			'request-list__buttons--display': status === RequestStatuses.keys.active
+		});
+		let statusAddedClasses = cx({
+			"fa fa-plus": true, 
+			"request-list__status-added": true, 
+			"request-list__status-added--display": status === RequestStatuses.keys.close});
+		let statusRemovedClasses = cx({
+			"fa fa-minus": true, 
+			"request-list__status-removed": true, 
+			"request-list__status-removed--display": status === RequestStatuses.keys.ignore});
 		return (
 			<div className="request-list__body-row">
 				<div className="request-list__body-cell">{fullname}</div>
 				<div className="request-list__body-cell">{subdivision}</div>
 				<div className="request-list__body-cell">{position}</div>
 				<div className="request-list__body-cell">
-					<div className="buttons">
-						<button className="event-btn edit-event-table__button">
+					<div className={buttonsClasses}>
+						<button className="event-btn request-list__add-button">
 							<i className="fa fa-plus"></i>
 						</button>
-						<button className="event-btn">
+						<button className="event-btn request-list__remove-button">
 							<i className="fa fa-minus"></i>
 						</button>
+					</div>
+					<div className="request-list__statuses">
+						<i className={statusAddedClasses}></i>
+						<i className={statusRemovedClasses}></i>
 					</div>
 				</div>
 			</div>
@@ -53,6 +70,15 @@ class Requests extends React.Component {
 
 	handleChangeIsApproveByTutor(checked){
 		EventEditActions.changeIsApproveByTutor(checked);
+	}
+
+	handleSort(e){
+		let target = e.currentTarget;
+		let caret = target.querySelector('.caret');
+		let isAsc = caret.classList.contains('caret--rotate');
+		let targetData = target.getAttribute('data-sort');
+		EventEditActions.sortTable(targetData, isAsc);
+		caret.classList.toggle('caret--rotate');
 	}
 
 	render(){
@@ -105,19 +131,19 @@ class Requests extends React.Component {
 				<div className="request-list">
 					<div className="request-list__header request-list__header--header">
 						<div className="request-list__header-row">
-							<div className="request-list__header-cell request-list__header-cell--w30">
+							<div onClick={this.handleSort} className="request-list__header-cell request-list__header-cell--w30" data-sort="fullname">
 								<span className="request-list__header-cell-name">ФИО</span>
 								<span className="caret request-list__caret"></span>
 							</div>
-							<div className="request-list__header-cell request-list__header-cell--w25">
+							<div onClick={this.handleSort} className="request-list__header-cell request-list__header-cell--w25" data-sort="position">
 								<span className="request-list__header-cell-name">Должность</span>
 								<span className="caret request-list__caret"></span>
 							</div>
-							<div className="request-list__header-cell request-list__header-cell--w25">
+							<div onClick={this.handleSort} className="request-list__header-cell request-list__header-cell--w25" data-sort="subdivision">
 								<span className="request-list__header-cell-name">Подразделение</span>
 								<span className="caret request-list__caret"></span>
 							</div>
-							<div className="request-list__header-cell request-list__header-cell--w20">
+							<div onClick={this.handleSort} className="request-list__header-cell request-list__header-cell--w20" data-sort="status">
 								<span className="request-list__header-cell-name">Статус</span>
 								<span className="caret request-list__caret"></span>
 							</div>
