@@ -3,6 +3,7 @@ import {EventEmitter} from 'events';
 import EventEditConstants from '../constants/EventEditConstants';
 import EventEdit from '../models/eventedit/EventEdit';
 import extend from 'extend';
+import {find} from 'lodash';
 
 let _eventEdit = {};
 
@@ -62,6 +63,15 @@ const requests = {
 		requestItems.sort((first, second) => {
 			return first[key] > second[key] ? isAscending : first[key] === second[key] ? 0 : -(isAscending);
 		});
+	},
+	changeRequestStatus(id, status){
+		let requestItems = _eventEdit.requests.requestItems;
+		let item = find(requestItems, (item) => {
+			return item.id === id;
+		});
+		if (item){
+			item.status = status;
+		}
 	}
 }
 
@@ -160,6 +170,10 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			break;
 		case EventEditConstants.EVENTEDIT_SORT_TABLE:
 			requests.sortTable(action.key, action.isAsc);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_CHANGE_REQUEST_STATUS:
+			requests.changeRequestStatus(action.id, action.status);
 			isEmit = true;
 			break;
 		default:

@@ -104,6 +104,13 @@ var EventEditActions = {
 			key: key,
 			isAsc: isAsc
 		});
+	},
+	changeRequestStatus(id, status){
+		AppDispatcher.handleAction({
+			actionType: EventEditConstants.EVENTEDIT_CHANGE_REQUEST_STATUS,
+			id: id,
+			status: status
+		});
 	}
 }
 

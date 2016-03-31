@@ -8,6 +8,13 @@ import cx from 'classnames';
 import '../style/event-edit-requests.scss';
 
 class RequestItem extends React.Component {
+
+	handleChangeStatus(e){
+		let target = e.currentTarget;
+		let status = target.getAttribute('data-status');
+		EventEditActions.changeRequestStatus(this.props.id, status);
+	}
+
 	render(){
 		let {fullname, subdivision, position, status} = this.props;
 		let buttonsClasses = cx({
@@ -29,10 +36,10 @@ class RequestItem extends React.Component {
 				<div className="request-list__body-cell">{position}</div>
 				<div className="request-list__body-cell">
 					<div className={buttonsClasses}>
-						<button className="event-btn request-list__add-button">
+						<button onClick={::this.handleChangeStatus} className="event-btn request-list__add-button" data-status={RequestStatuses.keys.close}>
 							<i className="fa fa-plus"></i>
 						</button>
-						<button className="event-btn request-list__remove-button">
+						<button onClick={::this.handleChangeStatus} className="event-btn request-list__remove-button" data-status={RequestStatuses.keys.ignore}>
 							<i className="fa fa-minus"></i>
 						</button>
 					</div>
