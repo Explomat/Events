@@ -98,9 +98,9 @@ var EventEditActions = {
 			checked: checked
 		});
 	},
-	sortTable(key, isAsc){
+	sortRequestTable(key, isAsc){
 		AppDispatcher.handleAction({
-			actionType: EventEditConstants.EVENTEDIT_SORT_TABLE,
+			actionType: EventEditConstants.EVENTEDIT_SORT_TABLE_REQUESTS,
 			key: key,
 			isAsc: isAsc
 		});
@@ -110,6 +110,22 @@ var EventEditActions = {
 			actionType: EventEditConstants.EVENTEDIT_CHANGE_REQUEST_STATUS,
 			id: id,
 			status: status
+		});
+	},
+
+	//COLLABORATORS
+	toggleIsAssist(id, isAssist){
+		AppDispatcher.handleAction({
+			actionType: EventEditConstants.EVENTEDIT_TOGGLE_IS_ASSIST,
+			id: id,
+			isAssist: isAssist
+		});
+	},
+	sortCollaboratorsTable(key, isAsc){
+		AppDispatcher.handleAction({
+			actionType: EventEditConstants.EVENTEDIT_SORT_TABLE_COLLABORATORS,
+			key: key,
+			isAsc: isAsc
 		});
 	}
 }

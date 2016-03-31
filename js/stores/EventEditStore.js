@@ -43,10 +43,10 @@ const requests = {
 		_eventEdit.requests.isDateRequestBeforeBegin = checked;
 	},
 	changeRequestBeginDate(date){
-		_eventEdit.requests.requestBeginDate = date;
+		_eventEdit.requests.requestBeginDate = new Date(date);
 	},
 	changeRequestOverDate(date){
-		_eventEdit.requests.requestOverDate = date;
+		_eventEdit.requests.requestOverDate = new Date(date);;
 	},
 	changeIsAutomaticIncludeInCollaborators(checked){
 		_eventEdit.requests.isAutomaticIncludeInCollaborators = checked;
@@ -72,6 +72,25 @@ const requests = {
 		if (item){
 			item.status = status;
 		}
+	}
+}
+
+const collaborators = {
+	toggleIsAssist(id, isAssist){
+		let _collaborators = _eventEdit.collaborators.collaborators;
+		let item = find(_collaborators, (item) => {
+			return item.id === id;
+		});
+		if (item){
+			item.isAssist = isAssist;
+		}
+	},
+	sortTable(key, isAsc){
+		let _collaborators = _eventEdit.collaborators.collaborators;
+		let isAscending = isAsc ? 1 : -1;
+		_collaborators.sort((first, second) => {
+			return first[key] > second[key] ? isAscending : first[key] === second[key] ? 0 : -(isAscending);
+		});
 	}
 }
 
@@ -168,12 +187,22 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			requests.changeIsApproveByTutor(action.checked);
 			isEmit = true;
 			break;
-		case EventEditConstants.EVENTEDIT_SORT_TABLE:
+		case EventEditConstants.EVENTEDIT_SORT_TABLE_REQUESTS:
 			requests.sortTable(action.key, action.isAsc);
 			isEmit = true;
 			break;
 		case EventEditConstants.EVENTEDIT_CHANGE_REQUEST_STATUS:
 			requests.changeRequestStatus(action.id, action.status);
+			isEmit = true;
+			break;
+
+		//COLLABORATORS
+		case EventEditConstants.EVENTEDIT_TOGGLE_IS_ASSIST:
+			collaborators.toggleIsAssist(action.id, action.isAssist);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_SORT_TABLE_COLLABORATORS:
+			collaborators.sortTable(action.key, action.isAsc);
 			isEmit = true;
 			break;
 		default:

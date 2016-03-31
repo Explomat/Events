@@ -32,8 +32,8 @@ class RequestItem extends React.Component {
 		return (
 			<div className="request-list__body-row">
 				<div className="request-list__body-cell">{fullname}</div>
-				<div className="request-list__body-cell">{subdivision}</div>
 				<div className="request-list__body-cell">{position}</div>
+				<div className="request-list__body-cell">{subdivision}</div>
 				<div className="request-list__body-cell">
 					<div className={buttonsClasses}>
 						<button onClick={::this.handleChangeStatus} className="event-btn request-list__add-button" data-status={RequestStatuses.keys.close}>
@@ -84,7 +84,7 @@ class Requests extends React.Component {
 		let caret = target.querySelector('.caret');
 		let isAsc = caret.classList.contains('caret--rotate');
 		let targetData = target.getAttribute('data-sort');
-		EventEditActions.sortTable(targetData, isAsc);
+		EventEditActions.sortRequestTable(targetData, isAsc);
 		caret.classList.toggle('caret--rotate');
 	}
 

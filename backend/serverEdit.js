@@ -687,16 +687,14 @@ function getEventCollaborators (queryObjects) {
 		for (col in basicCollaboratorArray) {
 			collaboratorArray.push({
 				id : Int(col.person_id),
-				data : {
-					fullname : col.person_fullname + '',
-					subdivision_name : col.person_subdivision_name + '',
-					position_name : col.person_position_name + '',
-					is_assist : col.is_assist + '' 
-				}
+				fullname : col.person_fullname + '',
+				subdivision : col.person_subdivision_name + '',
+				position : col.person_position_name + '',
+				isAssist : col.is_assist + '' 
 			});
 		}
 
-		return [collaboratorArray];
+		return collaboratorArray;
 	}
 }
 

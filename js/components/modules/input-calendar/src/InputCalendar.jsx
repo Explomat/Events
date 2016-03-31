@@ -15,7 +15,7 @@ module.exports = React.createClass({
 
   propTypes: {
     className: React.PropTypes.string,
-    date: React.PropTypes.string,
+    date: React.PropTypes.object,
     onChange: React.PropTypes.func,
     onSave: React.PropTypes.func,
     prevMonthIcon: React.PropTypes.string,
