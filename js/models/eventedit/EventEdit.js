@@ -63,7 +63,10 @@ export default function(args){
 
 	//collaborators
 	this.collaborators = {
-		collaborators: []
+		collaborators: [],
+		
+		//state fields
+		checkedAll: false
 	}
 	if (args.collaborators) {
 		this.collaborators.collaborators = args.collaborators.map(function(col){

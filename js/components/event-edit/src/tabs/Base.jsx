@@ -21,35 +21,35 @@ class Base extends React.Component {
 	}
 
 	handleChangeName(name){
-		EventEditActions.changeName(name);
+		EventEditActions.base.changeName(name);
 	}
 
 	handleChangeType(e, payload){
-		EventEditActions.changeType(payload);
+		EventEditActions.base.changeType(payload);
 	}
 
 	handleChangeCode(e, payload){
-		EventEditActions.changeCode(payload);
+		EventEditActions.base.changeCode(payload);
 	}
 
 	handleChangeStartDateTime(dateTime) {
-		EventEditActions.changeStartDateTime(dateTime);
+		EventEditActions.base.changeStartDateTime(dateTime);
 	}
 
 	handleChangeFinishDateTime(dateTime) {
-		EventEditActions.changeFinishDateTime(dateTime);
+		EventEditActions.base.changeFinishDateTime(dateTime);
 	}
 
 	handleChangeEducationOrg(e, payload){
-		EventEditActions.changeEducationOrg(payload);
+		EventEditActions.base.changeEducationOrg(payload);
 	}
 
 	handleChangeEducationMethod(educationMethod){
-		EventEditActions.changeEducationMethod(educationMethod);
+		EventEditActions.base.changeEducationMethod(educationMethod);
 	}
 
 	handleChangePlace(place){
-		EventEditActions.changePlace(place);
+		EventEditActions.base.changePlace(place);
 	}
 
 	render(){

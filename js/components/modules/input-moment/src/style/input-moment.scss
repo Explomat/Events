@@ -21,7 +21,6 @@
   display: inline-block;
   width: 220px;
   padding: 6px 8px;
-  border-radius: 3px;
   border: 1px solid $color-gray;
 
   .options {
@@ -37,9 +36,8 @@
       font-size: 14px;
       padding: 5px;
       border: 1px solid $color-gray-dark;
-      border-radius: 3px;
 
-      &:first-child {
+      /* &:first-child {
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
       }
@@ -47,7 +45,7 @@
       &:last-child {
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
-      }
+      } */
 
       &.is-active {
         color: #ffffff;
@@ -74,6 +72,5 @@
     text-align: center;
     color: #ffffff;
     font-size: 16px;
-    border-radius: 3px;
   }
 }

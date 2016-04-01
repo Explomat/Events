@@ -3,7 +3,7 @@ import {EventEmitter} from 'events';
 import EventEditConstants from '../constants/EventEditConstants';
 import EventEdit from '../models/eventedit/EventEdit';
 import extend from 'extend';
-import {find} from 'lodash';
+import {find, filter, every} from 'lodash';
 
 let _eventEdit = {};
 
@@ -91,6 +91,52 @@ const collaborators = {
 		_collaborators.sort((first, second) => {
 			return first[key] > second[key] ? isAscending : first[key] === second[key] ? 0 : -(isAscending);
 		});
+	},
+	toggleCheckedAll(checked){
+		let _collaborators = _eventEdit.collaborators.collaborators;
+		_collaborators.forEach(col => {
+			col.checked = checked;
+		});
+		_eventEdit.collaborators.checkedAll = checked;
+	},
+	toggleChecked(id, checked) {
+		let _collaborators = _eventEdit.collaborators.collaborators;
+		let item = find(_collaborators, (item) => {
+			return item.id === id;
+		});
+		if (item){
+			item.checked = checked;
+		}
+		if (checked){
+			_eventEdit.collaborators.checkedAll = checked;
+		}
+		else {
+			let isEveryCheked = every(_collaborators, (col) => {
+				return col.checked === false;
+			});
+			if (isEveryCheked){
+				_eventEdit.collaborators.checkedAll = false;
+			}
+		}
+	},
+	removeItems(){
+		let _collaborators = _eventEdit.collaborators.collaborators;
+		_collaborators = filter(_collaborators, (col) => {
+			return !col.checked;
+		});
+		_eventEdit.collaborators.collaborators = _collaborators;
+	},
+	updateItems(items){
+		_eventEdit.collaborators.collaborators = items.map((item) => {
+			return {
+				id: item.id,
+				fullname: item.data.fullname,
+				subdivision: item.data.subdivision,
+				position: item.data.position,
+				isAssist: item.data.isAssist
+			}
+		});
+		console.log(_eventEdit.collaborators.collaborators);
 	}
 }
 
@@ -129,80 +175,100 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			break;
 
 		//BASE
-		case EventEditConstants.CHANGE_EVENTEDIT_NAME:
+		case EventEditConstants.EVENTEDIT_BASE_CHANGE_NAME:
 			base.changeName(action.name);
 			isEmit = true;
 			break;
-		case EventEditConstants.CHANGE_EVENTEDIT_TYPE:
+		case EventEditConstants.EVENTEDIT_BASE_CHANGE_TYPE:
 			base.changeType(action.type);
 			isEmit = true;
 			break;
-		case EventEditConstants.CHANGE_EVENTEDIT_CODE:
+		case EventEditConstants.EVENTEDIT_BASE_CHANGE_CODE:
 			base.changeCode(action.code);
 			isEmit = true;
 			break;
-		case EventEditConstants.CHANGE_EVENTEDIT_START_DATETIME:
+		case EventEditConstants.EVENTEDIT_BASE_CHANGE_START_DATETIME:
 			base.changeStartDateTime(action.dateTime);
 			isEmit = true;
 			break;
-		case EventEditConstants.CHANGE_EVENTEDIT_FINISH_DATETIME:
+		case EventEditConstants.EVENTEDIT_BASE_CHANGE_FINISH_DATETIME:
 			base.changeFinishDateTime(action.dateTime);
 			isEmit = true;
 			break;
-		case EventEditConstants.CHANGE_EVENTEDIT_EDUCATION_ORG:
+		case EventEditConstants.EVENTEDIT_BASE_CHANGE_EDUCATION_ORG:
 			base.changeEducationOrg(action.educationOrgId);
 			isEmit = true;
 			break;
-		case EventEditConstants.CHANGE_EVENTEDIT_EDUCATION_METHOD:
+		case EventEditConstants.EVENTEDIT_BASE_CHANGE_EDUCATION_METHOD:
 			base.changeEducationMethod(action.educationMethod);
 			isEmit = true;
 			break;
-		case EventEditConstants.CHANGE_EVENTEDIT_PLACE:
+		case EventEditConstants.EVENTEDIT_BASE_CHANGE_PLACE:
 			base.changePlace(action.place);
 			isEmit = true;
 			break;
 
 		//REQUESTS
-		case EventEditConstants.CHANGE_EVENTEDIT_IS_DATE_REQUEST_BEFORE_BEGIN:
+		case EventEditConstants.EVENTEDIT_REQUESTS_CHANGE_IS_DATE_REQUEST_BEFORE_BEGIN:
 			requests.changeIsDateRequestBeforeBegin(action.checked);
 			isEmit = true;
 			break;
-		case EventEditConstants.CHANGE_EVENTEDIT_REQUEST_BEGIN_DATE:
+		case EventEditConstants.EVENTEDIT_REQUESTS_CHANGE_REQUEST_BEGIN_DATE:
 			requests.changeRequestBeginDate(action.date);
 			isEmit = true;
 			break;
-		case EventEditConstants.CHANGE_EVENTEDIT_REQUEST_OVER_DATE:
+		case EventEditConstants.EVENTEDIT_REQUESTS_CHANGE_REQUEST_OVER_DATE:
 			requests.changeRequestOverDate(action.date);
 			isEmit = true;
 			break;
-		case EventEditConstants.CHANGE_EVENTEDIT_IS_AUTOMATIC_INCLUDE_IN_COLLABORATORS:
+		case EventEditConstants.EVENTEDIT_REQUESTS_CHANGE_IS_AUTOMATIC_INCLUDE:
 			requests.changeIsAutomaticIncludeInCollaborators(action.checked);
 			isEmit = true;
 			break;
-		case EventEditConstants.CHANGE_EVENTEDIT_IS_APPROVE_BY_BOSS:
+		case EventEditConstants.EVENTEDIT_REQUESTS_CHANGE_IS_APPROVE_BY_BOSS:
 			requests.changeIsApproveByBoss(action.checked);
 			isEmit = true;
 			break;
-		case EventEditConstants.CHANGE_EVENTEDIT_IS_APPROVE_BY_TUTOR:
+		case EventEditConstants.EVENTEDIT_REQUESTS_CHANGE_IS_APPROVE_BY_TUTOR:
 			requests.changeIsApproveByTutor(action.checked);
 			isEmit = true;
 			break;
-		case EventEditConstants.EVENTEDIT_SORT_TABLE_REQUESTS:
+		case EventEditConstants.EVENTEDIT_REQUESTS_SORT_TABLE:
 			requests.sortTable(action.key, action.isAsc);
 			isEmit = true;
 			break;
-		case EventEditConstants.EVENTEDIT_CHANGE_REQUEST_STATUS:
+		case EventEditConstants.EVENTEDIT_REQUESTS_CHANGE_STATUS:
 			requests.changeRequestStatus(action.id, action.status);
 			isEmit = true;
 			break;
 
 		//COLLABORATORS
-		case EventEditConstants.EVENTEDIT_TOGGLE_IS_ASSIST:
+		case EventEditConstants.EVENTEDIT_COLLABORATORS_TOGGLE_IS_ASSIST:
 			collaborators.toggleIsAssist(action.id, action.isAssist);
 			isEmit = true;
 			break;
-		case EventEditConstants.EVENTEDIT_SORT_TABLE_COLLABORATORS:
+		case EventEditConstants.EVENTEDIT_COLLABORATORS_SORT_TABLE:
 			collaborators.sortTable(action.key, action.isAsc);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_COLLABORATORS_TOGGLE_CHECKED_ALL:
+			collaborators.toggleCheckedAll(action.checked);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_COLLABORATORS_TOGGLE_CHECKED:
+			collaborators.toggleChecked(action.id, action.checked);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_COLLABORATORS_REMOVE_ITEMS:
+			collaborators.removeItems();
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_COLLABORATORS_NOTIFICATE_ITEMS:
+			collaborators.toggleChecked(action.id, action.checked);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_COLLABORATORS_UPDATE_ITEMS:
+			collaborators.updateItems(action.items);
 			isEmit = true;
 			break;
 		default:

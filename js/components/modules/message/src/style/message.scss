@@ -1,0 +1,26 @@
+@import '../../../modal/src/style/modal';
+
+.message {
+    @include modal-box;
+    display: block;
+
+    .message__modal-box {
+        @include modal-box__dialog;
+        width: 600px;
+
+        .message__content {
+            @include modal-box__content;
+            .message__header{
+                @include modal-box__header;
+            }
+            .message__body{
+                @include modal-box__body;
+                height: 400px;
+                overflow: auto;
+            }
+            .message__footer{
+                @include modal-box__footer;
+            }
+        }
+    }
+}

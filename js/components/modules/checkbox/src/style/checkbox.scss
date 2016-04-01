@@ -4,6 +4,9 @@
     &:hover {
         background-color: #F2EDF1;
     }
+    &.--test {
+        top: 10px;
+    }
 
     .checkbox-box__label {
         position: relative;
@@ -18,6 +21,10 @@
         -ms-user-select: none;
         display: inline-block;
         padding-left: 48px;
+
+        &:empty {
+            top: -16px;
+        }
 
         &:before {
             content: '';

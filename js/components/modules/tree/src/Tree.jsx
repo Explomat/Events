@@ -22,7 +22,7 @@ class Tree extends React.Component {
 		isExpand: false,
 		isExpandAll: false,
 		isShow: false,
-		title: ''
+		title: ' '
 	}
 
 	componentDidMount(){

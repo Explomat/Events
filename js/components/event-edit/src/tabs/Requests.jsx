@@ -12,7 +12,7 @@ class RequestItem extends React.Component {
 	handleChangeStatus(e){
 		let target = e.currentTarget;
 		let status = target.getAttribute('data-status');
-		EventEditActions.changeRequestStatus(this.props.id, status);
+		EventEditActions.requests.changeRequestStatus(this.props.id, status);
 	}
 
 	render(){
@@ -56,27 +56,27 @@ class RequestItem extends React.Component {
 class Requests extends React.Component {
 
 	handleChangeIsDateRequestBeforeBegin(checked){
-		EventEditActions.changeIsDateRequestBeforeBegin(checked);
+		EventEditActions.requests.changeIsDateRequestBeforeBegin(checked);
 	}
 
 	handleChangeRequestBeginDate(date){
-		EventEditActions.changeRequestBeginDate(date);
+		EventEditActions.requests.changeRequestBeginDate(date);
 	}
 
 	handleChangeRequestOverDate(date){
-		EventEditActions.changeRequestOverDate(date);
+		EventEditActions.requests.changeRequestOverDate(date);
 	}
 
 	handleChangeIsAutomaticIncludeInCollaborators(checked){
-		EventEditActions.changeIsAutomaticIncludeInCollaborators(checked);
+		EventEditActions.requests.changeIsAutomaticIncludeInCollaborators(checked);
 	}
 
 	handleChangeIsApproveByBoss(checked){
-		EventEditActions.changeIsApproveByBoss(checked);
+		EventEditActions.requests.changeIsApproveByBoss(checked);
 	}
 
 	handleChangeIsApproveByTutor(checked){
-		EventEditActions.changeIsApproveByTutor(checked);
+		EventEditActions.requests.changeIsApproveByTutor(checked);
 	}
 
 	handleSort(e){
@@ -84,7 +84,7 @@ class Requests extends React.Component {
 		let caret = target.querySelector('.caret');
 		let isAsc = caret.classList.contains('caret--rotate');
 		let targetData = target.getAttribute('data-sort');
-		EventEditActions.sortRequestTable(targetData, isAsc);
+		EventEditActions.requests.sortRequestTable(targetData, isAsc);
 		caret.classList.toggle('caret--rotate');
 	}
 
