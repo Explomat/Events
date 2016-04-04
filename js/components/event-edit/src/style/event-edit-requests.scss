@@ -14,6 +14,7 @@
 			margin-bottom: 20px;
 			padding: 5px;
 			width: 70%;
+			margin-left: 50px;
 
 			.date__overflow {
 				position: absolute;
@@ -60,9 +61,9 @@
 	}
 
 	.request-list {
-		height: 70%;
+		height: 55%;
 		overflow: hidden;
-		margin-top: 50px;
+		margin-top: 30px;
 
 		.request-list__header {
 			display: table;
@@ -125,7 +126,7 @@
 		    margin-top: -35px;
 
 			&.request-list__table--requests {
-				height: 69%;
+				
 			}
 			
 			.request-list__body-row{

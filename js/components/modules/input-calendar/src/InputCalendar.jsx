@@ -1,4 +1,5 @@
 var React = require('react');
+var TextView = require('../../text-label').TextView;
 var InputMoment = require('../../input-moment')
 var cx = require('classnames');
 var clickOutSide = require('react-onclickoutside');
@@ -15,6 +16,7 @@ module.exports = React.createClass({
 
   propTypes: {
     className: React.PropTypes.string,
+    placeholder: React.PropTypes.string,
     date: React.PropTypes.object,
     onChange: React.PropTypes.func,
     onSave: React.PropTypes.func,
@@ -46,7 +48,12 @@ module.exports = React.createClass({
   render() {
     return (
       <div className={cx('input-calendar', this.props.className)}>
-        <input onClick={this.handleToogle} type="text" className="input-calendar__date" value={moment(this.props.date).format('llll')} readOnly/>
+        <TextView 
+          onClick={this.handleToogle} 
+          inputClassName="input-calendar__date"  
+          value={moment(this.props.date).format('llll')}
+          placeholder={this.props.placeholder} 
+          readOnly={true}/>
         <div className={cx({'input-calendar__calendar': true, 'input-calendar__calendar--show': this.state.isShow})}>
           <InputMoment 
             moment={moment(this.props.date)} 

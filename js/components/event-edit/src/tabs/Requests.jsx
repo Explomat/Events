@@ -104,8 +104,8 @@ class Requests extends React.Component {
 					<div className="date">
 						<div className={overflowClass}></div>
 						<div className="date__start">
-							<span className="date__start-description">С</span>
 							<InputCalendar
+								placeholder="C"
 								className="date__calendar" 
 								date={this.props.requestBeginDate} 
 								onSave={this.handleChangeRequestBeginDate} 
@@ -113,8 +113,8 @@ class Requests extends React.Component {
 								nextMonthIcon='fa fa-angle-right'/>
 						</div>
 						<div className="date__finish">
-							<span className="date__finish-description">По</span>
 							<InputCalendar
+								placeholder="По"
 								className="date__calendar" 
 								date={this.props.requestOverDate} 
 								onSave={this.handleChangeRequestOverDate} 

@@ -76,8 +76,8 @@ class Base extends React.Component {
 					<i className="fa fa-clock-o icon-clock"></i>
 					<div className="date">
 						<div className="date__start">
-							<span className="date__start-description">С</span>
 							<InputCalendar
+								placeholder="C"
 								className="date__calendar" 
 								date={this.props.startDateTime} 
 								onSave={this.handleChangeStartDateTime} 
@@ -85,8 +85,8 @@ class Base extends React.Component {
 								nextMonthIcon='fa fa-angle-right'/>
 						</div>
 						<div className="date__finish">
-							<span className="date__finish-description">По</span>
 							<InputCalendar
+								placeholder="По"
 								className="date__calendar" 
 								date={this.props.finishDateTime} 
 								onSave={this.handleChangeFinishDateTime} 
