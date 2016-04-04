@@ -13,7 +13,7 @@
 			position: relative;
 			margin-bottom: 20px;
 			padding: 5px;
-			width: 70%;
+			width: 50%;
 			margin-left: 50px;
 
 			.date__overflow {
@@ -24,6 +24,7 @@
 			    height: 100%;
 			    background-color: rgba(91, 91, 91, 0.26);
 			    display: none;
+			    z-index: 1;
 
 			    &.date__overflow--display {
 			    	display: block;
@@ -40,7 +41,6 @@
 				}
 				.date__calendar{
 					display: inline-block;
-					width: 80%;
 				}
 			}
 
@@ -54,7 +54,6 @@
 
 				.date__calendar {
 					display: inline-block;
-					width: 80%;
 				}
 			}
 		}

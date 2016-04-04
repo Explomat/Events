@@ -12,14 +12,14 @@
     }
 
 	.event-edit-base__date-time {
-		margin-top: 20px;
-		margin-bottom: 40px;
+		margin-bottom: 20px;
+		
 		.icon-clock {
 			color: #727272;
 			padding: 5px;
 		}
 		.date {
-			width: 70%;
+			width: 50%;
 			margin-left: 50px;
 			.date__start {
 				margin-bottom: 10px;
@@ -31,7 +31,6 @@
 				}
 				.date__calendar{
 					display: inline-block;
-					width: 80%;
 				}
 			}
 
@@ -45,7 +44,6 @@
 
 				.date__calendar {
 					display: inline-block;
-					width: 80%;
 				}
 			}
 		}
