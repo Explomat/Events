@@ -1,5 +1,6 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEditConstants = require('../constants/EventEditConstants');
+var EventEditAPI = require('../api/EventEditAPI');
 
 var EventEditActions = {
 	
@@ -148,10 +149,25 @@ var EventEditActions = {
 				actionType: EventEditConstants.EVENTEDIT_COLLABORATORS_REMOVE_ITEMS
 			});
 		},
-		notificateItems(){
-			/*AppDispatcher.handleAction({
-				actionType: EventEditConstants.EVENTEDIT_COLLABORATORS_NOTIFICATE_ITEMS,
-			});*/
+		notificateItems(items, subject, body){
+			EventEditAPI.notificateItems(items, subject, body).then(function(data){
+				let message = data === '' ? 'Сообщение успешно отправлено.' : 'Произошла ошибка при отправке, проверьте подключение к сети.'
+				let infoStatus = data === '' ? 'done' : 'error';
+				AppDispatcher.handleAction({
+					actionType: EventEditConstants.EVENTEDIT_COLLABORATORS_CHANGE_INFO_MESSAGE,
+					infoMesage: message,
+					infoStatus: infoStatus
+				});
+			}, function(/*err*/){
+
+			})
+			
+		},
+		changeInfoMessage(message){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_COLLABORATORS_CHANGE_INFO_MESSAGE,
+				infoMesage: message
+			});
 		},
 		updateItems(items){
 			AppDispatcher.handleAction({

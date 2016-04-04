@@ -11,5 +11,14 @@ module.exports = {
 				return value === 'true' ? true : value === 'false' ? false : value;
 			});
 		});
+	},
+
+	notificateItems: function(items, subject, body){
+		var ids = items.map(function(item){
+			return item.id;
+		});
+		return Ajax.sendRequest(Config.url.createPath({action_name: 'createNotification'}), JSON.stringify({ids: ids, subject: subject, body: body}), false, true, null, 'POST').then(function(data){
+			return data;
+		});
 	}
 }

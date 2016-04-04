@@ -6,7 +6,4 @@ module.exports = function(args){
 	this.subdivision = args.subdivision || '';
 	this.position = args.position || '';
 	this.status = args.status || '';
-
-	//state fields
-	this.checked = false;
 }

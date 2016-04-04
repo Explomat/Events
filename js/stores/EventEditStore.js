@@ -137,6 +137,10 @@ const collaborators = {
 			}
 		});
 		console.log(_eventEdit.collaborators.collaborators);
+	},
+	changeInfoMessage(message, status){
+		_eventEdit.collaborators.infoMessage = message;
+		_eventEdit.collaborators.infoStatus = status;
 	}
 }
 
@@ -263,8 +267,8 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			collaborators.removeItems();
 			isEmit = true;
 			break;
-		case EventEditConstants.EVENTEDIT_COLLABORATORS_NOTIFICATE_ITEMS:
-			collaborators.toggleChecked(action.id, action.checked);
+		case EventEditConstants.EVENTEDIT_COLLABORATORS_CHANGE_INFO_MESSAGE:
+			collaborators.changeInfoMessage(action.infoMesage, action.infoStatus);
 			isEmit = true;
 			break;
 		case EventEditConstants.EVENTEDIT_COLLABORATORS_UPDATE_ITEMS:

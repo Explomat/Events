@@ -53,6 +53,10 @@
 				    cursor: pointer;
 					position: relative;
 
+					&.collaborator-list__header-cell--hide{
+						display: none;
+					}
+
 					&.collaborator-list__header-cell--w1{
 						width: 1%;
 						text-align: center;

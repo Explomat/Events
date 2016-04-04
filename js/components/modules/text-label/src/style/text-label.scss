@@ -18,6 +18,9 @@ $fontSizeXs: 12px;
         position: absolute;
         width: 98%;
         min-height: 30px;
+        top: 0;
+        font-size: 1rem;
+        font-family: sans-serif;
     }
 
     .textarea-box__input {
@@ -40,7 +43,8 @@ $fontSizeXs: 12px;
         box-sizing: content-box;
         transition: all .3s;
         color: $primaryTextColor;
-        font-size: inherit;
+        font-size: 1rem;
+        font-family: sans-serif;
 
         &:focus {
             border-color: $darkPrimaryColor;
@@ -81,7 +85,8 @@ $fontSizeXs: 12px;
     height: 35px;
     width: 100%;
     color: $primaryTextColor;
-    font-size: inherit;
+    font-size: 1rem;
+    font-family: sans-serif;
     text-overflow: ellipsis;
     overflow: hidden;
     padding-right: 25px;

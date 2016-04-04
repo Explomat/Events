@@ -19,7 +19,8 @@ var servers = [
 		actions: [
 			'getEventEditData',
 			'getCollaborators',
-			'getEducationMethod'
+			'getEducationMethod',
+			'createNotification'
 		]
 	}
 ]

@@ -6,7 +6,7 @@
 
     .message__modal-box {
         @include modal-box__dialog;
-        width: 600px;
+        width: 750px;
 
         .message__content {
             @include modal-box__content;
@@ -17,6 +17,76 @@
                 @include modal-box__body;
                 height: 400px;
                 overflow: auto;
+
+                .message__text-wrapper {
+                    width: 55%;
+                    float: left;
+
+                    .message__subject{
+                        margin-bottom: 12px;
+                    }
+                }
+                .message__items{
+                    width: 40%;
+                    float: right;
+                    height: 100%;
+                    border: 1px solid #ccc;
+
+                    .message__items-selected, .message__items-not-selected{
+                        height: 50%;
+                        padding: 8px;
+                        overflow-y: auto;
+                        overflow-x: hidden;
+                        width: 100%;
+
+                        .selected-item {
+                            padding: 4px 0;
+                            width: 100%;
+                            text-overflow: ellipsis;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            cursor: pointer;
+
+                            &:hover {
+                                background-color: #f2f2f2;
+                            }
+                            
+                            .selected-item__button{
+                                font-size: 10px;
+                            }
+
+                            .selected-item__fullname{
+                                margin-left: 8px
+                            }
+                        }
+
+                        .not-selected-item {
+                            padding: 4px 0;
+                            width: 100%;
+                            text-overflow: ellipsis;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            cursor: pointer;
+
+                            &:hover {
+                                background-color: #f2f2f2;
+                            }
+
+                            .not-selected-item__button{
+                                font-size: 10px;
+                            }
+                            
+                            .not-selected-item__fullname{
+                                margin-left: 8px
+                            }
+                        }
+                    }
+                    .message__d{
+                        color: #646464;
+                        margin-bottom: 8px;
+                        display: inline-block;
+                    }
+                }
             }
             .message__footer{
                 @include modal-box__footer;

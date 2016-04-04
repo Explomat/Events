@@ -1,7 +1,8 @@
 import React from 'react';
 import CheckBox from 'components/modules/checkbox';
 import SelectItems from 'components/modules/select-items';
-import Message from 'components/modules/Message';
+import Message from 'components/modules/message';
+import Info from 'components/modules/Info';
 import EventEditActions from 'actions/EventEditActions';
 import {some, filter} from 'lodash';
 import cx from 'classnames';
@@ -14,12 +15,12 @@ class Buttons extends React.Component {
 		let removeClasses = cx({
 			'event-btn': true,
 			'buttons__remove': true,
-			'buttons__remove--display': this.props.isSomeChecked
+			'buttons__remove--display': this.props.isDisplay
 		});
 		let notificateClasses = cx({
 			'event-btn': true,
 			'buttons__notificate': true,
-			'buttons__notificate--display': this.props.isSomeChecked
+			'buttons__notificate--display': this.props.isDisplay
 		});
 		return (
 			<div className="buttons">
@@ -69,6 +70,7 @@ class Collaborators extends React.Component {
 		this.handleUpdateItems = this.handleUpdateItems.bind(this);
 		this.handleCloseModal = this.handleCloseModal.bind(this);
 		this.handleCloseNotificateModal = this.handleCloseNotificateModal.bind(this);
+		this.handleNotificateItems = this.handleNotificateItems.bind(this);
 	}
 
 	state = {
@@ -96,10 +98,16 @@ class Collaborators extends React.Component {
 	}
 
 	_prepareNotificateForModal(collaborators){
-		let _preparedCollaborators = this._prepareCollaboratorsForModal(collaborators);
-		return filter(_preparedCollaborators, (col) => {
-			return col.data.checked;
+		let selectedItems = filter(collaborators, (col) => {
+			return col.checked;
 		});
+		let notSelectedItems = filter(collaborators, (col) => {
+			return !col.checked;
+		});
+		return {
+			selectedItems: selectedItems,
+			notSelectedItems: notSelectedItems
+		}
 	}
 
 	_getCollaboratorsModal(){
@@ -111,16 +119,6 @@ class Collaborators extends React.Component {
 				query={config.url.createPath({action_name: 'getCollaborators'})}
 				onClose={this.handleCloseModal} 
 				onSave={this.handleUpdateItems}/> : null;
-	}
-
-	_getNotificateModal(){
-		let selectedItems = this._prepareNotificateForModal(this.props.collaborators);
-		return this.state.isShowNotificateModal ? 
-			<Message
-				title="Выберите, кому отправить уведомление"
-				selectedItems={selectedItems}
-				onClose={this.handleCloseNotificateModal} 
-				onSave={this.handleNotificateItems}/> : null;
 	}
 
 	handleSort(e){
@@ -140,8 +138,9 @@ class Collaborators extends React.Component {
 		EventEditActions.collaborators.removeItems();
 	}
 
-	handleNotificateItems(){
-		//EventEditActions.collaborators.notificateItems();
+	handleNotificateItems(items, subject, body){
+		EventEditActions.collaborators.notificateItems(items, subject, body);
+		this.setState({isShowNotificateModal: false});
 	}
 
 	handleOpenNotificateModal(){
@@ -165,14 +164,26 @@ class Collaborators extends React.Component {
 		EventEditActions.collaborators.updateItems(items);
 	}
 
+	handleRemoveInfoMessage(){
+		EventEditActions.collaborators.changeInfoMessage('');
+	}
+
 	render(){
+		let items = this._prepareNotificateForModal(this.props.collaborators);
+		let isShowInfoModal = this.props.infoMessage !== '';
+		let  checkBoxContainerClasses = cx({
+			'collaborator-list__header-cell': true,
+			'collaborator-list__header-cell--w1': true,
+			'collaborator-list__header-cell--hide': this.props.collaborators.length === 0
+		});
+		let isDisplayButtons = this._isSomeChecked() && this.props.collaborators.length > 0;
 		return (
 			<div className="event-edit-collaborators">
-				<Buttons onRemove={this.handleRemoveItems} onNotificate={::this.handleOpenNotificateModal} onAdd={::this.handleOpenModal} isSomeChecked={this._isSomeChecked()}/>
+				<Buttons onRemove={this.handleRemoveItems} onNotificate={::this.handleOpenNotificateModal} onAdd={::this.handleOpenModal} isDisplay={isDisplayButtons}/>
 				<div className="collaborator-list">
 					<div className="collaborator-list__header collaborator-list__header--header">
 						<div className="collaborator-list__header-row">
-							<div className="collaborator-list__header-cell collaborator-list__header-cell--w1">
+							<div className={checkBoxContainerClasses}>
 								<CheckBox onChange={::this.handleToggleCheckedAll} checked={this.props.checkedAll}/>
 							</div>
 							<div onClick={this.handleSort} className="collaborator-list__header-cell collaborator-list__header-cell--w30" data-sort="fullname">
@@ -207,8 +218,19 @@ class Collaborators extends React.Component {
 							})}
 						</div>
 					</div>
+					<Info
+						status={this.props.infoStatus}
+						message={this.props.infoMessage}
+						isShow={isShowInfoModal}
+						onClose={this.handleRemoveInfoMessage}/>
+					<Message
+						title="Новое уведомление"
+						selectedItems={items.selectedItems}
+						notSelectedItems={items.notSelectedItems}
+						onClose={this.handleCloseNotificateModal} 
+						onSend={this.handleNotificateItems}
+						isShow={this.state.isShowNotificateModal}/>
 					{this._getCollaboratorsModal()}
-					{this._getNotificateModal()}
 				</div>
 			</div>
 		);
