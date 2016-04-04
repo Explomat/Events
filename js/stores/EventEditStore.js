@@ -125,6 +125,9 @@ const collaborators = {
 			return !col.checked;
 		});
 		_eventEdit.collaborators.collaborators = _collaborators;
+		if (_eventEdit.collaborators.collaborators.length === 0){
+			_eventEdit.collaborators.checkedAll = false;
+		}
 	},
 	updateItems(items){
 		_eventEdit.collaborators.collaborators = items.map((item) => {
