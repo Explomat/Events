@@ -1,0 +1,27 @@
+.event-edit-collaborators {
+	margin-top: 20px;
+	height: calc(100% - 40px);
+
+	.buttons {
+		.buttons__add{
+			margin-right: 10px;
+		}
+		.buttons__remove{
+			margin-right: 10px;
+			display: none;
+
+			&.buttons__remove--display{
+				display: inline-block;
+			}
+		}
+		.buttons__notificate{
+			display: none;
+			&.buttons__notificate--display{
+				display: inline-block;
+			}
+		}
+	}
+	.collaborators-list{
+		height: calc(100% - 40px);
+	}
+}

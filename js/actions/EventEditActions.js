@@ -225,7 +225,6 @@ var EventEditActions = {
 				checked: checked
 			});
 		},
-		
 		removeTutors(){
 			AppDispatcher.handleAction({
 				actionType: EventEditConstants.EVENTEDIT_TUTORS_REMOVE_TUTORS
