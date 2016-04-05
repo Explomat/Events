@@ -15,6 +15,7 @@ import EventEditStore from '../../../stores/EventEditStore';
 import {merge} from 'lodash';
 
 import './style/event-edit.scss';
+import './style/table-list.scss';
 
 function getEventEditState() {
 	return EventEditStore.getData();

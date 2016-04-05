@@ -73,26 +73,6 @@
 			    height: 32px;
 			    padding: 4px;
 			    vertical-align: middle;
-
-			    .table-list__statuses{
-			    	text-align: center;
-
-			    	.table-list__status-added {
-			    		color: green;
-			    		display: none;
-			    		&.table-list__status-added--display{
-			    			display: inline-block;
-			    		}
-			    	}
-
-			    	.table-list__status-removed{
-			    		color: #ff5252;
-			    		display: none;
-			    		&.table-list__status-removed--display{
-			    			display: inline-block;
-			    		}
-			    	}
-			    }
 			}
 		}
 	}

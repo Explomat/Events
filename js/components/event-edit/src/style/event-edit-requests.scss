@@ -61,120 +61,44 @@
 
 	.request-list {
 		height: 50%;
-		overflow: hidden;
-		margin-top: 30px;
+		.request-list__statuses{
+	    	text-align: center;
 
-		.request-list__header {
-			display: table;
-		    width: 100%;
-		    border-collapse: collapse;
+	    	.request-list__status-added {
+	    		color: green;
+	    		display: none;
+	    		&.request-list__status-added--display{
+	    			display: inline-block;
+	    		}
+	    	}
 
-			&.request-list__header--header {
-				position: relative;
-			    z-index: 1;
-			    width: calc(100% - 17px);
-			    background: #fff;
-			}
-			.request-list__header-row {
-				text-align: center;
-			    display: table-row;
-				border-bottom: 1px solid #ddd;
+	    	.request-list__status-removed{
+	    		color: #ff5252;
+	    		display: none;
+	    		&.request-list__status-removed--display{
+	    			display: inline-block;
+	    		}
+	    	}
+	    }
 
-				.request-list__header-cell {
-					display: table-cell;
-				    box-sizing: border-box;
-				    height: 32px;
-				    padding: 4px;
-				    vertical-align: middle;
-				    cursor: pointer;
-					position: relative;
+	    .request-list__buttons {
+	    	display: none;
+	    	text-align: center;
 
-					&.request-list__header-cell--w20{
-						width: 20%;
-					}
-					&.request-list__header-cell--w25{
-						width: 25%;
-					}
-					&.request-list__header-cell--w30{
-						width: 30%;
-					}
+	    	&.request-list__buttons--display {
+	    		display: block;
+	    	}
 
-					&:hover {
-						background-color: #f2f2f2;
-					}
-					&:hover > .request-list__caret {
-						display: inline-block;
-					}
-					.request-list__caret {
-						display: none;
-						position: absolute;
-						top: calc(50% - 2px);
-					}
-					.request-list__header-cell-name{
-						font-weight: bold;
-					}
-				}
-			}
-		}
-
-		.request-list__table {
-			position: relative;
-		    overflow-y: scroll;
-		    width: 100%;
-		    height: 100%;
-		    margin-top: -35px;
-			
-			.request-list__body-row{
-				display: table-row;
-    			border-bottom: 1px solid #ddd;
-
-				.request-list__body-cell{
-					display: table-cell;
-				    box-sizing: border-box;
-				    height: 32px;
-				    padding: 4px;
-				    vertical-align: middle;
-
-				    .request-list__buttons {
-				    	display: none;
-				    	text-align: center;
-
-				    	&.request-list__buttons--display {
-				    		display: block;
-				    	}
-
-				    	.request-list__add-button {
-				    		margin-right: 8px;
-				    		font-size: 10px;
-				    		color: green;
-				    		border: 2px solid green;
-				    	}
-				    	.request-list__remove-button{
-				    		border: 2px solid #ff5252;
-					    	font-size: 10px;
-					    }
-				    }
-				    .request-list__statuses{
-				    	text-align: center;
-
-				    	.request-list__status-added {
-				    		color: green;
-				    		display: none;
-				    		&.request-list__status-added--display{
-				    			display: inline-block;
-				    		}
-				    	}
-
-				    	.request-list__status-removed{
-				    		color: #ff5252;
-				    		display: none;
-				    		&.request-list__status-removed--display{
-				    			display: inline-block;
-				    		}
-				    	}
-				    }
-				}
-			}
-		}
+	    	.request-list__add-button {
+	    		margin-right: 8px;
+	    		font-size: 10px;
+	    		color: green;
+	    		border: 2px solid green;
+	    	}
+	    	.request-list__remove-button{
+	    		border: 2px solid #ff5252;
+		    	font-size: 10px;
+		    }
+	    }
 	}
 }
