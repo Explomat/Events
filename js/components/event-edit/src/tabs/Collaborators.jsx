@@ -171,9 +171,10 @@ class Collaborators extends React.Component {
 	render(){
 		let items = this._prepareNotificateForModal(this.props.collaborators);
 		let isShowInfoModal = this.props.infoMessage !== '';
-		let  checkBoxContainerClasses = cx({
+		let checkBoxContainerClasses = cx({
 			'collaborator-list__header-cell': true,
 			'collaborator-list__header-cell--w1': true,
+			'collaborator-list__header-cell--no-hover': true,
 			'collaborator-list__header-cell--hide': this.props.collaborators.length === 0
 		});
 		let isDisplayButtons = this._isSomeChecked() && this.props.collaborators.length > 0;

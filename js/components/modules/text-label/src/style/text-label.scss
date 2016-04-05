@@ -19,7 +19,7 @@ $fontSizeXs: 12px;
         width: 98%;
         min-height: 30px;
         top: 0;
-        font-size: 1rem;
+        font-size: inherit;
         font-family: sans-serif;
     }
 
@@ -43,7 +43,7 @@ $fontSizeXs: 12px;
         box-sizing: content-box;
         transition: all .3s;
         color: $primaryTextColor;
-        font-size: 1rem;
+        font-size: inherit;
         font-family: sans-serif;
 
         &:focus {
@@ -85,7 +85,7 @@ $fontSizeXs: 12px;
     height: 35px;
     width: 100%;
     color: $primaryTextColor;
-    font-size: 1rem;
+    font-size: inherit;
     font-family: sans-serif;
     text-overflow: ellipsis;
     overflow: hidden;

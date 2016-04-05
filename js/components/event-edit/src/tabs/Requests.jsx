@@ -98,7 +98,7 @@ class Requests extends React.Component {
 				<div className="is-date-requests">
 					<CheckBox 
 						onChange={this.handleChangeIsDateRequestBeforeBegin} 
-						label={"Возможна подача заявок"} 
+						label="Возможна подача заявок"
 						checked={this.props.isDateRequestBeforeBegin}/>
 					<i className="fa fa-clock-o icon-clock"></i>
 					<div className="date">

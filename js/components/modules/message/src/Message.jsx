@@ -141,6 +141,14 @@ class Message extends React.Component {
             'event-btn--reverse': true,
             'event-btn event-btn--disabled': isButtonDisabled
         });
+        let selectedItemsClasses = cx({
+            'message__items-selected': true,
+            'message__items-selected--hide': this.state.selectedItems.length === 0
+        });
+        let notSelectedItemsClasses = cx({
+            'message__items-not-selected': true,
+            'message__items-not-selected--hide': this.state.notSelectedItems.length === 0
+        });
         return (
             <div className="message">
                 <div className="message__modal-box">
@@ -162,13 +170,13 @@ class Message extends React.Component {
                                     placeholder="Сообщение"/>
                             </div>
                             <div className="message__items">
-                                <div className="message__items-selected">
+                                <div className={selectedItemsClasses}>
                                     <span className="message__d">Кому:</span>
                                     {this.state.selectedItems.map((item, index) => {
                                         return <SelectedItem key={index} {...item} onRemoveSelected={::this.handleRemoveFromSelected}/>
                                     })}
                                 </div>
-                                <div className="message__items-not-selected">
+                                <div className={notSelectedItemsClasses}>
                                     <span className="message__d">Выбрать:</span>
                                     {this.state.notSelectedItems.map((item, index) => {
                                         return <NotSelectedItem key={index} {...item} onRemoveNotSelected={::this.handleRemoveFromNotSelected}/>

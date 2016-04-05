@@ -1,9 +1,6 @@
 .checkbox-box {
     padding: 5px;
-
-    &:hover {
-        background-color: #F2EDF1;
-    }
+    
     &.--test {
         top: 10px;
     }
@@ -14,13 +11,13 @@
         width: 100%;
         font-weight: 400;
         color: #212121;
-        font-size: 16px;
+        font-size: inherit;
         margin-bottom: 0;
         -moz-user-select: none;
         -webkit-user-select: none;
         -ms-user-select: none;
         display: inline-block;
-        padding-left: 48px;
+        padding-left: 32px;
 
         &:empty {
             top: -16px;
@@ -31,8 +28,8 @@
             position: absolute;
             top: 0;
             left: 0px;
-            width: 16px;
-            height: 16px;
+            width: 14px;
+            height: 14px;
             z-index: 0;
             border: 2px solid #5a5a5a;
             border-radius: 1px;
@@ -51,10 +48,10 @@
 
 
 .checkbox-box__input:checked ~ .checkbox-box__label:before {
-    top: -4px;
+    top: -6px;
     right: 10px;
-    width: 12px;
-    height: 22px;
+    width: 10px;
+    height: 16px;
     border-top: 2px solid transparent;
     border-left: 2px solid transparent;
     border-right: 2px solid #26a69a;
@@ -65,9 +62,9 @@
     -o-transform: rotate(40deg);
     transform: rotate(40deg);
     -webkit-backface-visibility: hidden;
-    -webkit-transform-origin: 100% 100%;
+    /* -webkit-transform-origin: 100% 100%;
     -moz-transform-origin: 100% 100%;
     -ms-transform-origin: 100% 100%;
     -o-transform-origin: 100% 100%;
-    transform-origin: 100% 100%;
+    transform-origin: 100% 100%; */
 }

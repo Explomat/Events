@@ -60,7 +60,7 @@
 	}
 
 	.request-list {
-		height: 55%;
+		height: 48%;
 		overflow: hidden;
 		margin-top: 30px;
 
@@ -84,7 +84,7 @@
 					display: table-cell;
 				    box-sizing: border-box;
 				    height: 32px;
-				    padding: 8px 5px;
+				    padding: 4px;
 				    vertical-align: middle;
 				    cursor: pointer;
 					position: relative;
@@ -121,7 +121,7 @@
 			position: relative;
 		    overflow-y: scroll;
 		    width: 100%;
-		    height: 85%;
+		    height: 100%;
 		    margin-top: -35px;
 
 			&.request-list__table--requests {
@@ -136,7 +136,7 @@
 					display: table-cell;
 				    box-sizing: border-box;
 				    height: 32px;
-				    padding: 8px;
+				    padding: 4px;
 				    vertical-align: middle;
 
 				    .request-list__buttons {

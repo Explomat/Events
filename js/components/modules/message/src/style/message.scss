@@ -39,6 +39,10 @@
                         overflow-x: hidden;
                         width: 100%;
 
+                        &.message__items-selected--hide, &.message__items-not-selected--hide {
+                            display: none;
+                        }
+
                         .selected-item {
                             padding: 4px 0;
                             width: 100%;

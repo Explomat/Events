@@ -24,9 +24,9 @@
 	}
 
 	.collaborator-list {
-		height: 70%;
+		height: calc(100% - 40px);
 		overflow: hidden;
-		margin-top: 50px;
+		margin-top: 20px;
 
 		.collaborator-list__header {
 			display: table;
@@ -48,7 +48,7 @@
 					display: table-cell;
 				    box-sizing: border-box;
 				    height: 32px;
-				    padding: 8px 5px;
+				    padding: 4px;
 				    vertical-align: middle;
 				    cursor: pointer;
 					position: relative;
@@ -69,6 +69,12 @@
 					}
 					&.collaborator-list__header-cell--w30{
 						width: 30%;
+					}
+
+					&.collaborator-list__header-cell--no-hover {
+						&:hover {
+							background-color: transparent;
+						}
 					}
 
 					&:hover {
@@ -93,11 +99,11 @@
 			position: relative;
 		    overflow-y: scroll;
 		    width: 100%;
-		    height: 85%;
+		    height: 100%;
 		    margin-top: -35px;
 
 			&.collaborator-list__table--collaborators {
-				height: 69%;
+				/* height: 69%; */
 			}
 			
 			.collaborator-list__body-row{
@@ -108,7 +114,7 @@
 					display: table-cell;
 				    box-sizing: border-box;
 				    height: 32px;
-				    padding: 8px;
+				    padding: 4px;
 				    vertical-align: middle;
 
 				    .collaborator-list__buttons {
