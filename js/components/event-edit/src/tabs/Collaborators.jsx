@@ -79,7 +79,7 @@ class Collaborators extends React.Component {
 	}
 
 	_isSomeChecked(){
-		return some(this.props.collaborators, {checked: true}) || this.props.checkedAll;
+		return some(this.props.collaborators, {checked: true});
 	}
 
 	_prepareCollaboratorsForModal(collaborators){
@@ -205,7 +205,7 @@ class Collaborators extends React.Component {
 							</div>
 						</div>
 					</div>
-					<div className="table-list__table table-list__table--collaborators">
+					<div className="table-list__table">
 						<div className="table-list__header">
 							<div className="table-list__header-row">
 								<div className="table-list__header-cell table-list__header-cell--w1"></div>

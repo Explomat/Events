@@ -175,6 +175,79 @@ var EventEditActions = {
 				items: items
 			});
 		}
+	},
+
+	tutors: {
+		toggleTutorIsMain(id, main){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_TUTORS_TOGGLE_TUTOR_IS_MAIN,
+				id: id,
+				main: main
+			});
+		},
+		toggleTutorChecked(id, checked) {
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_TUTORS_TOGGLE_TUTOR_CHECKED,
+				id: id,
+				checked: checked
+			});
+		},
+		toggleLectorChecked(id, checked) {
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_TUTORS_TOGGLE_LECTOR_CHECKED,
+				id: id,
+				checked: checked
+			});
+		},
+		sortTutorsTable(key, isAsc){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_TUTORS_SORT_TUTORS_TABLE,
+				key: key,
+				isAsc: isAsc
+			});
+		},
+		sortLectorsTable(key, isAsc){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_TUTORS_SORT_LECTORS_TABLE,
+				key: key,
+				isAsc: isAsc
+			});
+		},
+		toggleCheckedAllTutors(checked){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_TUTORS_TOGGLE_CHECKED_ALL_TUTORS,
+				checked: checked
+			});
+		},
+		toggleCheckedAllLectors(checked){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_TUTORS_TOGGLE_CHECKED_ALL_LECTORS,
+				checked: checked
+			});
+		},
+		
+		removeTutors(){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_TUTORS_REMOVE_TUTORS
+			});
+		},
+		removeLectors(){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_TUTORS_REMOVE_LECTORS
+			});
+		},
+		updateTutors(tutors){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_TUTORS_UPDATE_TUTORS,
+				tutors: tutors
+			});
+		},
+		updateLectors(lectors){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_TUTORS_UPDATE_LECTORS,
+				lectors: lectors
+			});
+		}
 	}
 }
 

@@ -125,9 +125,7 @@ const collaborators = {
 			return !col.checked;
 		});
 		_eventEdit.collaborators.collaborators = _collaborators;
-		if (_eventEdit.collaborators.collaborators.length === 0){
-			_eventEdit.collaborators.checkedAll = false;
-		}
+		_eventEdit.collaborators.checkedAll = false;
 	},
 	updateItems(items){
 		_eventEdit.collaborators.collaborators = items.map((item) => {
@@ -139,11 +137,127 @@ const collaborators = {
 				isAssist: item.data.isAssist
 			}
 		});
-		console.log(_eventEdit.collaborators.collaborators);
 	},
 	changeInfoMessage(message, status){
 		_eventEdit.collaborators.infoMessage = message;
 		_eventEdit.collaborators.infoStatus = status;
+	}
+}
+
+const tutors = {
+
+	toggleTutorIsMain(id, main){
+		let _tutors = _eventEdit.tutors.tutors;
+		let item = find(_tutors, (item) => {
+			return item.id === id;
+		});
+		if (item){
+			item.main = main;
+		}
+	},
+	toggleTutorChecked(id, checked){
+		let _tutors = _eventEdit.tutors.tutors;
+		let item = find(_tutors, (item) => {
+			return item.id === id;
+		});
+		if (item){
+			item.checked = checked;
+		}
+		if (checked){
+			_eventEdit.tutors.checkedAllTutors = checked;
+		}
+		else {
+			let isEveryCheked = every(_tutors, (t) => {
+				return t.checked === false;
+			});
+			if (isEveryCheked){
+				_eventEdit.tutors.checkedAllTutors = false;
+			}
+		}
+	},
+	toggleLectorChecked(id, checked) {
+		let _lectors = _eventEdit.tutors.lectors;
+		let item = find(_lectors, (item) => {
+			return item.id === id;
+		});
+		if (item){
+			item.checked = checked;
+		}
+		if (checked){
+			_eventEdit.tutors.checkedAllLectors = checked;
+		}
+		else {
+			let isEveryCheked = every(_lectors, (l) => {
+				return l.checked === false;
+			});
+			if (isEveryCheked){
+				_eventEdit.tutors.checkedAllLectors = false;
+			}
+		}
+	},
+	sortTutorsTable(key, isAsc){
+		let _tutors = _eventEdit.tutors.tutors;
+		let isAscending = isAsc ? 1 : -1;
+		_tutors.sort((first, second) => {
+			return first[key] > second[key] ? isAscending : first[key] === second[key] ? 0 : -(isAscending);
+		});
+	},
+	sortLectorsTable(key, isAsc){
+		let _lectors = _eventEdit.tutors.lectors;
+		let isAscending = isAsc ? 1 : -1;
+		_lectors.sort((first, second) => {
+			return first[key] > second[key] ? isAscending : first[key] === second[key] ? 0 : -(isAscending);
+		});
+	},
+	toggleCheckedAllTutors(checked){
+		let _tutors = _eventEdit.tutors.tutors;
+		_tutors.forEach(t => {
+			t.checked = checked;
+		});
+		_eventEdit.tutors.checkedAllTutors = checked;
+	},
+	toggleCheckedAllLectors(checked){
+		let _lectors = _eventEdit.tutors.lectors;
+		_lectors.forEach(l => {
+			l.checked = checked;
+		});
+		_eventEdit.tutors.checkedAllLectors = checked;
+	},
+	removeTutors(){
+		let _tutors = _eventEdit.tutors.tutors;
+		_tutors = filter(_tutors, (t) => {
+			return !t.checked;
+		});
+		_eventEdit.tutors.tutors = _tutors;
+		_eventEdit.tutors.checkedAllTutors = false;
+	},
+	removeLectors(){
+		let _lectors = _eventEdit.tutors.lectors;
+		_lectors = filter(_lectors, (l) => {
+			return !l.checked;
+		});
+		_eventEdit.tutors.lectors = _lectors;
+		_eventEdit.tutors.checkedAllLectors = false;
+	},
+	updateTutors(tutors){
+		_eventEdit.tutors.tutors = tutors.map((item) => {
+			return {
+				id: item.id,
+				fullname: item.data.fullname,
+				subdivision: item.data.subdivision,
+				position: item.data.position,
+				main: item.data.main
+			}
+		});
+	},
+	updateLectors(lectors){
+		_eventEdit.tutors.lectors = lectors.map((item) => {
+			return {
+				id: item.id,
+				fullname: item.data.fullname,
+				type: item.data.type
+			}
+		});
 	}
 }
 
@@ -276,6 +390,52 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			break;
 		case EventEditConstants.EVENTEDIT_COLLABORATORS_UPDATE_ITEMS:
 			collaborators.updateItems(action.items);
+			isEmit = true;
+			break;
+
+		//TUTORS
+		case EventEditConstants.EVENTEDIT_TUTORS_TOGGLE_TUTOR_IS_MAIN:
+			tutors.toggleTutorIsMain(action.id, action.main);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_TUTORS_TOGGLE_TUTOR_CHECKED:
+			tutors.toggleTutorChecked(action.id, action.checked);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_TUTORS_TOGGLE_LECTOR_CHECKED:
+			tutors.toggleLectorChecked(action.id, action.checked);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_TUTORS_SORT_TUTORS_TABLE:
+			tutors.sortTutorsTable(action.key, action.isAsc);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_TUTORS_SORT_LECTORS_TABLE:
+			tutors.sortLectorsTable(action.key, action.isAsc);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_TUTORS_TOGGLE_CHECKED_ALL_TUTORS:
+			tutors.toggleCheckedAllTutors(action.checked);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_TUTORS_TOGGLE_CHECKED_ALL_LECTORS:
+			tutors.toggleCheckedAllLectors(action.checked);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_TUTORS_REMOVE_TUTORS:
+			tutors.removeTutors();
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_TUTORS_REMOVE_LECTORS:
+			tutors.removeLectors();
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_TUTORS_UPDATE_TUTORS:
+			tutors.updateTutors(action.tutors);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_TUTORS_UPDATE_LECTORS:
+			tutors.updateLectors(action.lectors);
 			isEmit = true;
 			break;
 		default:

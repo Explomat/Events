@@ -15,7 +15,7 @@
 		    background: #fff;
 		}
 		.table-list__header-row {
-			text-align: center;
+			text-align: left;
 		    display: table-row;
 			border-bottom: 1px solid #ddd;
 
@@ -28,6 +28,14 @@
 			    cursor: pointer;
 				position: relative;
 
+				&.table-list__header-cell--hide {
+					opacity: 0;
+				}
+
+				&.table-list__header-cell--w1{
+					width: 1%;
+				}
+
 				&.table-list__header-cell--w20{
 					width: 20%;
 				}
@@ -36,6 +44,12 @@
 				}
 				&.table-list__header-cell--w30{
 					width: 30%;
+				}
+
+				&.table-list__header-cell--no-hover {
+					&:hover {
+						background-color: transparent;
+					}
 				}
 
 				&:hover {

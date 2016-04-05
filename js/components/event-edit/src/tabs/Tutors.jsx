@@ -24,32 +24,52 @@ class Buttons extends React.Component {
 	}
 }
 
-class CollaboratorItem extends React.Component {
+class TutorItem extends React.Component {
 
-	handleToggleIsAssist(){
-		EventEditActions.collaborators.toggleIsAssist(this.props.id, !this.props.isAssist);
+	handleToggleIsMain(){
+		EventEditActions.tutors.toggleTutorIsMain(this.props.id, !this.props.main);
 	}
 
 	handleToggleChecked(){
-		EventEditActions.collaborators.toggleChecked(this.props.id, !this.props.checked);
+		EventEditActions.tutors.toggleTutorChecked(this.props.id, !this.props.checked);
 	}
 
 	render(){
-		let {fullname, subdivision, position, isAssist, checked} = this.props;
+		let {fullname, subdivision, position, main, checked} = this.props;
 		return (
-			<div className="collaborator-list__body-row">
-				<div className="collaborator-list__body-cell">
+			<div className="table-list__body-row">
+				<div className="table-list__body-cell">
 					<CheckBox onChange={::this.handleToggleChecked} checked={checked}/>
 				</div>
-				<div className="collaborator-list__body-cell">{fullname}</div>
-				<div className="collaborator-list__body-cell">{position}</div>
-				<div className="collaborator-list__body-cell">{subdivision}</div>
-				<div className="collaborator-list__body-cell">
+				<div className="table-list__body-cell">{fullname}</div>
+				<div className="table-list__body-cell">{position}</div>
+				<div className="table-list__body-cell">{subdivision}</div>
+				<div className="table-list__body-cell">
 					<div className="toggle-btn">
-						<input onChange={::this.handleToggleIsAssist} type="checkbox" className="toggle__input"  id={this.props.id} checked={isAssist}/>
+						<input onChange={::this.handleToggleIsMain} type="checkbox" className="toggle__input" id={this.props.id} checked={main}/>
 						<label className="toggle__checkbox" htmlFor={this.props.id}></label>
 					</div>
 				</div>
+			</div>
+		);
+	}
+}
+
+class LectorItem extends React.Component {
+
+	handleToggleChecked(){
+		EventEditActions.tutors.toggleLectorChecked(this.props.id, !this.props.checked);
+	}
+
+	render(){
+		let {fullname, type, checked} = this.props;
+		return (
+			<div className="table-list__body-row">
+				<div className="table-list__body-cell">
+					<CheckBox onChange={::this.handleToggleChecked} checked={checked}/>
+				</div>
+				<div className="table-list__body-cell">{fullname}</div>
+				<div className="table-list__body-cell">{type}</div>
 			</div>
 		);
 	}
@@ -59,170 +79,226 @@ class Tutors extends React.Component {
 
 	constructor(props){
 		super(props);
-		this.handleUpdateItems = this.handleUpdateItems.bind(this);
-		this.handleCloseModal = this.handleCloseModal.bind(this);
-		this.handleCloseNotificateModal = this.handleCloseNotificateModal.bind(this);
-		this.handleNotificateItems = this.handleNotificateItems.bind(this);
+
+		this.handleUpdateTutors = this.handleUpdateTutors.bind(this);
+		this.handleUpdateLectors = this.handleUpdateLectors.bind(this);
+
+		this.handleCloseTutorsModal= this.handleCloseTutorsModal.bind(this);
+		this.handleCloseLectorsModal= this.handleCloseLectorsModal.bind(this);
 	}
 
 	state = {
-		isShowModal: false
+		isShowTutorsModal: false,
+		isShowLectorsModal: false
 	}
 
-	_isSomeChecked(){
-		return some(this.props.collaborators, {checked: true}) || this.props.checkedAll;
+	_isSomeChecked(items){
+		return some(items, {checked: true});
 	}
 
-	_prepareCollaboratorsForModal(collaborators){
-		return collaborators.map((col) => {
+	_prepareTutorsForModal(tutors){
+		return tutors.map((t) => {
 			return {
-				id: col.id,
+				id: t.id,
 				data: {
-					fullname: col.fullname,
-					subdivision: col.subdivision,
-					position: col.position,
-					isAssist: col.isAssist,
-					checked: col.checked
+					fullname: t.fullname,
+					subdivision: t.subdivision,
+					position: t.position,
+					main: t.main,
+					checked: t.checked
 				}	
 			}
 		})
 	}
 
-	_getCollaboratorsModal(){
-		let selectedItems = this._prepareCollaboratorsForModal(this.props.collaborators);
-		return this.state.isShowModal ? 
-			<SelectItems
-				title="Выберите участников"
-				selectedItems={selectedItems}
-				query={config.url.createPath({action_name: 'getTutors'})}
-				onClose={this.handleCloseModal} 
-				onSave={this.handleUpdateItems}/> : null;
+	_prepareLectorsForModal(lectors){
+		return lectors.map((l) => {
+			return {
+				id: l.id,
+				data: {
+					fullname: l.fullname,
+					type: l.type,
+					checked: l.checked
+				}	
+			}
+		})
 	}
 
-	handleSort(e){
+	_getTutorsModal(){
+		let selectedItems = this._prepareTutorsForModal(this.props.tutors);
+		return this.state.isShowTutorsModal ? 
+			<SelectItems
+				title="Выберите ответственных"
+				selectedItems={selectedItems}
+				query={config.url.createPath({action_name: 'getCollaborators'})}
+				onClose={this.handleCloseTutorsModal} 
+				onSave={this.handleUpdateTutors}/> : null;
+	}
+
+	_getLectorsModal(){
+		let selectedItems = this._prepareLectorsForModal(this.props.lectors);
+		return this.state.isShowLectorsModal ? 
+			<SelectItems
+				title="Выберите преподавателей"
+				selectedItems={selectedItems}
+				query={config.url.createPath({action_name: 'getLectors'})}
+				onClose={this.handleCloseLectorsModal} 
+				onSave={this.handleUpdateLectors}/> : null;
+	}
+
+	handleSortTutors(e){
 		let target = e.currentTarget;
 		let caret = target.querySelector('.caret');
 		let isAsc = caret.classList.contains('caret--rotate');
 		let targetData = target.getAttribute('data-sort');
-		EventEditActions.collaborators.sortCollaboratorsTable(targetData, isAsc);
+		EventEditActions.tutors.sortTutorsTable(targetData, isAsc);
 		caret.classList.toggle('caret--rotate');
 	}
 
-	handleToggleCheckedAll(){
-		EventEditActions.collaborators.toggleCheckedAll(!this.props.checkedAll);
+	handleSortLectors(e){
+		let target = e.currentTarget;
+		let caret = target.querySelector('.caret');
+		let isAsc = caret.classList.contains('caret--rotate');
+		let targetData = target.getAttribute('data-sort');
+		EventEditActions.tutors.sortLectorsTable(targetData, isAsc);
+		caret.classList.toggle('caret--rotate');
 	}
 
-	handleRemoveItems(){
-		EventEditActions.collaborators.removeItems();
+	handleToggleCheckedAllTutors(){
+		EventEditActions.tutors.toggleCheckedAllTutors(!this.props.checkedAllTutors);
 	}
 
-	handleOpenModal(){
-		this.setState({isShowModal: true});
+	handleToggleCheckedAllLectors(){
+		EventEditActions.tutors.toggleCheckedAllLectors(!this.props.checkedAllLectors);
 	}
 
-	handleCloseModal(){
-		this.setState({isShowModal: false});
+	handleRemoveTutors(){
+		EventEditActions.tutors.removeTutors();
 	}
 
-	handleUpdateItems(items){
-		this.setState({isShowModal: false});
-		EventEditActions.collaborators.updateItems(items);
+	handleRemoveLectors(){
+		EventEditActions.tutors.removeLectors();
+	}
+
+	handleOpenTutorsModal(){
+		this.setState({isShowTutorsModal: true});
+	}
+
+	handleOpenLectorsModal(){
+		this.setState({isShowLectorsModal: true});
+	}
+
+	handleCloseTutorsModal(){
+		this.setState({isShowTutorsModal: false});
+	}
+
+	handleCloseLectorsModal(){
+		this.setState({isShowLectorsModal: false});
+	}
+
+	handleUpdateTutors(tutors){
+		this.setState({isShowTutorsModal: false});
+		EventEditActions.tutors.updateTutors(tutors);
+	}
+
+	handleUpdateLectors(lectors){
+		this.setState({isShowLectorsModal: false});
+		EventEditActions.tutors.updateLectors(lectors);
 	}
 
 	render(){
-		let checkBoxContainerClasses = cx({
-			'tutors-list__header-cell': true,
-			'tutors-list__header-cell--w1': true,
-			'tutors-list__header-cell--no-hover': true,
-			'tutors-list__header-cell--hide': this.props.collaborators.length === 0
+		let checkBoxContainerTutorsClasses = cx({
+			'table-list__header-cell': true,
+			'table-list__header-cell--w1': true,
+			'table-list__header-cell--no-hover': true,
+			'table-list__header-cell--hide': this.props.tutors.length === 0
 		});
-		let isDisplayButtons = this._isSomeChecked() && this.props.collaborators.length > 0;
+		let checkBoxContainerLectorsClasses = cx({
+			'table-list__header-cell': true,
+			'table-list__header-cell--w1': true,
+			'table-list__header-cell--no-hover': true,
+			'table-list__header-cell--hide': this.props.lectors.length === 0
+		});
+		let isDisplayTutorsButtons = this._isSomeChecked(this.props.tutors) && this.props.tutors.length > 0;
+		let isDisplayLectorsButtons = this._isSomeChecked(this.props.lectors) && this.props.lectors.length > 0;
 		return (
 			<div className="event-edit-tutors">
 				<div className="tutors">
-					<Buttons onRemove={this.handleRemoveItems} onAdd={::this.handleOpenModal} isDisplay={isDisplayButtons}/>
-					<div className="tutors-list">
-						<div className="tutors-list__header tutors-list__header--header">
-							<div className="tutors-list__header-row">
-								<div className={checkBoxContainerClasses}>
-									<CheckBox onChange={::this.handleToggleCheckedAll} checked={this.props.checkedAll}/>
+					<Buttons onRemove={this.handleRemoveTutors} onAdd={::this.handleOpenTutorsModal} isDisplay={isDisplayTutorsButtons}/>
+					<strong className="tutors__description">Ответственные</strong>
+					<div className="table-list tutor-list">
+						<div className="table-list__header table-list__header--header">
+							<div className="table-list__header-row">
+								<div className={checkBoxContainerTutorsClasses}>
+									<CheckBox onChange={::this.handleToggleCheckedAllTutors} checked={this.props.checkedAllTutors}/>
 								</div>
-								<div onClick={this.handleSort} className="tutors-list__header-cell tutors-list__header-cell--w30" data-sort="fullname">
-									<span className="tutors-list__header-cell-name">ФИО</span>
-									<span className="caret tutors-list__caret"></span>
+								<div onClick={this.handleSortTutors} className="table-list__header-cell table-list__header-cell--w30" data-sort="fullname">
+									<span className="table-list__header-cell-name">ФИО</span>
+									<span className="caret table-list__caret"></span>
 								</div>
-								<div onClick={this.handleSort} className="tutors-list__header-cell tutors-list__header-cell--w25" data-sort="position">
-									<span className="tutors-list__header-cell-name">Должность</span>
-									<span className="caret tutors-list__caret"></span>
+								<div onClick={this.handleSortTutors} className="table-list__header-cell table-list__header-cell--w25" data-sort="position">
+									<span className="table-list__header-cell-name">Должность</span>
+									<span className="caret table-list__caret"></span>
 								</div>
-								<div onClick={this.handleSort} className="tutors-list__header-cell tutors-list__header-cell--w25" data-sort="subdivision">
-									<span className="tutors-list__header-cell-name">Подразделение</span>
-									<span className="caret tutors-list__caret"></span>
+								<div onClick={this.handleSortTutors} className="table-list__header-cell table-list__header-cell--w25" data-sort="subdivision">
+									<span className="table-list__header-cell-name">Подразделение</span>
+									<span className="caret table-list__caret"></span>
 								</div>
-								<div onClick={this.handleSort} className="tutors-list__header-cell tutors-list__header-cell--w1" data-sort="isAssist">
-									<span className="tutors-list__header-cell-name">Статус</span>
-									<span className="caret tutors-list__caret"></span>
+								<div onClick={this.handleSortTutors} className="table-list__header-cell table-list__header-cell--w1" data-sort="main">
+									<span className="table-list__header-cell-name">Статус</span>
+									<span className="caret table-list__caret"></span>
 								</div>
 							</div>
 						</div>
-						<div className="tutors-list__table tutors-list__table--collaborators">
-							<div className="tutors-list__header">
-								<div className="tutors-list__header-row">
-									<div className="tutors-list__header-cell tutors-list__header-cell--w1"></div>
-									<div className="tutors-list__header-cell tutors-list__header-cell--w30">ФИО</div>
-									<div className="tutors-list__header-cell tutors-list__header-cell--w25">Должность</div>
-									<div className="tutors-list__header-cell tutors-list__header-cell--w25">Подразделение</div>
-									<div className="tutors-list__header-cell tutors-list__header-cell--w1">Статус</div>
+						<div className="table-list__table">
+							<div className="table-list__header">
+								<div className="table-list__header-row">
+									<div className="table-list__header-cell table-list__header-cell--w1"></div>
+									<div className="table-list__header-cell table-list__header-cell--w30">ФИО</div>
+									<div className="table-list__header-cell table-list__header-cell--w25">Должность</div>
+									<div className="table-list__header-cell table-list__header-cell--w25">Подразделение</div>
+									<div className="table-list__header-cell table-list__header-cell--w1">Статус</div>
 								</div>
-								{this.props.collaborators.map((item, index) => {
-									return <CollaboratorItem key={index} {...item}/>
+								{this.props.tutors.map((item, index) => {
+									return <TutorItem key={index} {...item}/>
 								})}
 							</div>
 						</div>
-						{this._getCollaboratorsModal()}
+						{this._getTutorsModal()}
 					</div>
 				</div>
 				<div className="lectors">
-					<Buttons onRemove={this.handleRemoveItems} onAdd={::this.handleOpenModal} isDisplay={isDisplayButtons}/>
-					<div className="lectors-list">
-						<div className="lectors-list__header lectors-list__header--header">
-							<div className="lectors-list__header-row">
-								<div className={checkBoxContainerClasses}>
-									<CheckBox onChange={::this.handleToggleCheckedAll} checked={this.props.checkedAll}/>
+					<Buttons onRemove={this.handleRemoveLectors} onAdd={::this.handleOpenLectorsModal} isDisplay={isDisplayLectorsButtons}/>
+					<strong className="lectors__description">Преподаватели</strong>
+					<div className="table-list lector-list">
+						<div className="table-list__header table-list__header--header">
+							<div className="table-list__header-row">
+								<div className={checkBoxContainerLectorsClasses}>
+									<CheckBox onChange={::this.handleToggleCheckedAllLectors} checked={this.props.checkedAllLectors}/>
 								</div>
-								<div onClick={this.handleSort} className="lectors-list__header-cell lectors-list__header-cell--w30" data-sort="fullname">
-									<span className="lectors-list__header-cell-name">ФИО</span>
-									<span className="caret lectors-list__caret"></span>
+								<div onClick={this.handleSortLectors} className="table-list__header-cell table-list__header-cell--w30" data-sort="fullname">
+									<span className="table-list__header-cell-name">ФИО</span>
+									<span className="caret table-list__caret"></span>
 								</div>
-								<div onClick={this.handleSort} className="lectors-list__header-cell lectors-list__header-cell--w25" data-sort="position">
-									<span className="lectors-list__header-cell-name">Должность</span>
-									<span className="caret lectors-list__caret"></span>
-								</div>
-								<div onClick={this.handleSort} className="lectors-list__header-cell lectors-list__header-cell--w25" data-sort="subdivision">
-									<span className="lectors-list__header-cell-name">Подразделение</span>
-									<span className="caret lectors-list__caret"></span>
-								</div>
-								<div onClick={this.handleSort} className="lectors-list__header-cell lectors-list__header-cell--w1" data-sort="isAssist">
-									<span className="lectors-list__header-cell-name">Статус</span>
-									<span className="caret lectors-list__caret"></span>
+								<div onClick={this.handleSortLectors} className="table-list__header-cell table-list__header-cell--w25" data-sort="type">
+									<span className="table-list__header-cell-name">Тип</span>
+									<span className="caret table-list__caret"></span>
 								</div>
 							</div>
 						</div>
-						<div className="lectors-list__table lectors-list__table--collaborators">
-							<div className="lectors-list__header">
-								<div className="lectors-list__header-row">
-									<div className="lectors-list__header-cell lectors-list__header-cell--w1"></div>
-									<div className="lectors-list__header-cell lectors-list__header-cell--w30">ФИО</div>
-									<div className="lectors-list__header-cell lectors-list__header-cell--w25">Должность</div>
-									<div className="lectors-list__header-cell lectors-list__header-cell--w25">Подразделение</div>
-									<div className="lectors-list__header-cell lectors-list__header-cell--w1">Статус</div>
+						<div className="table-list__table">
+							<div className="table-list__header">
+								<div className="table-list__header-row">
+									<div className="table-list__header-cell table-list__header-cell--w1"></div>
+									<div className="table-list__header-cell table-list__header-cell--w30">ФИО</div>
+									<div className="table-list__header-cell table-list__header-cell--w25">Тип</div>
 								</div>
-								{this.props.collaborators.map((item, index) => {
-									return <CollaboratorItem key={index} {...item}/>
+								{this.props.lectors.map((item, index) => {
+									return <LectorItem key={index} {...item}/>
 								})}
 							</div>
 						</div>
-						{this._getCollaboratorsModal()}
+						{this._getLectorsModal()}
 					</div>
 				</div>
 			</div>

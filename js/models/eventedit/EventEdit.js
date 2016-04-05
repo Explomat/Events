@@ -79,7 +79,13 @@ export default function(args){
 	//tutors
 	this.tutors = {
 		tutors: [],
-		lectors: []
+		lectors: [],
+
+		//state fields
+		checkedAllTutors: false,
+		checkedAllLectors: false,
+		infoMessage: '',
+		infoStatus: ''
 	}
 	if (args.tutors) {
 		this.tutors.tutors = args.tutors.tutors.map(function(t){

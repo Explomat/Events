@@ -5,5 +5,8 @@ module.exports = function(args){
 	this.fullname = args.fullname || 'Нет имени';
 	this.subdivision = args.subdivision || '';
 	this.position = args.position || '';
-	this.isMain = args.isMain || false;
+	this.main = args.main || false;
+
+	//state fields
+	this.checked = false;
 }
