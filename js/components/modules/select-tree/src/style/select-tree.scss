@@ -23,10 +23,12 @@
             bottom: 10px;
         }
     }
+
+    .select-tree__input_not-empty + .select-tree__label {
+        color: $darkPrimaryColor;
+        font-size: $fontSizeXs;
+        font-weight: bold;
+        transform: translateY(-25px);
+    }
 }
 
-.select-tree__input_not-empty + .select-tree__label {
-    color: $darkPrimaryColor;
-    font-size: $fontSizeXs;
-    transform: translateY(-25px);
-}

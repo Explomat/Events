@@ -107,11 +107,15 @@ var EventEditActions = {
 				isAsc: isAsc
 			});
 		},
-		changeRequestStatus(id, status){
-			AppDispatcher.handleAction({
-				actionType: EventEditConstants.EVENTEDIT_REQUESTS_CHANGE_STATUS,
-				id: id,
-				status: status
+		changeRequestStatus(id, status, reason){
+			EventEditAPI.changeRequestStatus(id, status, reason).then(function(data){
+				if (data === '') {
+					AppDispatcher.handleAction({
+						actionType: EventEditConstants.EVENTEDIT_REQUESTS_CHANGE_STATUS,
+						id: id,
+						status: status
+					});
+				}
 			});
 		}
 	},

@@ -13,7 +13,7 @@ class Info extends React.Component {
     static propsTypes = {
         status: React.PropTypes.string,
         message: React.PropTypes.string,
-        isDisplay: React.PropTypes.bool,
+        isShow: React.PropTypes.bool,
         onClose: React.PropTypes.func
     }
 

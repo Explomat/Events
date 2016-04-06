@@ -1,0 +1,32 @@
+@import '../../../modules/modal/src/style/modal';
+
+.reject-reason-info {
+    @include modal-box;
+    display: block;
+
+    .reject-reason-info__modal-box {
+        @include modal-box__dialog;
+        max-width: 450px;
+
+        .reject-reason-info__content {
+            @include modal-box__content;
+            border-radius: 0px;
+            .reject-reason-info__header{
+                @include modal-box__header;
+            }
+            .reject-reason-info__body{
+                @include modal-box__body;
+                height: auto;
+                overflow: auto;
+
+                .reject-reason-info__button{
+                    margin-left: 31px;
+                    float: right;
+                }
+            }
+            .reject-reason-info__footer{
+                @include modal-box__footer;
+            }
+        }
+    }
+}

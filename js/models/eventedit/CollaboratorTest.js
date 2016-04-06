@@ -4,7 +4,10 @@ module.exports = function(args){
 
 	this.id = args.id || null;
 	this.fullname = args.fullname || 'Нет имени';
-	this.testType = args.testType || '';
+	this.type = args.type || '';
 	this.finishDate = new Date(args.finishDate);
 	this.result = args.result || '';
+
+	//state fields
+	this.checked = false;
 }

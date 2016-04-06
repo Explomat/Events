@@ -10,21 +10,14 @@ import '../style/event-edit-testing.scss';
 
 class Buttons extends React.Component {
 	render(){
-		let removeClasses = cx({
+		let addButtonClasses = cx({
 			'event-btn': true,
-			'buttons__remove': true,
-			'buttons__remove--display': this.props.isDisplay
-		});
-		let notificateClasses = cx({
-			'event-btn': true,
-			'buttons__notificate': true,
-			'buttons__notificate--display': this.props.isDisplay
+			'buttons__re-active': true,
+			'buttons__re-active--display': this.props.isDisplay
 		});
 		return (
 			<div className="buttons">
-				<button onClick={this.props.onAdd} className="event-btn buttons__add">Добавить</button>
-				<button onClick={this.props.onRemove} className={removeClasses}>Удалить</button>
-				<button onClick={this.props.onNotificate} className={notificateClasses}>Отправить уведомление</button>
+				<button onClick={this.props.onReActive} className={addButtonClasses}>Переназначить</button>
 			</div>
 		);
 	}
@@ -33,26 +26,27 @@ class Buttons extends React.Component {
 class TestingItem extends React.Component {
 
 	handleToggleIsAssist(){
-		EventEditActions.collaborators.toggleIsAssist(this.props.id, !this.props.isAssist);
+		EventEditActions.testing.toggleIsAssist(this.props.id, !this.props.isAssist);
 	}
 
 	handleToggleChecked(){
-		EventEditActions.collaborators.toggleChecked(this.props.id, !this.props.checked);
+		EventEditActions.testing.toggleChecked(this.props.id, !this.props.checked);
 	}
 
 	render(){
-		let {fullname, subdivision, position, isAssist, checked} = this.props;
+		let {fullname, type, finishDate, result, checked} = this.props;
 		return (
 			<div className="table-list__body-row">
 				<div className="table-list__body-cell">
 					<CheckBox onChange={::this.handleToggleChecked} checked={checked}/>
 				</div>
 				<div className="table-list__body-cell">{fullname}</div>
-				<div className="table-list__body-cell">{position}</div>
-				<div className="table-list__body-cell">{subdivision}</div>
+				<div className="table-list__body-cell">{type}</div>
+				<div className="table-list__body-cell">{finishDate}</div>
+				<div className="table-list__body-cell">{result}</div>
 				<div className="table-list__body-cell">
 					<div className="toggle-btn">
-						<input onChange={::this.handleToggleIsAssist} type="checkbox" className="toggle__input"  id={this.props.id} checked={isAssist}/>
+						<input onChange={::this.handleToggleIsAssist} type="checkbox" className="toggle__input"  id={this.props.id} checked={checked}/>
 						<label className="toggle__checkbox" htmlFor={this.props.id}></label>
 					</div>
 				</div>
@@ -76,31 +70,31 @@ class Testing extends React.Component {
 	}
 
 	_isSomeChecked(){
-		return some(this.props.collaborators, {checked: true});
+		return some(this.props.testingList, {checked: true});
 	}
 
-	_prepareCollaboratorsForModal(collaborators){
-		return collaborators.map((col) => {
+	_prepareTestingListForModal(testingList){
+		return testingList.map((tl) => {
 			return {
-				id: col.id,
+				id: tl.id,
 				data: {
-					fullname: col.fullname,
-					subdivision: col.subdivision,
-					position: col.position,
-					isAssist: col.isAssist,
-					checked: col.checked
+					fullname: tl.fullname,
+					type: tl.type,
+					finishDate: tl.finishDate,
+					result: tl.result,
+					checked: tl.checked
 				}	
 			}
 		})
 	}
 
-	_getCollaboratorsModal(){
-		let selectedItems = this._prepareCollaboratorsForModal(this.props.collaborators);
+	_getTestingListModal(){
+		let selectedItems = this._prepareTestingListForModal(this.props.testingList);
 		return this.state.isShowModal ? 
 			<SelectItems
 				title="Выберите участников"
 				selectedItems={selectedItems}
-				query={config.url.createPath({action_name: 'getCollaborators'})}
+				query={config.url.createPath({action_name: 'getTests'})}
 				onClose={this.handleCloseModal} 
 				onSave={this.handleUpdateItems}/> : null;
 	}
@@ -110,25 +104,16 @@ class Testing extends React.Component {
 		let caret = target.querySelector('.caret');
 		let isAsc = caret.classList.contains('caret--rotate');
 		let targetData = target.getAttribute('data-sort');
-		EventEditActions.collaborators.sortCollaboratorsTable(targetData, isAsc);
+		EventEditActions.testing.sortTestingTable(targetData, isAsc);
 		caret.classList.toggle('caret--rotate');
 	}
 
 	handleToggleCheckedAll(){
-		EventEditActions.collaborators.toggleCheckedAll(!this.props.checkedAll);
+		EventEditActions.testing.toggleCheckedAll(!this.props.checkedAll);
 	}
 
 	handleRemoveItems(){
-		EventEditActions.collaborators.removeItems();
-	}
-
-	handleNotificateItems(items, subject, body){
-		EventEditActions.collaborators.notificateItems(items, subject, body);
-		this.setState({isShowNotificateModal: false});
-	}
-
-	handleOpenNotificateModal(){
-		this.setState({isShowNotificateModal: true});
+		EventEditActions.testing.removeItems();
 	}
 
 	handleOpenModal(){
@@ -141,11 +126,11 @@ class Testing extends React.Component {
 
 	handleUpdateItems(items){
 		this.setState({isShowModal: false});
-		EventEditActions.collaborators.updateItems(items);
+		EventEditActions.testing.updateItems(items);
 	}
 
 	handleRemoveInfoMessage(){
-		EventEditActions.collaborators.changeInfoMessage('');
+		EventEditActions.testing.changeInfoMessage('');
 	}
 
 	render(){
@@ -165,20 +150,20 @@ class Testing extends React.Component {
 							<div className={checkBoxContainerClasses}>
 								<CheckBox onChange={::this.handleToggleCheckedAll} checked={this.props.checkedAll}/>
 							</div>
-							<div onClick={this.handleSort} className="table-list__header-cell table-list__header-cell--w30" data-sort="fullname">
-								<span className="table-list__header-cell-name">ФИО</span>
+							<div onClick={this.handleSort} className="table-list__header-cell table-list__header-cell--w40" data-sort="fullname">
+								<span className="table-list__header-cell-name">Название</span>
 								<span className="caret table-list__caret"></span>
 							</div>
-							<div onClick={this.handleSort} className="table-list__header-cell table-list__header-cell--w25" data-sort="position">
-								<span className="table-list__header-cell-name">Должность</span>
+							<div onClick={this.handleSort} className="table-list__header-cell table-list__header-cell--w20" data-sort="type">
+								<span className="table-list__header-cell-name">Тип</span>
 								<span className="caret table-list__caret"></span>
 							</div>
-							<div onClick={this.handleSort} className="table-list__header-cell table-list__header-cell--w25" data-sort="subdivision">
-								<span className="table-list__header-cell-name">Подразделение</span>
+							<div onClick={this.handleSort} className="table-list__header-cell table-list__header-cell--w20" data-sort="finishDate">
+								<span className="table-list__header-cell-name">Дата завершения</span>
 								<span className="caret table-list__caret"></span>
 							</div>
-							<div onClick={this.handleSort} className="table-list__header-cell table-list__header-cell--w1" data-sort="isAssist">
-								<span className="table-list__header-cell-name">Статус</span>
+							<div onClick={this.handleSort} className="table-list__header-cell table-list__header-cell--w10" data-sort="result">
+								<span className="table-list__header-cell-name">Результат теста (%)</span>
 								<span className="caret table-list__caret"></span>
 							</div>
 						</div>
@@ -187,10 +172,10 @@ class Testing extends React.Component {
 						<div className="table-list__header">
 							<div className="table-list__header-row">
 								<div className="table-list__header-cell table-list__header-cell--w1"></div>
-								<div className="table-list__header-cell table-list__header-cell--w30">ФИО</div>
-								<div className="table-list__header-cell table-list__header-cell--w25">Должность</div>
-								<div className="table-list__header-cell table-list__header-cell--w25">Подразделение</div>
-								<div className="table-list__header-cell table-list__header-cell--w1">Статус</div>
+								<div className="table-list__header-cell table-list__header-cell--w40"></div>
+								<div className="table-list__header-cell table-list__header-cell--w20"></div>
+								<div className="table-list__header-cell table-list__header-cell--w20"></div>
+								<div className="table-list__header-cell table-list__header-cell--w10"></div>
 							</div>
 							{this.props.collaborators.map((item, index) => {
 								return <TestingItem key={index} {...item}/>

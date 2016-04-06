@@ -3,16 +3,26 @@ import EventEditActions from 'actions/EventEditActions';
 import RequestStatuses from 'utils/eventedit/RequestStatuses';
 import CheckBox from 'components/modules/checkbox';
 import InputCalendar from 'components/modules/input-calendar';
+import RejectReasonInfo from '../RejectReasonInfo';
 import cx from 'classnames';
 
 import '../style/event-edit-requests.scss';
 
 class RequestItem extends React.Component {
 
-	handleChangeStatus(e){
-		let target = e.currentTarget;
-		let status = target.getAttribute('data-status');
-		EventEditActions.requests.changeRequestStatus(this.props.id, status);
+	handleCloseStatus(){
+		if (this.props.onCloseStatus){
+			this.props.onCloseStatus(this.props.id, RequestStatuses.keys.close);
+			//EventEditActions.requests.changeRequestStatus(this.props.id, RequestStatuses.keys.close);
+		}
+		
+	}
+
+	handleIgnoreStatus(){
+		if (this.props.onIgnoreStatus){
+			this.props.onIgnoreStatus(this.props.id, RequestStatuses.keys.ignore);
+			//EventEditActions.requests.changeRequestStatus(this.props.id, RequestStatuses.keys.ignore);
+		}
 	}
 
 	render(){
@@ -36,16 +46,16 @@ class RequestItem extends React.Component {
 				<div className="table-list__body-cell">{subdivision}</div>
 				<div className="table-list__body-cell">
 					<div className={buttonsClasses}>
-						<button onClick={::this.handleChangeStatus} className="event-btn request-list__add-button" data-status={RequestStatuses.keys.close}>
+						<button onClick={::this.handleCloseStatus} title="Утвердить заявку" className="event-btn request-list__add-button">
 							<i className="fa fa-plus"></i>
 						</button>
-						<button onClick={::this.handleChangeStatus} className="event-btn request-list__remove-button" data-status={RequestStatuses.keys.ignore}>
+						<button onClick={::this.handleIgnoreStatus} title="Отклонить заявку" className="event-btn request-list__remove-button">
 							<i className="fa fa-minus"></i>
 						</button>
 					</div>
 					<div className="request-list__statuses">
-						<i className={statusAddedClasses}></i>
-						<i className={statusRemovedClasses}></i>
+						<i title="Заявка утверждена" className={statusAddedClasses}></i>
+						<i title="Заявка отклонена" className={statusRemovedClasses}></i>
 					</div>
 				</div>
 			</div>
@@ -54,6 +64,17 @@ class RequestItem extends React.Component {
 }
 
 class Requests extends React.Component {
+
+	constructor(props){
+		super(props);
+		this.handleIgnoreStatus = this.handleIgnoreStatus.bind(this);
+	}
+
+	state = {
+		isShowRejectReasonInfo: false,
+		rejectRequestId: null,
+		rejectRequestStatus: null
+	}
 
 	handleChangeIsDateRequestBeforeBegin(checked){
 		EventEditActions.requests.changeIsDateRequestBeforeBegin(checked);
@@ -86,6 +107,23 @@ class Requests extends React.Component {
 		let targetData = target.getAttribute('data-sort');
 		EventEditActions.requests.sortRequestTable(targetData, isAsc);
 		caret.classList.toggle('caret--rotate');
+	}
+
+	handleIgnoreStatus(id, status){
+		this.setState({isShowRejectReasonInfo: true, rejectRequestId: id, rejectRequestStatus: status });
+	}
+
+	handleCloseStatus(id, status){
+		EventEditActions.requests.changeRequestStatus(id, status);
+	}
+
+	handleRejectRequest(rejectRequestId, rejectRequestStatus, reason){
+		this.setState({isShowRejectReasonInfo: false, rejectRequestId: null, rejectRequestStatus: null});
+		EventEditActions.requests.changeRequestStatus(rejectRequestId, rejectRequestStatus, reason);
+	}
+
+	handleCloseRejectRequest(){
+		this.setState({isShowRejectReasonInfo: false});
 	}
 
 	render(){
@@ -165,10 +203,20 @@ class Requests extends React.Component {
 								<div className="table-list__header-cell table-list__header-cell--w20">Статус</div>
 							</div>
 							{this.props.requestItems.map((item, index) => {
-								return <RequestItem key={index} {...item} />
+								return (<RequestItem 
+											key={index} 
+											{...item} 
+											onIgnoreStatus={this.handleIgnoreStatus} 
+											onCloseStatus={this.handleCloseStatus}/>)
 							})}
 						</div>
 					</div>
+					<RejectReasonInfo 
+						rejectRequestId={this.state.rejectRequestId}
+						rejectRequestStatus={this.state.rejectRequestStatus}
+						onClose={::this.handleCloseRejectRequest} 
+						onReject={::this.handleRejectRequest} 
+						isShow={this.state.isShowRejectReasonInfo}/>
 				</div>
 			</div>
 		);

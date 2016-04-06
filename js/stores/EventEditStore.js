@@ -148,12 +148,10 @@ const tutors = {
 
 	toggleTutorIsMain(id, main){
 		let _tutors = _eventEdit.tutors.tutors;
-		let item = find(_tutors, (item) => {
-			return item.id === id;
+		_tutors.forEach((tutor) => {
+			if (tutor.id === id) tutor.main = main;
+			else tutor.main = false;
 		});
-		if (item){
-			item.main = main;
-		}
 	},
 	toggleTutorChecked(id, checked){
 		let _tutors = _eventEdit.tutors.tutors;

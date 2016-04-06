@@ -1,5 +1,5 @@
 $primaryTextColor: #212121;
-$darkPrimaryColor: #ff5252;
+$darkPrimaryColor: #045894;
 $secondaryTextColor: #727272;
 
 $fontSizeSm: 14px;
@@ -145,6 +145,7 @@ $fontSizeXs: 12px;
 .input-box__label_translate {
     color: $darkPrimaryColor;
     font-size: $fontSizeXs;
+    font-weight: bold;
     transform: translateY(-25px);
 }
 
@@ -153,5 +154,6 @@ $fontSizeXs: 12px;
 .textarea-box__label_translate {
     color: $darkPrimaryColor;
     font-size: $fontSizeXs;
+    font-weight: bold;
     transform: translateY(-140%);
 }

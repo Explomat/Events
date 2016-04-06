@@ -17,8 +17,10 @@ module.exports = {
 		var ids = items.map(function(item){
 			return item.id;
 		});
-		return Ajax.sendRequest(Config.url.createPath({action_name: 'createNotification'}), JSON.stringify({ids: ids, subject: subject, body: body}), false, true, null, 'POST').then(function(data){
-			return data;
-		});
+		return Ajax.sendRequest(Config.url.createPath({action_name: 'createNotification'}), JSON.stringify({ids: ids, subject: subject, body: body}), false, true, null, 'POST');
+	},
+
+	changeRequestStatus: function(id, status, reason){
+		return Ajax.sendRequest(Config.url.createPath({action_name: 'processingRequest'}), JSON.stringify({id: id, status: status, reason: reason}), false, true, null, 'POST');
 	}
 }

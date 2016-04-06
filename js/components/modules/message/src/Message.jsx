@@ -82,7 +82,9 @@ class Message extends React.Component {
         this.setState({
             selectedItems: selectedItems, 
             notSelectedItems: notSelectedItems, 
-            isShow: isShow
+            isShow: isShow,
+            subject: '',
+            body: ''
         });
     }
 
@@ -135,7 +137,7 @@ class Message extends React.Component {
         if (!this.props.isShow) {
             return null;
         }
-        let isButtonDisabled = this.state.subject === '' || this.state.body === '' || this.state.selectedItems.length === 0;
+        let isButtonDisabled = this.state.subject.trim() === '' || this.state.body.trim() === '' || this.state.selectedItems.length === 0;
         let buttonClasses = cx({
             'event-btn': true,
             'event-btn--reverse': true,

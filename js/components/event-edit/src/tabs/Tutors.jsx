@@ -290,8 +290,8 @@ class Tutors extends React.Component {
 							<div className="table-list__header">
 								<div className="table-list__header-row">
 									<div className="table-list__header-cell table-list__header-cell--w1"></div>
-									<div className="table-list__header-cell table-list__header-cell--w30">ФИО</div>
-									<div className="table-list__header-cell table-list__header-cell--w25">Тип</div>
+									<div className="table-list__header-cell table-list__header-cell--w30"></div>
+									<div className="table-list__header-cell table-list__header-cell--w25"></div>
 								</div>
 								{this.props.lectors.map((item, index) => {
 									return <LectorItem key={index} {...item}/>

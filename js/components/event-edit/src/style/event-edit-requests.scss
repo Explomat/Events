@@ -66,6 +66,8 @@
 	    	.request-list__status-added {
 	    		color: green;
 	    		display: none;
+	    		padding: 10px;
+
 	    		&.request-list__status-added--display{
 	    			display: inline-block;
 	    		}
@@ -74,6 +76,8 @@
 	    	.request-list__status-removed{
 	    		color: #ff5252;
 	    		display: none;
+	    		padding: 10px;
+
 	    		&.request-list__status-removed--display{
 	    			display: inline-block;
 	    		}

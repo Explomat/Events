@@ -21,7 +21,8 @@ var servers = [
 			'getCollaborators',
 			'getLectors',
 			'getEducationMethod',
-			'createNotification'
+			'createNotification',
+			'processingRequest'
 		]
 	}
 ]

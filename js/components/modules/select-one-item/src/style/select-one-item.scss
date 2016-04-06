@@ -23,13 +23,15 @@
             bottom: 10px;
         }
     }
+
+    .select-one-item__input_not-empty + .select-one-item__label {
+        color: $darkPrimaryColor;
+        font-size: $fontSizeXs;
+        font-weight: bold;
+        transform: translateY(-25px);
+    }
 }
 
-.select-one-item__input_not-empty + .select-one-item__label {
-    color: $darkPrimaryColor;
-    font-size: $fontSizeXs;
-    transform: translateY(-25px);
-}
 
     
 
