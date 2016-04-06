@@ -163,15 +163,15 @@ class Requests extends React.Component {
 				</div>
 				<CheckBox 
 					onChange={this.handleChangeIsAutomaticIncludeInCollaborators} 
-					label={"Автоматически включать в состав участников"} 
+					label="Автоматически включать в состав участников"
 					checked={this.props.isAutomaticIncludeInCollaborators}/>
 				<CheckBox 
 					onChange={this.handleChangeIsApproveByBoss} 
-					label={"Необходимо подтверждение от непосредственного руководителя"} 
+					label="Необходимо подтверждение от непосредственного руководителя"
 					checked={this.props.isApproveByBoss}/>
 				<CheckBox 
 					onChange={this.handleChangeIsApproveByTutor} 
-					label={"Необходимо подтверждение от ответственного за мероприятие"} 
+					label="Необходимо подтверждение от ответственного за мероприятие"
 					checked={this.props.isApproveByTutor}/>
 				<div className="table-list request-list">
 					<div className="table-list__header table-list__header--header">
@@ -197,10 +197,10 @@ class Requests extends React.Component {
 					<div className="table-list__table">
 						<div className="table-list__header">
 							<div className="table-list__header-row">
-								<div className="table-list__header-cell table-list__header-cell--w30">ФИО</div>
-								<div className="table-list__header-cell table-list__header-cell--w25">Должность</div>
-								<div className="table-list__header-cell table-list__header-cell--w25">Подразделение</div>
-								<div className="table-list__header-cell table-list__header-cell--w20">Статус</div>
+								<div className="table-list__header-cell table-list__header-cell--w30"></div>
+								<div className="table-list__header-cell table-list__header-cell--w25"></div>
+								<div className="table-list__header-cell table-list__header-cell--w25"></div>
+								<div className="table-list__header-cell table-list__header-cell--w20"></div>
 							</div>
 							{this.props.requestItems.map((item, index) => {
 								return (<RequestItem 

@@ -2,7 +2,7 @@ import CollaboratorRequest from './CollaboratorRequest';
 import Collaborator from './Collaborator';
 import Tutor from './Tutor';
 import Lector from './Lector';
-//import CollaboratorTest from './CollaboratorTest';
+import CollaboratorTest from './CollaboratorTest';
 import Places from './Places';
 import EventTypes from '../../utils/eventedit/EventTypes';
 import EventCodes from '../../utils/eventedit/EventCodes';
@@ -100,26 +100,27 @@ export default function(args){
 
 	//testing
 	this.testing = {
-		isAutoAssignPrevTesting: args.testing.isAutoAssignPrevTesting || false,
-		isAutoAssignPostTesting: args.testing.isAutoAssignPostTesting || false
+		isPrevTests: args.testing.isPrevTests || false,
+		isPostTests: args.testing.isPostTests || false,
+		isPostTestOnlyForAssisst: args.testing.isPostTestOnlyForAssisst || false
 	}
 	
-	/*this.prevTests = [];
-	if (args.prevTests) {
-		this.prevTests = args.prevTests.map(function(t){
-			return new Test(t);
+	this.testing.prevTests = [];
+	if (args.testing.prevTests) {
+		this.testing.prevTests = args.testing.prevTests.map(function(t){
+			return new CollaboratorTest(t);
 		});
 	}
-	this.postTests = [];
-	if (args.postTests) {
-		this.postTests = args.postTests.map(function(t){
-			return new Test(t);
+	this.testing.postTests = [];
+	if (args.testing.postTests) {
+		this.testing.postTests = args.testing.postTests.map(function(t){
+			return new CollaboratorTest(t);
 		});
-	}*/
-	/*this.listOfTest = [];
-	if (args.listOfTest) {
-		this.listOfTest = args.listOfTest.map(function(lt){
+	}
+	this.testing.testingList = [];
+	if (args.testing.testingList) {
+		this.testing.testingList = args.testing.testingList.map(function(lt){
 			return new CollaboratorTest(lt);
 		});
-	}*/
+	}
 }

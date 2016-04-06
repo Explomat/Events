@@ -134,9 +134,11 @@ const collaborators = {
 				fullname: item.data.fullname,
 				subdivision: item.data.subdivision,
 				position: item.data.position,
-				isAssist: item.data.isAssist
+				isAssist: item.data.isAssist,
+				checked: false
 			}
 		});
+		_eventEdit.collaborators.checkedAll = false;
 	},
 	changeInfoMessage(message, status){
 		_eventEdit.collaborators.infoMessage = message;
@@ -244,18 +246,22 @@ const tutors = {
 				fullname: item.data.fullname,
 				subdivision: item.data.subdivision,
 				position: item.data.position,
-				main: item.data.main
+				main: item.data.main,
+				checked: false
 			}
 		});
+		_eventEdit.tutors.checkedAllTutors = false;
 	},
 	updateLectors(lectors){
 		_eventEdit.tutors.lectors = lectors.map((item) => {
 			return {
 				id: item.id,
 				fullname: item.data.fullname,
-				type: item.data.type
+				type: item.data.type,
+				checked: false
 			}
 		});
+		_eventEdit.tutors.checkedAllLectors = false;
 	}
 }
 

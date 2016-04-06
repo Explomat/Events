@@ -20,6 +20,7 @@ var servers = [
 			'getEventEditData',
 			'getCollaborators',
 			'getLectors',
+			'getTests',
 			'getEducationMethod',
 			'createNotification',
 			'processingRequest'
