@@ -2,6 +2,10 @@ import AppDispatcher from '../dispatcher/AppDispatcher';
 import {EventEmitter} from 'events';
 import EventEditConstants from '../constants/EventEditConstants';
 import EventEdit from '../models/eventedit/EventEdit';
+import Tutor from '../models/eventedit/Tutor';
+import Lector from '../models/eventedit/Lector';
+import Collaborator from '../models/eventedit/Collaborator';
+//import CollaboratorTest from '../models/eventedit/CollaboratorTest';
 import extend from 'extend';
 import {find, filter, every} from 'lodash';
 
@@ -9,6 +13,40 @@ let _eventEdit = {};
 
 function loadData(data) {
 	_eventEdit = new EventEdit(data);
+}
+
+function toggleCheckedAll(container, array, checked, checkedAllKeyName){
+	array.forEach(item => {
+		item.checked = checked;
+	});
+	container[checkedAllKeyName] = checked;
+}
+
+function toggleChecked(container, array, id, checked, checkedAllKeyName){
+	var item = find(array, (item) => {
+		return item.id === id;
+	});
+	if (item){
+		item.checked = checked;
+	}
+
+	const isEveryCheked = every(array, (item) => {
+		return item.checked === true;
+	});
+
+	if (isEveryCheked) {
+		container[checkedAllKeyName] = true;
+	}
+	else {
+		container[checkedAllKeyName] = false;
+	}
+}
+
+function sortTable(array, key, isAsc){
+	var isAscending = isAsc ? 1 : -1;
+	array.sort((first, second) => {
+		return first[key] > second[key] ? isAscending : first[key] === second[key] ? 0 : -(isAscending);
+	});
 }
 
 const base = {
@@ -58,11 +96,7 @@ const requests = {
 		_eventEdit.requests.isApproveByTutor = checked;
 	},
 	sortTable(key, isAsc){
-		let requestItems = _eventEdit.requests.requestItems;
-		let isAscending = isAsc ? 1 : -1;
-		requestItems.sort((first, second) => {
-			return first[key] > second[key] ? isAscending : first[key] === second[key] ? 0 : -(isAscending);
-		});
+		sortTable(_eventEdit.requests.requestItems, key, isAsc);
 	},
 	changeRequestStatus(id, status){
 		let requestItems = _eventEdit.requests.requestItems;
@@ -86,38 +120,17 @@ const collaborators = {
 		}
 	},
 	sortTable(key, isAsc){
-		let _collaborators = _eventEdit.collaborators.collaborators;
-		let isAscending = isAsc ? 1 : -1;
-		_collaborators.sort((first, second) => {
-			return first[key] > second[key] ? isAscending : first[key] === second[key] ? 0 : -(isAscending);
-		});
+		sortTable(_eventEdit.collaborators.collaborators, key, isAsc);
 	},
 	toggleCheckedAll(checked){
-		let _collaborators = _eventEdit.collaborators.collaborators;
-		_collaborators.forEach(col => {
-			col.checked = checked;
-		});
-		_eventEdit.collaborators.checkedAll = checked;
+		var container = _eventEdit.collaborators;
+		var arr = _eventEdit.collaborators.collaborators;
+		toggleCheckedAll(container, arr, checked, 'checkedAll');
 	},
 	toggleChecked(id, checked) {
-		let _collaborators = _eventEdit.collaborators.collaborators;
-		let item = find(_collaborators, (item) => {
-			return item.id === id;
-		});
-		if (item){
-			item.checked = checked;
-		}
-		if (checked){
-			_eventEdit.collaborators.checkedAll = checked;
-		}
-		else {
-			let isEveryCheked = every(_collaborators, (col) => {
-				return col.checked === false;
-			});
-			if (isEveryCheked){
-				_eventEdit.collaborators.checkedAll = false;
-			}
-		}
+		var container = _eventEdit.collaborators;
+		var arr = _eventEdit.collaborators.collaborators;
+		toggleChecked(container, arr, id, checked, 'checkedAll');
 	},
 	removeItems(){
 		let _collaborators = _eventEdit.collaborators.collaborators;
@@ -129,14 +142,9 @@ const collaborators = {
 	},
 	updateItems(items){
 		_eventEdit.collaborators.collaborators = items.map((item) => {
-			return {
-				id: item.id,
-				fullname: item.data.fullname,
-				subdivision: item.data.subdivision,
-				position: item.data.position,
-				isAssist: item.data.isAssist,
-				checked: false
-			}
+			let obj = {...item.data};
+			obj.id = item.id;
+			return new Collaborator(obj);
 		});
 		_eventEdit.collaborators.checkedAll = false;
 	},
@@ -156,72 +164,30 @@ const tutors = {
 		});
 	},
 	toggleTutorChecked(id, checked){
-		let _tutors = _eventEdit.tutors.tutors;
-		let item = find(_tutors, (item) => {
-			return item.id === id;
-		});
-		if (item){
-			item.checked = checked;
-		}
-		if (checked){
-			_eventEdit.tutors.checkedAllTutors = checked;
-		}
-		else {
-			let isEveryCheked = every(_tutors, (t) => {
-				return t.checked === false;
-			});
-			if (isEveryCheked){
-				_eventEdit.tutors.checkedAllTutors = false;
-			}
-		}
+		var container = _eventEdit.tutors;
+		var arr = _eventEdit.tutors.tutors;
+		toggleChecked(container, arr, id, checked, 'checkedAllTutors');
 	},
 	toggleLectorChecked(id, checked) {
-		let _lectors = _eventEdit.tutors.lectors;
-		let item = find(_lectors, (item) => {
-			return item.id === id;
-		});
-		if (item){
-			item.checked = checked;
-		}
-		if (checked){
-			_eventEdit.tutors.checkedAllLectors = checked;
-		}
-		else {
-			let isEveryCheked = every(_lectors, (l) => {
-				return l.checked === false;
-			});
-			if (isEveryCheked){
-				_eventEdit.tutors.checkedAllLectors = false;
-			}
-		}
+		var container = _eventEdit.tutors;
+		var arr = _eventEdit.tutors.lectors;
+		toggleChecked(container, arr, id, checked, 'checkedAllLectors');
 	},
 	sortTutorsTable(key, isAsc){
-		let _tutors = _eventEdit.tutors.tutors;
-		let isAscending = isAsc ? 1 : -1;
-		_tutors.sort((first, second) => {
-			return first[key] > second[key] ? isAscending : first[key] === second[key] ? 0 : -(isAscending);
-		});
+		sortTable(_eventEdit.tutors.tutors, key, isAsc);
 	},
 	sortLectorsTable(key, isAsc){
-		let _lectors = _eventEdit.tutors.lectors;
-		let isAscending = isAsc ? 1 : -1;
-		_lectors.sort((first, second) => {
-			return first[key] > second[key] ? isAscending : first[key] === second[key] ? 0 : -(isAscending);
-		});
+		sortTable(_eventEdit.tutors.lectors, key, isAsc);
 	},
 	toggleCheckedAllTutors(checked){
-		let _tutors = _eventEdit.tutors.tutors;
-		_tutors.forEach(t => {
-			t.checked = checked;
-		});
-		_eventEdit.tutors.checkedAllTutors = checked;
+		var container = _eventEdit.tutors;
+		var arr = _eventEdit.tutors.tutors;
+		toggleCheckedAll(container, arr, checked, 'checkedAllTutors');
 	},
 	toggleCheckedAllLectors(checked){
-		let _lectors = _eventEdit.tutors.lectors;
-		_lectors.forEach(l => {
-			l.checked = checked;
-		});
-		_eventEdit.tutors.checkedAllLectors = checked;
+		var container = _eventEdit.tutors;
+		var arr = _eventEdit.tutors.lectors;
+		toggleCheckedAll(container, arr, checked, 'checkedAllLectors');
 	},
 	removeTutors(){
 		let _tutors = _eventEdit.tutors.tutors;
@@ -241,25 +207,17 @@ const tutors = {
 	},
 	updateTutors(tutors){
 		_eventEdit.tutors.tutors = tutors.map((item) => {
-			return {
-				id: item.id,
-				fullname: item.data.fullname,
-				subdivision: item.data.subdivision,
-				position: item.data.position,
-				main: item.data.main,
-				checked: false
-			}
+			let obj = {...item.data};
+			obj.id = item.id;
+			return new Tutor(obj);
 		});
 		_eventEdit.tutors.checkedAllTutors = false;
 	},
 	updateLectors(lectors){
 		_eventEdit.tutors.lectors = lectors.map((item) => {
-			return {
-				id: item.id,
-				fullname: item.data.fullname,
-				type: item.data.type,
-				checked: false
-			}
+			let obj = {...item.data};
+			obj.id = item.id;
+			return new Lector(obj);
 		});
 		_eventEdit.tutors.checkedAllLectors = false;
 	}
