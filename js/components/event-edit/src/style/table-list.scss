@@ -85,6 +85,10 @@
 			display: table-row;
 			border-bottom: 1px solid #ddd;
 
+			&.table-list__body-row--selected {
+		    	background-color: #f5f5f5;
+		    }
+
 			.table-list__body-cell{
 				display: table-cell;
 			    box-sizing: border-box;

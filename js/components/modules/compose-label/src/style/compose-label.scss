@@ -1,0 +1,45 @@
+.compose-label {
+    position: relative;
+    display: inline-block;
+    padding: 4px;
+    margin: 1px 2px 1px;
+    font-size: 12px;
+    max-width: 367px;
+    color: #333;
+    background-color: #efefef;
+    border: 1px solid #ccc;
+    /* padding: 2px 1px 1px 5px; */
+    padding: 4px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    white-space: nowrap;
+    cursor: pointer;
+    outline: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    &:hover {
+        border: 1px solid #8b8b8b;
+    }
+
+    .compose-label__label {
+        display: inline-block;
+        max-width: 350px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: top;
+        line-height: 15px;
+        margin-right: 5px;
+        padding-right: 10px;
+    }
+
+    .compose-label__icon {
+        color: #727272;
+        display: inline-block;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+    }
+}

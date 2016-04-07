@@ -2,6 +2,7 @@ import AppDispatcher from '../dispatcher/AppDispatcher';
 import {EventEmitter} from 'events';
 import EventEditConstants from '../constants/EventEditConstants';
 import EventEdit from '../models/eventedit/EventEdit';
+import Test from '../models/eventedit/Test';
 import Tutor from '../models/eventedit/Tutor';
 import Lector from '../models/eventedit/Lector';
 import Collaborator from '../models/eventedit/Collaborator';
@@ -223,6 +224,46 @@ const tutors = {
 	}
 }
 
+const testing = {
+	updatePrevTests(tests){
+		_eventEdit.testing.prevTests = tests.map((item) => {
+			let obj = {...item.data};
+			obj.id = item.id;
+			return new Test(obj);
+		});
+	},
+
+	updatePostTests(tests){
+		_eventEdit.testing.postTests = tests.map((item) => {
+			let obj = {...item.data};
+			obj.id = item.id;
+			return new Test(obj);
+		});
+	},
+
+	changeIsPrevTests(checked){
+		_eventEdit.testing.isPrevTests = checked;
+	},
+
+	changeIsPostTests(checked){
+		_eventEdit.testing.isPostTests = checked;
+	},
+
+	removePrevTest(id){
+		var tests = _eventEdit.testing.prevTests;
+		_eventEdit.testing.prevTests = filter(tests, (item) => {
+			return item.id !== id;
+		});
+	},
+
+	removePostTest(id){
+		var tests = _eventEdit.testing.postTests;
+		_eventEdit.testing.postTests = filter(tests, (item) => {
+			return item.id !== id;
+		});
+	}
+}
+
 const EventEditStore = extend({}, EventEmitter.prototype, {
 	
 	getData(){
@@ -398,6 +439,32 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			break;
 		case EventEditConstants.EVENTEDIT_TUTORS_UPDATE_LECTORS:
 			tutors.updateLectors(action.lectors);
+			isEmit = true;
+			break;
+
+		//testing
+		case EventEditConstants.EVENTEDIT_TESTING_UPDATE_PREV_TESTS:
+			testing.updatePrevTests(action.tests);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_TESTING_UPDATE_POST_TESTS:
+			testing.updatePostTests(action.tests);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_TESTING_CHANGE_IS_PREV_TESTS:
+			testing.changeIsPrevTests(action.checked);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_TESTING_CHANGE_IS_POST_TESTS:
+			testing.changeIsPostTests(action.checked);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_TESTING_REMOVE_PREV_TEST:
+			testing.removePrevTest(action.id);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_TESTING_REMOVE_POST_TEST:
+			testing.removePostTest(action.id);
 			isEmit = true;
 			break;
 		default:

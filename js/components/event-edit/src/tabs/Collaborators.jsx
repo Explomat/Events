@@ -43,9 +43,13 @@ class CollaboratorItem extends React.Component {
 	}
 
 	render(){
-		let {fullname, subdivision, position, isAssist, checked} = this.props;
+		const {fullname, subdivision, position, isAssist, checked} = this.props;
+		const classes = cx({
+			'table-list__body-row': true,
+			'table-list__body-row--selected': checked
+		})
 		return (
-			<div className="table-list__body-row">
+			<div className={classes}>
 				<div className="table-list__body-cell">
 					<CheckBox onChange={::this.handleToggleChecked} checked={checked}/>
 				</div>
@@ -209,14 +213,16 @@ class Collaborators extends React.Component {
 						<div className="table-list__header">
 							<div className="table-list__header-row">
 								<div className="table-list__header-cell table-list__header-cell--w1"></div>
-								<div className="table-list__header-cell table-list__header-cell--w30">ФИО</div>
-								<div className="table-list__header-cell table-list__header-cell--w25">Должность</div>
-								<div className="table-list__header-cell table-list__header-cell--w25">Подразделение</div>
-								<div className="table-list__header-cell table-list__header-cell--w1">Статус</div>
+								<div className="table-list__header-cell table-list__header-cell--w30"></div>
+								<div className="table-list__header-cell table-list__header-cell--w25"></div>
+								<div className="table-list__header-cell table-list__header-cell--w25"></div>
+								<div className="table-list__header-cell table-list__header-cell--w1"></div>
 							</div>
-							{this.props.collaborators.map((item, index) => {
-								return <CollaboratorItem key={index} {...item}/>
-							})}
+							<div>
+								{this.props.collaborators.map((item, index) => {
+									return <CollaboratorItem key={index} {...item}/>
+								})}
+							</div>
 						</div>
 					</div>
 					<Info

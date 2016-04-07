@@ -3,24 +3,34 @@
 	height: calc(100% - 40px);
 
 	.event-edit-testing__tests{
-
+		height: 50%;
 		.event-edit-testing__prev-tests{
+			margin-bottom: 20px;
 
 			.event-edit-testing__prev-tests-add{
 				display: none;
-				
+
 				&.event-edit-testing__prev-tests-add--display {
 					display: block;
+				}
+
+				.prev-tests{
+
 				}
 			}
 		}
 		.event-edit-testing__post-tests{
-
+			margin-bottom: 20px;
+			
 			.event-edit-testing__post-tests-add {
 				display: none;
 
 				&.event-edit-testing__post-tests-add--display {
 					display: block;
+				}
+
+				.post-tests {
+
 				}
 			}
 		}

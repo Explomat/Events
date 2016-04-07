@@ -10,7 +10,7 @@ import '../style/event-edit-tutors.scss';
 
 class Buttons extends React.Component {
 	render(){
-		let removeClasses = cx({
+		const removeClasses = cx({
 			'event-btn': true,
 			'buttons__remove': true,
 			'buttons__remove--display': this.props.isDisplay
@@ -35,9 +35,13 @@ class TutorItem extends React.Component {
 	}
 
 	render(){
-		let {fullname, subdivision, position, main, checked} = this.props;
+		var {fullname, subdivision, position, main, checked} = this.props;
+		const classes = cx({
+			'table-list__body-row': true,
+			'table-list__body-row--selected': checked
+		})
 		return (
-			<div className="table-list__body-row">
+			<div className={classes}>
 				<div className="table-list__body-cell">
 					<CheckBox onChange={::this.handleToggleChecked} checked={checked}/>
 				</div>
@@ -62,9 +66,13 @@ class LectorItem extends React.Component {
 	}
 
 	render(){
-		let {fullname, type, checked} = this.props;
+		const {fullname, type, checked} = this.props;
+		const classes = cx({
+			'table-list__body-row': true,
+			'table-list__body-row--selected': checked
+		})
 		return (
-			<div className="table-list__body-row">
+			<div className={classes}>
 				<div className="table-list__body-cell">
 					<CheckBox onChange={::this.handleToggleChecked} checked={checked}/>
 				</div>

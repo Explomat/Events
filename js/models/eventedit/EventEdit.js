@@ -2,6 +2,7 @@ import CollaboratorRequest from './CollaboratorRequest';
 import Collaborator from './Collaborator';
 import Tutor from './Tutor';
 import Lector from './Lector';
+import Test from './Test';
 import CollaboratorTest from './CollaboratorTest';
 import Places from './Places';
 import EventTypes from '../../utils/eventedit/EventTypes';
@@ -108,13 +109,13 @@ export default function(args){
 	this.testing.prevTests = [];
 	if (args.testing.prevTests) {
 		this.testing.prevTests = args.testing.prevTests.map(function(t){
-			return new CollaboratorTest(t);
+			return new Test(t);
 		});
 	}
 	this.testing.postTests = [];
 	if (args.testing.postTests) {
 		this.testing.postTests = args.testing.postTests.map(function(t){
-			return new CollaboratorTest(t);
+			return new Test(t);
 		});
 	}
 	this.testing.testingList = [];

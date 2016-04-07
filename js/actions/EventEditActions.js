@@ -251,6 +251,51 @@ var EventEditActions = {
 				lectors: lectors
 			});
 		}
+	},
+
+	testing: {
+
+		updatePrevTests(tests){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_TESTING_UPDATE_PREV_TESTS,
+				tests: tests
+			});
+		},
+
+		updatePostTests(tests){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_TESTING_UPDATE_POST_TESTS,
+				tests: tests
+			});
+		},
+
+		changeIsPrevTests(checked){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_TESTING_CHANGE_IS_PREV_TESTS,
+				checked: checked
+			});
+		},
+
+		changeIsPostTests(checked){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_TESTING_CHANGE_IS_POST_TESTS,
+				checked: checked
+			});
+		},
+
+		removePrevTest(id){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_TESTING_REMOVE_PREV_TEST,
+				id: id
+			});
+		},
+
+		removePostTest(id){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_TESTING_REMOVE_POST_TEST,
+				id: id
+			});
+		}
 	}
 }
 
