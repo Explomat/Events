@@ -218,11 +218,9 @@ class Collaborators extends React.Component {
 								<div className="table-list__header-cell table-list__header-cell--w25"></div>
 								<div className="table-list__header-cell table-list__header-cell--w1"></div>
 							</div>
-							<div>
-								{this.props.collaborators.map((item, index) => {
-									return <CollaboratorItem key={index} {...item}/>
-								})}
-							</div>
+							{this.props.collaborators.map((item, index) => {
+								return <CollaboratorItem key={index} {...item}/>
+							})}
 						</div>
 					</div>
 					<Info

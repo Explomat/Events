@@ -10,6 +10,36 @@
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
+function uploadFile(queryObjects) {
+	var index = queryObjects.name.indexOf('.');
+	var type = '';
+	if (index != -1)
+		type = queryObjects.name.substr(index + 1, queryObjects.name.length - index);
+	
+	//PutFileData("C:\\"+queryObjects.name, queryObjects.Body);
+	var error = '';
+
+	try {
+		var userDoc = OpenDoc(UrlFromDocID(curUserID));
+		var docResource = OpenNewDoc( 'x-local://wtv/wtv_resource.xmd' ); 
+		docResource.TopElem.person_id = curUserID; 
+		docResource.TopElem.allow_unauthorized_download = true; 
+		docResource.TopElem.allow_download = true; 
+		docResource.TopElem.file_name = queryObjects.name;
+		docResource.TopElem.name = queryObjects.name;
+		docResource.TopElem.type = type;
+		docResource.TopElem.person_fullname = userDoc.TopElem.lastname + ' ' + userDoc.TopElem.firstname + ' ' + userDoc.TopElem.middlename;
+		docResource.BindToDb();
+		docResource.TopElem.put_str(queryObjects.Body, queryObjects.name); 
+		docResource.Save();
+	}catch(e){
+		error = e;
+	}
+	
+
+	return tools.object_to_text({ id: docResource.DocID, name: queryObjects.name, error: error }, 'json');
+}
+
 function isAdmin (queryObjects) {
 
 	var curPersonCard = OpenDoc(UrlFromDocID(curUserID))
@@ -31,34 +61,75 @@ function isAdmin (queryObjects) {
 }
 
 
-function createNotifications (queryObjects) {
+function createNotification (queryObjects) {
+	var data = tools.read_object(queryObjects.Body);
 
-	var curPersonCard = OpenDoc(UrlFromDocID(curUserID))
-	var recipients = queryObjects.HasProperty('recipients') ? true : false
-	var senderAddress = curPersonCard.TopElem.email != '' ? curPersonCard.TopElem.email : 'study@merlion.ru';
-	var subject = queryObjects.HasProperty('subject') ? queryObjects.subject : "Новое уведомление"
-	var messeageText = queryObjects.HasProperty('messeage_text') ? queryObjects.messeage_text : false
-	if ( recipients && messeageText ) {
-		for (r in recipients) {
-			curResonAddress = OpenDoc(UrlFromDocID(r.id)).TopElem.email
-			if (curResonAddress != '') {
+	var ids =  data.HasProperty('ids') ?  data.ids : false;
+	var subject = data.HasProperty('subject') ? data.subject : false ;
+	var messeageText = data.HasProperty('body') ? data.body : false ;
+	var senderAdress = OpenDoc(UrlFromDocID(curUserID)).TopElem;
+
+	var badPersonArray = [];
+	var notSendRequest = 0;
+
+	if (ids != false && subject != false && messeageText != false) {
+		for (elem in ids) {
+			curAddress = OpenDoc(UrlFromDocID(Int(elem))).TopElem.email;
+			if (curAddress) {
 				cardDoc = OpenNewDoc("x-local://wtv/wtv_active_notification.xmd");
-				cardDoc.TopElem.is_custom='1';
-				cardDoc.TopElem.status='active';
-				cardDoc.TopElem.sender.address= senderAddress;
+				cardDoc.TopElem.is_custom ='1';
+				cardDoc.TopElem.status ='active';
+				cardDoc.TopElem.sender.address = senderAdress.email;
+				cardDoc.TopElem.sender.name = senderAdress.fullname;
 				cardDoc.TopElem.subject = subject;
 				cardDoc.TopElem.body = messeageText;
-				cardDoc.TopElem.body_type="html";
+				cardDoc.TopElem.body_type = "html";
 				cardDoc.TopElem.recipients.AddChild("recipient");
-				cardDoc.TopElem.recipients[0].address = curResonAddress;
-				cardDoc.TopElem.send_date=Date();
+				cardDoc.TopElem.recipients[0].address = curAddress;
+				cardDoc.TopElem.send_date = Date();
 				cardDoc.BindToDb();
 				cardDoc.Save();
-			} 	
+			} else {
+				curPersonFIO = OpenDoc(UrlFromDocID(Int(elem))).TopElem.fullname;
+				notSendRequest++; 
+				badPersonArray.push(curPersonFIO);
+			}
+			
 		}
+	}
+	if (notSendRequest > 0) {
+		return tools.object_to_text ({
+			notSendRequest : notSendRequest,
+			badPersonArray : badPersonArray
+		}, 'json');
 	}
 }
 
+function processingRequest(queryObjects) {
+	var data = tools.read_object(queryObjects.Body);
+
+	var status = data.HasProperty('status') ? data.status : null;
+	var request_id = data.HasProperty('id') ? Int(data.id) : null;
+	var reason = data.HasProperty('reason') ? data.reason : null;
+	var curRequestCard = OpenDoc(UrlFromDocID(Int(request_id))).TopElem
+
+
+	if (request_id != null && status != null ) {
+		if (status == 'close') {
+			tools.close_request(request_id); // Заявка обрабтаывается, сотрудник добавляется в мероприятие
+			requestDoc = OpenDoc(UrlFromDocID(request_id));
+			requestDoc.TopElem.workflow_state = 'sfi0o2';
+			requestDoc.Save();
+		} else {
+			requestDoc = tools.request_rejecting(request_id);
+			requestDoc.TopElem.workflow_state = 's9v8gw';
+			requestDoc.TopElem.comment = reason;
+			requestDoc.Save();
+			tools.create_notification('Merlion_19', request_id )
+		}
+	}
+
+}
 /* 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -201,7 +272,7 @@ function getLectors (queryObjects) {
 		lectorsArray.push({ 
 			id: Int(l.id), 
 			data: {
-				name : l.name + '',
+				fullname : l.name + '',
 				type: l.type + ''
 			}
 		});
@@ -407,12 +478,53 @@ function getEducationMethod (queryObjects) {
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
+function getEventLibraryMatreials (queryObjects) {
+
+	var eventID = queryObjects.HasProperty('event_id') ? Int(queryObjects.event_id) : null;
+	var eventDocTE = OpenDoc(UrlFromDocID(Int(eventID))).TopElem; 
+
+	var libraryMaterialsArray = [];
+
+	var sendBeforeDocHref = eventDocTE.custom_elems.ObtainChildByKey('training_befor_delivery').value == 'true' ? true : false; // отправлять ссылку на предварительный
+	var sendAfterDocHref = eventDocTE.custom_elems.ObtainChildByKey('training_after_presence').value == 'true' ? true : false; // отправлять ссылку на посттренинговый 
+
+    var trainigBeforeDoc = eventDocTE.custom_elems.ObtainChildByKey('training_befor_doc').value; // ID пред трен материала
+    var trainigAfterDoc = eventDocTE.custom_elems.ObtainChildByKey('training_after_doc').value; // ID пост трен материала
+
+    if (trainigBeforeDoc) {
+    	libraryCard = OpenDoc(UrlFromDocID(Int(trainigBeforeDoc))).TopElem;
+    	libraryMaterialsArray.push({ 
+			id: Int(trainigBeforeDoc), 
+			name : libraryCard.name + '',
+			type : 'предварительный'
+		});
+    }
+    if (trainigAfterDoc) {
+    	libraryCard = OpenDoc(UrlFromDocID(Int(trainigBeforeDoc))).TopElem;
+    	libraryMaterialsArray.push({ 
+			id: Int(trainigAfterDoc), 
+			name : libraryCard.name + '',
+			type : 'посттренинговый'
+		});   	
+    }
+
+    return {
+    	sendBeforeDocHref : sendBeforeDocHref,
+    	sendAfterDocHref : trainigAfterDoc,
+    	libraryMaterialsArray: libraryMaterialsArray
+	}
+}
 
 
 
 function getEventRequests (queryObjects) {
 
 	var eventID = queryObjects.HasProperty('event_id') ? Int(queryObjects.event_id) : null; 
+	var eventDocTE = OpenDoc(UrlFromDocID(Int(eventID))).TopElem; 
+
+	var tutorAccept = eventDocTE.custom_elems.ObtainChildByKey('main_tutor_accept').value == 'true' ? true : false;
+	var funcManagerAccept = eventDocTE.custom_elems.ObtainChildByKey('func_manager_accept').value == 'true' ? true : false;
+
 
 	if (eventID != null) {
 		basicRequestsArray = XQuery("sql: select 
@@ -426,6 +538,9 @@ function getEventRequests (queryObjects) {
 		 	requests
 		 	inner join collaborators as colab on requests.person_id = colab.id
 		 where
+		 	(requests.workflow_state = 'schhk0' or
+		 	requests.workflow_state = 's9v8gw' or
+		 	requests.workflow_state = 'sfi0o2') and
 		 	requests.type = 'event' and
 		 	requests.object_id = " + eventID);
 	
@@ -441,6 +556,9 @@ function getEventRequests (queryObjects) {
 			});
 		}
 		return {
+			baseSetings : {
+
+			},
 			requestItems: requestsArray
 		}
 	}
@@ -448,15 +566,36 @@ function getEventRequests (queryObjects) {
 
 function getEventTests (queryObjects) {
 
-	var eventID = queryObjects.HasProperty('event_id') ? Int(queryObjects.event_id) : null; 
-
+	var eventID = queryObjects.HasProperty('event_id') ? Int(queryObjects.event_id) : null;
 	if (eventID != null) {
+
+		var eventDocTE = OpenDoc(UrlFromDocID(Int(eventID))).TopElem;
+
+		var isPrevTests = eventDocTE.prev_testing.auto_assign;
+		var isPostTests = eventDocTE.post_testing.auto_assign;
+		var isPostTestOnlyForAssisst = eventDocTE.custom_elems.ObtainChildByKey('post_test_for_assisst').value == 'true' ? true : false;
+		var prevTests = [];
+		var postTests = [];
+		for (assessment in eventDocTE.prev_testing.assessments) {
+			prevTests.push({
+				id : Int(assessment.assessment_id),
+				name : assessment.assessment_id.ForeignElem.title + ''
+			})
+		}
+
+		for (assessment in eventDocTE.post_testing.assessments) {
+			postTests.push({
+				id : Int(assessment.assessment_id),
+				name : assessment.assessment_id.ForeignElem.title + ''
+			})
+		}
+
+	
 		basicActiveTestsArray = XQuery("sql: select 
 			active_test_learnings.id as id,
 			active_test_learnings.person_id as personId,
 			active_test_learnings.person_fullname as personFIO, 
 			active_test_learnings.assessment_name as assessment_name,
-			active_test_learnings.state_id as status,
 			active_test_learnings.score as score
 		from
 			active_test_learnings
@@ -468,7 +607,6 @@ function getEventTests (queryObjects) {
 			test_learnings.person_id as personId,
 			test_learnings.person_fullname as personFIO,
 			test_learnings.assessment_name as assessment_name,
-			test_learnings.state_id as status,
 			test_learnings.score as score
 		from
 			test_learnings
@@ -476,20 +614,22 @@ function getEventTests (queryObjects) {
 			test_learnings.event_id =" + eventID);
 	
 
-		var requestsArray = [];
+		var testsArray = [];
 		for (at in basicActiveTestsArray) {
-			requestsArray.push({ 
+			testsArray.push({ 
 				id: Int(at.id), 
-				data: {
-					name : at.personFIO + '',
-					assessment_name: at.assessment_name + '',
-					status: at.status + '',
-					score: at.score + ''
-				}
+				fullname : at.personFIO + '',
+				assessmentName: at.assessment_name + '',
+				score: at.score + ''
 			});
 		}
 		return {
-			items: requestsArray
+			isPrevTests : isPrevTests + '',
+			prevTests : prevTests,
+			isPostTests : isPostTests + '',
+			postTests : postTests,
+			isPostTestOnlyForAssisst : isPostTestOnlyForAssisst + '',
+			testingList: testsArray
 		}
 	}
 }
@@ -528,16 +668,14 @@ function getEventCourses (queryObjects) {
 		for (ac in basicActiveCoursesArray) {
 			requestsArray.push({ 
 				id: Int(ac.id), 
-				data: {
-					name : ac.personFIO + '',
-					assessment_name: ac.assessment_name + '',
-					status: ac.status + '',
-					score: ac.score + ''
-				}
+				fullname : ac.personFIO + '',
+				assessmentName: ac.assessment_name + '',
+				status: ac.status + '',
+				score: ac.score + ''
 			});
 		}
 		return {
-			items: requestsArray
+			courses: requestsArray
 		}
 	}
 }
@@ -653,25 +791,37 @@ function getEventPlaces(queryObjects) {
 
 function getEventBaseData (queryObjects) {
 	var eventID = queryObjects.HasProperty('event_id') ? Int(queryObjects.event_id) : null;
-	var eventDocTE = OpenDoc(UrlFromDocID(Int(eventID))).TopElem; 
+	var eventCard = XQuery("sql: select 
+		REPLACE(events.name,'\"', '''' ) as name,
+		events.type_id,
+		events.code,
+		events.start_date,
+		events.finish_date,
+		events.education_org_id,
+		events.education_method_id
+		from 
+			events
+		where
+			events.id =" + eventID);
 
-	var basicData = {
-		name : eventDocTE.name + '',
-		selectedType : eventDocTE.type_id + '',
-		selectedCode : eventDocTE.code + '',
-		startDateTime : StrMimeDate(eventDocTE.start_date) + '',
-		finishDateTime : StrMimeDate(eventDocTE.finish_date) + '',
-		educationOrgs : [{ id: '5919417932074195731', name : 'Учебный центр MERLION'}, { id: '5929396429688827825', name : 'ОоИР'}],
-		selectedEducationOrgId : Int(eventDocTE.education_org_id),
-		selectedEducationMethod : {
-			id : Int(eventDocTE.education_method_id),
-			data : {
-				name : OpenDoc(UrlFromDocID(Int(eventDocTE.education_method_id))).TopElem.name + ''
-			}	
-		},
-		places : getEventPlaces(queryObjects) 
+	for (ev in eventCard) {
+		basicData = {};
+		basicData.name = ev.name + '';
+		basicData.selectedType = ev.type_id + '';
+		basicData.selectedCode = ev.code + '';
+		basicData.startDateTime = StrMimeDate(ev.start_date) + '';
+		basicData.finishDateTime = StrMimeDate(ev.finish_date) + '';
+		basicData.educationOrgs = [{ id: '5919417932074195731', name : 'Учебный центр MERLION'}, { id: '5929396429688827825', name : 'ОоИР'}];
+		basicData.selectedEducationOrgId = ev.education_org_id + '';
+		basicData.selectedEducationMethod = {
+		id : Int(ev.education_method_id),
+		data : {
+			name : OpenDoc(UrlFromDocID(Int(ev.education_method_id))).TopElem.name + ''
+		}	
+	},
+	basicData.places = getEventPlaces(queryObjects);
 	}
-	return basicData
+return basicData
 }
 
 function getEventCollaborators (queryObjects) {
@@ -710,24 +860,29 @@ function getEventTutors (queryObjects) {
 		for (tutor in eventDocTE.tutors) {
 			tutorsArray.push({
 				id : Int(tutor.collaborator_id),
-				data : {
-					fullname : tutor.person_fullname + '', 
-					subdivision : tutor.person_subdivision_name + '', 
-					position : tutor.person_position_name + '',
-					main : tutor.main
-				} 	 
+				fullname : tutor.person_fullname + '', 
+				subdivision : tutor.person_subdivision_name + '', 
+				position : tutor.person_position_name + '',
+				main : tutor.main + ''
 			})
 		}
 
-		for (lector in XQuery("sql: select event_lectors.lector_fullname, event_lectors.type, event_lectors.person_id from event_lectors where event_lectors.event_id = " + eventID )) {
-			lector_type = lector.type == 'collaborator' ? 'внутренний' : 'внешний';
-			lectorsArray.push({
-				id : Int(lector.person_id),
-				data : {
+		for (lector in XQuery("sql: select event_lectors.lector_fullname, event_lectors.type, event_lectors.lector_id, event_lectors.person_id from event_lectors where event_lectors.event_id = " + eventID )) {
+			if (lector.type == 'collaborator') {
+				lector_type = 'внутренний';
+				lectorsArray.push({
+					id : Int(lector.person_id),
 					fullname : lector.lector_fullname + '', 
 					type : lector_type + '' 
-				} 	 
-			})
+				}) 	 
+			} else {
+				lector_type = 'внешний';
+				lectorsArray.push({
+					id : Int(lector.lector_id),
+					fullname : lector.lector_fullname + '', 
+					type : lector_type + '' 
+				}) 	 
+			}
 		}
 
 		return {
@@ -738,16 +893,22 @@ function getEventTutors (queryObjects) {
 }
 
 function getEventEditData (queryObjects) {
-	return tools.object_to_text({
-		base : getEventBaseData(queryObjects),
-		requests : getEventRequests(queryObjects),
-		collaborators : getEventCollaborators(queryObjects),
-		tutors : getEventTutors(queryObjects),
-		testing : getEventTests(queryObjects),
-		courses : getEventCourses(queryObjects),
-		library_materials : null,
-		files : getEventFiles(queryObjects)
-	}, 'json');
+	var eventID = queryObjects.HasProperty('event_id') ? Int(queryObjects.event_id) : null;
+	if (ArrayCount(XQuery("sql: select * from events where events.id =" + eventID)) > 0) {
+		return tools.object_to_text({
+			base : getEventBaseData(queryObjects),
+			requests : getEventRequests(queryObjects),
+			collaborators : getEventCollaborators(queryObjects),
+			tutors : getEventTutors(queryObjects),
+			testing : getEventTests(queryObjects),
+			courses : getEventCourses(queryObjects),
+			library_materials : getEventLibraryMatreials(queryObjects),
+			files : getEventFiles(queryObjects)
+		}, 'json');
+	} else {
+		return "Такого мероприятия не существует, пожалуйста обратитесь в техническую поддержку учебного портала"
+	}
 }
+
 
 %>

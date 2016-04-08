@@ -6,6 +6,7 @@ import Test from '../models/eventedit/Test';
 import Tutor from '../models/eventedit/Tutor';
 import Lector from '../models/eventedit/Lector';
 import Collaborator from '../models/eventedit/Collaborator';
+import {isNumberOrReal} from '../utils/validation/Validation';
 //import CollaboratorTest from '../models/eventedit/CollaboratorTest';
 import extend from 'extend';
 import {find, filter, every} from 'lodash';
@@ -46,7 +47,9 @@ function toggleChecked(container, array, id, checked, checkedAllKeyName){
 function sortTable(array, key, isAsc){
 	var isAscending = isAsc ? 1 : -1;
 	array.sort((first, second) => {
-		return first[key] > second[key] ? isAscending : first[key] === second[key] ? 0 : -(isAscending);
+		var firstVal = isNumberOrReal(first[key]) ? Number(first[key]) : first[key];
+		var secondVal = isNumberOrReal(second[key]) ? Number(second[key]) : second[key];
+		return firstVal > secondVal ? isAscending : firstVal === secondVal ? 0 : -(isAscending);
 	});
 }
 
@@ -261,8 +264,20 @@ const testing = {
 		_eventEdit.testing.postTests = filter(tests, (item) => {
 			return item.id !== id;
 		});
+	},
+
+	sortTable(key, isAsc){
+		sortTable(_eventEdit.testing.testingList, key, isAsc);
 	}
 }
+
+const courses = {
+	sortTable(key, isAsc){
+		sortTable(_eventEdit.courses.courses, key, isAsc);
+	}
+}
+
+
 
 const EventEditStore = extend({}, EventEmitter.prototype, {
 	
@@ -465,6 +480,16 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			break;
 		case EventEditConstants.EVENTEDIT_TESTING_REMOVE_POST_TEST:
 			testing.removePostTest(action.id);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_TESTING_SORT_TABLE:
+			testing.sortTable(action.key, action.isAsc);
+			isEmit = true;
+			break;
+
+		//COURSES
+		case EventEditConstants.EVENTEDIT_COURSES_SORT_TABLE:
+			courses.sortTable(action.key, action.isAsc);
 			isEmit = true;
 			break;
 		default:

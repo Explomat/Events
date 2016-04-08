@@ -164,7 +164,7 @@ var EventEditActions = {
 				});
 			}, function(/*err*/){
 
-			})
+			});
 			
 		},
 		changeInfoMessage(message){
@@ -295,6 +295,53 @@ var EventEditActions = {
 				actionType: EventEditConstants.EVENTEDIT_TESTING_REMOVE_POST_TEST,
 				id: id
 			});
+		},
+
+		sortTable(key, isAsc){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_TESTING_SORT_TABLE,
+				key: key,
+				isAsc: isAsc
+			});
+		}
+	},
+
+	courses: {
+		sortTable(key, isAsc){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_COURSES_SORT_TABLE,
+				key: key,
+				isAsc: isAsc
+			});
+		}
+	},
+
+	files: {
+		uploadFile(name, data){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_FILES_UPLOADING_FILE
+			});
+			EventEditAPI.uploadFile(name, data).then(function(data){
+				if (data && !data.error) {
+					AppDispatcher.handleAction({
+						actionType: EventEditConstants.EVENTEDIT_FILES_UPLOADED_FILE,
+						id: data.id,
+						name: data.name
+					});
+				}
+				else {
+					AppDispatcher.handleAction({
+						actionType: EventEditConstants.EVENTEDIT_FILES_UPLOADING_FILE_ERROR,
+						error: data.error
+					});
+				}
+				
+			}, function(error){
+				AppDispatcher.handleAction({
+					actionType: EventEditConstants.EVENTEDIT_FILES_UPLOADING_FILE_ERROR,
+					error: error
+				});
+			})
 		}
 	}
 }

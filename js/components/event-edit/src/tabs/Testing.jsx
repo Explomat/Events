@@ -185,7 +185,7 @@ class Testing extends React.Component {
 		let caret = target.querySelector('.caret');
 		let isAsc = caret.classList.contains('caret--rotate');
 		let targetData = target.getAttribute('data-sort');
-		EventEditActions.testing.sortTestingTable(targetData, isAsc);
+		EventEditActions.testing.sortTable(targetData, isAsc);
 		caret.classList.toggle('caret--rotate');
 	}
 

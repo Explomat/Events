@@ -23,7 +23,8 @@ var servers = [
 			'getTests',
 			'getEducationMethod',
 			'createNotification',
-			'processingRequest'
+			'processingRequest',
+			'uploadFile'
 		]
 	}
 ]

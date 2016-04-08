@@ -3,7 +3,9 @@ import Collaborator from './Collaborator';
 import Tutor from './Tutor';
 import Lector from './Lector';
 import Test from './Test';
+import File from './File';
 import CollaboratorTest from './CollaboratorTest';
+import CollaboratorCourse from './CollaboratorCourse';
 import Places from './Places';
 import EventTypes from '../../utils/eventedit/EventTypes';
 import EventCodes from '../../utils/eventedit/EventCodes';
@@ -101,27 +103,46 @@ export default function(args){
 
 	//testing
 	this.testing = {
+		prevTests: [],
+		postTests: [],
+		testingList:[],
 		isPrevTests: args.testing.isPrevTests || false,
 		isPostTests: args.testing.isPostTests || false,
 		isPostTestOnlyForAssisst: args.testing.isPostTestOnlyForAssisst || false
 	}
 	
-	this.testing.prevTests = [];
 	if (args.testing.prevTests) {
 		this.testing.prevTests = args.testing.prevTests.map(function(t){
 			return new Test(t);
 		});
 	}
-	this.testing.postTests = [];
 	if (args.testing.postTests) {
 		this.testing.postTests = args.testing.postTests.map(function(t){
 			return new Test(t);
 		});
 	}
-	this.testing.testingList = [];
 	if (args.testing.testingList) {
 		this.testing.testingList = args.testing.testingList.map(function(lt){
 			return new CollaboratorTest(lt);
+		});
+	}
+
+	this.courses = {
+		courses: []
+	}
+	if (args.courses.courses) {
+		this.courses.courses = args.courses.courses.map(function(c){
+			return new CollaboratorCourse(c);
+		});
+	}
+
+	this.files = {
+		files: []
+	}
+
+	if (args.files.files) {
+		this.files.files = args.files.files.map(function(f){
+			return new File(f);
 		});
 	}
 }

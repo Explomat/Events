@@ -22,5 +22,11 @@ module.exports = {
 
 	changeRequestStatus: function(id, status, reason){
 		return Ajax.sendRequest(Config.url.createPath({action_name: 'processingRequest'}), JSON.stringify({id: id, status: status, reason: reason}), false, true, null, 'POST');
+	},
+
+	uploadFile: function(fileName, fileData){
+		return Ajax.uploadFile(Config.url.createPath({action_name: 'uploadFile', name: fileName}), fileName, fileData).then(function(data){
+			return JSON.parse(data);
+		});
 	}
 }

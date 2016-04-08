@@ -31,6 +31,48 @@ module.exports = {
         return xmlHttp;
     },
 
+    uploadFile: function(url, fileName, fileData){
+        var self = this;
+
+        return new Promise(function(resolve, reject){
+            var xmlHttp = self.getXmlHttp();
+
+            xmlHttp.onreadystatechange = function() {
+              if (xmlHttp.readyState == 4) {
+
+                if(xmlHttp.status == 200){
+                   resolve(xmlHttp.responseText);
+                }
+                else {
+                    console.log(xmlHttp.status);
+                    reject(xmlHttp.statusText || "Upload file error");
+                }
+              }
+            };
+
+            xmlHttp.open('POST', url);
+
+            var boundary = "xxxxxxxxx";   
+            xmlHttp.setRequestHeader("Content-Type", "multipart/form-data, boundary=" + boundary);
+            
+
+             // Формируем тело запроса
+            var body = "--" + boundary + "\r\n";
+            body += "Content-Disposition: form-data; name='myFile'; filename='" + fileName + "'\r\n";
+            body += "Content-Type: application/octet-stream\r\n\r\n";
+            body += fileData + "\r\n";
+            body += "--" + boundary + "--";
+
+            if(xmlHttp.sendAsBinary) {
+              // только для firefox
+                xmlHttp.sendAsBinary(body);
+            } else {
+              // chrome (так гласит спецификация W3C)
+                xmlHttp.send(body);
+            }  
+        });
+    },
+
     uploadFiles: function(eventTarget, url) {
         return new Promise(function(resolve, reject){
             if (!url)
