@@ -5,13 +5,14 @@
 	.event-edit-testing__tests{
 		height: 50%;
 		.event-edit-testing__prev-tests{
-			margin-bottom: 20px;
-
+			
 			.event-edit-testing__prev-tests-add{
 				display: none;
 
 				&.event-edit-testing__prev-tests-add--display {
 					display: block;
+					margin-bottom: 20px;
+
 				}
 
 				.prev-tests{

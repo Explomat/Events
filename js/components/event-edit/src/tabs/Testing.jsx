@@ -19,7 +19,7 @@ class Test extends React.Component {
 
 	render(){
 		return(
-			<ComposeLabel onIconClick={::this.handleRemoveTest} label={this.props.name} />
+			<ComposeLabel onIconClick={::this.handleRemoveTest} label={this.props.name} postIconClassName="fa fa-remove"/>
 		);
 	}
 }

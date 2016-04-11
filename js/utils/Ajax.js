@@ -31,7 +31,7 @@ module.exports = {
         return xmlHttp;
     },
 
-    uploadFile: function(url, fileName, fileData){
+    uploadFile: function(url, file){
         var self = this;
 
         return new Promise(function(resolve, reject){
@@ -52,11 +52,17 @@ module.exports = {
 
             xmlHttp.open('POST', url);
 
-            var boundary = "xxxxxxxxx";   
+            var formData = new FormData();
+            formData.append('file', file, file.name);
+            
+
+            xmlHttp.send(formData);
+
+           /*var boundary = "xxxxxxxxx";
             xmlHttp.setRequestHeader("Content-Type", "multipart/form-data, boundary=" + boundary);
             
 
-             // Формируем тело запроса
+            //Формируем тело запроса
             var body = "--" + boundary + "\r\n";
             body += "Content-Disposition: form-data; name='myFile'; filename='" + fileName + "'\r\n";
             body += "Content-Type: application/octet-stream\r\n\r\n";
@@ -69,7 +75,7 @@ module.exports = {
             } else {
               // chrome (так гласит спецификация W3C)
                 xmlHttp.send(body);
-            }  
+            }*/  
         });
     },
 

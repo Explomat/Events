@@ -1,6 +1,7 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEditConstants = require('../constants/EventEditConstants');
 var EventEditAPI = require('../api/EventEditAPI');
+var filter = require('lodash/filter');
 
 var EventEditActions = {
 	
@@ -317,14 +318,28 @@ var EventEditActions = {
 	},
 
 	files: {
-		uploadFile(name, data){
+		uploadFiles(files){
 			AppDispatcher.handleAction({
-				actionType: EventEditConstants.EVENTEDIT_FILES_UPLOADING_FILE
+				actionType: EventEditConstants.EVENTEDIT_FILES_UPLOADING_FILES
 			});
-			EventEditAPI.uploadFile(name, data).then(function(data){
-				if (data && !data.error) {
+			EventEditAPI.uploadFiles(files).then((uploadedFiles) => {
+				var filesWithoutErrors = filter(uploadedFiles, (file) => {
+					return file.error === '';
+				});
+
+				/*if (isErrors) {
 					AppDispatcher.handleAction({
-						actionType: EventEditConstants.EVENTEDIT_FILES_UPLOADED_FILE,
+						actionType: EventEditConstants.EVENTEDIT_FILES_UPLOADING_FILES_ERROR,
+						error: "Не удалось загрузить файлы"
+					});
+				}*/
+				AppDispatcher.handleAction({
+					actionType: EventEditConstants.EVENTEDIT_FILES_UPLOADED_FILES,
+					files: filesWithoutErrors
+				});
+				/*if (data && !data.error) {
+					AppDispatcher.handleAction({
+						actionType: EventEditConstants.EVENTEDIT_FILES_UPLOADED_FILES,
 						id: data.id,
 						name: data.name
 					});
@@ -334,7 +349,7 @@ var EventEditActions = {
 						actionType: EventEditConstants.EVENTEDIT_FILES_UPLOADING_FILE_ERROR,
 						error: data.error
 					});
-				}
+				}*/
 				
 			}, function(error){
 				AppDispatcher.handleAction({
@@ -342,6 +357,26 @@ var EventEditActions = {
 					error: error
 				});
 			})
+		},
+
+		removeFile(id){
+			EventEditAPI.removeFile(id).then((data) => {
+				var id = data.id;
+				var error = data.error;
+
+				if (error !== ''){
+					AppDispatcher.handleAction({
+						actionType: EventEditConstants.EVENTEDIT_FILES_REMOVE_FILE_ERROR,
+						error: error
+					});
+				}
+				else {
+					AppDispatcher.handleAction({
+						actionType: EventEditConstants.EVENTEDIT_FILES_REMOVE_FILE,
+						id: id
+					});
+				}
+			});
 		}
 	}
 }

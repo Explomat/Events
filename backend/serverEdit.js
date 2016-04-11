@@ -10,13 +10,40 @@
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-function uploadFile(queryObjects) {
-	var index = queryObjects.name.indexOf('.');
-	var type = '';
-	if (index != -1)
-		type = queryObjects.name.substr(index + 1, queryObjects.name.length - index);
+function removeFile(queryObjects) {
+	var fileId = queryObjects.HasProperty('id') ? queryObjects.id : null;
+	var doc = ArrayOptFirstElem(XQuery('sql:select r.id from resource r where r.id=' + fileId));
+	var error = '';
+	try {
+		if (doc != undefined) {
+			DeleteDoc(UrlFromDocID(Int(fileId)));
+		}
+	}
+	catch(e){
+		error = e;
+	}
+	return tools.object_to_text({ id: fileId, error: error + '' }, 'json');
 	
-	//PutFileData("C:\\"+queryObjects.name, queryObjects.Body);
+}
+
+function uploadFile(queryObjects) {
+	var file = queryObjects.Form.file;
+	if (file == null || file == undefined) {
+		return {
+			id: null, 
+			name: null, 
+			error: "Нет файла для загрузки!"
+		}
+	}
+
+	var fileName = file.FileName + '';
+	var lastDotIndex = fileName.lastIndexOf('.');
+	if (lastDotIndex == -1) {
+		lastDotIndex = fileName.length - 1;
+	}
+
+	var fileType = fileName.substr(lastDotIndex + 1, fileName.length - lastDotIndex);
+
 	var error = '';
 
 	try {
@@ -25,19 +52,17 @@ function uploadFile(queryObjects) {
 		docResource.TopElem.person_id = curUserID; 
 		docResource.TopElem.allow_unauthorized_download = true; 
 		docResource.TopElem.allow_download = true; 
-		docResource.TopElem.file_name = queryObjects.name;
-		docResource.TopElem.name = queryObjects.name;
-		docResource.TopElem.type = type;
+		docResource.TopElem.file_name = fileName;
+		docResource.TopElem.name = fileName;
+		docResource.TopElem.type = fileType;
 		docResource.TopElem.person_fullname = userDoc.TopElem.lastname + ' ' + userDoc.TopElem.firstname + ' ' + userDoc.TopElem.middlename;
 		docResource.BindToDb();
-		docResource.TopElem.put_str(queryObjects.Body, queryObjects.name); 
+		docResource.TopElem.put_str(queryObjects.Body, fileName); 
 		docResource.Save();
 	}catch(e){
 		error = e;
 	}
-	
-
-	return tools.object_to_text({ id: docResource.DocID, name: queryObjects.name, error: error }, 'json');
+	return tools.object_to_text({ id: docResource.DocID, name: fileName, error: error }, 'json');
 }
 
 function isAdmin (queryObjects) {

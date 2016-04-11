@@ -1,4 +1,22 @@
 .event-edit-files {
 	margin-top: 20px;
 	height: calc(100% - 40px);
+
+	.event-edit-files__uploading{
+		display: none;
+
+		&.event-edit-files__uploading--display {
+			display: inline-block;
+		}
+	}
+
+	.event-edit-files__list{
+
+		.event-edit-files__file {
+
+			.event-edit-files__file-label{
+				padding-left: 10px;
+			}
+		}
+	}
 }

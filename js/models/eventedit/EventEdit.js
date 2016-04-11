@@ -137,7 +137,11 @@ export default function(args){
 	}
 
 	this.files = {
-		files: []
+
+		files: [],
+
+		//state fields
+		isUploading: false
 	}
 
 	if (args.files.files) {

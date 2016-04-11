@@ -277,6 +277,22 @@ const courses = {
 	}
 }
 
+const files = {
+	uploadedFiles(files){
+		_eventEdit.files.files = _eventEdit.files.files.concat(files);
+		_eventEdit.files.isUploading = false;
+	},
+	removeFile(id){
+		var files = _eventEdit.files.files;
+		_eventEdit.files.files = filter(files, (file) => {
+			return file.id !== id;
+		});
+	},
+	uploadingFiles(){
+		_eventEdit.files.isUploading = true;
+	}
+}
+
 
 
 const EventEditStore = extend({}, EventEmitter.prototype, {
@@ -492,6 +508,20 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			courses.sortTable(action.key, action.isAsc);
 			isEmit = true;
 			break;
+
+		//FILES
+		case EventEditConstants.EVENTEDIT_FILES_UPLOADING_FILES:
+			files.uploadingFiles();
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_FILES_UPLOADED_FILES:
+			files.uploadedFiles(action.files);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_FILES_REMOVE_FILE:
+			files.removeFile(action.id);
+			isEmit = true;
+			break;			
 		default:
 			return true;
 	}

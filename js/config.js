@@ -24,7 +24,8 @@ var servers = [
 			'getEducationMethod',
 			'createNotification',
 			'processingRequest',
-			'uploadFile'
+			'uploadFile',
+			'removeFile'
 		]
 	}
 ]

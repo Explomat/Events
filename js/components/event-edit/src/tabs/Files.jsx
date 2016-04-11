@@ -1,11 +1,26 @@
 import React from 'react';
 import EventEditActions from 'actions/EventEditActions';
+import ComposeLabel from 'components/modules/compose-label';
+import cx from 'classnames';
 import '../style/event-edit-files.scss';
 
 class File extends React.Component {
+
+	handleRemoveFile(){
+		if (this.props.onRemove){
+			this.props.onRemove(this.props.id);
+		}
+	}
+
 	render(){
 		return(
-			<div>{this.props.name}</div>
+			<ComposeLabel 
+				onIconClick={::this.handleRemoveFile} 
+				label={this.props.name} 
+				prevIconClassName="fa fa-file" 
+				postIconClassName="fa fa-remove"
+				className="event-edit-files__file"
+				labelClassName="event-edit-files__file-label"/>
 		);
 	}
 }
@@ -18,26 +33,28 @@ class Files extends React.Component{
 
 	handleChange(e){
 		var files = e.target.files;
-		for (var i = files.length - 1; i >= 0; i--) {
-			let file = files[i];
-			let reader = new FileReader();
-			reader.onload = (e) => {
-				EventEditActions.files.uploadFile(file.name, e.target.result);
-				//console.log(e.target.result);
-			}
-			reader.readAsBinaryString(file);
-		};
+		EventEditActions.files.uploadFiles(files);
+		this.refs.fileInput.value = '';
+	}
+
+	handleRemoveFile(id){
+		EventEditActions.files.removeFile(id);
 	}
 
 	render(){
+		var isUploadingClasses = cx({
+			'event-edit-files__uploading': true,
+			'event-edit-files__uploading--display': this.props.isUploading
+		});
 		return (
 			<div className="event-edit-files">
-				<input onChange={this.handleChange} type="file" name="files[]" multiple />
-				<output id="event-edit-files__list">
-					{this.props.files.map(f => {
-						return <File {...f} />
+				<input ref="fileInput" onChange={::this.handleChange} type="file" multiple className="event-btn"/>
+				<span className={isUploadingClasses}>Загрузка....</span>
+				<div className="event-edit-files__list">
+					{this.props.files.map((f, index) => {
+						return <File key={index} {...f} onRemove={::this.handleRemoveFile}/>
 					})}
-				</output> 
+				</div>
 			</div>
 		);
 	}

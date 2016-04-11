@@ -35,7 +35,12 @@
         padding-right: 10px;
     }
 
-    .compose-label__icon {
+    .compose-label__prev-icon {
+        color: #727272;
+        display: inline-block;
+    }
+
+    .compose-label__post-icon {
         color: #727272;
         display: inline-block;
         position: absolute;

@@ -9,19 +9,25 @@ class ComposeLabel extends React.Component {
         onIconClick: React.PropTypes.func,
         label: React.PropTypes.string.isRequired,
         className: React.PropTypes.string,
-        iconClassName: React.PropTypes.string
+        labelClassName: React.PropTypes.string,
+        prevIconClassName: React.PropTypes.string,
+        postIconClassName: React.PropTypes.string
     }
 
     render() {
         const classes = cx('compose-label', this.props.className);
-        const iconClasses = cx({
-            'compose-label__icon': true,
-            'fa fa-remove': this.props.iconClassName === undefined
-        }, this.props.iconClassName);
+        const labelClasses = cx('compose-label__label', this.props.labelClassName);
+        const prevIconClasses = cx({
+            'compose-label__prev-icon': true
+        }, this.props.prevIconClassName);
+        const postIconClasses = cx({
+            'compose-label__post-icon': true
+        }, this.props.postIconClassName);
         return (
             <span className={classes}>
-                <span className="compose-label__label">{this.props.label}</span>
-                <i onClick={this.props.onIconClick} className={iconClasses}></i>
+                <i onClick={this.props.onIconClick} className={prevIconClasses}></i>
+                <span className={labelClasses}>{this.props.label}</span>
+                <i onClick={this.props.onIconClick} className={postIconClasses}></i>
             </span>
         );
     }
