@@ -127,10 +127,10 @@ class Requests extends React.Component {
 	}
 
 	render(){
-		let overflowClass = cx({
-			"date__overflow": true,
-			"date__overflow--display": !this.props.isDateRequestBeforeBegin
-		});
+		const dateClasses = cx({
+			'date': true,
+			'date--display': this.props.isDateRequestBeforeBegin
+		})
 		return (
 			<div className="event-edit-requests">
 				<div className="is-date-requests">
@@ -138,9 +138,7 @@ class Requests extends React.Component {
 						onChange={this.handleChangeIsDateRequestBeforeBegin} 
 						label="Возможна подача заявок"
 						checked={this.props.isDateRequestBeforeBegin}/>
-					<i className="fa fa-clock-o icon-clock"></i>
-					<div className="date">
-						<div className={overflowClass}></div>
+					<div className={dateClasses}>
 						<div className="date__start">
 							<InputCalendar
 								placeholder="C"

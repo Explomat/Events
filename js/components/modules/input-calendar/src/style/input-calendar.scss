@@ -1,10 +1,17 @@
 .input-calendar {
   width: 100%;
   font-size: 13px;
+  position: relative;
 
   .input-calendar__date {
     width: 100%;
     padding: 4px;
+  }
+
+  .input-calendar__icon{
+    position: absolute;
+    right: 0;
+    bottom: 10px;
   }
 
   .input-calendar__calendar{

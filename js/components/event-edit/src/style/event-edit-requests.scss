@@ -4,19 +4,24 @@
 
 	.is-date-requests {
 	
-		.icon-clock {
+		/* .icon-clock {
 			color: #727272;
 			margin-top: 10px;
 			padding: 5px;
-		}
+		} */
 		.date {
-			position: relative;
+			/* position: relative; */
 			margin-bottom: 20px;
 			padding: 5px;
 			width: 50%;
 			margin-left: 50px;
+			display: none;
 
-			.date__overflow {
+			&.date--display {
+				display: block;
+			}
+
+			/* .date__overflow {
 				position: absolute;
 				top: 0;
 				left: 0;
@@ -29,7 +34,7 @@
 			    &.date__overflow--display {
 			    	display: block;
 			    }
-			}
+			} */
 
 			.date__start {
 				margin-bottom: 10px;
