@@ -48,8 +48,12 @@ class Files extends React.Component{
 		});
 		return (
 			<div className="event-edit-files">
-				<input ref="fileInput" onChange={::this.handleChange} type="file" multiple className="event-btn"/>
-				<span className={isUploadingClasses}>Загрузка....</span>
+				<label className="event-edit-files__upload event-btn">
+					<i className="fa fa-upload event-edit-files__upload-icon"></i>
+					<span className="event-edit-files__upload-text">Загрузить</span>
+					<input ref="fileInput" onChange={::this.handleChange} type="file" multiple style={{display: 'none'}}/>
+				</label>
+				<span className={isUploadingClasses}></span>
 				<div className="event-edit-files__list">
 					{this.props.files.map((f, index) => {
 						return <File key={index} {...f} onRemove={::this.handleRemoveFile}/>

@@ -2,8 +2,16 @@
 	margin-top: 20px;
 	height: calc(100% - 40px);
 
+	.event-edit-testing__sort{
+		width: 30%;
+		display: none;
+
+		&.event-edit-testing__sort--display {
+			display: block;
+		}
+	}
+
 	.event-edit-testing__tests{
-		height: 50%;
 		.event-edit-testing__prev-tests{
 			
 			.event-edit-testing__prev-tests-add{
@@ -48,6 +56,6 @@
 		}
 	}
 	.testing-list{
-		height: calc(50% - 40px);
+		
 	}
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import CheckBox from 'components/modules/checkbox';
+import DropDown from 'components/modules/dropdown';
 import SelectItems from 'components/modules/select-items';
 import Message from 'components/modules/message';
 import Info from 'components/modules/Info';
@@ -11,19 +12,30 @@ import config from 'config';
 import '../style/event-edit-collaborators.scss';
 
 class Buttons extends React.Component {
+
 	render(){
-		let removeClasses = cx({
+		const removeClasses = cx({
 			'event-btn': true,
 			'buttons__remove': true,
-			'buttons__remove--display': this.props.isDisplay
+			'buttons__remove--display': this.props.isDisplayButtons
 		});
-		let notificateClasses = cx({
+		const notificateClasses = cx({
 			'event-btn': true,
 			'buttons__notificate': true,
-			'buttons__notificate--display': this.props.isDisplay
+			'buttons__notificate--display': this.props.isDisplayButtons
+		});
+		const checkboxClasses = cx({
+			'buttons__checkbox': true,
+			'buttons__checkbox--display': this.props.isDisplayCheckBox
+		});
+		const dropDownClasses = cx({
+			'buttons__dropdown': true,
+			'buttons__dropdown--display': this.props.isDisplayCheckBox
 		});
 		return (
 			<div className="buttons">
+				<CheckBox onChange={this.props.onToggleChecked} checked={this.props.checkedAll} className={checkboxClasses}/>
+				<DropDown className={dropDownClasses}  onChange={this.props.handleSort} items={this.props.sortTypes} selectedPayload={this.props.selectedPayload}/>
 				<button onClick={this.props.onAdd} className="event-btn buttons__add">Добавить</button>
 				<button onClick={this.props.onRemove} className={removeClasses}>Удалить</button>
 				<button onClick={this.props.onNotificate} className={notificateClasses}>Отправить уведомление</button>
@@ -102,10 +114,10 @@ class Collaborators extends React.Component {
 	}
 
 	_prepareNotificateForModal(collaborators){
-		let selectedItems = filter(collaborators, (col) => {
+		var selectedItems = filter(collaborators, (col) => {
 			return col.checked;
 		});
-		let notSelectedItems = filter(collaborators, (col) => {
+		var notSelectedItems = filter(collaborators, (col) => {
 			return !col.checked;
 		});
 		return {
@@ -115,7 +127,7 @@ class Collaborators extends React.Component {
 	}
 
 	_getCollaboratorsModal(){
-		let selectedItems = this._prepareCollaboratorsForModal(this.props.collaborators);
+		var selectedItems = this._prepareCollaboratorsForModal(this.props.collaborators);
 		return this.state.isShowModal ? 
 			<SelectItems
 				title="Выберите участников"
@@ -125,13 +137,8 @@ class Collaborators extends React.Component {
 				onSave={this.handleUpdateItems}/> : null;
 	}
 
-	handleSort(e){
-		let target = e.currentTarget;
-		let caret = target.querySelector('.caret');
-		let isAsc = caret.classList.contains('caret--rotate');
-		let targetData = target.getAttribute('data-sort');
-		EventEditActions.collaborators.sortCollaboratorsTable(targetData, isAsc);
-		caret.classList.toggle('caret--rotate');
+	handleSort(e, payload){
+		EventEditActions.collaborators.sortCollaboratorsTable(payload);
 	}
 
 	handleToggleCheckedAll(){
@@ -173,51 +180,36 @@ class Collaborators extends React.Component {
 	}
 
 	render(){
-		let items = this._prepareNotificateForModal(this.props.collaborators);
-		let isShowInfoModal = this.props.infoMessage !== '';
-		let checkBoxContainerClasses = cx({
-			'table-list__header-cell': true,
-			'table-list__header-cell--w1': true,
-			'table-list__header-cell--no-hover': true,
-			'table-list__header-cell--hide': this.props.collaborators.length === 0
+		const items = this._prepareNotificateForModal(this.props.collaborators);
+		const isShowInfoModal = this.props.infoMessage !== '';
+		const isDisplayButtons = this._isSomeChecked() && this.props.collaborators.length > 0;
+		const isDisplayCheckBox = this.props.collaborators.length > 0;
+		const tableClasses = cx({
+			'table-list': true,
+			'collaborators-list': true,
+			'table-list--empty': this.props.collaborators.length === 0
 		});
-		let isDisplayButtons = this._isSomeChecked() && this.props.collaborators.length > 0;
+		const tableDescrClasses = cx({
+			'table-list__description-is-empty': true,
+			'table-list__description-is-empty--display': this.props.collaborators.length === 0
+		});
 		return (
 			<div className="event-edit-collaborators">
-				<Buttons onRemove={this.handleRemoveItems} onNotificate={::this.handleOpenNotificateModal} onAdd={::this.handleOpenModal} isDisplay={isDisplayButtons}/>
-				<div className="table-list collaborators-list">
-					<div className="table-list__header table-list__header--header">
-						<div className="table-list__header-row">
-							<div className={checkBoxContainerClasses}>
-								<CheckBox onChange={::this.handleToggleCheckedAll} checked={this.props.checkedAll}/>
-							</div>
-							<div onClick={this.handleSort} className="table-list__header-cell table-list__header-cell--w30" data-sort="fullname">
-								<span className="table-list__header-cell-name">ФИО</span>
-								<span className="caret table-list__caret"></span>
-							</div>
-							<div onClick={this.handleSort} className="table-list__header-cell table-list__header-cell--w25" data-sort="position">
-								<span className="table-list__header-cell-name">Должность</span>
-								<span className="caret table-list__caret"></span>
-							</div>
-							<div onClick={this.handleSort} className="table-list__header-cell table-list__header-cell--w25" data-sort="subdivision">
-								<span className="table-list__header-cell-name">Подразделение</span>
-								<span className="caret table-list__caret"></span>
-							</div>
-							<div onClick={this.handleSort} className="table-list__header-cell table-list__header-cell--w1" data-sort="isAssist">
-								<span className="table-list__header-cell-name">Статус</span>
-								<span className="caret table-list__caret"></span>
-							</div>
-						</div>
-					</div>
+				<Buttons
+					handleSort={this.handleSort}
+					sortTypes={this.props.sortTypes}
+					selectedPayload={this.props.selectedPayload}
+					onToggleChecked={::this.handleToggleCheckedAll} 
+					checkedAll={this.props.checkedAll}
+					isDisplayCheckBox={isDisplayCheckBox}
+					onRemove={this.handleRemoveItems} 
+					onNotificate={::this.handleOpenNotificateModal} 
+					onAdd={::this.handleOpenModal} 
+					isDisplayButtons={isDisplayButtons}/>
+				<div className={tableClasses}>
+					<span className={tableDescrClasses}>Нет участников</span>
 					<div className="table-list__table">
 						<div className="table-list__header">
-							<div className="table-list__header-row">
-								<div className="table-list__header-cell table-list__header-cell--w1"></div>
-								<div className="table-list__header-cell table-list__header-cell--w30"></div>
-								<div className="table-list__header-cell table-list__header-cell--w25"></div>
-								<div className="table-list__header-cell table-list__header-cell--w25"></div>
-								<div className="table-list__header-cell table-list__header-cell--w1"></div>
-							</div>
 							{this.props.collaborators.map((item, index) => {
 								return <CollaboratorItem key={index} {...item}/>
 							})}

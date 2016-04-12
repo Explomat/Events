@@ -56,7 +56,14 @@ export default function(args){
 		isAutomaticIncludeInCollaborators: args.requests.isAutomaticIncludeInCollaborators || false, //Автоматически включать в состав участников
 		isApproveByBoss: args.requests.isApproveByBoss || false, //Необходимо подтверждение от непосредсвенного руководителя
 		isApproveByTutor: args.requests.isApproveByTutor || false, //Необходимо подтверждение ответсвенного за мероприятие
-		requestItems: []
+		requestItems: [],
+
+		//state fields
+		sortTypes: [
+			{ payload: '{"key": "fullname", "isAsc": "true"}', text: 'Сортировать по ФИО(по убыванию)' },
+			{ payload: '{"key": "fullname", "isAsc": "false"}', text: 'Сортировать по ФИО(по возрастанию)' }
+		],
+		selectedPayload: '{"key": "fullname", "isAsc": "true"}'
 	}
 	if (args.requests.requestItems) {
 		this.requests.requestItems = args.requests.requestItems.map((rq) => {
@@ -71,7 +78,12 @@ export default function(args){
 		//state fields
 		checkedAll: false,
 		infoMessage: '',
-		infoStatus: ''
+		infoStatus: '',
+		sortTypes: [
+			{ payload: '{"key": "fullname", "isAsc": "true"}', text: 'Сортировать по ФИО(по убыванию)' },
+			{ payload: '{"key": "fullname", "isAsc": "false"}', text: 'Сортировать по ФИО(по возрастанию)' }
+		],
+		selectedPayload: '{"key": "fullname", "isAsc": "true"}'
 	}
 	if (args.collaborators) {
 		this.collaborators.collaborators = args.collaborators.map(function(col){
@@ -88,14 +100,25 @@ export default function(args){
 		checkedAllTutors: false,
 		checkedAllLectors: false,
 		infoMessage: '',
-		infoStatus: ''
+		infoStatus: '',
+
+		sortTutorTypes: [
+			{ payload: '{"key": "fullname", "isAsc": "true"}', text: 'Сортировать по ФИО(по убыванию)' },
+			{ payload: '{"key": "fullname", "isAsc": "false"}', text: 'Сортировать по ФИО(по возрастанию)' }
+		],
+		selectedTutorPayload: '{"key": "fullname", "isAsc": "true"}',
+		sortLectorTypes: [
+			{ payload: '{"key": "fullname", "isAsc": "true"}', text: 'Сортировать по ФИО(по убыванию)' },
+			{ payload: '{"key": "fullname", "isAsc": "false"}', text: 'Сортировать по ФИО(по возрастанию)' }
+		],
+		selectedLectorPayload: '{"key": "fullname", "isAsc": "true"}'
 	}
-	if (args.tutors) {
+	if (args.tutors.tutors) {
 		this.tutors.tutors = args.tutors.tutors.map(function(t){
 			return new Tutor(t);
 		});
 	}
-	if (args.lectors) {
+	if (args.tutors.lectors) {
 		this.tutors.lectors = args.tutors.lectors.map(function(l){
 			return new Lector(l);
 		});
@@ -108,7 +131,14 @@ export default function(args){
 		testingList:[],
 		isPrevTests: args.testing.isPrevTests || false,
 		isPostTests: args.testing.isPostTests || false,
-		isPostTestOnlyForAssisst: args.testing.isPostTestOnlyForAssisst || false
+		isPostTestOnlyForAssisst: args.testing.isPostTestOnlyForAssisst || false,
+
+		//state fields
+		sortTypes: [
+			{ payload: '{"key": "fullname", "isAsc": "true"}', text: 'Сортировать по ФИО(по убыванию)' },
+			{ payload: '{"key": "fullname", "isAsc": "false"}', text: 'Сортировать по ФИО(по возрастанию)' }
+		],
+		selectedPayload: '{"key": "fullname", "isAsc": "true"}'
 	}
 	
 	if (args.testing.prevTests) {
@@ -121,6 +151,7 @@ export default function(args){
 			return new Test(t);
 		});
 	}
+
 	if (args.testing.testingList) {
 		this.testing.testingList = args.testing.testingList.map(function(lt){
 			return new CollaboratorTest(lt);

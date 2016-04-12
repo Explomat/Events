@@ -1,7 +1,9 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import EventEditActions from 'actions/EventEditActions';
 import RequestStatuses from 'utils/eventedit/RequestStatuses';
 import CheckBox from 'components/modules/checkbox';
+import DropDown from 'components/modules/dropdown';
 import InputCalendar from 'components/modules/input-calendar';
 import RejectReasonInfo from '../RejectReasonInfo';
 import cx from 'classnames';
@@ -26,21 +28,24 @@ class RequestItem extends React.Component {
 	}
 
 	render(){
-		let {fullname, subdivision, position, status} = this.props;
-		let buttonsClasses = cx({
+		const {fullname, subdivision, position, status} = this.props;
+		const buttonsClasses = cx({
 			'request-list__buttons': true,
 			'request-list__buttons--display': status === RequestStatuses.keys.active
 		});
-		let statusAddedClasses = cx({
+		const statusAddedClasses = cx({
 			"fa fa-plus": true, 
 			"request-list__status-added": true, 
 			"request-list__status-added--display": status === RequestStatuses.keys.close});
-		let statusRemovedClasses = cx({
+		const statusRemovedClasses = cx({
 			"fa fa-minus": true,
 			"request-list__status-removed": true,
 			"request-list__status-removed--display": status === RequestStatuses.keys.ignore});
 		return (
 			<div className="table-list__body-row">
+				<div className="table-list__body-cell">
+					<i className="fa fa-user"></i>
+				</div>
 				<div className="table-list__body-cell">{fullname}</div>
 				<div className="table-list__body-cell">{position}</div>
 				<div className="table-list__body-cell">{subdivision}</div>
@@ -70,10 +75,25 @@ class Requests extends React.Component {
 		this.handleIgnoreStatus = this.handleIgnoreStatus.bind(this);
 	}
 
+	componentDidMount(){
+		this._updateHeight();
+	}
+
+	componentDidUpdate(){
+		this._updateHeight();
+	}
+
 	state = {
 		isShowRejectReasonInfo: false,
 		rejectRequestId: null,
 		rejectRequestStatus: null
+	}
+
+	_updateHeight(){
+		var height = ReactDOM.findDOMNode(this).clientHeight;
+		var base = this.refs.base;
+		var table = this.refs.table;
+		table.style.height = (height - base.clientHeight - 20) + 'px';
 	}
 
 	handleChangeIsDateRequestBeforeBegin(checked){
@@ -100,13 +120,15 @@ class Requests extends React.Component {
 		EventEditActions.requests.changeIsApproveByTutor(checked);
 	}
 
-	handleSort(e){
-		let target = e.currentTarget;
-		let caret = target.querySelector('.caret');
-		let isAsc = caret.classList.contains('caret--rotate');
-		let targetData = target.getAttribute('data-sort');
+	handleSort(e, payload){
+		EventEditActions.requests.sortRequestTable(payload);
+		/*var target = e.currentTarget;
+		var caret = target.querySelector('.caret');
+		var isAsc = caret.classList.contains('caret--rotate');
+		var targetData = target.getAttribute('data-sort');
 		EventEditActions.requests.sortRequestTable(targetData, isAsc);
-		caret.classList.toggle('caret--rotate');
+		caret.classList.toggle('caret--rotate');*/
+
 	}
 
 	handleIgnoreStatus(id, status){
@@ -130,76 +152,74 @@ class Requests extends React.Component {
 		const dateClasses = cx({
 			'date': true,
 			'date--display': this.props.isDateRequestBeforeBegin
-		})
+		});
+		const tableClasses = cx({
+			'table-list': true,
+			'request-list': true,
+			'table-list--empty': this.props.requestItems.length === 0
+		});
+		const tableDescrClasses = cx({
+			'table-list__description-is-empty': true,
+			'table-list__description-is-empty--display': this.props.requestItems.length === 0
+		});
+		const dropdownSortclasses = cx({
+			'event-edit-requests__base-sort': true,
+			'event-edit-requests__base-sort--display': this.props.requestItems.length > 0
+		});
 		return (
 			<div className="event-edit-requests">
-				<div className="is-date-requests">
+				<div ref="base" className="event-edit-requests__base">
+					<div className="is-date-requests">
+						<CheckBox 
+							onChange={this.handleChangeIsDateRequestBeforeBegin} 
+							label="Возможна подача заявок"
+							checked={this.props.isDateRequestBeforeBegin}/>
+						<div className={dateClasses}>
+							<div className="date__start">
+								<InputCalendar
+									placeholder="C"
+									className="date__calendar" 
+									date={this.props.requestBeginDate} 
+									onSave={this.handleChangeRequestBeginDate} 
+									prevMonthIcon='fa fa-angle-left'
+									nextMonthIcon='fa fa-angle-right'/>
+							</div>
+							<div className="date__finish">
+								<InputCalendar
+									placeholder="По"
+									className="date__calendar" 
+									date={this.props.requestOverDate} 
+									onSave={this.handleChangeRequestOverDate} 
+									prevMonthIcon='fa fa-angle-left'
+									nextMonthIcon='fa fa-angle-right'/>
+							</div>
+						</div>
+					</div>
 					<CheckBox 
-						onChange={this.handleChangeIsDateRequestBeforeBegin} 
-						label="Возможна подача заявок"
-						checked={this.props.isDateRequestBeforeBegin}/>
-					<div className={dateClasses}>
-						<div className="date__start">
-							<InputCalendar
-								placeholder="C"
-								className="date__calendar" 
-								date={this.props.requestBeginDate} 
-								onSave={this.handleChangeRequestBeginDate} 
-								prevMonthIcon='fa fa-angle-left'
-								nextMonthIcon='fa fa-angle-right'/>
-						</div>
-						<div className="date__finish">
-							<InputCalendar
-								placeholder="По"
-								className="date__calendar" 
-								date={this.props.requestOverDate} 
-								onSave={this.handleChangeRequestOverDate} 
-								prevMonthIcon='fa fa-angle-left'
-								nextMonthIcon='fa fa-angle-right'/>
-						</div>
-					</div>
+						onChange={this.handleChangeIsAutomaticIncludeInCollaborators} 
+						label="Автоматически включать в состав участников"
+						checked={this.props.isAutomaticIncludeInCollaborators}/>
+					<br />
+					<CheckBox 
+						onChange={this.handleChangeIsApproveByBoss} 
+						label="Необходимо подтверждение от непосредственного руководителя"
+						checked={this.props.isApproveByBoss}/>
+					<br />
+					<CheckBox 
+						onChange={this.handleChangeIsApproveByTutor} 
+						label="Необходимо подтверждение от ответственного за мероприятие"
+						checked={this.props.isApproveByTutor}/>
+					<br />
+					<DropDown
+						className={dropdownSortclasses}
+						onChange={::this.handleSort} 
+						items={this.props.sortTypes}
+						selectedPayload={this.props.selectedPayload}/>
 				</div>
-				<CheckBox 
-					onChange={this.handleChangeIsAutomaticIncludeInCollaborators} 
-					label="Автоматически включать в состав участников"
-					checked={this.props.isAutomaticIncludeInCollaborators}/>
-				<CheckBox 
-					onChange={this.handleChangeIsApproveByBoss} 
-					label="Необходимо подтверждение от непосредственного руководителя"
-					checked={this.props.isApproveByBoss}/>
-				<CheckBox 
-					onChange={this.handleChangeIsApproveByTutor} 
-					label="Необходимо подтверждение от ответственного за мероприятие"
-					checked={this.props.isApproveByTutor}/>
-				<div className="table-list request-list">
-					<div className="table-list__header table-list__header--header">
-						<div className="table-list__header-row">
-							<div onClick={this.handleSort} className="table-list__header-cell table-list__header-cell--w30" data-sort="fullname">
-								<span className="table-list__header-cell-name">ФИО</span>
-								<span className="caret table-list__caret"></span>
-							</div>
-							<div onClick={this.handleSort} className="table-list__header-cell table-list__header-cell--w25" data-sort="position">
-								<span className="table-list__header-cell-name">Должность</span>
-								<span className="caret table-list__caret"></span>
-							</div>
-							<div onClick={this.handleSort} className="table-list__header-cell table-list__header-cell--w25" data-sort="subdivision">
-								<span className="table-list__header-cell-name">Подразделение</span>
-								<span className="caret table-list__caret"></span>
-							</div>
-							<div onClick={this.handleSort} className="table-list__header-cell table-list__header-cell--w20" data-sort="status">
-								<span className="table-list__header-cell-name">Статус</span>
-								<span className="caret table-list__caret"></span>
-							</div>
-						</div>
-					</div>
+				<div ref="table" className={tableClasses}>
+					<span className={tableDescrClasses}>Нет заявок</span>
 					<div className="table-list__table">
 						<div className="table-list__header">
-							<div className="table-list__header-row">
-								<div className="table-list__header-cell table-list__header-cell--w30"></div>
-								<div className="table-list__header-cell table-list__header-cell--w25"></div>
-								<div className="table-list__header-cell table-list__header-cell--w25"></div>
-								<div className="table-list__header-cell table-list__header-cell--w20"></div>
-							</div>
 							{this.props.requestItems.map((item, index) => {
 								return (<RequestItem 
 											key={index} 

@@ -99,12 +99,15 @@ const requests = {
 	changeIsApproveByTutor(checked){
 		_eventEdit.requests.isApproveByTutor = checked;
 	},
-	sortTable(key, isAsc){
-		sortTable(_eventEdit.requests.requestItems, key, isAsc);
+	sortTable(payload){
+		var data = JSON.parse(payload);
+		var isAsc = data.isAsc === 'true';
+		sortTable(_eventEdit.requests.requestItems, data.key, isAsc);
+		_eventEdit.requests.selectedPayload = payload;
 	},
 	changeRequestStatus(id, status){
-		let requestItems = _eventEdit.requests.requestItems;
-		let item = find(requestItems, (item) => {
+		var requestItems = _eventEdit.requests.requestItems;
+		var item = find(requestItems, (item) => {
 			return item.id === id;
 		});
 		if (item){
@@ -115,16 +118,19 @@ const requests = {
 
 const collaborators = {
 	toggleIsAssist(id, isAssist){
-		let _collaborators = _eventEdit.collaborators.collaborators;
-		let item = find(_collaborators, (item) => {
+		var _collaborators = _eventEdit.collaborators.collaborators;
+		var item = find(_collaborators, (item) => {
 			return item.id === id;
 		});
 		if (item){
 			item.isAssist = isAssist;
 		}
 	},
-	sortTable(key, isAsc){
-		sortTable(_eventEdit.collaborators.collaborators, key, isAsc);
+	sortTable(payload){
+		var data = JSON.parse(payload);
+		var isAsc = data.isAsc === 'true';
+		sortTable(_eventEdit.collaborators.collaborators, data.key, isAsc);
+		_eventEdit.collaborators.selectedPayload = payload;
 	},
 	toggleCheckedAll(checked){
 		var container = _eventEdit.collaborators;
@@ -137,7 +143,7 @@ const collaborators = {
 		toggleChecked(container, arr, id, checked, 'checkedAll');
 	},
 	removeItems(){
-		let _collaborators = _eventEdit.collaborators.collaborators;
+		var _collaborators = _eventEdit.collaborators.collaborators;
 		_collaborators = filter(_collaborators, (col) => {
 			return !col.checked;
 		});
@@ -177,11 +183,17 @@ const tutors = {
 		var arr = _eventEdit.tutors.lectors;
 		toggleChecked(container, arr, id, checked, 'checkedAllLectors');
 	},
-	sortTutorsTable(key, isAsc){
-		sortTable(_eventEdit.tutors.tutors, key, isAsc);
+	sortTutorsTable(payload){
+		var data = JSON.parse(payload);
+		var isAsc = data.isAsc === 'true';
+		sortTable(_eventEdit.tutors.tutors, data.key, isAsc);
+		_eventEdit.tutors.selectedTutorPayload = payload;
 	},
-	sortLectorsTable(key, isAsc){
-		sortTable(_eventEdit.tutors.lectors, key, isAsc);
+	sortLectorsTable(payload){
+		var data = JSON.parse(payload);
+		var isAsc = data.isAsc === 'true';
+		sortTable(_eventEdit.tutors.lectors, data.key, isAsc);
+		_eventEdit.tutors.selectedLectorPayload = payload;
 	},
 	toggleCheckedAllTutors(checked){
 		var container = _eventEdit.tutors;
@@ -319,8 +331,8 @@ const EventEditStore = extend({}, EventEmitter.prototype, {
 });
 
 EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
-	let action = payload.action;
-	let isEmit = false;
+	var action = payload.action;
+	var isEmit = false;
 
 	switch(action.actionType) {
 
@@ -389,7 +401,7 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			isEmit = true;
 			break;
 		case EventEditConstants.EVENTEDIT_REQUESTS_SORT_TABLE:
-			requests.sortTable(action.key, action.isAsc);
+			requests.sortTable(action.payload);
 			isEmit = true;
 			break;
 		case EventEditConstants.EVENTEDIT_REQUESTS_CHANGE_STATUS:
@@ -403,7 +415,7 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			isEmit = true;
 			break;
 		case EventEditConstants.EVENTEDIT_COLLABORATORS_SORT_TABLE:
-			collaborators.sortTable(action.key, action.isAsc);
+			collaborators.sortTable(action.payload);
 			isEmit = true;
 			break;
 		case EventEditConstants.EVENTEDIT_COLLABORATORS_TOGGLE_CHECKED_ALL:
@@ -441,11 +453,11 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			isEmit = true;
 			break;
 		case EventEditConstants.EVENTEDIT_TUTORS_SORT_TUTORS_TABLE:
-			tutors.sortTutorsTable(action.key, action.isAsc);
+			tutors.sortTutorsTable(action.payload);
 			isEmit = true;
 			break;
 		case EventEditConstants.EVENTEDIT_TUTORS_SORT_LECTORS_TABLE:
-			tutors.sortLectorsTable(action.key, action.isAsc);
+			tutors.sortLectorsTable(action.payload);
 			isEmit = true;
 			break;
 		case EventEditConstants.EVENTEDIT_TUTORS_TOGGLE_CHECKED_ALL_TUTORS:

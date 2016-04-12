@@ -5,7 +5,4 @@ module.exports = function(args){
 	this.fullname = args.fullname || '';
 	this.assessmentName = args.assessmentName || '';
 	this.score = args.score || '';
-
-	//state fields
-	this.checked = false;
 }

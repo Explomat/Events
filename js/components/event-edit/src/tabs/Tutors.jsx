@@ -1,5 +1,6 @@
 import React from 'react';
 import CheckBox from 'components/modules/checkbox';
+import DropDown from 'components/modules/dropdown';
 import SelectItems from 'components/modules/select-items';
 import EventEditActions from 'actions/EventEditActions';
 import {some} from 'lodash';
@@ -15,8 +16,18 @@ class Buttons extends React.Component {
 			'buttons__remove': true,
 			'buttons__remove--display': this.props.isDisplay
 		});
+		const checkboxClasses = cx({
+			'buttons__checkbox': true,
+			'buttons__checkbox--display': this.props.isDisplayCheckBox
+		});
+		const dropDownClasses = cx({
+			'buttons__dropdown': true,
+			'buttons__dropdown--display': this.props.isDisplayCheckBox
+		});
 		return (
 			<div className="buttons">
+				<CheckBox onChange={this.props.onChecked} checked={this.props.checked} className={checkboxClasses}/>
+				<DropDown className={dropDownClasses}  onChange={this.props.handleSort} items={this.props.sortTypes} selectedPayload={this.props.selectedPayload}/>
 				<button onClick={this.props.onAdd} className="event-btn buttons__add">Добавить</button>
 				<button onClick={this.props.onRemove} className={removeClasses}>Удалить</button>
 			</div>
@@ -154,22 +165,12 @@ class Tutors extends React.Component {
 				onSave={this.handleUpdateLectors}/> : null;
 	}
 
-	handleSortTutors(e){
-		let target = e.currentTarget;
-		let caret = target.querySelector('.caret');
-		let isAsc = caret.classList.contains('caret--rotate');
-		let targetData = target.getAttribute('data-sort');
-		EventEditActions.tutors.sortTutorsTable(targetData, isAsc);
-		caret.classList.toggle('caret--rotate');
+	handleSortTutors(e, payload){
+		EventEditActions.tutors.sortTutorsTable(payload);
 	}
 
-	handleSortLectors(e){
-		let target = e.currentTarget;
-		let caret = target.querySelector('.caret');
-		let isAsc = caret.classList.contains('caret--rotate');
-		let targetData = target.getAttribute('data-sort');
-		EventEditActions.tutors.sortLectorsTable(targetData, isAsc);
-		caret.classList.toggle('caret--rotate');
+	handleSortLectors(e, payload){
+		EventEditActions.tutors.sortLectorsTable(payload);
 	}
 
 	handleToggleCheckedAllTutors(){
@@ -215,58 +216,46 @@ class Tutors extends React.Component {
 	}
 
 	render(){
-		let checkBoxContainerTutorsClasses = cx({
-			'table-list__header-cell': true,
-			'table-list__header-cell--w1': true,
-			'table-list__header-cell--no-hover': true,
-			'table-list__header-cell--hide': this.props.tutors.length === 0
+		const isDisplayTutorsButtons = this._isSomeChecked(this.props.tutors) && this.props.tutors.length > 0;
+		const isDisplayLectorsButtons = this._isSomeChecked(this.props.lectors) && this.props.lectors.length > 0;
+		const isDisplayTutorsCheckBox = this.props.tutors.length > 0;
+		const isDisplayLectorsCheckBox = this.props.lectors.length > 0;
+		const tableTutorsClasses = cx({
+			'table-list': true,
+			'tutor-list': true,
+			'table-list--empty': this.props.tutors.length === 0
 		});
-		let checkBoxContainerLectorsClasses = cx({
-			'table-list__header-cell': true,
-			'table-list__header-cell--w1': true,
-			'table-list__header-cell--no-hover': true,
-			'table-list__header-cell--hide': this.props.lectors.length === 0
+		const tableLectorsClasses = cx({
+			'table-list': true,
+			'lector-list': true,
+			'table-list--empty': this.props.lectors.length === 0
 		});
-		let isDisplayTutorsButtons = this._isSomeChecked(this.props.tutors) && this.props.tutors.length > 0;
-		let isDisplayLectorsButtons = this._isSomeChecked(this.props.lectors) && this.props.lectors.length > 0;
+		const tableDescTutorsrClasses = cx({
+			'table-list__description-is-empty': true,
+			'table-list__description-is-empty--display': this.props.tutors.length === 0
+		});
+		const tableDescrLectorsClasses = cx({
+			'table-list__description-is-empty': true,
+			'table-list__description-is-empty--display': this.props.lectors.length === 0
+		});
 		return (
 			<div className="event-edit-tutors">
 				<div className="tutors">
-					<Buttons onRemove={this.handleRemoveTutors} onAdd={::this.handleOpenTutorsModal} isDisplay={isDisplayTutorsButtons}/>
+					<Buttons
+						isDisplayCheckBox={isDisplayTutorsCheckBox}
+						onChecked={::this.handleToggleCheckedAllTutors}
+						checked={this.props.checkedAllTutors}
+						handleSort={this.handleSortTutors}
+						sortTypes={this.props.sortTutorTypes}
+						selectedPayload={this.props.selectedTutorPayload} 
+						onRemove={this.handleRemoveTutors} 
+						onAdd={::this.handleOpenTutorsModal} 
+						isDisplay={isDisplayTutorsButtons}/>
 					<strong className="tutors__description">Ответственные</strong>
-					<div className="table-list tutor-list">
-						<div className="table-list__header table-list__header--header">
-							<div className="table-list__header-row">
-								<div className={checkBoxContainerTutorsClasses}>
-									<CheckBox onChange={::this.handleToggleCheckedAllTutors} checked={this.props.checkedAllTutors}/>
-								</div>
-								<div onClick={this.handleSortTutors} className="table-list__header-cell table-list__header-cell--w30" data-sort="fullname">
-									<span className="table-list__header-cell-name">ФИО</span>
-									<span className="caret table-list__caret"></span>
-								</div>
-								<div onClick={this.handleSortTutors} className="table-list__header-cell table-list__header-cell--w25" data-sort="position">
-									<span className="table-list__header-cell-name">Должность</span>
-									<span className="caret table-list__caret"></span>
-								</div>
-								<div onClick={this.handleSortTutors} className="table-list__header-cell table-list__header-cell--w25" data-sort="subdivision">
-									<span className="table-list__header-cell-name">Подразделение</span>
-									<span className="caret table-list__caret"></span>
-								</div>
-								<div onClick={this.handleSortTutors} className="table-list__header-cell table-list__header-cell--w1" data-sort="main">
-									<span className="table-list__header-cell-name">Статус</span>
-									<span className="caret table-list__caret"></span>
-								</div>
-							</div>
-						</div>
+					<div className={tableTutorsClasses}>
+						<span className={tableDescTutorsrClasses}>Нет ответственных</span>
 						<div className="table-list__table">
 							<div className="table-list__header">
-								<div className="table-list__header-row">
-									<div className="table-list__header-cell table-list__header-cell--w1"></div>
-									<div className="table-list__header-cell table-list__header-cell--w30">ФИО</div>
-									<div className="table-list__header-cell table-list__header-cell--w25">Должность</div>
-									<div className="table-list__header-cell table-list__header-cell--w25">Подразделение</div>
-									<div className="table-list__header-cell table-list__header-cell--w1">Статус</div>
-								</div>
 								{this.props.tutors.map((item, index) => {
 									return <TutorItem key={index} {...item}/>
 								})}
@@ -276,31 +265,21 @@ class Tutors extends React.Component {
 					</div>
 				</div>
 				<div className="lectors">
-					<Buttons onRemove={this.handleRemoveLectors} onAdd={::this.handleOpenLectorsModal} isDisplay={isDisplayLectorsButtons}/>
+					<Buttons
+						isDisplayCheckBox={isDisplayLectorsCheckBox}
+						onChecked={::this.handleToggleCheckedAllLectors}
+						checked={this.props.checkedAllLectors}
+						handleSort={this.handleSortLectors}
+						sortTypes={this.props.sortLectorTypes}
+						selectedPayload={this.props.selectedLectorPayload}  
+						onRemove={this.handleRemoveLectors} 
+						onAdd={::this.handleOpenLectorsModal} 
+						isDisplay={isDisplayLectorsButtons}/>
 					<strong className="lectors__description">Преподаватели</strong>
-					<div className="table-list lector-list">
-						<div className="table-list__header table-list__header--header">
-							<div className="table-list__header-row">
-								<div className={checkBoxContainerLectorsClasses}>
-									<CheckBox onChange={::this.handleToggleCheckedAllLectors} checked={this.props.checkedAllLectors}/>
-								</div>
-								<div onClick={this.handleSortLectors} className="table-list__header-cell table-list__header-cell--w30" data-sort="fullname">
-									<span className="table-list__header-cell-name">ФИО</span>
-									<span className="caret table-list__caret"></span>
-								</div>
-								<div onClick={this.handleSortLectors} className="table-list__header-cell table-list__header-cell--w25" data-sort="type">
-									<span className="table-list__header-cell-name">Тип</span>
-									<span className="caret table-list__caret"></span>
-								</div>
-							</div>
-						</div>
+					<div className={tableLectorsClasses}>
+						<span className={tableDescrLectorsClasses}>Нет преподавателей</span>
 						<div className="table-list__table">
 							<div className="table-list__header">
-								<div className="table-list__header-row">
-									<div className="table-list__header-cell table-list__header-cell--w1"></div>
-									<div className="table-list__header-cell table-list__header-cell--w30"></div>
-									<div className="table-list__header-cell table-list__header-cell--w25"></div>
-								</div>
 								{this.props.lectors.map((item, index) => {
 									return <LectorItem key={index} {...item}/>
 								})}

@@ -1,5 +1,7 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import CheckBox from 'components/modules/checkbox';
+import DropDown from 'components/modules/dropdown';
 import SelectItems from 'components/modules/select-items';
 import ComposeLabel from 'components/modules/compose-label';
 import EventEditActions from 'actions/EventEditActions';
@@ -43,7 +45,7 @@ class Tests extends React.Component {
 	}
 
 	_getPrevTestsModal(){
-		let selectedItems = this._prepareTestsListForModal(this.props.prevTests);
+		var selectedItems = this._prepareTestsListForModal(this.props.prevTests);
 		return this.state.isShowPrevTestsModal ? 
 			<SelectItems
 				title="Выберите тесты"
@@ -54,7 +56,7 @@ class Tests extends React.Component {
 	}
 
 	_getPostTestsModal(){
-		let selectedItems = this._prepareTestsListForModal(this.props.postTests);
+		var selectedItems = this._prepareTestsListForModal(this.props.postTests);
 		return this.state.isShowPostTestsModal ? 
 			<SelectItems
 				title="Выберите тесты"
@@ -159,17 +161,10 @@ class TestingItem extends React.Component {
 		EventEditActions.testing.toggleIsAssist(this.props.id, !this.props.isAssist);
 	}
 
-	handleToggleChecked(){
-		EventEditActions.testing.toggleChecked(this.props.id, !this.props.checked);
-	}
-
 	render(){
-		const {fullname, assessmentName, score, checked} = this.props;
+		const {fullname, assessmentName, score} = this.props;
 		return (
 			<div className="table-list__body-row">
-				<div className="table-list__body-cell">
-					<CheckBox onChange={::this.handleToggleChecked} checked={checked}/>
-				</div>
 				<div className="table-list__body-cell">{fullname}</div>
 				<div className="table-list__body-cell">{assessmentName}</div>
 				<div className="table-list__body-cell">{score}</div>
@@ -180,13 +175,24 @@ class TestingItem extends React.Component {
 
 class Testing extends React.Component {
 
-	handleSort(e){
-		let target = e.currentTarget;
-		let caret = target.querySelector('.caret');
-		let isAsc = caret.classList.contains('caret--rotate');
-		let targetData = target.getAttribute('data-sort');
-		EventEditActions.testing.sortTable(targetData, isAsc);
-		caret.classList.toggle('caret--rotate');
+	componentDidMount(){
+		this._updateHeight();
+	}
+
+	componentDidUpdate(){
+		this._updateHeight();
+	}
+
+	_updateHeight(){
+		var height = ReactDOM.findDOMNode(this).clientHeight;
+		var tests = ReactDOM.findDOMNode(this.refs.tests);
+		var table = this.refs.table;
+		var dropdownHeight = this.props.testingList.length > 0 ? 35 : 0;
+		table.style.height = (height - tests.clientHeight - dropdownHeight - 20) + 'px';
+	}
+
+	handleSort(e, payload){
+		EventEditActions.testing.sortTable(payload);
 	}
 
 	handleToggleCheckedAll(){
@@ -202,43 +208,31 @@ class Testing extends React.Component {
 	}
 
 	render(){
-		const checkBoxContainerClasses = cx({
-			'table-list__header-cell': true,
-			'table-list__header-cell--w1': true,
-			'table-list__header-cell--no-hover': true,
-			'table-list__header-cell--hide': this.props.testingList.length === 0
+		const tableClasses = cx({
+			'table-list': true,
+			'testing-list': true,
+			'table-list--empty': this.props.testingList.length === 0
+		});
+		const tableDescrClasses = cx({
+			'table-list__description-is-empty': true,
+			'table-list__description-is-empty--display': this.props.testingList.length === 0
+		});
+		const dropdownSortClasses = cx({
+			'event-edit-testing__sort': true,
+			'event-edit-testing__sort--display': this.props.testingList.length > 0
 		});
 		return (
 			<div className="event-edit-testing">
-				<Tests {...pick(this.props, ['isPrevTests', 'isPostTests', 'isPostTestOnlyForAssisst', 'postTests', 'prevTests'])}/>
-				<div className="table-list testing-list">
-					<div className="table-list__header table-list__header--header">
-						<div className="table-list__header-row">
-							<div className={checkBoxContainerClasses}>
-								<CheckBox onChange={::this.handleToggleCheckedAll} checked={this.props.checkedAll}/>
-							</div>
-							<div onClick={this.handleSort} className="table-list__header-cell table-list__header-cell--w40" data-sort="fullname">
-								<span className="table-list__header-cell-name">ФИО</span>
-								<span className="caret table-list__caret"></span>
-							</div>
-							<div onClick={this.handleSort} className="table-list__header-cell table-list__header-cell--w40" data-sort="assessmentName">
-								<span className="table-list__header-cell-name">Тест</span>
-								<span className="caret table-list__caret"></span>
-							</div>
-							<div onClick={this.handleSort} className="table-list__header-cell table-list__header-cell--w20" data-sort="score">
-								<span className="table-list__header-cell-name">Результат</span>
-								<span className="caret table-list__caret"></span>
-							</div>
-						</div>
-					</div>
+				<Tests ref="tests" {...pick(this.props, ['isPrevTests', 'isPostTests', 'isPostTestOnlyForAssisst', 'postTests', 'prevTests'])}/>
+				<DropDown
+					className={dropdownSortClasses}
+					onChange={::this.handleSort} 
+					items={this.props.sortTypes}
+					selectedPayload={this.props.selectedPayload}/>
+				<div ref="table" className={tableClasses}>
+					<span className={tableDescrClasses}>Нет тестов</span>
 					<div className="table-list__table">
 						<div className="table-list__header">
-							<div className="table-list__header-row">
-								<div className="table-list__header-cell table-list__header-cell--w1"></div>
-								<div className="table-list__header-cell table-list__header-cell--w40"></div>
-								<div className="table-list__header-cell table-list__header-cell--w40"></div>
-								<div className="table-list__header-cell table-list__header-cell--w20"></div>
-							</div>
 							{this.props.testingList.map((item, index) => {
 								return <TestingItem key={index} {...item}/>
 							})}

@@ -2,6 +2,24 @@
 	height: 100%;
 	overflow: hidden;
 	margin-top: 20px;
+	position: relative;
+
+	&.table-list--empty {
+		border: 1px solid #ccc;
+	}
+
+	.table-list__description-is-empty{
+		display: none;
+		position: absolute;
+		top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #ccc;
+
+        &.table-list__description-is-empty--display{
+        	display: inline-block;
+        }
+	}
 
 	.table-list__header {
 		display: table;
@@ -76,10 +94,10 @@
 
 	.table-list__table {
 		position: relative;
-	    overflow-y: scroll;
+	    overflow-y: auto;
 	    width: 100%;
 	    height: 100%;
-	    margin-top: -35px;
+	    /* margin-top: -35px; */
 		
 		.table-list__body-row{
 			display: table-row;

@@ -101,11 +101,10 @@ var EventEditActions = {
 				checked: checked
 			});
 		},
-		sortRequestTable(key, isAsc){
+		sortRequestTable(payload){
 			AppDispatcher.handleAction({
 				actionType: EventEditConstants.EVENTEDIT_REQUESTS_SORT_TABLE,
-				key: key,
-				isAsc: isAsc
+				payload: payload
 			});
 		},
 		changeRequestStatus(id, status, reason){
@@ -129,11 +128,10 @@ var EventEditActions = {
 				isAssist: isAssist
 			});
 		},
-		sortCollaboratorsTable(key, isAsc){
+		sortCollaboratorsTable(payload){
 			AppDispatcher.handleAction({
 				actionType: EventEditConstants.EVENTEDIT_COLLABORATORS_SORT_TABLE,
-				key: key,
-				isAsc: isAsc
+				payload: payload
 			});
 		},
 		toggleCheckedAll(checked){
@@ -204,18 +202,16 @@ var EventEditActions = {
 				checked: checked
 			});
 		},
-		sortTutorsTable(key, isAsc){
+		sortTutorsTable(payload){
 			AppDispatcher.handleAction({
 				actionType: EventEditConstants.EVENTEDIT_TUTORS_SORT_TUTORS_TABLE,
-				key: key,
-				isAsc: isAsc
+				payload: payload
 			});
 		},
-		sortLectorsTable(key, isAsc){
+		sortLectorsTable(payload){
 			AppDispatcher.handleAction({
 				actionType: EventEditConstants.EVENTEDIT_TUTORS_SORT_LECTORS_TABLE,
-				key: key,
-				isAsc: isAsc
+				payload: payload
 			});
 		},
 		toggleCheckedAllTutors(checked){

@@ -567,7 +567,8 @@ function getEventRequests (queryObjects) {
 		 	requests.workflow_state = 's9v8gw' or
 		 	requests.workflow_state = 'sfi0o2') and
 		 	requests.type = 'event' and
-		 	requests.object_id = " + eventID);
+		 	requests.object_id = " + eventID + "
+		 	order by requests.person_fullname asc");
 	
 
 		var requestsArray = [];
@@ -636,7 +637,8 @@ function getEventTests (queryObjects) {
 		from
 			test_learnings
 		where
-			test_learnings.event_id =" + eventID);
+			test_learnings.event_id =" + eventID + "
+		order by personFIO asc");
 	
 
 		var testsArray = [];
@@ -686,7 +688,8 @@ function getEventCourses (queryObjects) {
 		from
 			learnings
 		where
-			learnings.event_id =" + eventID);
+			learnings.event_id =" + eventID + "
+		order by personFIO asc");
 	
 
 		var requestsArray = [];
@@ -858,7 +861,7 @@ function getEventCollaborators (queryObjects) {
 			from 
 				event_results 
 			where 
-				event_results.event_id = " + eventID);
+				event_results.event_id = " + eventID + " order by event_results.person_fullname asc");
 		for (col in basicCollaboratorArray) {
 			collaboratorArray.push({
 				id : Int(col.person_id),
@@ -882,7 +885,7 @@ function getEventTutors (queryObjects) {
 		var tutorsArray = [];
 		var lectorsArray = [];
 
-		for (tutor in eventDocTE.tutors) {
+		for (tutor in ArraySort(eventDocTE.tutors, 'person_fullname', '+')) {
 			tutorsArray.push({
 				id : Int(tutor.collaborator_id),
 				fullname : tutor.person_fullname + '', 
@@ -892,7 +895,16 @@ function getEventTutors (queryObjects) {
 			})
 		}
 
-		for (lector in XQuery("sql: select event_lectors.lector_fullname, event_lectors.type, event_lectors.lector_id, event_lectors.person_id from event_lectors where event_lectors.event_id = " + eventID )) {
+		for (lector in XQuery("sql: select 
+				event_lectors.lector_fullname, 
+				event_lectors.type, 
+				event_lectors.lector_id, 
+				event_lectors.person_id 
+			from 
+				event_lectors 
+			where 
+				event_lectors.event_id = "+eventID+"
+			order by event_lectors.lector_fullname asc")) {
 			if (lector.type == 'collaborator') {
 				lector_type = 'внутренний';
 				lectorsArray.push({

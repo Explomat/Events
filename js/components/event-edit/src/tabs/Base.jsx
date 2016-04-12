@@ -73,7 +73,6 @@ class Base extends React.Component {
 					selectedPayload={this.props.selectedCode}
 					isReset={true}/>
 				<div className="event-edit-base__date-time">
-					<i className="fa fa-clock-o icon-clock"></i>
 					<div className="date">
 						<div className="date__start">
 							<InputCalendar
