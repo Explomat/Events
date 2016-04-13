@@ -1,6 +1,6 @@
 import React from 'react';
 import CheckBox from 'components/modules/checkbox';
-import DropDown from 'components/modules/dropdown';
+import DropDownIcon from 'components/modules/dropdown-icon';
 import SelectItems from 'components/modules/select-items';
 import EventEditActions from 'actions/EventEditActions';
 import {some} from 'lodash';
@@ -8,32 +8,6 @@ import cx from 'classnames';
 import config from 'config';
 
 import '../style/event-edit-tutors.scss';
-
-class Buttons extends React.Component {
-	render(){
-		const removeClasses = cx({
-			'event-btn': true,
-			'buttons__remove': true,
-			'buttons__remove--display': this.props.isDisplay
-		});
-		const checkboxClasses = cx({
-			'buttons__checkbox': true,
-			'buttons__checkbox--display': this.props.isDisplayCheckBox
-		});
-		const dropDownClasses = cx({
-			'buttons__dropdown': true,
-			'buttons__dropdown--display': this.props.isDisplayCheckBox
-		});
-		return (
-			<div className="buttons">
-				<CheckBox onChange={this.props.onChecked} checked={this.props.checked} className={checkboxClasses}/>
-				<DropDown className={dropDownClasses}  onChange={this.props.handleSort} items={this.props.sortTypes} selectedPayload={this.props.selectedPayload}/>
-				<button onClick={this.props.onAdd} className="event-btn buttons__add">Добавить</button>
-				<button onClick={this.props.onRemove} className={removeClasses}>Удалить</button>
-			</div>
-		);
-	}
-}
 
 class TutorItem extends React.Component {
 
@@ -53,8 +27,11 @@ class TutorItem extends React.Component {
 		})
 		return (
 			<div className={classes}>
-				<div className="table-list__body-cell">
+				<div className="table-list__body-cell table-list__body-cell--icon">
 					<CheckBox onChange={::this.handleToggleChecked} checked={checked}/>
+				</div>
+				<div className="table-list__body-cell table-list__body-cell--icon">
+					<i className="fa fa-user"></i>
 				</div>
 				<div className="table-list__body-cell">{fullname}</div>
 				<div className="table-list__body-cell">{position}</div>
@@ -84,8 +61,11 @@ class LectorItem extends React.Component {
 		})
 		return (
 			<div className={classes}>
-				<div className="table-list__body-cell">
+				<div className="table-list__body-cell table-list__body-cell--icon">
 					<CheckBox onChange={::this.handleToggleChecked} checked={checked}/>
+				</div>
+				<div className="table-list__body-cell table-list__body-cell--icon">
+					<i className="fa fa-user"></i>
 				</div>
 				<div className="table-list__body-cell">{fullname}</div>
 				<div className="table-list__body-cell">{type}</div>
@@ -173,6 +153,10 @@ class Tutors extends React.Component {
 		EventEditActions.tutors.sortLectorsTable(payload);
 	}
 
+	handleToggleCheckedTutorsConditions(e, payload){
+		EventEditActions.tutors.toggleCheckedTutorsConditions(payload);
+	}
+
 	handleToggleCheckedAllTutors(){
 		EventEditActions.tutors.toggleCheckedAllTutors(!this.props.checkedAllTutors);
 	}
@@ -218,18 +202,7 @@ class Tutors extends React.Component {
 	render(){
 		const isDisplayTutorsButtons = this._isSomeChecked(this.props.tutors) && this.props.tutors.length > 0;
 		const isDisplayLectorsButtons = this._isSomeChecked(this.props.lectors) && this.props.lectors.length > 0;
-		const isDisplayTutorsCheckBox = this.props.tutors.length > 0;
-		const isDisplayLectorsCheckBox = this.props.lectors.length > 0;
-		const tableTutorsClasses = cx({
-			'table-list': true,
-			'tutor-list': true,
-			'table-list--empty': this.props.tutors.length === 0
-		});
-		const tableLectorsClasses = cx({
-			'table-list': true,
-			'lector-list': true,
-			'table-list--empty': this.props.lectors.length === 0
-		});
+
 		const tableDescTutorsrClasses = cx({
 			'table-list__description-is-empty': true,
 			'table-list__description-is-empty--display': this.props.tutors.length === 0
@@ -238,21 +211,53 @@ class Tutors extends React.Component {
 			'table-list__description-is-empty': true,
 			'table-list__description-is-empty--display': this.props.lectors.length === 0
 		});
+
+		const removeTutorsClasses = cx({
+			'buttons__remove': true,
+			'buttons__remove--display': isDisplayTutorsButtons
+		});
+		const checkboxTutorsClasses = cx({
+			'buttons__checkbox': true,
+			'buttons__checkbox--display': this.props.tutors.length > 0
+		});
+		const dropDownTutorsClasses = cx({
+			'buttons__dropdown': true,
+			'buttons__dropdown--display': this.props.tutors.length > 0
+		});
+
+		const removeLectorsClasses = cx({
+			'buttons__remove': true,
+			'buttons__remove--display': isDisplayLectorsButtons
+		});
+		const checkboxLectorsClasses = cx({
+			'buttons__checkbox': true,
+			'buttons__checkbox--display': this.props.lectors.length > 0
+		});
+		const dropDownLectorsClasses = cx({
+			'buttons__dropdown': true,
+			'buttons__dropdown--display': this.props.lectors.length > 0
+		});
 		return (
 			<div className="event-edit-tutors">
 				<div className="tutors">
-					<Buttons
-						isDisplayCheckBox={isDisplayTutorsCheckBox}
-						onChecked={::this.handleToggleCheckedAllTutors}
-						checked={this.props.checkedAllTutors}
-						handleSort={this.handleSortTutors}
-						sortTypes={this.props.sortTutorTypes}
-						selectedPayload={this.props.selectedTutorPayload} 
-						onRemove={this.handleRemoveTutors} 
-						onAdd={::this.handleOpenTutorsModal} 
-						isDisplay={isDisplayTutorsButtons}/>
+					<div className="buttons">
+						<DropDownIcon onChange={this.handleToggleCheckedTutorsConditions} items={this.props.checkedTutorTypes} className={checkboxTutorsClasses}>
+							<CheckBox onChange={::this.handleToggleCheckedAllTutors} checked={this.props.checkedAllTutors} className={checkboxTutorsClasses}/>
+						</DropDownIcon>
+						<DropDownIcon onChange={this.handleSortTutors} items={this.props.sortTutorTypes} className={dropDownTutorsClasses}>
+							<i className="fa fa-sort"></i>
+						</DropDownIcon>
+						<div className="buttons__funcs">
+							<button onClick={::this.handleOpenTutorsModal} className="buttons__add" title="Добавить участников">
+								<i className="fa fa-user-plus"></i>
+							</button>
+							<button onClick={this.handleRemoveTutors} className={removeTutorsClasses} title="Удалить участников">
+								<i className="fa fa-user-times"></i>
+							</button>
+						</div>
+					</div>
 					<strong className="tutors__description">Ответственные</strong>
-					<div className={tableTutorsClasses}>
+					<div className="table-list tutor-list">
 						<span className={tableDescTutorsrClasses}>Нет ответственных</span>
 						<div className="table-list__table">
 							<div className="table-list__header">
@@ -265,18 +270,24 @@ class Tutors extends React.Component {
 					</div>
 				</div>
 				<div className="lectors">
-					<Buttons
-						isDisplayCheckBox={isDisplayLectorsCheckBox}
-						onChecked={::this.handleToggleCheckedAllLectors}
-						checked={this.props.checkedAllLectors}
-						handleSort={this.handleSortLectors}
-						sortTypes={this.props.sortLectorTypes}
-						selectedPayload={this.props.selectedLectorPayload}  
-						onRemove={this.handleRemoveLectors} 
-						onAdd={::this.handleOpenLectorsModal} 
-						isDisplay={isDisplayLectorsButtons}/>
+					<div className="buttons">
+						<DropDownIcon className={checkboxLectorsClasses}>
+							<CheckBox onChange={::this.handleToggleCheckedAllLectors} checked={this.props.checkedAllLectors} className={checkboxLectorsClasses}/>
+						</DropDownIcon>
+						<DropDownIcon onChange={this.handleSortLectors} items={this.props.sortLectorTypes} className={dropDownLectorsClasses}>
+							<i className="fa fa-sort"></i>
+						</DropDownIcon>
+						<div className="buttons__funcs">
+							<button onClick={::this.handleOpenLectorsModal} className="buttons__add" title="Добавить участников">
+								<i className="fa fa-user-plus"></i>
+							</button>
+							<button onClick={this.handleRemoveLectors} className={removeLectorsClasses} title="Удалить участников">
+								<i className="fa fa-user-times"></i>
+							</button>
+						</div>
+					</div>
 					<strong className="lectors__description">Преподаватели</strong>
-					<div className={tableLectorsClasses}>
+					<div className="table-list lector-list">
 						<span className={tableDescrLectorsClasses}>Нет преподавателей</span>
 						<div className="table-list__table">
 							<div className="table-list__header">

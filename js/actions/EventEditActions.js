@@ -147,6 +147,12 @@ var EventEditActions = {
 				checked: checked
 			});
 		},
+		toggleCheckedConditions(payload) {
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_COLLABORATORS_TOGGLE_CHECKED_CONDITIONS,
+				payload: payload
+			});
+		},
 		removeItems(){
 			AppDispatcher.handleAction({
 				actionType: EventEditConstants.EVENTEDIT_COLLABORATORS_REMOVE_ITEMS
@@ -211,6 +217,12 @@ var EventEditActions = {
 		sortLectorsTable(payload){
 			AppDispatcher.handleAction({
 				actionType: EventEditConstants.EVENTEDIT_TUTORS_SORT_LECTORS_TABLE,
+				payload: payload
+			});
+		},
+		toggleCheckedTutorsConditions(payload){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_TUTORS_TOGGLE_CHECKED_TUTORS_CONDITIONS,
 				payload: payload
 			});
 		},

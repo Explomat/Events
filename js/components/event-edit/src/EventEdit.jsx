@@ -7,7 +7,6 @@ import Files from './tabs/Files';
 import LibraryMaterials from './tabs/LibraryMaterials';
 import Requests from './tabs/Requests';
 import Testing from './tabs/Testing';
-import Courses from './tabs/Courses';
 import Tutors from './tabs/Tutors';
 
 //import Hasher from '../../../utils/Hasher';
@@ -25,7 +24,7 @@ class EventEdit extends React.Component {
 
 	constructor(props){
 		super(props);
-		this.sideBarComponents = {'base': Base, 'requests': Requests, 'collaborators': Collaborators, 'tutors': Tutors, 'testing': Testing, 'courses': Courses, 'libraryMaterials': LibraryMaterials, 'files': Files};
+		this.sideBarComponents = {'base': Base, 'requests': Requests, 'collaborators': Collaborators, 'tutors': Tutors, 'testing': Testing, 'libraryMaterials': LibraryMaterials, 'files': Files};
 		this._onChange = this._onChange.bind(this);
 		this.getTabView = this.getTabView.bind(this);
 		this.handleSelectTab = this.handleSelectTab.bind(this);

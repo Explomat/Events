@@ -4,12 +4,11 @@
 
 	.event-edit-requests__base{
 		.event-edit-requests__base-sort{
-			width: 30%;
 			margin-top: 20px;
 			display: none;
 
 			&.event-edit-requests__base-sort--display {
-				display: block;
+				display: inline-block;
 			}
 		}
 

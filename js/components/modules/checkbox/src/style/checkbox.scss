@@ -1,9 +1,10 @@
 .checkbox-box {
     padding: 5px;
     display: inline-block;
-    
-    &.--test {
-        top: 10px;
+
+    &.checkbox-box--empty {
+        padding: 0;
+        margin-right: 18px;
     }
 
     .checkbox-box__label {
@@ -21,7 +22,8 @@
         padding-left: 32px;
 
         &:empty {
-            top: -16px;
+            top: -14px;
+            padding-left: 0px;
         }
 
         &:before {
@@ -39,6 +41,7 @@
             -o-transition: 0.2s;
             -ms-transition: 0.2s;
             transition: 0.2s;
+            background-color: #fff;
         }
     }
 
@@ -63,6 +66,7 @@
     -o-transform: rotate(40deg);
     transform: rotate(40deg);
     -webkit-backface-visibility: hidden;
+    background-color: transparent;
     /* -webkit-transform-origin: 100% 100%;
     -moz-transform-origin: 100% 100%;
     -ms-transform-origin: 100% 100%;

@@ -79,6 +79,9 @@ export default function(args){
 		checkedAll: false,
 		infoMessage: '',
 		infoStatus: '',
+		checkedTypes: [
+			{ payload: '{"isAssist": "true"}', text: 'Выбрать всех присутствующих' }
+		],
 		sortTypes: [
 			{ payload: '{"key": "fullname", "isAsc": "true"}', text: 'Сортировать по ФИО(по убыванию)' },
 			{ payload: '{"key": "fullname", "isAsc": "false"}', text: 'Сортировать по ФИО(по возрастанию)' }
@@ -107,6 +110,9 @@ export default function(args){
 			{ payload: '{"key": "fullname", "isAsc": "false"}', text: 'Сортировать по ФИО(по возрастанию)' }
 		],
 		selectedTutorPayload: '{"key": "fullname", "isAsc": "true"}',
+		checkedTutorTypes: [
+			{ payload: '{"main": "true"}', text: 'Выбрать основного' }
+		],
 		sortLectorTypes: [
 			{ payload: '{"key": "fullname", "isAsc": "true"}', text: 'Сортировать по ФИО(по убыванию)' },
 			{ payload: '{"key": "fullname", "isAsc": "false"}', text: 'Сортировать по ФИО(по возрастанию)' }

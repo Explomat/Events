@@ -9,7 +9,7 @@ import Collaborator from '../models/eventedit/Collaborator';
 import {isNumberOrReal} from '../utils/validation/Validation';
 //import CollaboratorTest from '../models/eventedit/CollaboratorTest';
 import extend from 'extend';
-import {find, filter, every} from 'lodash';
+import {find, filter, every, keys} from 'lodash';
 
 let _eventEdit = {};
 
@@ -142,6 +142,23 @@ const collaborators = {
 		var arr = _eventEdit.collaborators.collaborators;
 		toggleChecked(container, arr, id, checked, 'checkedAll');
 	},
+	toggleCheckedConditions(payload){
+		var data = JSON.parse(payload, (key, value) => {
+			return value === 'true' ? true : value === 'false' ? false : value;
+		});
+		var arr = _eventEdit.collaborators.collaborators;
+		arr.forEach(item => {
+			var isHas = every(keys(data), (key) => {
+				return data[key] === item[key];
+			});
+			item.checked = isHas;
+		});
+		const isEveryCheked = every(arr, (item) => {
+			return item.checked === true;
+		});
+		_eventEdit.collaborators.checkedAll = isEveryCheked;
+
+	},
 	removeItems(){
 		var _collaborators = _eventEdit.collaborators.collaborators;
 		_collaborators = filter(_collaborators, (col) => {
@@ -194,6 +211,22 @@ const tutors = {
 		var isAsc = data.isAsc === 'true';
 		sortTable(_eventEdit.tutors.lectors, data.key, isAsc);
 		_eventEdit.tutors.selectedLectorPayload = payload;
+	},
+	toggleCheckedTutorsConditions(payload){
+		var data = JSON.parse(payload, (key, value) => {
+			return value === 'true' ? true : value === 'false' ? false : value;
+		});
+		var arr = _eventEdit.tutors.tutors;
+		arr.forEach(item => {
+			var isHas = every(keys(data), (key) => {
+				return data[key] === item[key];
+			});
+			item.checked = isHas;
+		});
+		const isEveryCheked = every(arr, (item) => {
+			return item.checked === true;
+		});
+		_eventEdit.tutors.checkedAllTutors = isEveryCheked;
 	},
 	toggleCheckedAllTutors(checked){
 		var container = _eventEdit.tutors;
@@ -426,6 +459,10 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			collaborators.toggleChecked(action.id, action.checked);
 			isEmit = true;
 			break;
+		case EventEditConstants.EVENTEDIT_COLLABORATORS_TOGGLE_CHECKED_CONDITIONS:
+			collaborators.toggleCheckedConditions(action.payload);
+			isEmit = true;
+			break;
 		case EventEditConstants.EVENTEDIT_COLLABORATORS_REMOVE_ITEMS:
 			collaborators.removeItems();
 			isEmit = true;
@@ -458,6 +495,10 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			break;
 		case EventEditConstants.EVENTEDIT_TUTORS_SORT_LECTORS_TABLE:
 			tutors.sortLectorsTable(action.payload);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_TUTORS_TOGGLE_CHECKED_TUTORS_CONDITIONS:
+			tutors.toggleCheckedTutorsConditions(action.payload);
 			isEmit = true;
 			break;
 		case EventEditConstants.EVENTEDIT_TUTORS_TOGGLE_CHECKED_ALL_TUTORS:

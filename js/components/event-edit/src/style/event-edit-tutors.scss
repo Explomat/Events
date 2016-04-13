@@ -6,8 +6,7 @@
 		display: inline-block;
 
 		.buttons__dropdown{
-			width: 30%;
-			margin-right: 20px;
+			margin-right: 32px;
 			display: none;
 
 			&.buttons__dropdown--display {
@@ -23,21 +22,30 @@
 			}
 		}
 
-		.buttons__add{
-			margin-right: 10px;
-		}
-		.buttons__remove{
-			margin-right: 10px;
-			display: none;
+		.buttons__funcs{
+			display: inline-block;
 
-			&.buttons__remove--display{
-				display: inline-block;
+			.buttons__add{
+				margin-right: 10px;
+				height: 27px;
+				color: #ff5252;
+			}
+			.buttons__remove{
+				margin-right: 10px;
+				height: 27px;
+				color: #ff5252;
+				display: none;
+
+				&.buttons__remove--display{
+					display: inline-block;
+				}
 			}
 		}
+		
 	}
 
 	.tutors {
-		height: 50%;
+		height: 45%;
 
 		.tutors__description{
 			float: right;
@@ -49,8 +57,8 @@
 	}
 	
 	.lectors {
-		height: 50%;
-		margin-top: 10px;
+		height: 45%;
+		margin-top: 40px;
 
 		.lectors__description{
 			float: right;

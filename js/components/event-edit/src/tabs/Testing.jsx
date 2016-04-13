@@ -208,11 +208,6 @@ class Testing extends React.Component {
 	}
 
 	render(){
-		const tableClasses = cx({
-			'table-list': true,
-			'testing-list': true,
-			'table-list--empty': this.props.testingList.length === 0
-		});
 		const tableDescrClasses = cx({
 			'table-list__description-is-empty': true,
 			'table-list__description-is-empty--display': this.props.testingList.length === 0
@@ -229,7 +224,7 @@ class Testing extends React.Component {
 					onChange={::this.handleSort} 
 					items={this.props.sortTypes}
 					selectedPayload={this.props.selectedPayload}/>
-				<div ref="table" className={tableClasses}>
+				<div ref="table" className="table-list testing-list">
 					<span className={tableDescrClasses}>Нет тестов</span>
 					<div className="table-list__table">
 						<div className="table-list__header">

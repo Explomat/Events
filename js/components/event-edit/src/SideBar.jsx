@@ -28,7 +28,6 @@ class SideBar extends React.Component {
 					<label className={"side-bar__tab-label " + (this.props.selectedTab === "collaborators" ? "side-bar__tab-label--selected": "") } onClick={this.handleSelectTab} data-name="collaborators">Участники</label>
 					<label className={"side-bar__tab-label " + (this.props.selectedTab === "tutors" ? "side-bar__tab-label--selected": "") } onClick={this.handleSelectTab} data-name="tutors">Ответственные</label>
 					<label className={"side-bar__tab-label " + (this.props.selectedTab === "testing" ? "side-bar__tab-label--selected": "") } onClick={this.handleSelectTab} data-name="testing">Тестирование</label>
-					<label className={"side-bar__tab-label " + (this.props.selectedTab === "courses" ? "side-bar__tab-label--selected": "") } onClick={this.handleSelectTab} data-name="courses">Электронные курсы</label>
 					<label className={"side-bar__tab-label " + (this.props.selectedTab === "libraryMaterials" ? "side-bar__tab-label--selected": "") } onClick={this.handleSelectTab} data-name="libraryMaterials">Материалы библиотеки</label>
 					<label className={"side-bar__tab-label " + (this.props.selectedTab === "files" ? "side-bar__tab-label--selected": "") } onClick={this.handleSelectTab} data-name="files">Файлы</label>
 				</div>

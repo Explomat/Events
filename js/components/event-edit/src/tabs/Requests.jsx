@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import EventEditActions from 'actions/EventEditActions';
 import RequestStatuses from 'utils/eventedit/RequestStatuses';
 import CheckBox from 'components/modules/checkbox';
-import DropDown from 'components/modules/dropdown';
+import DropDownIcon from 'components/modules/dropdown-icon';
 import InputCalendar from 'components/modules/input-calendar';
 import RejectReasonInfo from '../RejectReasonInfo';
 import cx from 'classnames';
@@ -43,7 +43,7 @@ class RequestItem extends React.Component {
 			"request-list__status-removed--display": status === RequestStatuses.keys.ignore});
 		return (
 			<div className="table-list__body-row">
-				<div className="table-list__body-cell">
+				<div className="table-list__body-cell table-list__body-cell--icon">
 					<i className="fa fa-user"></i>
 				</div>
 				<div className="table-list__body-cell">{fullname}</div>
@@ -122,13 +122,6 @@ class Requests extends React.Component {
 
 	handleSort(e, payload){
 		EventEditActions.requests.sortRequestTable(payload);
-		/*var target = e.currentTarget;
-		var caret = target.querySelector('.caret');
-		var isAsc = caret.classList.contains('caret--rotate');
-		var targetData = target.getAttribute('data-sort');
-		EventEditActions.requests.sortRequestTable(targetData, isAsc);
-		caret.classList.toggle('caret--rotate');*/
-
 	}
 
 	handleIgnoreStatus(id, status){
@@ -152,11 +145,6 @@ class Requests extends React.Component {
 		const dateClasses = cx({
 			'date': true,
 			'date--display': this.props.isDateRequestBeforeBegin
-		});
-		const tableClasses = cx({
-			'table-list': true,
-			'request-list': true,
-			'table-list--empty': this.props.requestItems.length === 0
 		});
 		const tableDescrClasses = cx({
 			'table-list__description-is-empty': true,
@@ -210,13 +198,11 @@ class Requests extends React.Component {
 						label="Необходимо подтверждение от ответственного за мероприятие"
 						checked={this.props.isApproveByTutor}/>
 					<br />
-					<DropDown
-						className={dropdownSortclasses}
-						onChange={::this.handleSort} 
-						items={this.props.sortTypes}
-						selectedPayload={this.props.selectedPayload}/>
+					<DropDownIcon onChange={::this.handleSort} items={this.props.sortTypes} className={dropdownSortclasses}>
+						<i className="fa fa-sort"></i>
+					</DropDownIcon>
 				</div>
-				<div ref="table" className={tableClasses}>
+				<div ref="table" className="table-list request-list">
 					<span className={tableDescrClasses}>Нет заявок</span>
 					<div className="table-list__table">
 						<div className="table-list__header">
