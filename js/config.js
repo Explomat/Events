@@ -25,7 +25,9 @@ var servers = [
 			'createNotification',
 			'processingRequest',
 			'uploadFile',
-			'removeFile'
+			'removeFile',
+			'getFiles',
+			'getLibraryMaterials'
 		]
 	}
 ]

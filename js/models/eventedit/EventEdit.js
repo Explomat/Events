@@ -4,6 +4,7 @@ import Tutor from './Tutor';
 import Lector from './Lector';
 import Test from './Test';
 import File from './File';
+import LibraryMaterial from './LibraryMaterial';
 import CollaboratorTest from './CollaboratorTest';
 import CollaboratorCourse from './CollaboratorCourse';
 import Places from './Places';
@@ -176,14 +177,25 @@ export default function(args){
 	this.files = {
 
 		files: [],
+		libraryMaterials: [],
+		isSendBeforeDocHref: args.files.isSendBeforeDocHref,
+		isSendAfterDocHref: args.files.isSendAfterDocHref,
 
 		//state fields
-		isUploading: false
+		checkedAllFiles: false,
+		checkedAllLibraryMaterials: false,
+		isUploadingFiles: false,
+		isUploadingLibraryMaterials: false
 	}
 
 	if (args.files.files) {
 		this.files.files = args.files.files.map(function(f){
 			return new File(f);
+		});
+	}
+	if (args.files.libraryMaterials) {
+		this.files.libraryMaterials = args.files.libraryMaterials.map(function(l){
+			return new LibraryMaterial(l);
 		});
 	}
 }

@@ -3,8 +3,8 @@ module.exports = function(args){
 
 	this.id = args.id || null;
 	this.name = args.name || '';
-	this.type = args.type || '';
-	this.isAllowDownload = args.isAllowDownload || false;
+	this.year = args.year || '';
+	this.author = args.author || '';
 
 	//state fieds
 	this.checked = false;

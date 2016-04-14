@@ -6,10 +6,11 @@ import Test from '../models/eventedit/Test';
 import Tutor from '../models/eventedit/Tutor';
 import Lector from '../models/eventedit/Lector';
 import Collaborator from '../models/eventedit/Collaborator';
+import File from '../models/eventedit/File';
 import {isNumberOrReal} from '../utils/validation/Validation';
 //import CollaboratorTest from '../models/eventedit/CollaboratorTest';
 import extend from 'extend';
-import {find, filter, every, keys} from 'lodash';
+import {find, filter, every, keys, differenceWith} from 'lodash';
 
 let _eventEdit = {};
 
@@ -323,22 +324,57 @@ const courses = {
 }
 
 const files = {
+	toggleCheckedAllFiles(checked){
+		var container = _eventEdit.files;
+		var arr = _eventEdit.files.files;
+		toggleCheckedAll(container, arr, checked, 'checkedAllFiles');
+	},
+	toggleCheckedAllLibraryMaterials(checked){
+		var container = _eventEdit.files;
+		var arr = _eventEdit.files.libraryMaterials;
+		toggleCheckedAll(container, arr, checked, 'checkedAllLibraryMaterials');
+	},
+	toggleFileChecked(id, checked){
+		var container = _eventEdit.files;
+		var arr = _eventEdit.files.files;
+		toggleChecked(container, arr, id, checked, 'checkedAllFiles');
+	},
+	toggleLibraryMaterialChecked(id, checked){
+		var container = _eventEdit.files;
+		var arr = _eventEdit.files.libraryMaterials;
+		toggleChecked(container, arr, id, checked, 'checkedAllLibraryMaterials');
+	},
 	uploadedFiles(files){
 		_eventEdit.files.files = _eventEdit.files.files.concat(files);
-		_eventEdit.files.isUploading = false;
+		_eventEdit.files.isUploadingFiles = false;
+		_eventEdit.files.checkedAllFiles = false;
 	},
-	removeFile(id){
+	uploadedLibraryMaterials(files){
+		_eventEdit.files.libraryMaterials = _eventEdit.files.libraryMaterials.concat(files);
+		_eventEdit.files.isUploadingLibraryMaterials = false;
+		_eventEdit.files.checkedAllLibraryMaterials = false;
+	},
+	removeFiles(inputFiles){
 		var files = _eventEdit.files.files;
-		_eventEdit.files.files = filter(files, (file) => {
-			return file.id !== id;
+		_eventEdit.files.files = differenceWith(files, inputFiles, (first, second) => {
+			return first.id === second.id;
 		});
 	},
+	updateFiles(files){
+		_eventEdit.files.files = files.map((item) => {
+			let obj = {...item.data};
+			obj.id = item.id;
+			return new File(obj);
+		});
+		_eventEdit.files.checkedAllFiles = false;
+	},
 	uploadingFiles(){
-		_eventEdit.files.isUploading = true;
+		_eventEdit.files.isUploadingFiles = true;
+	},
+	uploadingLibraryMaterials(){
+		_eventEdit.files.isUploadingLibraryMaterials = true;
 	}
 }
-
-
 
 const EventEditStore = extend({}, EventEmitter.prototype, {
 	
@@ -563,6 +599,24 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			break;
 
 		//FILES
+		case EventEditConstants.EVENTEDIT_FILES_TOGGLE_CHECKED_ALL_FILES:
+			files.toggleCheckedAllFiles(action.checked);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_FILES_TOGGLE_CHECKED_ALL_LIBRARY_MATERIALS:
+			files.toggleCheckedAllLibraryMaterials(action.checked);
+			isEmit = true;
+			break;
+
+		case EventEditConstants.EVENTEDIT_FILES_TOGGLE_CHECKED_FILE:
+			files.toggleFileChecked(action.id, action.checked);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_FILES_TOGGLE_CHECKED_LIBRARY_MATERIAL:
+			files.toggleLibraryMaterialChecked(action.id, action.checked);
+			isEmit = true;
+			break;
+
 		case EventEditConstants.EVENTEDIT_FILES_UPLOADING_FILES:
 			files.uploadingFiles();
 			isEmit = true;
@@ -571,10 +625,23 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			files.uploadedFiles(action.files);
 			isEmit = true;
 			break;
-		case EventEditConstants.EVENTEDIT_FILES_REMOVE_FILE:
-			files.removeFile(action.id);
+		case EventEditConstants.EVENTEDIT_FILES_REMOVE_FILES:
+			files.removeFiles(action.files);
 			isEmit = true;
-			break;			
+			break;
+		case EventEditConstants.EVENTEDIT_FILES_UPDATE_FILES:
+			files.updateFiles(action.files);
+			isEmit = true;
+			break;	
+		case EventEditConstants.EVENTEDIT_FILES_UPLOADING_LIBRARY_MATERIALS:
+			files.uploadingLibraryMaterials();
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_FILES_UPLOADED_LIBRARY_MATERIALS:
+			files.uploadedLibraryMaterials(action.libraryMaterials);
+			isEmit = true;
+			break;
+
 		default:
 			return true;
 	}

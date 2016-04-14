@@ -326,6 +326,36 @@ var EventEditActions = {
 	},
 
 	files: {
+		toggleCheckedAllFiles(checked){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_FILES_TOGGLE_CHECKED_ALL_FILES,
+				checked: checked
+			});
+		},
+
+		toggleCheckedAllLibraryMaterials(checked){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_FILES_TOGGLE_CHECKED_ALL_LIBRARY_MATERIALS,
+				checked: checked
+			});
+		},
+
+		toggleFileChecked(id, checked){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_FILES_TOGGLE_CHECKED_FILE,
+				id: id,
+				checked: checked
+			});
+		},
+
+		toggleLibraryMaterialChecked(id, checked){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_FILES_TOGGLE_CHECKED_LIBRARY_MATERIAL,
+				id: id,
+				checked: checked
+			});
+		},
+
 		uploadFiles(files){
 			AppDispatcher.handleAction({
 				actionType: EventEditConstants.EVENTEDIT_FILES_UPLOADING_FILES
@@ -367,23 +397,76 @@ var EventEditActions = {
 			})
 		},
 
-		removeFile(id){
-			EventEditAPI.removeFile(id).then((data) => {
-				var id = data.id;
-				var error = data.error;
+		uploadLibraryMaterials(libraryMaterials){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_FILES_UPLOADING_LIBRARY_MATERIALS
+			});
+			EventEditAPI.uploadFiles(libraryMaterials).then((uploadedlibraryMaterials) => {
+				var filesWithoutErrors = filter(uploadedlibraryMaterials, (file) => {
+					return file.error === '';
+				});
 
-				if (error !== ''){
+				/*if (isErrors) {
 					AppDispatcher.handleAction({
-						actionType: EventEditConstants.EVENTEDIT_FILES_REMOVE_FILE_ERROR,
+						actionType: EventEditConstants.EVENTEDIT_FILES_UPLOADING_FILES_ERROR,
+						error: "Не удалось загрузить файлы"
+					});
+				}*/
+				AppDispatcher.handleAction({
+					actionType: EventEditConstants.EVENTEDIT_FILES_UPLOADED_LIBRARY_MATERIALS,
+					libraryMaterials: filesWithoutErrors
+				});
+				/*if (data && !data.error) {
+					AppDispatcher.handleAction({
+						actionType: EventEditConstants.EVENTEDIT_FILES_UPLOADED_FILES,
+						id: data.id,
+						name: data.name
+					});
+				}
+				else {
+					AppDispatcher.handleAction({
+						actionType: EventEditConstants.EVENTEDIT_FILES_UPLOADING_FILE_ERROR,
+						error: data.error
+					});
+				}*/
+				
+			}, function(error){
+				AppDispatcher.handleAction({
+					actionType: EventEditConstants.EVENTEDIT_FILES_UPLOADING_LIBRARY_MATERIALS_ERROR,
+					error: error
+				});
+			})
+		},
+
+		removeFiles(ids){
+			EventEditAPI.removeFiles(ids).then((files) => {
+				var filesWithoutErrors = filter(files, (file) => {
+					return file.error === '';
+				});
+
+				AppDispatcher.handleAction({
+					actionType: EventEditConstants.EVENTEDIT_FILES_REMOVE_FILES,
+					files: filesWithoutErrors
+				})
+				/*if (error !== ''){
+					AppDispatcher.handleAction({
+						actionType: EventEditConstants.EVENTEDIT_FILES_REMOVE_FILES_ERROR,
 						error: error
 					});
 				}
 				else {
 					AppDispatcher.handleAction({
-						actionType: EventEditConstants.EVENTEDIT_FILES_REMOVE_FILE,
+						actionType: EventEditConstants.EVENTEDIT_FILES_REMOVE_FILES,
 						id: id
 					});
-				}
+				}*/
+			});
+		},
+
+		updateFiles(files){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_FILES_UPDATE_FILES,
+				files: files
 			});
 		}
 	}

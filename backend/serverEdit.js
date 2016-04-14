@@ -62,7 +62,12 @@ function uploadFile(queryObjects) {
 	}catch(e){
 		error = e;
 	}
-	return tools.object_to_text({ id: docResource.DocID, name: fileName, error: error }, 'json');
+	return tools.object_to_text({ 
+		id: docResource.DocID, 
+		name: fileName,
+		type: fileType,
+		isAllowDownload: docResource.TopElem.allow_download + '',
+		error: error }, 'json');
 }
 
 function isAdmin (queryObjects) {
@@ -368,31 +373,33 @@ function getFiles (queryObjects) {
 	var queryPageCount = XQuery("sql:select 
 		COUNT(*)/"+limitRows+" pagesCount 
 		from 
-			resources 
-		where 
-			resources.type = 'pdf' ");
+			resources
+		where
+			resources.name LIKE '%"+filterText+"%'");
 	queryPageCount = Int(ArrayOptFirstElem(queryPageCount).pagesCount)
 
 	var basicRecourseArray = XQuery("sql:select 
 		top " + limitRows + " r.id, 
-		REPLACE(r.name, '\"', '') as name 
+		REPLACE(r.name, '\"', '') as name,
+		r.type,
+		r.allow_download
 		from (
 			select ROW_NUMBER() OVER(ORDER BY resources.name) rowNum,* 
 			from 
 				resources
 			where 
-				resources.name LIKE '%"+filterText+"%' and
-				resources.type = 'pdf' 
+				resources.name LIKE '%"+filterText+"%'
 		) r
 		where 
 			r.rowNum > " + startPage * limitRows);
-
 	var resourcesArray = [];
 	for (r in basicRecourseArray) {
 		resourcesArray.push({ 
 			id: Int(r.id), 
 			data: {
-				name : r.name + ''
+				name : r.name + '',
+				type: r.type + '',
+				isAllowDownload: r.allow_download == true ? 'да' : 'нет'
 			}
 		});
 	}
@@ -400,7 +407,9 @@ function getFiles (queryObjects) {
 		pagesCount: queryPageCount + 1,
 		items: resourcesArray,
 		headerCols: [
-			{'name' : 'Название файла', 'type':'string' }
+			{'name': 'Название файла', 'type': 'string' },
+			{'name': 'Тип', 'type': 'string'},
+			{'name': 'Разрешить скачивание', 'type': 'string' }
 		]
 	}, 'json');
 }
@@ -415,7 +424,8 @@ function getLibraryMaterials (queryObjects) {
 		from 
 			library_materials 
 		where 
-			library_materials.year <> '' ");
+			library_materials.year <> '' and
+			library_materials.name LIKE '%"+filterText+"%'");
 	queryPageCount = Int(ArrayOptFirstElem(queryPageCount).pagesCount)
 
 	var basicLibraryMaterialsArray = XQuery("sql:select 
@@ -446,10 +456,15 @@ function getLibraryMaterials (queryObjects) {
 			}
 		});
 	}
-	return {
+	return tools.object_to_text({
 		pagesCount: queryPageCount + 1,
-		items: libraryMaterialsArray
-	}
+		items: libraryMaterialsArray,
+		headerCols: [
+			{'name' : 'Название материала',	'type':'string'},
+			{'name' : 'Год','type':'integer'},
+			{'name' : 'Автор','type':'string'}
+		]
+	},'json');
 }
 
 function getEducationMethod (queryObjects) {
@@ -503,22 +518,22 @@ function getEducationMethod (queryObjects) {
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-function getEventLibraryMatreials (queryObjects) {
+function getEventLibraryMaterials (queryObjects) {
 
 	var eventID = queryObjects.HasProperty('event_id') ? Int(queryObjects.event_id) : null;
 	var eventDocTE = OpenDoc(UrlFromDocID(Int(eventID))).TopElem; 
 
-	var libraryMaterialsArray = [];
+	var libraryMaterials = [];
 
-	var sendBeforeDocHref = eventDocTE.custom_elems.ObtainChildByKey('training_befor_delivery').value == 'true' ? true : false; // отправлять ссылку на предварительный
-	var sendAfterDocHref = eventDocTE.custom_elems.ObtainChildByKey('training_after_presence').value == 'true' ? true : false; // отправлять ссылку на посттренинговый 
+	var isSendBeforeDocHref = eventDocTE.custom_elems.ObtainChildByKey('training_befor_delivery').value == 'true' ? true : false; // отправлять ссылку на предварительный
+	var isSendAfterDocHref = eventDocTE.custom_elems.ObtainChildByKey('training_after_presence').value == 'true' ? true : false; // отправлять ссылку на посттренинговый 
 
     var trainigBeforeDoc = eventDocTE.custom_elems.ObtainChildByKey('training_befor_doc').value; // ID пред трен материала
     var trainigAfterDoc = eventDocTE.custom_elems.ObtainChildByKey('training_after_doc').value; // ID пост трен материала
 
     if (trainigBeforeDoc) {
     	libraryCard = OpenDoc(UrlFromDocID(Int(trainigBeforeDoc))).TopElem;
-    	libraryMaterialsArray.push({ 
+    	libraryMaterials.push({ 
 			id: Int(trainigBeforeDoc), 
 			name : libraryCard.name + '',
 			type : 'предварительный'
@@ -526,7 +541,7 @@ function getEventLibraryMatreials (queryObjects) {
     }
     if (trainigAfterDoc) {
     	libraryCard = OpenDoc(UrlFromDocID(Int(trainigBeforeDoc))).TopElem;
-    	libraryMaterialsArray.push({ 
+    	libraryMaterials.push({ 
 			id: Int(trainigAfterDoc), 
 			name : libraryCard.name + '',
 			type : 'посттренинговый'
@@ -534,9 +549,9 @@ function getEventLibraryMatreials (queryObjects) {
     }
 
     return {
-    	sendBeforeDocHref : sendBeforeDocHref,
-    	sendAfterDocHref : trainigAfterDoc,
-    	libraryMaterialsArray: libraryMaterialsArray
+    	isSendBeforeDocHref : isSendBeforeDocHref,
+    	isSendAfterDocHref : isSendAfterDocHref,
+    	libraryMaterials: libraryMaterials
 	}
 }
 
@@ -719,17 +734,20 @@ function getEventFiles (queryObjects) {
 			curFile = OpenDoc(UrlFromDocID(f.file_id)).TopElem;
 			filesArray.push({
 				id: Int(f.file_id),
-				data: {
-					name : curFile.name + '',
-					type : curFile.type + '',
-					download : curFile.allow_download + '',
-					view : curFile.allow_unauthorized_download + '' // будем использовать для отображения
-				}
+				name: curFile.name + '',
+				type: curFile.type + '',
+				isAllowDownload : curFile.allow_download + '',
+				view : curFile.allow_unauthorized_download + '' // будем использовать для отображения
 			});
 		}
 
+		var lm = getEventLibraryMaterials(queryObjects);
+
 		return {
-			items: filesArray
+			files: filesArray,
+			libraryMaterials: lm.libraryMaterials,
+			isSendBeforeDocHref: lm.isSendBeforeDocHref,
+			isSendAfterDocHref: lm.isSendAfterDocHref
 		}
 	}
 }
@@ -939,7 +957,6 @@ function getEventEditData (queryObjects) {
 			tutors : getEventTutors(queryObjects),
 			testing : getEventTests(queryObjects),
 			courses : getEventCourses(queryObjects),
-			library_materials : getEventLibraryMatreials(queryObjects),
 			files : getEventFiles(queryObjects)
 		}, 'json');
 	} else {

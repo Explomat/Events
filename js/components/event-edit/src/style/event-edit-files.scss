@@ -2,6 +2,38 @@
 	margin-top: 20px;
 	height: calc(100% - 40px);
 
+	.buttons {
+		display: inline-block;
+
+		.buttons__checkbox {
+			display: none;
+
+			&.buttons__checkbox--display {
+				display: inline-block;
+			}
+		}
+
+		.buttons__funcs{
+			display: inline-block;
+
+			.buttons__add{
+				margin-right: 10px;
+				height: 27px;
+				color: #ff5252;
+			}
+			.buttons__remove{
+				margin-right: 10px;
+				height: 27px;
+				color: #ff5252;
+				display: none;
+
+				&.buttons__remove--display{
+					display: inline-block;
+				}
+			}
+		}
+	}
+	
 	.event-edit-files__upload{
 		.event-edit-files__upload-icon{
 			vertical-align: middle;
@@ -38,6 +70,33 @@
 			.event-edit-files__file-label{
 				padding-left: 10px;
 			}
+		}
+	}
+
+	.files {
+		height: 45%;
+
+		.files__description{
+			float: right;
+			margin-top: 10px;
+		}
+
+		.file-list {
+			height: calc(100% - 47px);
+		}
+	}
+
+	.library-materials{
+		height: 45%;
+		margin-top: 40px;
+
+		.library-materials__description{
+			float: right;
+			margin-top: 10px;
+		}
+
+		.library-materials-list {
+			height: calc(100% - 47px);
 		}
 	}
 }

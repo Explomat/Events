@@ -30,21 +30,21 @@ module.exports = {
 			promises.push(Ajax.uploadFile(Config.url.createPath({action_name: 'uploadFile'}), files[i]));
 		};
 		return Promise.all(promises).then(function(files){
-			var arr = [];
-			files.forEach((file) => {
-				arr.push(JSON.parse(file));
+			return files.map((file) => {
+				return JSON.parse(file);
 			});
-			return arr;
-			//return JSON.parse(data);
 		});
-		/*return Ajax.uploadFile(Config.url.createPath({action_name: 'uploadFile'}), file).then(function(data){
-			return JSON.parse(data);
-		});*/
 	},
 
-	removeFile: function(id){
-		return Ajax.sendRequest(Config.url.createPath({action_name: 'removeFile', id: id }), null, false).then(function(data){
-			return JSON.parse(data);
+	removeFiles: function(ids){
+		var promises = [];
+		for (var i = ids.length - 1; i >= 0; i--) {
+			promises.push(Ajax.sendRequest(Config.url.createPath({action_name: 'removeFile', id: ids[i]}), null, false, true, null, 'POST'));
+		};
+		return Promise.all(promises).then(function(files){
+			return files.map((file) => {
+				return JSON.parse(file);
+			});
 		});
 	}
 }
