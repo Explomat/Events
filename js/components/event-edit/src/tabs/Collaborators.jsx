@@ -2,6 +2,7 @@ import React from 'react';
 import CheckBox from 'components/modules/checkbox';
 import DropDownIcon from 'components/modules/dropdown-icon';
 import SelectItems from 'components/modules/select-items';
+import ToggleButton from 'components/modules/toggle-button';
 import Message from 'components/modules/message';
 import Info from 'components/modules/Info';
 import EventEditActions from 'actions/EventEditActions';
@@ -22,7 +23,7 @@ class CollaboratorItem extends React.Component {
 	}
 
 	render(){
-		const {fullname, subdivision, position, isAssist, checked} = this.props;
+		const {id, fullname, subdivision, position, isAssist, checked} = this.props;
 		const classes = cx({
 			'table-list__body-row': true,
 			'table-list__body-row--selected': checked
@@ -39,10 +40,7 @@ class CollaboratorItem extends React.Component {
 				<div className="table-list__body-cell">{position}</div>
 				<div className="table-list__body-cell">{subdivision}</div>
 				<div className="table-list__body-cell">
-					<div className="toggle-btn">
-						<input onChange={::this.handleToggleIsAssist} type="checkbox" className="toggle__input"  id={this.props.id} checked={isAssist}/>
-						<label className="toggle__checkbox" htmlFor={this.props.id}></label>
-					</div>
+					<ToggleButton id={id} onChange={::this.handleToggleIsAssist} checked={isAssist} />
 				</div>
 			</div>
 		);

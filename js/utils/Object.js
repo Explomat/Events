@@ -31,6 +31,27 @@
   });
 }*/
 
+function expand(obj, predicate) {
+  var outObj = {};
+  for (var o in obj){
+    var temp = null;
+    if (typeof obj[o] === 'object') {
+      temp = expand(obj[o], predicate);
+    }
+    if (temp) {
+      Object.keys(temp).forEach(function(i) {
+        var val = predicate ? predicate(temp[i]) : temp[i];
+        outObj[i] = val;
+      })
+    }
+    else {
+      var val = predicate ? predicate(obj[o]) : obj[o];
+      outObj[o] = obj[o];
+    }
+  }
+  return outObj;
+}
+
 module.exports = {
   
   assign: function(source, target){
@@ -49,5 +70,7 @@ module.exports = {
       }
     }
     return to;
-  }
+  },
+
+  expand: expand
 }

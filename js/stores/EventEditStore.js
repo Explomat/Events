@@ -11,6 +11,7 @@ import {isNumberOrReal} from '../utils/validation/Validation';
 //import CollaboratorTest from '../models/eventedit/CollaboratorTest';
 import extend from 'extend';
 import {find, filter, every, keys, differenceWith} from 'lodash';
+import {expand} from '../utils/Object';
 
 let _eventEdit = {};
 
@@ -170,9 +171,10 @@ const collaborators = {
 	},
 	updateItems(items){
 		_eventEdit.collaborators.collaborators = items.map((item) => {
-			let obj = {...item.data};
-			obj.id = item.id;
-			return new Collaborator(obj);
+			var collaborator = expand(item, (value) => {
+				return value === 'true' ? true : value === 'false' ? false : value;
+			});
+			return new Collaborator(collaborator);
 		});
 		_eventEdit.collaborators.checkedAll = false;
 	},
@@ -257,17 +259,19 @@ const tutors = {
 	},
 	updateTutors(tutors){
 		_eventEdit.tutors.tutors = tutors.map((item) => {
-			let obj = {...item.data};
-			obj.id = item.id;
-			return new Tutor(obj);
+			var tutor = expand(item, (value) => {
+				return value === 'true' ? true : value === 'false' ? false : value;
+			});
+			return new Tutor(tutor);
 		});
 		_eventEdit.tutors.checkedAllTutors = false;
 	},
 	updateLectors(lectors){
 		_eventEdit.tutors.lectors = lectors.map((item) => {
-			let obj = {...item.data};
-			obj.id = item.id;
-			return new Lector(obj);
+			var lector = expand(item, (value) => {
+				return value === 'true' ? true : value === 'false' ? false : value;
+			});
+			return new Lector(lector);
 		});
 		_eventEdit.tutors.checkedAllLectors = false;
 	}
@@ -284,9 +288,10 @@ const testing = {
 
 	updatePostTests(tests){
 		_eventEdit.testing.postTests = tests.map((item) => {
-			let obj = {...item.data};
-			obj.id = item.id;
-			return new Test(obj);
+			var test = expand(item, (value) => {
+				return value === 'true' ? true : value === 'false' ? false : value;
+			});
+			return new Test(test);
 		});
 	},
 
@@ -362,9 +367,10 @@ const files = {
 	},
 	updateFiles(files){
 		_eventEdit.files.files = files.map((item) => {
-			let obj = {...item.data};
-			obj.id = item.id;
-			return new File(obj);
+			var file = expand(item, (value) => {
+				return value === 'true' ? true : value === 'false' ? false : value;
+			});
+			return new File(file);
 		});
 		_eventEdit.files.checkedAllFiles = false;
 	},

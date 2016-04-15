@@ -137,10 +137,7 @@ class SelectItems extends React.Component {
 			Object.keys(item.data).forEach((col, index) => {
 				item.data[col] = self._castType(item.data[col], data.headerCols[index].type);
 			})
-			return {
-				id: item.id,
-				data: item.data
-			}
+			return item;
 		});
 		this.setState({items: data.items, headerCols: data.headerCols, pagesCount: data.pagesCount, isLoading: false});
 	}
@@ -166,7 +163,7 @@ class SelectItems extends React.Component {
 		this.setState({items: items});
 	}
 
-	onAddItem(id, data){
+	onAddItem(item){
 		var _items = this.state.items;
 		var _selectedItems = this.state.selectedItems;
 
@@ -174,8 +171,8 @@ class SelectItems extends React.Component {
 			this.setState({error: this.errors.MAX_SELECTED_ITEMS, isShowError: true});
 			return;
 		}
-		if (some(_selectedItems, { id: id, data: data })) return;
-		_selectedItems.push({ id: id, data: data });
+		if (some(_selectedItems, {id: item.id})) return;
+		_selectedItems.push({...item});
 		this.setState({ items: _items, selectedItems: _selectedItems});
 	}
 

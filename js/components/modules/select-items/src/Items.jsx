@@ -64,7 +64,7 @@ class Item extends React.Component {
 
 	handleAddItem(){
 		if (this.context.onAddItem){
-			this.context.onAddItem(this.props.id, this.props.data);
+			this.context.onAddItem({...this.props});
 		}
 	}
 
@@ -113,8 +113,8 @@ class Items extends React.Component {
 	}
 
 	getColsMarkup(){
-		let headerCols = this.props.headerCols;
-		let markUpCols = [<th key={0}></th>];
+		var headerCols = this.props.headerCols;
+		var markUpCols = [<th key={0}></th>];
 		headerCols.forEach((c, index) => {
 			markUpCols.push(<HeaderCol key={index + 1} name={c.name} index={index}/>);
 		});
@@ -122,18 +122,18 @@ class Items extends React.Component {
 	}
 
 	getRowsMarkUp(){
-		let items = this.props.items;
-		let selectedItems = this.props.selectedItems;
+		var items = this.props.items;
+		var selectedItems = this.props.selectedItems;
 		return items.map((i, index) => {
 			let isSelected = some(selectedItems, i);
-			return <Item key={index} id={i.id} data={i.data} isSelected={isSelected}/>
+			return <Item key={index} {...i} isSelected={isSelected}/>
 		});
 	}
 
 	render() {
-		let cols = this.getColsMarkup();
-		let items = this.getRowsMarkUp();
-		let isLoadingClass = this.props.isLoading ? 'overlay-loading--show ': '';
+		const cols = this.getColsMarkup();
+		const items = this.getRowsMarkUp();
+		const isLoadingClass = this.props.isLoading ? 'overlay-loading--show ': '';
 		return(
 			<div className="items-wrapper">
 				<table className="items-wrapper__header">

@@ -3,6 +3,7 @@ import EventEditActions from 'actions/EventEditActions';
 import CheckBox from 'components/modules/checkbox';
 import DropDownIcon from 'components/modules/dropdown-icon';
 import SelectItems from 'components/modules/select-items';
+import ToggleButton from 'components/modules/toggle-button';
 import cx from 'classnames';
 import {some, filter} from 'lodash';
 import config from 'config';
@@ -14,13 +15,16 @@ class File extends React.Component {
 		EventEditActions.files.toggleFileChecked(this.props.id, !this.props.checked);
 	}
 
+	handleToggleIsAllowDownload(){
+		
+	}
+
 	render(){
-		const {name, type, isAllowDownload, checked} = this.props;
+		const {id, name, type, isAllowDownload, checked} = this.props;
 		const classes = cx({
 			'table-list__body-row': true,
 			'table-list__body-row--selected': checked
 		});
-		const isAllowDownloadDescr = isAllowDownload ? 'Разрешить скачивание' : 'Запретить скачивание';
 		return (
 			<div className={classes}>
 				<div className="table-list__body-cell table-list__body-cell--icon">
@@ -31,7 +35,9 @@ class File extends React.Component {
 				</div>
 				<div className="table-list__body-cell">{name}</div>
 				<div className="table-list__body-cell">{type}</div>
-				<div className="table-list__body-cell">{isAllowDownloadDescr}</div>
+				<div className="table-list__body-cell">
+					<ToggleButton id={id} onChange={::this.handleToggleIsAllowDownload} checked={isAllowDownload} />
+				</div>
 			</div>
 		);
 	}
@@ -84,6 +90,9 @@ class Files extends React.Component{
 				id: f.id,
 				data: {
 					name: f.name,
+					type: f.type
+				},
+				additionalData: {
 					isAllowDownload: f.isAllowDownload
 				}	
 			}

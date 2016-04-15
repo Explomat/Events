@@ -1,0 +1,54 @@
+.toggle-button{
+  display: inline-block;
+
+    .toggle-button__input {
+        display: none;
+
+        &:checked ~ .toggle-button__checkbox:before{
+          left:0px;
+        }
+        &:checked ~ .toggle-button__checkbox:after{
+            left:17px;
+        }
+    }
+
+    .toggle-button__checkbox{
+        position:relative;
+        display:block;
+        overflow:hidden;
+        width:40px;
+        height:24px;
+        cursor:pointer;
+        transition:background .2s ease;
+        border-radius:12px;
+        background:-webkit-linear-gradient(#ddd, #eee);
+        background:linear-gradient(#ddd, #eee);
+
+        &:after {
+            position:absolute;
+            z-index:2;
+            top:1px;
+            left:1px;
+            width:22px;
+            height:22px;
+            content:'';
+            transition:all .2s ease;
+            border-radius:100%;
+            background:-webkit-linear-gradient(#ddd, #aaa);
+            background:linear-gradient(#ddd, #aaa);
+        }
+        &:before {
+            position:absolute;
+            z-index:1;
+            top:0px;
+            left:-40px;
+            width:40px;
+            height:24px;
+            content:'';
+            transition:all .2s ease;
+            border-radius:12px;
+            background:-webkit-linear-gradient(#4AC94D, #5FE462);
+            background:linear-gradient(#4AC94D, #5FE462);
+        }
+    }
+}

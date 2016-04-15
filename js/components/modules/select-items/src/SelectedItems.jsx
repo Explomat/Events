@@ -18,7 +18,7 @@ class SelectedItem extends React.Component {
 
 	handleRemoveItem(){
 		if (this.context.onRemoveItem){
-			this.context.onRemoveItem(this.props.id, this.props.data);
+			this.context.onRemoveItem(this.props.id);
 		}
 	}
 

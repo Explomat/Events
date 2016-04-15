@@ -392,14 +392,17 @@ function getFiles (queryObjects) {
 		) r
 		where 
 			r.rowNum > " + startPage * limitRows);
+
 	var resourcesArray = [];
 	for (r in basicRecourseArray) {
 		resourcesArray.push({ 
 			id: Int(r.id), 
 			data: {
 				name : r.name + '',
-				type: r.type + '',
-				isAllowDownload: r.allow_download == true ? 'да' : 'нет'
+				type: r.type + ''
+			},
+			additionalData: {
+				isAllowDownload: r.allow_download + ''
 			}
 		});
 	}
@@ -408,8 +411,7 @@ function getFiles (queryObjects) {
 		items: resourcesArray,
 		headerCols: [
 			{'name': 'Название файла', 'type': 'string' },
-			{'name': 'Тип', 'type': 'string'},
-			{'name': 'Разрешить скачивание', 'type': 'string' }
+			{'name': 'Тип', 'type': 'string'}
 		]
 	}, 'json');
 }
@@ -443,7 +445,6 @@ function getLibraryMaterials (queryObjects) {
 		) l
 		where 
 			l.rowNum > " + startPage * limitRows);
-
 	var libraryMaterialsArray = [];
 	for (l in basicLibraryMaterialsArray) {
 		curItemAuthor = l.author == null ? "отсутсвует" : l.author;
@@ -736,8 +737,8 @@ function getEventFiles (queryObjects) {
 				id: Int(f.file_id),
 				name: curFile.name + '',
 				type: curFile.type + '',
-				isAllowDownload : curFile.allow_download + '',
-				view : curFile.allow_unauthorized_download + '' // будем использовать для отображения
+				isAllowDownload : curFile.allow_download + ''
+				//isAllowUnauthorizedDownload : curFile.allow_unauthorized_download + '' // будем использовать для отображения
 			});
 		}
 
