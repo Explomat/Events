@@ -67,9 +67,28 @@
     transform: rotate(40deg);
     -webkit-backface-visibility: hidden;
     background-color: transparent;
+    z-index: 1;
     /* -webkit-transform-origin: 100% 100%;
     -moz-transform-origin: 100% 100%;
     -ms-transform-origin: 100% 100%;
     -o-transform-origin: 100% 100%;
     transform-origin: 100% 100%; */
+}
+
+.checkbox-box__input:checked ~ .checkbox-box__label:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0px;
+    width: 14px;
+    height: 14px;
+    z-index: 0;
+    border: 2px solid #5a5a5a;
+    border-radius: 1px;
+    -webkit-transition: 0.2s;
+    -moz-transition: 0.2s;
+    -o-transition: 0.2s;
+    -ms-transition: 0.2s;
+    transition: 0.2s;
+    background-color: #fff;
 }

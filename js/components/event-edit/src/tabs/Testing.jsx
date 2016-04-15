@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import CheckBox from 'components/modules/checkbox';
+import CheckBox from 'components/modules/new-checkbox';
 import DropDown from 'components/modules/dropdown';
 import SelectItems from 'components/modules/select-items';
 import ComposeLabel from 'components/modules/compose-label';

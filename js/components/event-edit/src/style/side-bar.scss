@@ -26,7 +26,7 @@ $headerColor: #646464;
   }
   .side-bar__body {
     background-color: #fff;
-    height: calc(100% - 60px);
+    height: calc(100% - 76px);
 
     .side-bar__tab-label{
       display: block;
@@ -35,8 +35,12 @@ $headerColor: #646464;
       padding: 16px 16px;
       cursor: pointer;
 
-      &:first-of-type{
-        padding-top: 32px;
+      &:hover{
+        background-color: #ddd;
+      }
+
+      &:first-child{
+        margin-top: 16px;
       }
 
       &.side-bar__tab-label--selected {

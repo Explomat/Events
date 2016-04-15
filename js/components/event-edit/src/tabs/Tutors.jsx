@@ -1,5 +1,5 @@
 import React from 'react';
-import CheckBox from 'components/modules/checkbox';
+import CheckBox from 'components/modules/new-checkbox';
 import DropDownIcon from 'components/modules/dropdown-icon';
 import SelectItems from 'components/modules/select-items';
 import ToggleButton from 'components/modules/toggle-button';

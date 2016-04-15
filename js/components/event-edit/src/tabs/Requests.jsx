@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import EventEditActions from 'actions/EventEditActions';
 import RequestStatuses from 'utils/eventedit/RequestStatuses';
-import CheckBox from 'components/modules/checkbox';
+import CheckBox from 'components/modules/new-checkbox';
 import DropDownIcon from 'components/modules/dropdown-icon';
 import InputCalendar from 'components/modules/input-calendar';
 import RejectReasonInfo from '../RejectReasonInfo';
