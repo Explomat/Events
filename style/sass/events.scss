@@ -19,6 +19,21 @@
         height: 720px;
     }
 
+    .default-button {
+        display: inline-block;
+        padding: 0 .5em;
+        background: linear-gradient(#fff, #ddd);
+        border: 1px solid #ccc;
+        border-radius: 2px;
+        text-align: center;
+        cursor: pointer;
+        outline: 0;
+
+        &:active {
+            background: linear-gradient(#ddd, #fff);
+        }
+    }
+
     .event-btn {
         color: #ff5252;
         border: 1px solid #ff5252;

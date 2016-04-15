@@ -329,6 +329,15 @@ const courses = {
 }
 
 const files = {
+	toggleFileIsAllowDownload(id, isAllowDownload){
+		var _files = _eventEdit.files.files;
+		var item = find(_files, (item) => {
+			return item.id === id;
+		});
+		if (item){
+			item.isAllowDownload = isAllowDownload;
+		}
+	},
 	toggleCheckedAllFiles(checked){
 		var container = _eventEdit.files;
 		var arr = _eventEdit.files.files;
@@ -605,6 +614,10 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			break;
 
 		//FILES
+		case EventEditConstants.EVENTEDIT_FILES_TOGGLE_FILE_IS_ALLOW_DOWNLOAD:
+			files.toggleFileIsAllowDownload(action.id, action.isAllowDownload);
+			isEmit = true;
+			break;
 		case EventEditConstants.EVENTEDIT_FILES_TOGGLE_CHECKED_ALL_FILES:
 			files.toggleCheckedAllFiles(action.checked);
 			isEmit = true;

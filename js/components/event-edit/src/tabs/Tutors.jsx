@@ -212,7 +212,8 @@ class Tutors extends React.Component {
 
 		const removeTutorsClasses = cx({
 			'buttons__remove': true,
-			'buttons__remove--display': isDisplayTutorsButtons
+			'buttons__remove--display': isDisplayTutorsButtons,
+			'default-button': true
 		});
 		const checkboxTutorsClasses = cx({
 			'buttons__checkbox': true,
@@ -225,7 +226,8 @@ class Tutors extends React.Component {
 
 		const removeLectorsClasses = cx({
 			'buttons__remove': true,
-			'buttons__remove--display': isDisplayLectorsButtons
+			'buttons__remove--display': isDisplayLectorsButtons,
+			'default-button': true
 		});
 		const checkboxLectorsClasses = cx({
 			'buttons__checkbox': true,
@@ -246,7 +248,7 @@ class Tutors extends React.Component {
 							<i className="fa fa-sort"></i>
 						</DropDownIcon>
 						<div className="buttons__funcs">
-							<button onClick={::this.handleOpenTutorsModal} className="buttons__add" title="Добавить участников">
+							<button onClick={::this.handleOpenTutorsModal} className="buttons__add default-button" title="Добавить участников">
 								<i className="fa fa-user-plus"></i>
 							</button>
 							<button onClick={this.handleRemoveTutors} className={removeTutorsClasses} title="Удалить участников">
@@ -276,7 +278,7 @@ class Tutors extends React.Component {
 							<i className="fa fa-sort"></i>
 						</DropDownIcon>
 						<div className="buttons__funcs">
-							<button onClick={::this.handleOpenLectorsModal} className="buttons__add" title="Добавить участников">
+							<button onClick={::this.handleOpenLectorsModal} className="buttons__add default-button" title="Добавить участников">
 								<i className="fa fa-user-plus"></i>
 							</button>
 							<button onClick={this.handleRemoveLectors} className={removeLectorsClasses} title="Удалить участников">

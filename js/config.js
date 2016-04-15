@@ -25,6 +25,7 @@ var servers = [
 			'createNotification',
 			'processingRequest',
 			'uploadFile',
+			'uploadLibraryMaterial',
 			'removeFile',
 			'getFiles',
 			'getLibraryMaterials'

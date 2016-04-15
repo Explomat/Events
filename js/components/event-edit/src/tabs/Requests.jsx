@@ -183,20 +183,24 @@ class Requests extends React.Component {
 							</div>
 						</div>
 					</div>
+					<br />
 					<CheckBox 
 						onChange={this.handleChangeIsAutomaticIncludeInCollaborators} 
 						label="Автоматически включать в состав участников"
 						checked={this.props.isAutomaticIncludeInCollaborators}/>
+					<br />
 					<br />
 					<CheckBox 
 						onChange={this.handleChangeIsApproveByBoss} 
 						label="Необходимо подтверждение от непосредственного руководителя"
 						checked={this.props.isApproveByBoss}/>
 					<br />
+					<br />
 					<CheckBox 
 						onChange={this.handleChangeIsApproveByTutor} 
 						label="Необходимо подтверждение от ответственного за мероприятие"
 						checked={this.props.isApproveByTutor}/>
+					<br />
 					<br />
 					<DropDownIcon onChange={::this.handleSort} items={this.props.sortTypes} className={dropdownSortclasses}>
 						<i className="fa fa-sort"></i>

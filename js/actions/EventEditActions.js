@@ -326,6 +326,13 @@ var EventEditActions = {
 	},
 
 	files: {
+		toggleFileIsAllowDownload(id, isAllowDownload){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_FILES_TOGGLE_FILE_IS_ALLOW_DOWNLOAD,
+				id: id,
+				isAllowDownload: isAllowDownload
+			});
+		},
 		toggleCheckedAllFiles(checked){
 			AppDispatcher.handleAction({
 				actionType: EventEditConstants.EVENTEDIT_FILES_TOGGLE_CHECKED_ALL_FILES,
@@ -401,7 +408,7 @@ var EventEditActions = {
 			AppDispatcher.handleAction({
 				actionType: EventEditConstants.EVENTEDIT_FILES_UPLOADING_LIBRARY_MATERIALS
 			});
-			EventEditAPI.uploadFiles(libraryMaterials).then((uploadedlibraryMaterials) => {
+			EventEditAPI.uploadLibraryMaterials(libraryMaterials).then((uploadedlibraryMaterials) => {
 				var filesWithoutErrors = filter(uploadedlibraryMaterials, (file) => {
 					return file.error === '';
 				});

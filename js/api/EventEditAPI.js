@@ -36,6 +36,18 @@ module.exports = {
 		});
 	},
 
+	uploadLibraryMaterials: function(files){
+		var promises = [];
+		for (var i = files.length - 1; i >= 0; i--) {
+			promises.push(Ajax.uploadFile(Config.url.createPath({action_name: 'uploadLibraryMaterial'}), files[i]));
+		};
+		return Promise.all(promises).then(function(files){
+			return files.map((file) => {
+				return JSON.parse(file);
+			});
+		});
+	},
+
 	removeFiles: function(ids){
 		var promises = [];
 		for (var i = ids.length - 1; i >= 0; i--) {

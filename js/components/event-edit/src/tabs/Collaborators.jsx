@@ -156,11 +156,13 @@ class Collaborators extends React.Component {
 
 		const removeClasses = cx({
 			'buttons__remove': true,
-			'buttons__remove--display': isSomeChecked
+			'buttons__remove--display': isSomeChecked,
+			'default-button': true
 		});
 		const notificateClasses = cx({
 			'buttons__notificate': true,
-			'buttons__notificate--display': isSomeChecked
+			'buttons__notificate--display': isSomeChecked,
+			'default-button': true
 		});
 		const checkboxClasses = cx({
 			'buttons__checkbox': true,
@@ -188,9 +190,9 @@ class Collaborators extends React.Component {
 						<i className="fa fa-sort"></i>
 					</DropDownIcon>
 					<div className="buttons__funcs">
-						<button onClick={::this.handleOpenModal} className="buttons__add" title="Добавить участников">
+						<div onClick={::this.handleOpenModal} className="buttons__add default-button" title="Добавить участников">
 							<i className="fa fa-user-plus"></i>
-						</button>
+						</div>
 						<button onClick={this.handleRemoveItems} className={removeClasses} title="Удалить участников">
 							<i className="fa fa-user-times"></i>
 						</button>

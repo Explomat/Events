@@ -76,10 +76,10 @@ class DropDownIcon extends React.Component {
 		})
 		return (
 			<div className={className}>
-				<button className="dropdown-icon__button" type="button" onClick={::this.handleToggleDisplay}>
+				<div className="dropdown-icon__button default-button" type="button" onClick={::this.handleToggleDisplay}>
 					{this.props.children}
 					<span className={caretClassName}></span>
-				</button>
+				</div>
 				<ul className={classNameList}>
 					{this.props.items.map((item, index) => {
 						return <Item key={index + 1} {...item} onChange={::this.handleChange}/>

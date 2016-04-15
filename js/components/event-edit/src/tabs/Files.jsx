@@ -16,7 +16,7 @@ class File extends React.Component {
 	}
 
 	handleToggleIsAllowDownload(){
-
+		EventEditActions.files.toggleFileIsAllowDownload(this.props.id, !this.props.isAllowDownload);
 	}
 
 	render(){
@@ -208,7 +208,8 @@ class Files extends React.Component{
 
 		const removeFilesClasses = cx({
 			'buttons__remove': true,
-			'buttons__remove--display': isDisplayFilesButtons
+			'buttons__remove--display': isDisplayFilesButtons,
+			'default-button': true
 		});
 		const checkboxFilesClasses = cx({
 			'buttons__checkbox': true,
@@ -217,7 +218,8 @@ class Files extends React.Component{
 
 		const removeLibraryMaterialsClasses = cx({
 			'buttons__remove': true,
-			'buttons__remove--display': isDisplayLibraryMaterialsButtons
+			'buttons__remove--display': isDisplayLibraryMaterialsButtons,
+			'default-button': true
 		});
 		const checkboxLibraryMaterialsClasses = cx({
 			'buttons__checkbox': true,
@@ -240,14 +242,14 @@ class Files extends React.Component{
 						<DropDownIcon className={checkboxFilesClasses}>
 							<CheckBox onChange={::this.handleToggleCheckedAllFiles} checked={this.props.checkedAllFiles} className={checkboxFilesClasses}/>
 						</DropDownIcon>
-						<label className="event-edit-files__upload">
+						<label className="event-edit-files__upload default-button">
 							<i className="fa fa-upload event-edit-files__upload-icon"></i>
 							<input ref="fileInput" onChange={::this.handleChangeFiles} type="file" multiple style={{display: 'none'}}/>
 						</label>
 						<span className={isUploadingFilesClasses}></span>
 
 						<div className="buttons__funcs">
-							<button onClick={::this.handleOpenFilesModal} className="buttons__add" title="Добавить файлы">
+							<button onClick={::this.handleOpenFilesModal} className="buttons__add default-button" title="Добавить файлы">
 								<i className="fa fa-plus"></i>
 							</button>
 							<button onClick={::this.handleRemoveFiles} className={removeFilesClasses} title="Удалить файлы">
@@ -273,13 +275,13 @@ class Files extends React.Component{
 						<DropDownIcon className={checkboxLibraryMaterialsClasses}>
 							<CheckBox onChange={::this.handleToggleCheckedAllLibraryMaterials} checked={this.props.checkedAllLibraryMaterials} className={checkboxLibraryMaterialsClasses}/>
 						</DropDownIcon>
-						<label className="event-edit-files__upload">
+						<label className="event-edit-files__upload default-button">
 							<i className="fa fa-upload event-edit-files__upload-icon"></i>
 							<input ref="libraryMaterial" onChange={::this.handleChangeLibraryMaterials} type="file" multiple style={{display: 'none'}}/>
 						</label>
 						<span className={isUploadingLibraryMaterialsClasses}></span>
 						<div className="buttons__funcs">
-							<button onClick={::this.handleOpenLibraryMaterialsModal} className="buttons__add" title="Добавить файлы">
+							<button onClick={::this.handleOpenLibraryMaterialsModal} className="buttons__add default-button" title="Добавить файлы">
 								<i className="fa fa-plus"></i>
 							</button>
 							<button onClick={this.handleRemoveLibraryMaterials} className={removeLibraryMaterialsClasses} title="Удалить файлы">
