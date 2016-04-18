@@ -25,10 +25,13 @@ var servers = [
 			'createNotification',
 			'processingRequest',
 			'uploadFile',
-			'uploadLibraryMaterial',
-			'removeFile',
+			'uploadLibraryMaterials',
+			'removeFiles',
+			'addFiles',
 			'getFiles',
-			'getLibraryMaterials'
+			'getLibraryMaterials',
+			'addLibraryMaterials',
+			'removeLibraryMaterials'
 		]
 	}
 ]

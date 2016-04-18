@@ -7,6 +7,7 @@ import Tutor from '../models/eventedit/Tutor';
 import Lector from '../models/eventedit/Lector';
 import Collaborator from '../models/eventedit/Collaborator';
 import File from '../models/eventedit/File';
+import LibraryMaterial from '../models/eventedit/LibraryMaterial';
 import {isNumberOrReal} from '../utils/validation/Validation';
 //import CollaboratorTest from '../models/eventedit/CollaboratorTest';
 import extend from 'extend';
@@ -388,6 +389,15 @@ const files = {
 	},
 	uploadingLibraryMaterials(){
 		_eventEdit.files.isUploadingLibraryMaterials = true;
+	},
+	updateLibraryMaterials(libraryMaterials){
+		_eventEdit.files.libraryMaterials = libraryMaterials.map((item) => {
+			var libraryMaterial = expand(item, (value) => {
+				return value === 'true' ? true : value === 'false' ? false : value;
+			});
+			return new LibraryMaterial(libraryMaterial);
+		});
+		_eventEdit.files.checkedAllLibraryMaterials = false;
 	}
 }
 
@@ -660,6 +670,10 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			files.uploadedLibraryMaterials(action.libraryMaterials);
 			isEmit = true;
 			break;
+		case EventEditConstants.EVENTEDIT_FILES_UPDATE_LIBRARY_MATERIALS:
+			files.updateLibraryMaterials(action.libraryMaterials);
+			isEmit = true;
+			break;	
 
 		default:
 			return true;

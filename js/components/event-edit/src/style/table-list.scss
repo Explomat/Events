@@ -116,8 +116,15 @@
 			    padding: 6px;
 			    vertical-align: middle;
 
+			    @for $i from 1 through 20 {
+			    	&.table-list__body-cell--#{$i * 5} {
+			    		width: $i * 5%;
+			    	}
+			    }
+
 			    &.table-list__body-cell--icon {
 			    	width: 36px;
+			    	color: #646464;
 			    }
 			}
 		}

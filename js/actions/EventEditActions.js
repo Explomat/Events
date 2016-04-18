@@ -471,9 +471,18 @@ var EventEditActions = {
 		},
 
 		updateFiles(files){
+			EventEditAPI.updateFiles(files).then((files) => {
+				AppDispatcher.handleAction({
+					actionType: EventEditConstants.EVENTEDIT_FILES_UPDATE_FILES,
+					files: files
+				});
+			});
+		},
+
+		updateLibraryMaterials(libraryMaterials){
 			AppDispatcher.handleAction({
-				actionType: EventEditConstants.EVENTEDIT_FILES_UPDATE_FILES,
-				files: files
+				actionType: EventEditConstants.EVENTEDIT_FILES_UPDATE_LIBRARY_MATERIALS,
+				libraryMaterials: libraryMaterials
 			});
 		}
 	}

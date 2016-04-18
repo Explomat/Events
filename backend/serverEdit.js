@@ -10,23 +10,18 @@
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
-function removeFile(queryObjects) {
-	var fileId = queryObjects.HasProperty('id') ? queryObjects.id : null;
-	var doc = ArrayOptFirstElem(XQuery('sql:select r.id from resource r where r.id=' + fileId));
-	var error = '';
-	try {
-		if (doc != undefined) {
-			DeleteDoc(UrlFromDocID(Int(fileId)));
-		}
-	}
-	catch(e){
-		error = e;
-	}
-	return tools.object_to_text({ id: fileId, error: error + '' }, 'json');
-	
-}
 
-function uploadFile(queryObjects) {
+
+function _uploadFile(queryObjects) {
+
+	function _addLink () {
+		resoureLink = docResource.TopElem.links.AddChild(); 
+		resoureLink.object_id = Session.eventId ;
+		resoureLink.object_catalog = 'event';
+		resoureLink.object_name = Session.eventName;
+		resoureLink.date_modify = Date();
+	}
+
 	var file = queryObjects.Form.file;
 	if (file == null || file == undefined) {
 		return {
@@ -55,19 +50,146 @@ function uploadFile(queryObjects) {
 		docResource.TopElem.file_name = fileName;
 		docResource.TopElem.name = fileName;
 		docResource.TopElem.type = fileType;
-		docResource.TopElem.person_fullname = userDoc.TopElem.lastname + ' ' + userDoc.TopElem.firstname + ' ' + userDoc.TopElem.middlename;
+		docResource.TopElem.person_fullname = userDoc.TopElem.fullname;
 		docResource.BindToDb();
+		_addLink();
 		docResource.TopElem.put_str(queryObjects.Body, fileName); 
 		docResource.Save();
 	}catch(e){
 		error = e;
 	}
-	return tools.object_to_text({ 
+	return { 
 		id: docResource.DocID, 
 		name: fileName,
 		type: fileType,
 		isAllowDownload: docResource.TopElem.allow_download + '',
-		error: error }, 'json');
+		error: error 
+	}
+}
+
+function uploadFile(queryObjects) {
+	var currentFile = _uploadFile(queryObjects);
+	return tools.object_to_text(currentFile,'json');
+}
+
+function uploadLibraryMaterial(queryObjects) {
+	var currentObject = _uploadFile(queryObjects);
+	var file_id = currentObject.id;
+	var file_name = currentObject.name;
+	var error = '';
+
+	docResource = OpenNewDoc( 'x-local://wtv/wtv_library_material.xmd' ); 
+	docResource.TopElem.code = 'CITILINK';
+	docResource.TopElem.name = file_name; 
+	docResource.TopElem.section_id = 6273792921854941289; // раздел в который помещаем документы
+	docResource.TopElem.library_material_type_id = 5956480485185946715; //тренинговый материал
+	docResource.TopElem.unfolded_document.orientation = 'vertical'; // 
+	docResource.TopElem.file_name = file_id;
+	docResource.TopElem.author = OpenDoc(UrlFromDocID(curUserID)).TopElem.firstname + ' ' + OpenDoc(UrlFromDocID(curUserID)).TopElem.lastname;
+	docResource.TopElem.year = Year(Date()); 
+	docResource.BindToDb(); 
+	docResource.Save();
+
+	if (ArrayOptFirstElem(docResource.TopElem.unfolded_document.pages) != undefined) {
+		docResource.TopElem.unfolded_document.pages.Clear();
+		docResource.Save();
+	}
+	
+	try {
+		docMaterialResult = ServerEval('tools.convert_pdf_libratry_material(' + docResource.TopElem.Doc.DocID + ')');
+		if(docMaterialResult != null)
+		{
+			docResource.TopElem.AssignElem(OpenDoc(UrlFromDocID( docResource.DocID )).TopElem);					
+			alert('конвертация завершена удачно');	
+		} else {
+			alert('ошибка')					
+		}
+	}
+	catch(x)
+	{		
+		error = x;
+		alert("ошибка " + x);	
+	}
+
+	docResource.TopElem.allow_download = true;
+	newmaterialView = docResource.TopElem.library_material_formats.AddChild(); 
+	newmaterialView.library_material_format_id = Int(5974338485996577346) ; 
+	docResource.Save();
+
+	return tools.object_to_text({
+		id : docResource.DocID + '',
+		name : file_name + '', 
+		year : Year(Date()) + '',
+		author : docResource.TopElem.author + '',
+		error: error 
+	} ,'json')
+}
+
+function removeFiles(queryObjects) {
+
+	var data = tools.read_object(queryObjects.Body);
+	var filesArray = data.HasProperty('ids') ? data.ids : [];
+	var files = [];
+
+	var eventCard = OpenDoc(UrlFromDocID(Session.eventId));
+	for (file in filesArray) {
+		doc = ArrayOptFirstElem(XQuery('sql:select r.id from resource r where r.id=' + file));
+		if (doc != undefined) {
+			fileCard = OpenDoc(UrlFromDocID(doc.id));
+			for (i = 0; i < ArrayCount(eventCard.TopElem.files); i++) {
+				try {
+					if ( eventCard.TopElem.files[i].file_id == Int(file) ) {
+						eventCard.TopElem.files[i].Delete();
+						eventCard.Save();
+						
+						files.push({
+							id : file + '',
+							error : ''
+						})
+						if ( ArrayCount(fileCard.TopElem.links) == 1 && fileCard.TopElem.links[0].object_id == Int(Session.eventId) ) {
+							DeleteDoc( UrlFromDocID( doc.id ) )
+						} else if ( ArrayCount(fileCard.TopElem.links) == 0 ) {
+							DeleteDoc( UrlFromDocID( doc.id ) )
+						}
+					} 
+				} catch (e) { 
+					files.push({
+						id : file + '',
+						error : e
+					}) 
+				}
+			}
+		}
+	}
+	return tools.object_to_text(files, 'json');
+}
+
+function addFiles (queryObjects) {
+
+	function isExist(files, fileId){
+		for (f in files){
+			if (f.file_id == fileId) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	var data = tools.read_object(queryObjects.Body);
+	var curEventCard = OpenDoc(UrlFromDocID(Int(Session.eventId)));
+
+	var goodData = [];
+	for (elem in data.files) {
+		isFileExist = isExist(curEventCard.TopElem.files, elem.id);
+		if (!isFileExist) {
+			resoureLink = curEventCard.TopElem.files.AddChild();
+			resoureLink.file_id = Int(elem.id) ;
+			resoureLink.visibility = 'all';
+			curEventCard.Save();
+			goodData.push(elem)
+		}
+	}
+	return tools.object_to_text(goodData, 'json');
 }
 
 function isAdmin (queryObjects) {
@@ -160,6 +282,10 @@ function processingRequest(queryObjects) {
 	}
 
 }
+
+
+
+
 /* 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -895,6 +1021,7 @@ function getEventCollaborators (queryObjects) {
 	}
 }
 
+
 function getEventTutors (queryObjects) {
 	var eventID = queryObjects.HasProperty('event_id') ? Int(queryObjects.event_id) : null;
 
@@ -951,6 +1078,8 @@ function getEventTutors (queryObjects) {
 function getEventEditData (queryObjects) {
 	var eventID = queryObjects.HasProperty('event_id') ? Int(queryObjects.event_id) : null;
 	if (ArrayCount(XQuery("sql: select * from events where events.id =" + eventID)) > 0) {
+		Session['eventId'] = eventID;
+		Session['eventName'] = ArrayOptFirstElem(XQuery("sql: select events.name from events where events.id =" + eventID)).name
 		return tools.object_to_text({
 			base : getEventBaseData(queryObjects),
 			requests : getEventRequests(queryObjects),

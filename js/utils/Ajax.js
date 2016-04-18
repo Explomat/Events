@@ -57,30 +57,39 @@ module.exports = {
             
 
             xmlHttp.send(formData);
-
-           /*var boundary = "xxxxxxxxx";
-            xmlHttp.setRequestHeader("Content-Type", "multipart/form-data, boundary=" + boundary);
-            
-
-            //Формируем тело запроса
-            var body = "--" + boundary + "\r\n";
-            body += "Content-Disposition: form-data; name='myFile'; filename='" + fileName + "'\r\n";
-            body += "Content-Type: application/octet-stream\r\n\r\n";
-            body += fileData + "\r\n";
-            body += "--" + boundary + "--";
-
-            if(xmlHttp.sendAsBinary) {
-              // только для firefox
-                xmlHttp.sendAsBinary(body);
-            } else {
-              // chrome (так гласит спецификация W3C)
-                xmlHttp.send(body);
-            }*/  
         });
     },
 
-    uploadFiles: function(eventTarget, url) {
+    uploadFiles: function(url, files) {
+        var self = this;
+
         return new Promise(function(resolve, reject){
+            var xmlHttp = self.getXmlHttp();
+
+            xmlHttp.onreadystatechange = function() {
+              if (xmlHttp.readyState == 4) {
+
+                if(xmlHttp.status == 200){
+                   resolve(xmlHttp.responseText);
+                }
+                else {
+                    console.log(xmlHttp.status);
+                    reject(xmlHttp.statusText || "Upload file error");
+                }
+              }
+            };
+
+            xmlHttp.open('POST', url);
+
+            var formData = new FormData();
+            for (var i = files.length - 1; i >= 0; i--) {
+                let file = files[i];
+                formData.append('files[]', file, file.name);
+                
+            };  
+            xmlHttp.send(formData);
+        });
+       /* return new Promise(function(resolve, reject){
             if (!url)
                 reject(Error("Unknown url"));
             var files = FileAPI.getFiles(eventTarget);
@@ -101,7 +110,7 @@ module.exports = {
                 xmlHttp.abort();
                 reject("Upload file time over");
             }, AJAX_TIME_OVER);
-        });
+        });*/
     },
 
     sendRequest: function(url, data, isCache, isSync, xmlHttpRequest, requestType) {

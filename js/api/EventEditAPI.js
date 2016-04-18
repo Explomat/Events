@@ -25,21 +25,45 @@ module.exports = {
 	},
 
 	uploadFiles: function(files){
+		/*return Ajax.uploadFiles(Config.url.createPath({action_name: 'uploadFiles'}), files).then(function(files){
+			return JSON.parse(files);
+		});*/
 		var promises = [];
 		for (var i = files.length - 1; i >= 0; i--) {
 			promises.push(Ajax.uploadFile(Config.url.createPath({action_name: 'uploadFile'}), files[i]));
 		};
 		return Promise.all(promises).then(function(files){
-			return files.map((file) => {
-				return JSON.parse(file);
+			var parseFiles = files.map(function(f){
+				return JSON.parse(f);
+			})
+			return Ajax.sendRequest(Config.url.createPath({action_name: 'addFiles'}), JSON.stringify({files: parseFiles}), false, true, null, 'POST').then(function(data){
+				return JSON.parse(data);
 			});
+			/*var files = files.map((file) => {
+				return JSON.parse(file);
+			});*/
+		});
+	},
+
+	updateFiles: function (files) {
+		return Ajax.sendRequest(Config.url.createPath({action_name: 'addFiles'}), JSON.stringify({files: files}), false, true, null, 'POST').then(function(data){
+			return JSON.parse(data);
+		});
+	},
+
+	removeFiles: function(ids){
+		return Ajax.sendRequest(Config.url.createPath({action_name: 'removeFiles'}), JSON.stringify({ids: ids}), false, true, null, 'POST').then(function(_files){
+			return JSON.parse(_files);
+			/*return files.map((file) => {
+				return JSON.parse(file);
+			});*/
 		});
 	},
 
 	uploadLibraryMaterials: function(files){
 		var promises = [];
 		for (var i = files.length - 1; i >= 0; i--) {
-			promises.push(Ajax.uploadFile(Config.url.createPath({action_name: 'uploadLibraryMaterial'}), files[i]));
+			promises.push(Ajax.uploadFile(Config.url.createPath({action_name: 'uploadLibraryMaterials'}), files[i]));
 		};
 		return Promise.all(promises).then(function(files){
 			return files.map((file) => {
@@ -48,10 +72,22 @@ module.exports = {
 		});
 	},
 
-	removeFiles: function(ids){
+	updateLibraryMaterials: function (libraryMaterials) {
+		var promises = [];
+		for (var i = libraryMaterials.length - 1; i >= 0; i--) {
+			promises.push(Ajax.sendRequest(Config.url.createPath({action_name: 'addLibraryMaterials'}), JSON.stringify(libraryMaterials[i]), false, true, null, 'POST'));
+		};
+		return Promise.all(promises).then(function(libraryMaterials){
+			return libraryMaterials.map((libraryMaterial) => {
+				return JSON.parse(libraryMaterial);
+			});
+		});
+	},
+
+	removeLibraryMaterials: function(ids){
 		var promises = [];
 		for (var i = ids.length - 1; i >= 0; i--) {
-			promises.push(Ajax.sendRequest(Config.url.createPath({action_name: 'removeFile', id: ids[i]}), null, false, true, null, 'POST'));
+			promises.push(Ajax.sendRequest(Config.url.createPath({action_name: 'removeLibraryMaterials', id: ids[i]}), null, false, true, null, 'POST'));
 		};
 		return Promise.all(promises).then(function(files){
 			return files.map((file) => {

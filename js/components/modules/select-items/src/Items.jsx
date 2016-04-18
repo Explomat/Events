@@ -125,7 +125,7 @@ class Items extends React.Component {
 		var items = this.props.items;
 		var selectedItems = this.props.selectedItems;
 		return items.map((i, index) => {
-			let isSelected = some(selectedItems, i);
+			let isSelected = some(selectedItems, {id: i.id});
 			return <Item key={index} {...i} isSelected={isSelected}/>
 		});
 	}

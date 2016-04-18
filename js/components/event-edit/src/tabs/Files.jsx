@@ -33,7 +33,7 @@ class File extends React.Component {
 				<div className="table-list__body-cell table-list__body-cell--icon">
 					<i className="fa fa-file"></i>
 				</div>
-				<div className="table-list__body-cell">{name}</div>
+				<div className="table-list__body-cell table-list__body-cell--75">{name}</div>
 				<div className="table-list__body-cell">{type}</div>
 				<div className="table-list__body-cell">
 					<ToggleButton id={id} onChange={::this.handleToggleIsAllowDownload} checked={isAllowDownload} />
@@ -50,7 +50,7 @@ class LibraryMaterial extends React.Component {
 	}
 
 	render(){
-		const {name, checked} = this.props;
+		const {name, year, author, checked} = this.props;
 		const classes = cx({
 			'table-list__body-row': true,
 			'table-list__body-row--selected': checked
@@ -64,6 +64,8 @@ class LibraryMaterial extends React.Component {
 					<i className="fa fa-file"></i>
 				</div>
 				<div className="table-list__body-cell">{name}</div>
+				<div className="table-list__body-cell">{year}</div>
+				<div className="table-list__body-cell">{author}</div>
 			</div>
 		);
 	}
@@ -124,7 +126,7 @@ class Files extends React.Component{
 	}
 
 	_getLibraryMaterialsModal(){
-		var selectedItems = this._prepareFilesForModal(this.props.libraryMaterials);
+		var selectedItems = this._prepareLibraryMaterialsForModal(this.props.libraryMaterials);
 		return this.state.isShowLibraryMaterials ? 
 			<SelectItems
 				title="Выберите материалы"
@@ -199,11 +201,11 @@ class Files extends React.Component{
 
 		const tableDescrFilesClasses = cx({
 			'table-list__description-is-empty': true,
-			'table-list__description-is-empty--display': this.props.files.length === 0
+			'table-list__description-is-empty--display': this.props.files.length === 0 && !this.props.isUploadingFiles
 		});
 		const tableDescrLibraryMaterialsClasses = cx({
 			'table-list__description-is-empty': true,
-			'table-list__description-is-empty--display': this.props.libraryMaterials.length === 0
+			'table-list__description-is-empty--display': this.props.libraryMaterials.length === 0 && !this.props.isUploadingLibraryMaterials
 		});
 
 		const removeFilesClasses = cx({
@@ -226,14 +228,13 @@ class Files extends React.Component{
 			'buttons__checkbox--display': this.props.libraryMaterials.length > 0
 		});
 
-
 		const isUploadingFilesClasses = cx({
-			'event-edit-files__uploading': true,
-			'event-edit-files__uploading--display': this.props.isUploadingFiles
+			'overlay-loading': true,
+			'overlay-loading--show': this.props.isUploadingFiles
 		});
 		const isUploadingLibraryMaterialsClasses = cx({
-			'event-edit-files__uploading': true,
-			'event-edit-files__uploading--display': this.props.isUploadingLibraryMaterials
+			'overlay-loading': true,
+			'overlay-loading--show': this.props.isUploadingLibraryMaterials
 		});
 		return (
 			<div className="event-edit-files">
@@ -246,7 +247,6 @@ class Files extends React.Component{
 							<i className="fa fa-upload event-edit-files__upload-icon"></i>
 							<input ref="fileInput" onChange={::this.handleChangeFiles} type="file" multiple style={{display: 'none'}}/>
 						</label>
-						<span className={isUploadingFilesClasses}></span>
 
 						<div className="buttons__funcs">
 							<button onClick={::this.handleOpenFilesModal} className="buttons__add default-button" title="Добавить файлы">
@@ -260,6 +260,7 @@ class Files extends React.Component{
 					<strong className="files__description">Файлы</strong>
 					<div className="table-list file-list">
 						<span className={tableDescrFilesClasses}>Нет файлов</span>
+						<span className={isUploadingFilesClasses}></span>
 						<div className="table-list__table">
 							<div className="table-list__header">
 								{this.props.files.map((item, index) => {
@@ -277,9 +278,8 @@ class Files extends React.Component{
 						</DropDownIcon>
 						<label className="event-edit-files__upload default-button">
 							<i className="fa fa-upload event-edit-files__upload-icon"></i>
-							<input ref="libraryMaterial" onChange={::this.handleChangeLibraryMaterials} type="file" multiple style={{display: 'none'}}/>
+							<input ref="libraryMaterial" onChange={::this.handleChangeLibraryMaterials} type="file" multiple style={{display: 'none'}} accept=".pdf"/>
 						</label>
-						<span className={isUploadingLibraryMaterialsClasses}></span>
 						<div className="buttons__funcs">
 							<button onClick={::this.handleOpenLibraryMaterialsModal} className="buttons__add default-button" title="Добавить файлы">
 								<i className="fa fa-plus"></i>
@@ -292,6 +292,7 @@ class Files extends React.Component{
 					<strong className="library-materials__description">Материалы библиотеки</strong>
 					<div className="table-list library-material-list">
 						<span className={tableDescrLibraryMaterialsClasses}>Нет материалов</span>
+						<span className={isUploadingLibraryMaterialsClasses}></span>
 						<div className="table-list__table">
 							<div className="table-list__header">
 								{this.props.libraryMaterials.map((item, index) => {
