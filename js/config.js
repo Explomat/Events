@@ -17,6 +17,7 @@ var servers = [
 	{
 		id: '6257108030223689633',
 		actions: [
+			'saveData',
 			'getEventEditData',
 			'getCollaborators',
 			'getLectors',
@@ -25,7 +26,7 @@ var servers = [
 			'createNotification',
 			'processingRequest',
 			'uploadFile',
-			'uploadLibraryMaterials',
+			'uploadLibraryMaterial',
 			'removeFiles',
 			'addFiles',
 			'getFiles',

@@ -9,6 +9,7 @@ import Testing from './tabs/Testing';
 import Tutors from './tabs/Tutors';
 
 //import Hasher from '../../../utils/Hasher';
+import EventEditActions from '../../../actions/EventEditActions';
 import EventEditStore from '../../../stores/EventEditStore';
 import {merge} from 'lodash';
 
@@ -55,6 +56,10 @@ class EventEdit extends React.Component {
 		this.setState({selectedTab: tabName})
 	}
 
+	handleSaveData(){
+		EventEditActions.saveData(EventEditStore.getData());
+	}
+
 	render(){
 		var tabView = this.getTabView(this.state.selectedTab.key);
 		return(
@@ -72,6 +77,7 @@ class EventEdit extends React.Component {
 						</div>
 					</div>
 				</div>
+				<button onClick={this.handleSaveData}>Сохранить</button>
 			</div>
 		);
 	}

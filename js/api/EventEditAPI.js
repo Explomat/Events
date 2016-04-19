@@ -1,6 +1,7 @@
 var Config = require('../config');
 var Promise = require('es6-promise').Promise;
 var Ajax = require('../utils/Ajax');
+var expand = require('../utils/Object').expand;
 
 module.exports = {
 
@@ -11,6 +12,10 @@ module.exports = {
 				return value === 'true' ? true : value === 'false' ? false : value;
 			});
 		});
+	},
+
+	saveData: function(data){
+		Ajax.sendRequest(Config.url.createPath({action_name: 'saveData'}), JSON.stringify(data), false, true, null, 'POST');
 	},
 
 	notificateItems: function(items, subject, body){
@@ -39,9 +44,6 @@ module.exports = {
 			return Ajax.sendRequest(Config.url.createPath({action_name: 'addFiles'}), JSON.stringify({files: parseFiles}), false, true, null, 'POST').then(function(data){
 				return JSON.parse(data);
 			});
-			/*var files = files.map((file) => {
-				return JSON.parse(file);
-			});*/
 		});
 	},
 
@@ -63,17 +65,27 @@ module.exports = {
 	uploadLibraryMaterials: function(files){
 		var promises = [];
 		for (var i = files.length - 1; i >= 0; i--) {
-			promises.push(Ajax.uploadFile(Config.url.createPath({action_name: 'uploadLibraryMaterials'}), files[i]));
+			promises.push(Ajax.uploadFile(Config.url.createPath({action_name: 'uploadLibraryMaterial'}), files[i]));
 		};
 		return Promise.all(promises).then(function(files){
-			return files.map((file) => {
-				return JSON.parse(file);
+			var parseFiles = files.map(function(f){
+				return JSON.parse(f);
+			})
+			return Ajax.sendRequest(Config.url.createPath({action_name: 'addLibraryMaterials'}), JSON.stringify({files: parseFiles}), false, true, null, 'POST').then(function(data){
+				return JSON.parse(data);
 			});
 		});
 	},
 
 	updateLibraryMaterials: function (libraryMaterials) {
-		var promises = [];
+		var materials = libraryMaterials.map(function(m){
+			return expand(m);
+		})
+		return Ajax.sendRequest(Config.url.createPath({action_name: 'addLibraryMaterials'}), JSON.stringify({files: materials}), false, true, null, 'POST').then(function(data){
+			return JSON.parse(data);
+		});
+
+		/*var promises = [];
 		for (var i = libraryMaterials.length - 1; i >= 0; i--) {
 			promises.push(Ajax.sendRequest(Config.url.createPath({action_name: 'addLibraryMaterials'}), JSON.stringify(libraryMaterials[i]), false, true, null, 'POST'));
 		};
@@ -81,7 +93,7 @@ module.exports = {
 			return libraryMaterials.map((libraryMaterial) => {
 				return JSON.parse(libraryMaterial);
 			});
-		});
+		});*/
 	},
 
 	removeLibraryMaterials: function(ids){

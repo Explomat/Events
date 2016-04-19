@@ -16,7 +16,7 @@ class SelectTree extends React.Component {
 
 	state = {
 		isShowModal: false
-	}
+	} 
 
 	static propTypes = {
 		modalTitle: React.PropTypes.string,
@@ -25,14 +25,6 @@ class SelectTree extends React.Component {
 		selectedNode: React.PropTypes.object,
 		isExpand: React.PropTypes.bool,
 		isExpandAll: React.PropTypes.bool
-	}
-
-	static defaultProps = {
-		
-	}
-
-	componentDidMount(){
-		
 	}
 
 	handleSaveModal(item){
@@ -50,24 +42,25 @@ class SelectTree extends React.Component {
 	}
 
     render() {
-    	let inputClasses = cx({
+    	const inputClasses = cx({
 			'select-tree__input': true,
 			'select-tree__input_not-empty': this.props.selectedNode
 		});
-		let iconClasses = cx({
+		const iconClasses = cx({
 			'fa fa-plus-circle': !this.props.selectedNode,
 			'fa fa-minus-circle': this.props.selectedNode,
 			'select-tree__icon': true,
 			'select-tree__icon--up': this.props.selectedNode
 		});
+		const name = this.props.selectedNode ? this.props.selectedNode.name : null;
         return (
         	<div className={cx('select-tree', this.props.className)}>
 				<input
 					readOnly 
 					className={inputClasses} 
 					type="text" 
-					value={this.props.selectedNode.name}
-					title={this.props.selectedNode.name}
+					value={name}
+					title={name}
 					onClick={this.handleShowModal} 
 					onChange={this.handleChange}/>
                 <label className="select-tree__label">{this.props.placeholder}</label>

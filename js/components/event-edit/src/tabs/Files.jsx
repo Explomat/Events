@@ -54,7 +54,7 @@ class LibraryMaterial extends React.Component {
 		const classes = cx({
 			'table-list__body-row': true,
 			'table-list__body-row--selected': checked
-		})
+		});
 		return (
 			<div className={classes}>
 				<div className="table-list__body-cell table-list__body-cell--icon">
@@ -63,7 +63,7 @@ class LibraryMaterial extends React.Component {
 				<div className="table-list__body-cell table-list__body-cell--icon">
 					<i className="fa fa-file"></i>
 				</div>
-				<div className="table-list__body-cell">{name}</div>
+				<div className="table-list__body-cell table-list__body-cell--65">{name}</div>
 				<div className="table-list__body-cell">{year}</div>
 				<div className="table-list__body-cell">{author}</div>
 			</div>
@@ -133,7 +133,8 @@ class Files extends React.Component{
 				selectedItems={selectedItems}
 				query={config.url.createPath({action_name: 'getLibraryMaterials'})}
 				onClose={::this.handleCloseLibraryMaterialsModal} 
-				onSave={::this.handleUpdateLibraryMaterials}/> : null;
+				onSave={::this.handleUpdateLibraryMaterials}
+				maxSelectedItems={2}/> : null;
 	}
 
 	handleToggleCheckedAllFiles(){

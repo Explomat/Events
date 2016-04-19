@@ -5,7 +5,9 @@ var BasicController = require('./controllers/BasicController');
 var CalendarController = require('./controllers/CalendarController');
 var EventInfoController = require('./controllers/EventInfoController');
 var EventEditController = require('./controllers/EventEditController');
+var moment = require('moment');
 
+Date.prototype.toJSON = function(){ return moment(this).format(); }
 
 window.onload = function(){
 

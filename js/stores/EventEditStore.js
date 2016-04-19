@@ -14,7 +14,7 @@ import extend from 'extend';
 import {find, filter, every, keys, differenceWith} from 'lodash';
 import {expand} from '../utils/Object';
 
-let _eventEdit = {};
+var _eventEdit = {};
 
 function loadData(data) {
 	_eventEdit = new EventEdit(data);
@@ -67,10 +67,22 @@ const base = {
 		_eventEdit.base.selectedCode = code;
 	},
 	changeStartDateTime(dateTime){
-		_eventEdit.base.startDateTime = new Date(dateTime);
+		var finishDateTime = _eventEdit.base.finishDateTime;
+		var startDateTime = new Date(dateTime);
+		_eventEdit.base.startDateTime = startDateTime;
+
+		if (startDateTime > finishDateTime) {
+			_eventEdit.base.finishDateTime = startDateTime;
+		}
 	},
 	changeFinishDateTime(dateTime){
-		_eventEdit.base.finishDateTime = new Date(dateTime);
+		var startDateTime = _eventEdit.base.startDateTime;
+		var finishDateTime = new Date(dateTime);
+		_eventEdit.base.finishDateTime = finishDateTime;
+
+		if (finishDateTime < startDateTime) {
+			_eventEdit.base.startDateTime = finishDateTime;
+		}
 	},
 	changeEducationOrg(educationOrgId){
 		_eventEdit.base.selectedEducationOrgId = educationOrgId;
@@ -87,11 +99,33 @@ const requests = {
 	changeIsDateRequestBeforeBegin(checked){
 		_eventEdit.requests.isDateRequestBeforeBegin = checked;
 	},
-	changeRequestBeginDate(date){
-		_eventEdit.requests.requestBeginDate = new Date(date);
+	changeRequestBeginDate(dateTime){
+		var startDateTime = _eventEdit.base.startDateTime;
+		var requestOverDate = _eventEdit.requests.requestOverDate;
+		var requestBeginDate = new Date(dateTime);
+		_eventEdit.requests.requestBeginDate = requestBeginDate;
+
+		if (requestBeginDate > startDateTime) {
+			_eventEdit.requests.requestBeginDate = startDateTime;
+			requestBeginDate = startDateTime;
+		}
+		if (requestBeginDate > requestOverDate) {
+			_eventEdit.requests.requestOverDate = requestBeginDate;
+		}
 	},
-	changeRequestOverDate(date){
-		_eventEdit.requests.requestOverDate = new Date(date);;
+	changeRequestOverDate(dateTime){
+		var startDateTime = _eventEdit.base.startDateTime;
+		var requestBeginDate = _eventEdit.requests.requestBeginDate;
+		var requestOverDate = new Date(dateTime);
+		_eventEdit.requests.requestOverDate = requestOverDate;
+
+		if (requestOverDate > startDateTime) {
+			_eventEdit.requests.requestOverDate = startDateTime;
+			requestOverDate = startDateTime;
+		}
+		if (requestOverDate < requestBeginDate) {
+			_eventEdit.requests.requestBeginDate = requestOverDate;
+		}
 	},
 	changeIsAutomaticIncludeInCollaborators(checked){
 		_eventEdit.requests.isAutomaticIncludeInCollaborators = checked;
@@ -279,47 +313,63 @@ const tutors = {
 }
 
 const testing = {
-	updatePrevTests(tests){
-		_eventEdit.testing.prevTests = tests.map((item) => {
-			let obj = {...item.data};
-			obj.id = item.id;
-			return new Test(obj);
+
+	selectTestTypes(payload){
+		var data = JSON.parse(payload, (key, value) => {
+			return value === 'true' ? true : value === 'false' ? false : value;
 		});
+		var arr = _eventEdit.testing.allTests;
+		arr.forEach(item => {
+			var isHas = every(keys(data), (key) => {
+				return data[key] === item[key];
+			});
+			item.checked = isHas;
+		});
+		const isEveryCheked = every(arr, (item) => {
+			return item.checked === true;
+		});
+		_eventEdit.testing.checkedAll = isEveryCheked;
 	},
 
-	updatePostTests(tests){
-		_eventEdit.testing.postTests = tests.map((item) => {
+	updateTests(tests, type){
+		_eventEdit.testing.allTests = tests.map((item) => {
 			var test = expand(item, (value) => {
 				return value === 'true' ? true : value === 'false' ? false : value;
 			});
+			test.type = test.type && test.type !== type ? test.type : type;
 			return new Test(test);
 		});
 	},
 
-	changeIsPrevTests(checked){
-		_eventEdit.testing.isPrevTests = checked;
+	toggleChecked(id, checked){
+		var container = _eventEdit.testing;
+		var arr = _eventEdit.testing.allTests;
+		toggleChecked(container, arr, id, checked, 'checkedAll');
 	},
 
-	changeIsPostTests(checked){
-		_eventEdit.testing.isPostTests = checked;
+	toggleCheckedAll(checked){
+		var container = _eventEdit.testing;
+		var arr = _eventEdit.testing.allTests;
+		toggleCheckedAll(container, arr, checked, 'checkedAll');
 	},
 
-	removePrevTest(id){
-		var tests = _eventEdit.testing.prevTests;
-		_eventEdit.testing.prevTests = filter(tests, (item) => {
-			return item.id !== id;
+	removeTests(){
+		var tests = _eventEdit.testing.allTests;
+		_eventEdit.testing.allTests = filter(tests, (item) => {
+			return item.checked === false;
 		});
 	},
 
-	removePostTest(id){
-		var tests = _eventEdit.testing.postTests;
-		_eventEdit.testing.postTests = filter(tests, (item) => {
-			return item.id !== id;
-		});
+	sortAllTests(payload){
+		var data = JSON.parse(payload);
+		var isAsc = data.isAsc === 'true';
+		sortTable(_eventEdit.testing.allTests, data.key, isAsc);
 	},
 
-	sortTable(key, isAsc){
-		sortTable(_eventEdit.testing.testingList, key, isAsc);
+	sortTestingList(payload){
+		var data = JSON.parse(payload);
+		var isAsc = data.isAsc === 'true';
+		sortTable(_eventEdit.testing.testingList, data.key, isAsc);
 	}
 }
 
@@ -586,34 +636,34 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			tutors.updateLectors(action.lectors);
 			isEmit = true;
 			break;
-
+			
 		//testing
-		case EventEditConstants.EVENTEDIT_TESTING_UPDATE_PREV_TESTS:
-			testing.updatePrevTests(action.tests);
+		case EventEditConstants.EVENTEDIT_TESTING_SELECT_TEST_TYPES:
+			testing.selectTestTypes(action.payload);
 			isEmit = true;
 			break;
-		case EventEditConstants.EVENTEDIT_TESTING_UPDATE_POST_TESTS:
-			testing.updatePostTests(action.tests);
+		case EventEditConstants.EVENTEDIT_TESTING_UPDATE_TESTS:
+			testing.updateTests(action.tests, action.type);
 			isEmit = true;
 			break;
-		case EventEditConstants.EVENTEDIT_TESTING_CHANGE_IS_PREV_TESTS:
-			testing.changeIsPrevTests(action.checked);
+		case EventEditConstants.EVENTEDIT_TESTING_TOGGLE_CHECKED:
+			testing.toggleChecked(action.id, action.checked);
 			isEmit = true;
 			break;
-		case EventEditConstants.EVENTEDIT_TESTING_CHANGE_IS_POST_TESTS:
-			testing.changeIsPostTests(action.checked);
+		case EventEditConstants.EVENTEDIT_TESTING_TOGGLE_CHECKED_ALL:
+			testing.toggleCheckedAll(action.checked);
 			isEmit = true;
 			break;
-		case EventEditConstants.EVENTEDIT_TESTING_REMOVE_PREV_TEST:
-			testing.removePrevTest(action.id);
+		case EventEditConstants.EVENTEDIT_TESTING_REMOVE_TESTS:
+			testing.removeTests();
 			isEmit = true;
 			break;
-		case EventEditConstants.EVENTEDIT_TESTING_REMOVE_POST_TEST:
-			testing.removePostTest(action.id);
+		case EventEditConstants.EVENTEDIT_TESTING_SORT_ALL_TESTS:
+			testing.sortAllTests(action.key, action.isAsc);
 			isEmit = true;
 			break;
-		case EventEditConstants.EVENTEDIT_TESTING_SORT_TABLE:
-			testing.sortTable(action.key, action.isAsc);
+		case EventEditConstants.EVENTEDIT_TESTING_SORT_TESTING_LIST:
+			testing.sortTestingList(action.key, action.isAsc);
 			isEmit = true;
 			break;
 

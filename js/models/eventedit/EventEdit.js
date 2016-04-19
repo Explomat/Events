@@ -10,6 +10,7 @@ import CollaboratorCourse from './CollaboratorCourse';
 import Places from './Places';
 import EventTypes from '../../utils/eventedit/EventTypes';
 import EventCodes from '../../utils/eventedit/EventCodes';
+import SelectTestTypes from '../../utils/eventedit/SelectTestTypes';
 
 export default function(args){
 	args = args || {};
@@ -133,14 +134,26 @@ export default function(args){
 
 	//testing
 	this.testing = {
-		prevTests: [],
-		postTests: [],
+		allTests: [],
 		testingList:[],
-		isPrevTests: args.testing.isPrevTests || false,
-		isPostTests: args.testing.isPostTests || false,
 		isPostTestOnlyForAssisst: args.testing.isPostTestOnlyForAssisst || false,
 
 		//state fields
+		checkedAll: false,
+		testTypes: SelectTestTypes.toArray(),
+
+		selectTypes: [
+			{ payload: '{"type": "prev"}', text: 'Выбрать предварительные тесты' },
+			{ payload: '{"type": "post"}', text: 'Выбрать пост-тесты' }
+		],
+
+		sortTestTypes: [
+			{ payload: '{"key": "name", "isAsc": "true"}', text: 'Сортировать по имени(по убыванию)' },
+			{ payload: '{"key": "name", "isAsc": "false"}', text: 'Сортировать по имени(по возрастанию)' },
+			{ payload: '{"key": "type", "isAsc": "true"}', text: 'Сортировать по типу(по убыванию)' },
+			{ payload: '{"key": "type", "isAsc": "false"}', text: 'Сортировать по типу(по возрастанию)' }
+		],
+
 		sortTypes: [
 			{ payload: '{"key": "fullname", "isAsc": "true"}', text: 'Сортировать по ФИО(по убыванию)' },
 			{ payload: '{"key": "fullname", "isAsc": "false"}', text: 'Сортировать по ФИО(по возрастанию)' }
@@ -148,13 +161,8 @@ export default function(args){
 		selectedPayload: '{"key": "fullname", "isAsc": "true"}'
 	}
 	
-	if (args.testing.prevTests) {
-		this.testing.prevTests = args.testing.prevTests.map(function(t){
-			return new Test(t);
-		});
-	}
-	if (args.testing.postTests) {
-		this.testing.postTests = args.testing.postTests.map(function(t){
+	if (args.testing.allTests) {
+		this.testing.allTests = args.testing.allTests.map(function(t){
 			return new Test(t);
 		});
 	}

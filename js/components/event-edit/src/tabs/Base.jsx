@@ -5,6 +5,8 @@ import DropDown from 'components/modules/dropdown';
 import InputCalendar from 'components/modules/input-calendar';
 import SelectOneItem from 'components/modules/select-one-item';
 import SelectTree from 'components/modules/select-tree';
+import EventTypes from 'utils/eventedit/EventTypes';
+import cx from 'classnames';
 
 import Config from 'config';
 
@@ -53,6 +55,10 @@ class Base extends React.Component {
 	}
 
 	render(){
+		const educationMethodlasses = cx({
+			'event-edit-base__edication-method': true,
+			'event-edit-base__edication-method--display': this.props.selectedType !== EventTypes.keys.one_time
+		})
 		return (
 			<div className="event-edit-base">
 				<TextView
@@ -94,13 +100,14 @@ class Base extends React.Component {
 						</div>
 					</div>
 				</div>
-				<DropDown 
+				<DropDown
 					description="Обучающая организация"
 					onChange={this.handleChangeEducationOrg} 
 					items={this.props.educationOrgs} 
 					selectedPayload={this.props.selectedEducationOrgId}
 					isReset={true}/>
 				<SelectOneItem
+					className={educationMethodlasses}
 					selectedItem={this.props.selectedEducationMethod} 
 					placeholder="Учебная программа" 
 					modalTitle="Выберите учебную программу"

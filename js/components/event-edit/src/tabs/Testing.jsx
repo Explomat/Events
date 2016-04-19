@@ -1,11 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import CheckBox from 'components/modules/new-checkbox';
-import DropDown from 'components/modules/dropdown';
+import DropDownIcon from 'components/modules/dropdown-icon';
 import SelectItems from 'components/modules/select-items';
-import ComposeLabel from 'components/modules/compose-label';
 import EventEditActions from 'actions/EventEditActions';
-import {pick} from 'lodash';
+import TestTypes from 'utils/eventedit/TestTypes';
+import {some, pick} from 'lodash';
 import cx from 'classnames';
 import config from 'config';
 
@@ -13,142 +12,145 @@ import '../style/event-edit-testing.scss';
 
 class Test extends React.Component {
 
-	handleRemoveTest(){
-		if (this.props.onRemove){
-			this.props.onRemove(this.props.id);
-		}
+	handleToggleChecked(){
+		EventEditActions.testing.toggleChecked(this.props.id, !this.props.checked);
 	}
 
 	render(){
+		const {name, code, type, checked} = this.props;
+		const classes = cx({
+			'table-list__body-row': true,
+			'table-list__body-row--selected': checked
+		})
 		return(
-			<ComposeLabel onIconClick={::this.handleRemoveTest} label={this.props.name} postIconClassName="fa fa-remove"/>
+			<div className={classes}>
+				<div className="table-list__body-cell table-list__body-cell--icon">
+					<CheckBox onChange={::this.handleToggleChecked} checked={checked}/>
+				</div>
+				<div className="table-list__body-cell">{code}</div>
+				<div className="table-list__body-cell">{name}</div>
+				<div className="table-list__body-cell">{TestTypes.values[type]}</div>
+			</div>
 		);
 	}
 }
 
 class Tests extends React.Component {
 
-	state = {
-		isShowPrevTestsModal: false
+	constructor(props){
+		super(props);
+		this.testType = null;
 	}
 
-	_prepareTestsListForModal(tests){
+	state = {
+		isShowTestsModal: false
+	}
+
+	_isSomeChecked(items){
+		return some(items, {checked: true});
+	}
+
+	_prepareTestsForModal(tests){
 		return tests.map((t) => {
 			return {
 				id: t.id,
 				data: {
 					name: t.name,
-					code: t.code
+					code: t.code,
+					type: t.type
 				}	
 			}
 		})
 	}
 
-	_getPrevTestsModal(){
-		var selectedItems = this._prepareTestsListForModal(this.props.prevTests);
-		return this.state.isShowPrevTestsModal ? 
+	_getTestsModal(){
+		var type = this.testType;
+		var handleUpdate = this.handleUpdateTests.bind(this, type);
+		var selectedItems = this._prepareTestsForModal(this.props.allTests);
+		return this.state.isShowTestsModal ? 
 			<SelectItems
 				title="Выберите тесты"
 				selectedItems={selectedItems}
 				query={config.url.createPath({action_name: 'getTests'})}
-				onClose={::this.handleClosePrevTestsModal} 
-				onSave={::this.handleUpdatePrevTests}/> : null;
+				onClose={::this.handleCloseTestsModal} 
+				onSave={handleUpdate}/> : null;
 	}
 
-	_getPostTestsModal(){
-		var selectedItems = this._prepareTestsListForModal(this.props.postTests);
-		return this.state.isShowPostTestsModal ? 
-			<SelectItems
-				title="Выберите тесты"
-				selectedItems={selectedItems}
-				query={config.url.createPath({action_name: 'getTests'})}
-				onClose={::this.handleClosePostTestsModal} 
-				onSave={::this.handleUpdatePostTests}/> : null;
+	handleSelectTestsType(e, payload){
+		EventEditActions.testing.selectTestTypes(payload);
 	}
 
-	handleUpdatePrevTests(items){
-		this.setState({isShowPrevTestsModal: false});
-		EventEditActions.testing.updatePrevTests(items);
+	handleSortAllTests(e, payload){
+		EventEditActions.testing.sortAllTests(payload);
 	}
 
-	handleUpdatePostTests(items){
-		this.setState({isShowPostTestsModal: false});
-		EventEditActions.testing.updatePostTests(items);
+	handleUpdateTests(type, items){
+		this.setState({isShowTestsModal: false});
+		EventEditActions.testing.updateTests(items, type);
 	}
 
-	handleOpenPrevTestsModal(){
-		this.setState({isShowPrevTestsModal: true});
+	handleCloseTestsModal(){
+		this.setState({isShowTestsModal: false});
 	}
 
-	handleOpenPostTestsModal(){
-		this.setState({isShowPostTestsModal: true});
+	handleOpenTestsModal(e, payload){
+		this.testType = payload;
+		this.setState({ isShowTestsModal: true});
 	}
 
-	handleClosePrevTestsModal(){
-		this.setState({isShowPrevTestsModal: false});
+	handleToggleCheckedAll(){
+		EventEditActions.testing.toggleCheckedAll(!this.props.checkedAll);
 	}
 
-	handleClosePostTestsModal(){
-		this.setState({isShowPostTestsModal: false});
-	}
-
-	handleChangeIsPrevTests(checked){
-		EventEditActions.testing.changeIsPrevTests(checked);
-	}
-
-	handleChangeIsPostTests(checked){
-		EventEditActions.testing.changeIsPostTests(checked);
-	}
-
-	handleRemovePrevTest(id){
-		EventEditActions.testing.removePrevTest(id);
-	}
-
-	handleRemovePostTest(id){
-		EventEditActions.testing.removePostTest(id);
+	handleRemoveTests(){
+		EventEditActions.testing.removeTests();
 	}
 
 	render(){
-		const prevTestsClasses = cx({
-			'event-edit-testing__prev-tests-add': true,
-			'event-edit-testing__prev-tests-add--display': this.props.isPrevTests
+		const tableDescrClasses = cx({
+			'table-list__description-is-empty': true,
+			'table-list__description-is-empty--display': this.props.allTests.length === 0
 		});
-		const postTestsClasses = cx({
-			'event-edit-testing__post-tests-add': true,
-			'event-edit-testing__post-tests-add--display': this.props.isPostTests
+		const checkboxClasses = cx({
+			'buttons__checkbox': true,
+			'buttons__checkbox--display': this.props.allTests.length > 0
+		});
+		const sortClasses = cx({
+			'buttons__sort': true,
+			'buttons__sort--display': this.props.allTests.length > 0
+		});
+		const removeClasses = cx({
+			'default-button': true,
+			'buttons__remove': true,
+			'buttons__remove--display': this._isSomeChecked(this.props.allTests) && this.props.allTests.length > 0
 		});
 		return(
 			<div className="event-edit-testing__tests">
-				<div className="event-edit-testing__prev-tests">
-					<CheckBox 
-						onChange={this.handleChangeIsPrevTests} 
-						label="Назначить предварительные тесты"
-						checked={this.props.isPrevTests}/>
-					<div className={prevTestsClasses}>
-						<button onClick={::this.handleOpenPrevTestsModal} className="event-btn">Добавить</button>
-						<div className="prev-tests">
-							{this.props.prevTests.map((test, index) => {
-								return <Test key={index} {...test} onRemove={this.handleRemovePrevTest}/>
-							})}
-						</div>
-					</div>
-				</div> 
-				<div className="event-edit-testing__post-tests">
-					<CheckBox 
-						onChange={this.handleChangeIsPostTests} 
-						label="Назначить пост-тесты" 
-						checked={this.props.isPostTests}/>
-					<div className={postTestsClasses}>
-						<button onClick={::this.handleOpenPostTestsModal} className="event-btn">Добавить</button>
-						<div className="prev-tests">
-							{this.props.postTests.map((test, index) => {
-								return <Test key={index} {...test} onRemove={this.handleRemovePostTest}/>
+				<div className="buttons">
+					<DropDownIcon onChange={this.handleSelectTestsType} className={checkboxClasses} items={this.props.selectTypes}>
+						<CheckBox onChange={::this.handleToggleCheckedAll} checked={this.props.checkedAll} className={checkboxClasses}/>
+					</DropDownIcon>
+					<DropDownIcon onChange={::this.handleSortAllTests} className={sortClasses} items={this.props.sortTestTypes}>
+						<i className="fa fa-sort"></i>
+					</DropDownIcon>
+					<DropDownIcon onChange={::this.handleOpenTestsModal} className="buttons__add" items={this.props.testTypes}>
+						<i className="fa fa-plus"></i>
+					</DropDownIcon>
+					<button onClick={this.handleRemoveTests} className={removeClasses} title="Удалить файлы">
+						<i className="fa fa-minus"></i>
+					</button>
+				</div>
+				<div className="table-list all-tests-list">
+					<span className={tableDescrClasses}>Нет тестов</span>
+					<div className="table-list__table">
+						<div className="table-list__header">
+							{this.props.allTests.map((item, index) => {
+								return <Test key={index} {...item}/>
 							})}
 						</div>
 					</div>
 				</div>
-				{this._getPrevTestsModal()}
-				{this._getPostTestsModal()}
+				{this._getTestsModal()}
 			</div>
 		);
 	}
@@ -175,36 +177,8 @@ class TestingItem extends React.Component {
 
 class Testing extends React.Component {
 
-	componentDidMount(){
-		this._updateHeight();
-	}
-
-	componentDidUpdate(){
-		this._updateHeight();
-	}
-
-	_updateHeight(){
-		var height = ReactDOM.findDOMNode(this).clientHeight;
-		var tests = ReactDOM.findDOMNode(this.refs.tests);
-		var table = this.refs.table;
-		var dropdownHeight = this.props.testingList.length > 0 ? 35 : 0;
-		table.style.height = (height - tests.clientHeight - dropdownHeight - 20) + 'px';
-	}
-
-	handleSort(e, payload){
-		EventEditActions.testing.sortTable(payload);
-	}
-
-	handleToggleCheckedAll(){
-		EventEditActions.testing.toggleCheckedAll(!this.props.checkedAll);
-	}
-
-	handleRemoveItems(){
-		EventEditActions.testing.removeItems();
-	}
-
-	handleRemoveInfoMessage(){
-		EventEditActions.testing.changeInfoMessage('');
+	handleSortTestingList(e, payload){
+		EventEditActions.testing.sortTestingList(payload);
 	}
 
 	render(){
@@ -218,19 +192,20 @@ class Testing extends React.Component {
 		});
 		return (
 			<div className="event-edit-testing">
-				<Tests ref="tests" {...pick(this.props, ['isPrevTests', 'isPostTests', 'isPostTestOnlyForAssisst', 'postTests', 'prevTests'])}/>
-				<DropDown
-					className={dropdownSortClasses}
-					onChange={::this.handleSort} 
-					items={this.props.sortTypes}
-					selectedPayload={this.props.selectedPayload}/>
-				<div ref="table" className="table-list testing-list">
-					<span className={tableDescrClasses}>Нет тестов</span>
-					<div className="table-list__table">
-						<div className="table-list__header">
-							{this.props.testingList.map((item, index) => {
-								return <TestingItem key={index} {...item}/>
-							})}
+				<Tests ref="tests" {...pick(this.props, ['isPostTestOnlyForAssisst', 'allTests', 'checkedAll', 'testTypes', 'selectTypes', 'sortTestTypes'])}/>
+				<DropDownIcon onChange={::this.handleSortTestingList} items={this.props.sortTypes} className={dropdownSortClasses}>
+					<i className="fa fa-sort"></i>
+				</DropDownIcon>
+				<div className="testing">
+					<strong className="testing__description">Результаты тестирования</strong>
+					<div className="table-list testing-list">
+						<span className={tableDescrClasses}>Нет результатов тестирования</span>
+						<div className="table-list__table">
+							<div className="table-list__header">
+								{this.props.testingList.map((item, index) => {
+									return <TestingItem key={index} {...item}/>
+								})}
+							</div>
 						</div>
 					</div>
 				</div>

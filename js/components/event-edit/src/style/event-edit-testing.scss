@@ -3,45 +3,67 @@
 	height: calc(100% - 40px);
 
 	.event-edit-testing__sort{
-		width: 30%;
 		display: none;
 
 		&.event-edit-testing__sort--display {
-			display: block;
+			display: inline-block;
 		}
 	}
 
 	.event-edit-testing__tests{
-		.event-edit-testing__prev-tests{
-			
-			.event-edit-testing__prev-tests-add{
+		height: 45%;
+
+		.all-tests-list{
+			height: calc(100% - 57px);
+		}
+
+		.buttons{
+
+			.buttons__add{
+				margin-right: 32px;
+			}
+			.buttons__checkbox{
 				display: none;
 
-				&.event-edit-testing__prev-tests-add--display {
-					display: block;
-					margin-bottom: 20px;
-
-				}
-
-				.prev-tests{
-
+				&.buttons__checkbox--display {
+					display: inline-block;
 				}
 			}
-		}
-		.event-edit-testing__post-tests{
-			margin-bottom: 20px;
-			
-			.event-edit-testing__post-tests-add {
+
+			.buttons__sort{
 				display: none;
+				margin-right: 16px;
 
-				&.event-edit-testing__post-tests-add--display {
-					display: block;
+				&.buttons__sort--display {
+					display: inline-block;
 				}
+			}
 
-				.post-tests {
+			.buttons__remove{
+				display: none;
+			    line-height: 27px;
+			    height: 27px;
+			    vertical-align: middle;
 
+				&.buttons__remove--display {
+					display: inline-block;
 				}
 			}
 		}
 	}
+
+	.testing{
+		height: 45%;
+		margin-top: 40px;
+
+		.testing__description{
+			display: block;
+			text-align: right;
+		}
+
+		.testing-list{
+			height: calc(100% - 57px);
+		}
+	}
+	
 }

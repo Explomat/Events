@@ -35,19 +35,21 @@ class Tree extends React.Component {
 	}
 
 	handleSave(){
+		var data = this.state.selected ? this.state.selected.props.data : null;
 		if (this.props.onSave)
-			this.props.onSave(this.state.selected.props.data);
+			this.props.onSave(data);
 	}
 
 	handleClick(){
-		let out = this.state.selected ? this.state.selected.props.data : '';
+		var out = this.state.selected ? this.state.selected.props.data : '';
 		if (this.props.onClick)
 			this.props.onClick(out);
 	}
 
 	selectNode(node) {
-		let isSelected = node.state.selected ? false : true;
-		this.setState({selected: node});
+		var isSelected = node.state.selected ? false : true;
+		var selectedNode = isSelected ? node : null;
+		this.setState({selected: selectedNode});
         node.setState({selected: isSelected});
 	}
 

@@ -163,6 +163,9 @@ class Requests extends React.Component {
 							label="Возможна подача заявок"
 							checked={this.props.isDateRequestBeforeBegin}/>
 						<div className={dateClasses}>
+							<div className="alert alert--info is-date-requests__date-alert">
+								<span>Обратите внимание, что дата начала и окончания подачи заявок не должна превышать дату начала мероприятия!</span>
+							</div>
 							<div className="date__start">
 								<InputCalendar
 									placeholder="C"

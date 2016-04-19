@@ -12,6 +12,10 @@ var EventEditActions = {
 		});
 	},
 
+	saveData(data){
+		EventEditAPI.saveData(data);
+	},
+
 	//BASE
 	base: {
 		changeName(name){
@@ -264,51 +268,53 @@ var EventEditActions = {
 
 	testing: {
 
-		updatePrevTests(tests){
+		selectTestTypes(payload){
 			AppDispatcher.handleAction({
-				actionType: EventEditConstants.EVENTEDIT_TESTING_UPDATE_PREV_TESTS,
-				tests: tests
+				actionType: EventEditConstants.EVENTEDIT_TESTING_SELECT_TEST_TYPES,
+				payload: payload
 			});
 		},
 
-		updatePostTests(tests){
+		updateTests(tests, type){
 			AppDispatcher.handleAction({
-				actionType: EventEditConstants.EVENTEDIT_TESTING_UPDATE_POST_TESTS,
-				tests: tests
+				actionType: EventEditConstants.EVENTEDIT_TESTING_UPDATE_TESTS,
+				tests: tests,
+				type: type
 			});
 		},
 
-		changeIsPrevTests(checked){
+		toggleChecked(id, checked){
 			AppDispatcher.handleAction({
-				actionType: EventEditConstants.EVENTEDIT_TESTING_CHANGE_IS_PREV_TESTS,
+				actionType: EventEditConstants.EVENTEDIT_TESTING_TOGGLE_CHECKED,
+				id: id,
 				checked: checked
 			});
 		},
 
-		changeIsPostTests(checked){
+		toggleCheckedAll(checked){
 			AppDispatcher.handleAction({
-				actionType: EventEditConstants.EVENTEDIT_TESTING_CHANGE_IS_POST_TESTS,
+				actionType: EventEditConstants.EVENTEDIT_TESTING_TOGGLE_CHECKED_ALL,
 				checked: checked
 			});
 		},
 
-		removePrevTest(id){
+		removeTests(){
 			AppDispatcher.handleAction({
-				actionType: EventEditConstants.EVENTEDIT_TESTING_REMOVE_PREV_TEST,
-				id: id
+				actionType: EventEditConstants.EVENTEDIT_TESTING_REMOVE_TESTS
 			});
 		},
 
-		removePostTest(id){
+		sortAllTests(key, isAsc){
 			AppDispatcher.handleAction({
-				actionType: EventEditConstants.EVENTEDIT_TESTING_REMOVE_POST_TEST,
-				id: id
+				actionType: EventEditConstants.EVENTEDIT_TESTING_SORT_ALL_TESTS,
+				key: key,
+				isAsc: isAsc
 			});
 		},
 
-		sortTable(key, isAsc){
+		sortTestingList(key, isAsc){
 			AppDispatcher.handleAction({
-				actionType: EventEditConstants.EVENTEDIT_TESTING_SORT_TABLE,
+				actionType: EventEditConstants.EVENTEDIT_TESTING_SORT_TESTING_LIST,
 				key: key,
 				isAsc: isAsc
 			});
@@ -409,9 +415,9 @@ var EventEditActions = {
 				actionType: EventEditConstants.EVENTEDIT_FILES_UPLOADING_LIBRARY_MATERIALS
 			});
 			EventEditAPI.uploadLibraryMaterials(libraryMaterials).then((uploadedlibraryMaterials) => {
-				var filesWithoutErrors = filter(uploadedlibraryMaterials, (file) => {
+				/*var filesWithoutErrors = filter(uploadedlibraryMaterials, (file) => {
 					return file.error === '';
-				});
+				});*/
 
 				/*if (isErrors) {
 					AppDispatcher.handleAction({
@@ -421,7 +427,7 @@ var EventEditActions = {
 				}*/
 				AppDispatcher.handleAction({
 					actionType: EventEditConstants.EVENTEDIT_FILES_UPLOADED_LIBRARY_MATERIALS,
-					libraryMaterials: filesWithoutErrors
+					libraryMaterials: uploadedlibraryMaterials
 				});
 				/*if (data && !data.error) {
 					AppDispatcher.handleAction({
@@ -480,10 +486,13 @@ var EventEditActions = {
 		},
 
 		updateLibraryMaterials(libraryMaterials){
-			AppDispatcher.handleAction({
-				actionType: EventEditConstants.EVENTEDIT_FILES_UPDATE_LIBRARY_MATERIALS,
-				libraryMaterials: libraryMaterials
+			EventEditAPI.updateLibraryMaterials(libraryMaterials).then((libraryMaterials) => {
+				AppDispatcher.handleAction({
+					actionType: EventEditConstants.EVENTEDIT_FILES_UPDATE_LIBRARY_MATERIALS,
+					libraryMaterials: libraryMaterials
+				});
 			});
+			
 		}
 	}
 }

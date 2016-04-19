@@ -49,4 +49,12 @@
 			}
 		}
 	}
+
+	.event-edit-base__edication-method{
+		display: none;
+
+		&.event-edit-base__edication-method--display {
+			display: block;
+		}
+	}
 }
