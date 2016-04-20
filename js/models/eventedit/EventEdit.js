@@ -11,6 +11,7 @@ import Places from './Places';
 import EventTypes from '../../utils/eventedit/EventTypes';
 import EventCodes from '../../utils/eventedit/EventCodes';
 import SelectTestTypes from '../../utils/eventedit/SelectTestTypes';
+import {every} from 'lodash';
 
 export default function(args){
 	args = args || {};
@@ -27,6 +28,8 @@ export default function(args){
 	args.requests.requestOverDate = args.requests.requestOverDate || Date();
 
 	this.id = args.id || null;
+	this.infoMessage = '';
+	this.infoStatus = '';
 
 	//base settings
 	this.base = {
@@ -125,6 +128,12 @@ export default function(args){
 		this.tutors.tutors = args.tutors.tutors.map(function(t){
 			return new Tutor(t);
 		});
+		let isEveryNotMain = every(this.tutors.tutors, (t) => {
+			return t.main === false;
+		});
+		if (isEveryNotMain) {
+			this.tutors.tutors[0].main = true;
+		}
 	}
 	if (args.tutors.lectors) {
 		this.tutors.lectors = args.tutors.lectors.map(function(l){
@@ -137,6 +146,7 @@ export default function(args){
 		allTests: [],
 		testingList:[],
 		isPostTestOnlyForAssisst: args.testing.isPostTestOnlyForAssisst || false,
+		thresholds: args.testing.thresholds || [], //пороговые значения для отображения результатов тестов
 
 		//state fields
 		checkedAll: false,
@@ -193,7 +203,9 @@ export default function(args){
 		checkedAllFiles: false,
 		checkedAllLibraryMaterials: false,
 		isUploadingFiles: false,
-		isUploadingLibraryMaterials: false
+		isUploadingLibraryMaterials: false,
+		infoMessageDownloadLibraryMaterials: '',
+		infoStatusDownloadLibraryMaterials: ''
 	}
 
 	if (args.files.files) {

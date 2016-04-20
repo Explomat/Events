@@ -1,6 +1,7 @@
 import React from 'react';
 
 import SideBar from './SideBar';
+import Info from 'components/modules/info';
 import Base from './tabs/Base';
 import Collaborators from './tabs/Collaborators';
 import Files from './tabs/Files';
@@ -57,17 +58,26 @@ class EventEdit extends React.Component {
 	}
 
 	handleSaveData(){
-		EventEditActions.saveData(EventEditStore.getData());
+		if (EventEditStore.isRequiredFieldsFilled()){
+			EventEditActions.saveData(EventEditStore.getData());
+			return;
+		}
+		EventEditActions.changeInfoMessage(`Вы не заполнили обязательные поля в мероприятии, помеченные ' * '  !`, 'error');
+	}
+
+	handleRemoveInfoMessage(){
+		EventEditActions.changeInfoMessage('');
 	}
 
 	render(){
 		var tabView = this.getTabView(this.state.selectedTab.key);
+		const isShowInfoModal = this.state.infoMessage !== '';
 		return(
 			<div className="container">
 				<SideBar onSelect={this.handleSelectTab} selectedTab={this.state.selectedTab.key}/>
 				<div className="calendar">
 					<header className ="calendar-header">
-						<span>{this.state.selectedTab.value}</span>
+						<span className="calendar-header__description">{this.state.selectedTab.value}</span>
 					</header>
 					<div className="event-edit-container">
 						<div className="event-edit">
@@ -75,9 +85,18 @@ class EventEdit extends React.Component {
 								{tabView}
 							</div>
 						</div>
+						<button className="event-edit-container__save-button event-btn event-btn--reverse" onClick={this.handleSaveData}>
+							<i className="fa fa-save event-edit-container__save-icon"></i>
+							<span>Сохранить</span>
+						</button>
+						<button className="event-edit-container__complete-button event-btn" onClick={this.handleSaveData}>Завершить</button>
 					</div>
 				</div>
-				<button onClick={this.handleSaveData}>Сохранить</button>
+				<Info
+					status={this.state.infoStatus}
+					message={this.state.infoMessage}
+					isShow={isShowInfoModal}
+					onClose={this.handleRemoveInfoMessage}/>
 			</div>
 		);
 	}

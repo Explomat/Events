@@ -19,6 +19,10 @@
     color: #FFF;
     background-color: $headerColor;
 
+    .calendar-header__description{
+      font-size: 1.1em;
+    }
+
     &:before {  
       content: '';
       display: inline-block;

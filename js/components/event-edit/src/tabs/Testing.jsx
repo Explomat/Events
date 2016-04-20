@@ -187,16 +187,18 @@ class Testing extends React.Component {
 			'table-list__description-is-empty--display': this.props.testingList.length === 0
 		});
 		const dropdownSortClasses = cx({
-			'event-edit-testing__sort': true,
-			'event-edit-testing__sort--display': this.props.testingList.length > 0
+			'buttons__sort': true,
+			'buttons__sort--display': this.props.testingList.length > 0
 		});
 		return (
 			<div className="event-edit-testing">
 				<Tests ref="tests" {...pick(this.props, ['isPostTestOnlyForAssisst', 'allTests', 'checkedAll', 'testTypes', 'selectTypes', 'sortTestTypes'])}/>
-				<DropDownIcon onChange={::this.handleSortTestingList} items={this.props.sortTypes} className={dropdownSortClasses}>
-					<i className="fa fa-sort"></i>
-				</DropDownIcon>
 				<div className="testing">
+					<div className="buttons">
+						<DropDownIcon onChange={::this.handleSortTestingList} items={this.props.sortTypes} className={dropdownSortClasses}>
+							<i className="fa fa-sort"></i>
+						</DropDownIcon>
+					</div>
 					<strong className="testing__description">Результаты тестирования</strong>
 					<div className="table-list testing-list">
 						<span className={tableDescrClasses}>Нет результатов тестирования</span>

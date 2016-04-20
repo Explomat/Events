@@ -16,6 +16,14 @@ var EventEditActions = {
 		EventEditAPI.saveData(data);
 	},
 
+	changeInfoMessage(message, status){
+		AppDispatcher.handleAction({
+			actionType: EventEditConstants.CHANGE_INFO_MESSAGE,
+			message: message,
+			status: status
+		});
+	},
+
 	//BASE
 	base: {
 		changeName(name){
@@ -369,11 +377,11 @@ var EventEditActions = {
 			});
 		},
 
-		uploadFiles(files){
+		uploadFiles(curFiles, files){
 			AppDispatcher.handleAction({
 				actionType: EventEditConstants.EVENTEDIT_FILES_UPLOADING_FILES
 			});
-			EventEditAPI.uploadFiles(files).then((uploadedFiles) => {
+			EventEditAPI.uploadFiles(curFiles, files).then((uploadedFiles) => {
 				var filesWithoutErrors = filter(uploadedFiles, (file) => {
 					return file.error === '';
 				});
@@ -410,11 +418,11 @@ var EventEditActions = {
 			})
 		},
 
-		uploadLibraryMaterials(libraryMaterials){
+		uploadLibraryMaterials(curLibraryMaterials, libraryMaterials){
 			AppDispatcher.handleAction({
 				actionType: EventEditConstants.EVENTEDIT_FILES_UPLOADING_LIBRARY_MATERIALS
 			});
-			EventEditAPI.uploadLibraryMaterials(libraryMaterials).then((uploadedlibraryMaterials) => {
+			EventEditAPI.uploadLibraryMaterials(curLibraryMaterials, libraryMaterials).then((uploadedlibraryMaterials) => {
 				/*var filesWithoutErrors = filter(uploadedlibraryMaterials, (file) => {
 					return file.error === '';
 				});*/
@@ -493,6 +501,14 @@ var EventEditActions = {
 				});
 			});
 			
+		},
+
+		changeInfoMessageLibraryMaterials(message, status){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_FILES_CHANGE_INFO_MESSAGE_LIBRARY_MATERIALS,
+				message: message,
+				status: status
+			});
 		}
 	}
 }

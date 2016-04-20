@@ -2,14 +2,6 @@
 	margin-top: 20px;
 	height: calc(100% - 40px);
 
-	.event-edit-testing__sort{
-		display: none;
-
-		&.event-edit-testing__sort--display {
-			display: inline-block;
-		}
-	}
-
 	.event-edit-testing__tests{
 		height: 45%;
 
@@ -20,7 +12,8 @@
 		.buttons{
 
 			.buttons__add{
-				margin-right: 32px;
+				margin-right: 8px;
+				color: #ff5252;
 			}
 			.buttons__checkbox{
 				display: none;
@@ -44,6 +37,7 @@
 			    line-height: 27px;
 			    height: 27px;
 			    vertical-align: middle;
+			    color: #ff5252;
 
 				&.buttons__remove--display {
 					display: inline-block;
@@ -56,8 +50,22 @@
 		height: 45%;
 		margin-top: 40px;
 
+		.buttons {
+			width: 70%;
+			display: inline-block;
+			
+			.buttons__sort{
+				display: none;
+
+				&.buttons__sort--display {
+					display: inline-block;
+				}
+			}
+		}
+
 		.testing__description{
-			display: block;
+			width: 30%;
+			display: inline-block;
 			text-align: right;
 		}
 

@@ -5,7 +5,7 @@
 	.buttons {
 		.buttons__dropdown{
 			display: none;
-			margin-right: 32px;
+			margin-right: 16px;
 			
 			&.buttons__dropdown--display {
 				display: inline-block;
@@ -24,13 +24,13 @@
 			display: inline-block;
 
 			.buttons__add{
-				margin-right: 10px;
+				margin-right: 8px;
 				color: #ff5252;
 				line-height: 27px;
     			vertical-align: middle;
 			}
 			.buttons__remove{
-				margin-right: 10px;
+				margin-right: 8px;
 				display: none;
 				line-height: 27px;
     			vertical-align: middle;

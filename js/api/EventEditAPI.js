@@ -29,7 +29,7 @@ module.exports = {
 		return Ajax.sendRequest(Config.url.createPath({action_name: 'processingRequest'}), JSON.stringify({id: id, status: status, reason: reason}), false, true, null, 'POST');
 	},
 
-	uploadFiles: function(files){
+	uploadFiles: function(curFiles, files){
 		/*return Ajax.uploadFiles(Config.url.createPath({action_name: 'uploadFiles'}), files).then(function(files){
 			return JSON.parse(files);
 		});*/
@@ -40,7 +40,7 @@ module.exports = {
 		return Promise.all(promises).then(function(files){
 			var parseFiles = files.map(function(f){
 				return JSON.parse(f);
-			})
+			}).concat(curFiles);
 			return Ajax.sendRequest(Config.url.createPath({action_name: 'addFiles'}), JSON.stringify({files: parseFiles}), false, true, null, 'POST').then(function(data){
 				return JSON.parse(data);
 			});
@@ -62,7 +62,7 @@ module.exports = {
 		});
 	},
 
-	uploadLibraryMaterials: function(files){
+	uploadLibraryMaterials: function(curFiles, files){
 		var promises = [];
 		for (var i = files.length - 1; i >= 0; i--) {
 			promises.push(Ajax.uploadFile(Config.url.createPath({action_name: 'uploadLibraryMaterial'}), files[i]));
@@ -70,7 +70,7 @@ module.exports = {
 		return Promise.all(promises).then(function(files){
 			var parseFiles = files.map(function(f){
 				return JSON.parse(f);
-			})
+			}).concat(curFiles);
 			return Ajax.sendRequest(Config.url.createPath({action_name: 'addLibraryMaterials'}), JSON.stringify({files: parseFiles}), false, true, null, 'POST').then(function(data){
 				return JSON.parse(data);
 			});

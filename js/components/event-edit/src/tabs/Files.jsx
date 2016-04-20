@@ -2,10 +2,11 @@ import React from 'react';
 import EventEditActions from 'actions/EventEditActions';
 import CheckBox from 'components/modules/new-checkbox';
 import DropDownIcon from 'components/modules/dropdown-icon';
+import Info from 'components/modules/info';
 import SelectItems from 'components/modules/select-items';
 import ToggleButton from 'components/modules/toggle-button';
 import cx from 'classnames';
-import {some, filter} from 'lodash';
+import {every, some, filter} from 'lodash';
 import config from 'config';
 import '../style/event-edit-files.scss';
 
@@ -71,7 +72,13 @@ class LibraryMaterial extends React.Component {
 	}
 }
 
-class Files extends React.Component{
+class Files extends React.Component {
+
+	constructor(props){
+		super(props);
+		this.MAX_LIBRARY_MATERIAL_COUNT = 2;
+		this.LIBRARY_MATERIAL_TYPE = 'pdf';
+	} 
 
 	static defaultProps = {
 		files: []
@@ -80,6 +87,12 @@ class Files extends React.Component{
 	state = {
 		isShowFiles: false,
 		isShowLibraryMaterials: false
+	}
+
+	_isCorrectLibraryMaterialsType(libraryMaterials, type){
+		return every(libraryMaterials, (lm) => {
+			return lm.type === type;
+		});
 	}
 
 	_isSomeChecked(items){
@@ -134,7 +147,7 @@ class Files extends React.Component{
 				query={config.url.createPath({action_name: 'getLibraryMaterials'})}
 				onClose={::this.handleCloseLibraryMaterialsModal} 
 				onSave={::this.handleUpdateLibraryMaterials}
-				maxSelectedItems={2}/> : null;
+				maxSelectedItems={this.MAX_LIBRARY_MATERIAL_COUNT}/> : null;
 	}
 
 	handleToggleCheckedAllFiles(){
@@ -173,14 +186,22 @@ class Files extends React.Component{
 
 	handleChangeFiles(e){
 		var files = e.target.files;
-		EventEditActions.files.uploadFiles(files);
+		EventEditActions.files.uploadFiles(this.props.files, files);
 		this.refs.fileInput.value = '';
 	}
 
 	handleChangeLibraryMaterials(e){
+		var libraryMaterialRef = this.refs.libraryMaterial;
 		var files = e.target.files;
-		EventEditActions.files.uploadLibraryMaterials(files);
-		this.refs.libraryMaterial.value = '';
+		if (!this._isCorrectLibraryMaterialsType(files, this.LIBRARY_MATERIAL_TYPE)) {
+			e.preventDefault();
+			libraryMaterialRef.value = '';
+			EventEditActions.files.changeInfoMessageLibraryMaterials(`Вы не можете загрузить материалы с типом отличным от '${this.LIBRARY_MATERIAL_TYPE}' !`, 'error');
+			return;
+		}
+
+		EventEditActions.files.uploadLibraryMaterials(this.props.libraryMaterials, files);
+		libraryMaterialRef.value = '';
 	}
 
 	handleRemoveFiles(){
@@ -192,8 +213,22 @@ class Files extends React.Component{
 		EventEditActions.files.removeFiles(filesIds);
 	}
 
-	handleRemoveLibraryMaterial(id){
-		EventEditActions.files.removeLibraryMaterial(id);
+	handleRemoveLibraryMaterials(){
+		var materials = this.props.libraryMaterials.filter((lm) => {
+			return lm.checked === false;
+		});
+		EventEditActions.files.updateLibraryMaterials(materials);
+	}
+
+	handleInputFilesClick(e){
+		if (this.props.libraryMaterials.length >= this.MAX_LIBRARY_MATERIAL_COUNT) {
+			e.preventDefault();
+			EventEditActions.files.changeInfoMessageLibraryMaterials(`Вы не можете загрузить более ${this.MAX_LIBRARY_MATERIAL_COUNT} материалов !`, 'error');
+		}
+	}
+
+	handleRemoveInfoMessage(){
+		EventEditActions.files.changeInfoMessageLibraryMaterials('');
 	}
 
 	render(){
@@ -237,6 +272,8 @@ class Files extends React.Component{
 			'overlay-loading': true,
 			'overlay-loading--show': this.props.isUploadingLibraryMaterials
 		});
+
+		const isShowInfoModal = this.props.infoMessageDownloadLibraryMaterials !== '';
 		return (
 			<div className="event-edit-files">
 				<div className="files">
@@ -279,13 +316,13 @@ class Files extends React.Component{
 						</DropDownIcon>
 						<label className="event-edit-files__upload default-button">
 							<i className="fa fa-upload event-edit-files__upload-icon"></i>
-							<input ref="libraryMaterial" onChange={::this.handleChangeLibraryMaterials} type="file" multiple style={{display: 'none'}} accept=".pdf"/>
+							<input ref="libraryMaterial" onClick={::this.handleInputFilesClick} onChange={::this.handleChangeLibraryMaterials} type="file" multiple style={{display: 'none'}} accept=".pdf"/>
 						</label>
 						<div className="buttons__funcs">
 							<button onClick={::this.handleOpenLibraryMaterialsModal} className="buttons__add default-button" title="Добавить файлы">
 								<i className="fa fa-plus"></i>
 							</button>
-							<button onClick={this.handleRemoveLibraryMaterials} className={removeLibraryMaterialsClasses} title="Удалить файлы">
+							<button onClick={::this.handleRemoveLibraryMaterials} className={removeLibraryMaterialsClasses} title="Удалить файлы">
 								<i className="fa fa-minus"></i>
 							</button>
 						</div>
@@ -302,7 +339,12 @@ class Files extends React.Component{
 							</div>
 						</div>
 						{this._getLibraryMaterialsModal()}
-					</div>	
+					</div>
+					<Info
+						status={this.props.infoStatusDownloadLibraryMaterials}
+						message={this.props.infoMessageDownloadLibraryMaterials}
+						isShow={isShowInfoModal}
+						onClose={this.handleRemoveInfoMessage}/>	
 				</div>
 			</div>
 		);

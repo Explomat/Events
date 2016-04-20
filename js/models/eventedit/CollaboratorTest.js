@@ -5,4 +5,5 @@ module.exports = function(args){
 	this.fullname = args.fullname || '';
 	this.assessmentName = args.assessmentName || '';
 	this.score = args.score || '';
+	this.percent = args.percent || '';
 }

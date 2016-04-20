@@ -20,6 +20,11 @@ function loadData(data) {
 	_eventEdit = new EventEdit(data);
 }
 
+function changeInfoMessage(message, status){
+	_eventEdit.infoMessage = message;
+	_eventEdit.infoStatus = status;
+}
+
 function toggleCheckedAll(container, array, checked, checkedAllKeyName){
 	array.forEach(item => {
 		item.checked = checked;
@@ -221,11 +226,15 @@ const collaborators = {
 
 const tutors = {
 
-	toggleTutorIsMain(id, main){
-		let _tutors = _eventEdit.tutors.tutors;
+	toggleTutorIsMain(id){
+		var _tutors = _eventEdit.tutors.tutors;
 		_tutors.forEach((tutor) => {
-			if (tutor.id === id) tutor.main = main;
-			else tutor.main = false;
+			if (tutor.id === id) {
+				tutor.main = true;
+			}
+			else {
+				tutor.main = false;
+			}
 		});
 	},
 	toggleTutorChecked(id, checked){
@@ -277,7 +286,7 @@ const tutors = {
 		toggleCheckedAll(container, arr, checked, 'checkedAllLectors');
 	},
 	removeTutors(){
-		let _tutors = _eventEdit.tutors.tutors;
+		var _tutors = _eventEdit.tutors.tutors;
 		_tutors = filter(_tutors, (t) => {
 			return !t.checked;
 		});
@@ -285,7 +294,7 @@ const tutors = {
 		_eventEdit.tutors.checkedAllTutors = false;
 	},
 	removeLectors(){
-		let _lectors = _eventEdit.tutors.lectors;
+		var _lectors = _eventEdit.tutors.lectors;
 		_lectors = filter(_lectors, (l) => {
 			return !l.checked;
 		});
@@ -299,6 +308,12 @@ const tutors = {
 			});
 			return new Tutor(tutor);
 		});
+		var isEveryNotMain = every(_eventEdit.tutors.tutors, (t) => {
+			return t.main === false;
+		});
+		if (isEveryNotMain && _eventEdit.tutors.tutors.length > 0) {
+			_eventEdit.tutors.tutors[0].main = true;
+		}
 		_eventEdit.tutors.checkedAllTutors = false;
 	},
 	updateLectors(lectors){
@@ -409,13 +424,19 @@ const files = {
 		var arr = _eventEdit.files.libraryMaterials;
 		toggleChecked(container, arr, id, checked, 'checkedAllLibraryMaterials');
 	},
-	uploadedFiles(files){
-		_eventEdit.files.files = _eventEdit.files.files.concat(files);
+	uploadedFiles(_files){
+		var files = _files.map((f) => {
+			return new File(f);
+		});
+		_eventEdit.files.files = files;
 		_eventEdit.files.isUploadingFiles = false;
 		_eventEdit.files.checkedAllFiles = false;
 	},
-	uploadedLibraryMaterials(files){
-		_eventEdit.files.libraryMaterials = _eventEdit.files.libraryMaterials.concat(files);
+	uploadedLibraryMaterials(_files){
+		var files = _files.map((f) => {
+			return new LibraryMaterial(f);
+		});
+		_eventEdit.files.libraryMaterials = files;
 		_eventEdit.files.isUploadingLibraryMaterials = false;
 		_eventEdit.files.checkedAllLibraryMaterials = false;
 	},
@@ -448,6 +469,10 @@ const files = {
 			return new LibraryMaterial(libraryMaterial);
 		});
 		_eventEdit.files.checkedAllLibraryMaterials = false;
+	},
+	changeInfoMessageLibraryMaterials(message, status){
+		_eventEdit.files.infoMessageDownloadLibraryMaterials = message;
+		_eventEdit.files.infoStatusDownloadLibraryMaterials = status;
 	}
 }
 
@@ -459,6 +484,20 @@ const EventEditStore = extend({}, EventEmitter.prototype, {
 
 	getPartialData(key) {
 		return {..._eventEdit[key]}
+	},
+
+	isRequiredFieldsFilled(){
+		/*var base = _eventEdit.base;
+		var tutors = _eventEdit.tutors;
+		return  base.name && 
+				base.selectedCode && 
+				base.selectedEducationMethod && 
+				base.selectedEducationOrgId && 
+				base.selectedType && 
+				base.places.selectedNode &&
+				tutors.tutors.length > 0 &&
+				tutors.lectors.length > 0;*/
+		return true;
 	},
 
 	emitChange() {
@@ -482,6 +521,10 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 
 		case EventEditConstants.RECEIVE_EVENTEDIT_DATA:
 			loadData(action.data);
+			isEmit = true;
+			break;
+		case EventEditConstants.CHANGE_INFO_MESSAGE:
+			changeInfoMessage(action.message, action.status);
 			isEmit = true;
 			break;
 
@@ -722,6 +765,10 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			break;
 		case EventEditConstants.EVENTEDIT_FILES_UPDATE_LIBRARY_MATERIALS:
 			files.updateLibraryMaterials(action.libraryMaterials);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_FILES_CHANGE_INFO_MESSAGE_LIBRARY_MATERIALS:
+			files.changeInfoMessageLibraryMaterials(action.message, action.status);
 			isEmit = true;
 			break;	
 

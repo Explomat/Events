@@ -256,7 +256,7 @@ class Tutors extends React.Component {
 							</button>
 						</div>
 					</div>
-					<strong className="tutors__description">Ответственные</strong>
+					<strong className="tutors__description">Ответственные *</strong>
 					<div className="table-list tutor-list">
 						<span className={tableDescTutorsrClasses}>Нет ответственных</span>
 						<div className="table-list__table">
@@ -286,7 +286,7 @@ class Tutors extends React.Component {
 							</button>
 						</div>
 					</div>
-					<strong className="lectors__description">Преподаватели</strong>
+					<strong className="lectors__description">Преподаватели *</strong>
 					<div className="table-list lector-list">
 						<span className={tableDescrLectorsClasses}>Нет преподавателей</span>
 						<div className="table-list__table">

@@ -1,19 +1,18 @@
-var React = require('react');
-var DropDown = require('../modules/dropdown/index');
+import React from 'react';
+import DropDown from '../modules/dropdown';
 
-var BusinessTypeFilter = React.createClass({
+class BusinessTypeFilter extends React.Component {
 
-	handleChangeBusinessType: function(e, payload, text, index) {
+	handleChangeBusinessType(e, payload, text, index) {
 		if (this.props.onChange) {
 			this.props.onChange(e, payload, text, index);
 		}
-	},
+	}
 
-	render: function() {
+	render() {
 		return (
-			<DropDown onChange={this.handleChangeBusinessType} items={this.props.items} selectedPayload={this.props.selectedPayload} deviders={[1]} className={"calendar-header__business-type"} classNameButton={"calendar-header__business-type-button"}/>
+			<DropDown onChange={::this.handleChangeBusinessType} items={this.props.items} selectedPayload={this.props.selectedPayload} deviders={[1]} className={"calendar-header__business-type"} classNameButton={"calendar-header__business-type-button"}/>
 		);
 	}
-});
-
-module.exports = BusinessTypeFilter;
+};
+export default BusinessTypeFilter;

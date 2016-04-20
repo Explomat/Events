@@ -64,16 +64,16 @@ class Base extends React.Component {
 				<TextView
 					onBlur={this.handleChangeName} 
 					value={this.props.name} 
-					placeholder="Название" 
+					placeholder="Название *" 
 					className="event-edit-base__name"/>
 				<DropDown 
-					description="Тип мероприятия"
+					description="Тип мероприятия *"
 					onChange={this.handleChangeType} 
 					items={this.props.types} 
 					selectedPayload={this.props.selectedType}
 					isReset={true}/>
 				<DropDown 
-					description="Код мероприятия"
+					description="Код мероприятия *"
 					onChange={this.handleChangeCode} 
 					items={this.props.codes} 
 					selectedPayload={this.props.selectedCode}
@@ -82,7 +82,7 @@ class Base extends React.Component {
 					<div className="date">
 						<div className="date__start">
 							<InputCalendar
-								placeholder="C"
+								placeholder="Дата, время начала *"
 								className="date__calendar" 
 								date={this.props.startDateTime} 
 								onSave={this.handleChangeStartDateTime} 
@@ -91,7 +91,7 @@ class Base extends React.Component {
 						</div>
 						<div className="date__finish">
 							<InputCalendar
-								placeholder="По"
+								placeholder="Дата, время завершения *"
 								className="date__calendar" 
 								date={this.props.finishDateTime} 
 								onSave={this.handleChangeFinishDateTime} 
@@ -101,7 +101,7 @@ class Base extends React.Component {
 					</div>
 				</div>
 				<DropDown
-					description="Обучающая организация"
+					description="Обучающая организация *"
 					onChange={this.handleChangeEducationOrg} 
 					items={this.props.educationOrgs} 
 					selectedPayload={this.props.selectedEducationOrgId}
@@ -109,14 +109,14 @@ class Base extends React.Component {
 				<SelectOneItem
 					className={educationMethodlasses}
 					selectedItem={this.props.selectedEducationMethod} 
-					placeholder="Учебная программа" 
+					placeholder="Учебная программа *" 
 					modalTitle="Выберите учебную программу"
 					query={Config.url.createPath({action_name: 'getEducationMethod'})}
 					onSave={this.handleChangeEducationMethod}/>
 				<SelectTree 
 					nodes={this.props.places.nodes}
 					selectedNode={this.props.places.selectedNode} 
-					placeholder="Расположение"
+					placeholder="Расположение *"
 					modalTitle="Выберите расположение"
 					onSave={this.handleChangePlace}
 					isExpand={true}/>

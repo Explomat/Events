@@ -4,7 +4,7 @@ import DropDownIcon from 'components/modules/dropdown-icon';
 import SelectItems from 'components/modules/select-items';
 import ToggleButton from 'components/modules/toggle-button';
 import Message from 'components/modules/message';
-import Info from 'components/modules/Info';
+import Info from 'components/modules/info';
 import EventEditActions from 'actions/EventEditActions';
 import {some, filter} from 'lodash';
 import cx from 'classnames';
@@ -190,9 +190,9 @@ class Collaborators extends React.Component {
 						<i className="fa fa-sort"></i>
 					</DropDownIcon>
 					<div className="buttons__funcs">
-						<div onClick={::this.handleOpenModal} className="buttons__add default-button" title="Добавить участников">
+						<button onClick={::this.handleOpenModal} className="buttons__add default-button" title="Добавить участников">
 							<i className="fa fa-user-plus"></i>
-						</div>
+						</button>
 						<button onClick={this.handleRemoveItems} className={removeClasses} title="Удалить участников">
 							<i className="fa fa-user-times"></i>
 						</button>

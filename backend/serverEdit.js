@@ -166,9 +166,9 @@ function removeFiles(queryObjects) {
 
 function addFiles (queryObjects) {
 
-	function isExist(files, fileId){
+	function _isExist(files, fileId){
 		for (f in files){
-			if (f.file_id == fileId) {
+			if ( Int(f.file_id) == Int(fileId) ) {
 				return true;
 			}
 		}
@@ -179,18 +179,61 @@ function addFiles (queryObjects) {
 	var curEventCard = OpenDoc(UrlFromDocID(Int(Session.eventId)));
 
 	var goodData = [];
+
 	for (elem in data.files) {
-		isFileExist = isExist(curEventCard.TopElem.files, elem.id);
+		isFileExist = _isExist(curEventCard.TopElem.files, elem.id);
 		if (!isFileExist) {
 			resoureLink = curEventCard.TopElem.files.AddChild();
 			resoureLink.file_id = Int(elem.id) ;
 			resoureLink.visibility = 'all';
 			curEventCard.Save();
-			goodData.push(elem)
-		}
+		} 
+		goodData.push(elem);
 	}
 	return tools.object_to_text(goodData, 'json');
 }
+
+function addLibraryMaterials (queryObjects) {
+
+	function _isExist(files, fileId){
+		for (f in files){
+			if ( Int(f) == Int(fileId) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	var data = tools.read_object(queryObjects.Body);
+	var curEventCard = OpenDoc(UrlFromDocID(Int(Session.eventId)));
+	var curValue = curEventCard.TopElem.custom_elems.ObtainChildByKey('allMaterials').value;
+	var materialsArray = [];
+	var resultArray = [];
+	if (curValue != '') {
+		materialsArray  = String(curValue).split(';');
+	} 
+   
+	for (elem in data.files) {
+		if (!_isExist(materialsArray, elem.id) ) {
+			materialsArray.push(elem.id);
+			curEventCard.TopElem.custom_elems.ObtainChildByKey('allMaterials').value = materialsArray.join(';');
+			curEventCard.Save();
+			name = elem.name == '' ? "Безимянный" : elem.name;
+			year = elem.year == null ? Year(Date()) : elem.year;
+			author = elem.author == '' ? OpenDoc(UrlFromDocID(elem.doc_info.creation.user_id)).TopElem.fullname : elem.author;
+			resultArray.push({
+				id : Int(elem.id),
+				name : name + '',
+				year : year + '',
+				author : author + ''
+			})
+		}
+	}
+
+	return tools.object_to_text(resultArray, 'json');
+
+}
+
 
 function isAdmin (queryObjects) {
 
@@ -649,37 +692,24 @@ function getEventLibraryMaterials (queryObjects) {
 
 	var eventID = queryObjects.HasProperty('event_id') ? Int(queryObjects.event_id) : null;
 	var eventDocTE = OpenDoc(UrlFromDocID(Int(eventID))).TopElem; 
-
-	var libraryMaterials = [];
-
-	var isSendBeforeDocHref = eventDocTE.custom_elems.ObtainChildByKey('training_befor_delivery').value == 'true' ? true : false; // отправлять ссылку на предварительный
-	var isSendAfterDocHref = eventDocTE.custom_elems.ObtainChildByKey('training_after_presence').value == 'true' ? true : false; // отправлять ссылку на посттренинговый 
-
-    var trainigBeforeDoc = eventDocTE.custom_elems.ObtainChildByKey('training_befor_doc').value; // ID пред трен материала
-    var trainigAfterDoc = eventDocTE.custom_elems.ObtainChildByKey('training_after_doc').value; // ID пост трен материала
-
-    if (trainigBeforeDoc) {
-    	libraryCard = OpenDoc(UrlFromDocID(Int(trainigBeforeDoc))).TopElem;
-    	libraryMaterials.push({ 
-			id: Int(trainigBeforeDoc), 
-			name : libraryCard.name + '',
-			type : 'предварительный'
-		});
-    }
-    if (trainigAfterDoc) {
-    	libraryCard = OpenDoc(UrlFromDocID(Int(trainigBeforeDoc))).TopElem;
-    	libraryMaterials.push({ 
-			id: Int(trainigAfterDoc), 
-			name : libraryCard.name + '',
-			type : 'посттренинговый'
-		});   	
-    }
-
-    return {
-    	isSendBeforeDocHref : isSendBeforeDocHref,
-    	isSendAfterDocHref : isSendAfterDocHref,
-    	libraryMaterials: libraryMaterials
+	var resultArray = [];
+	if (eventDocTE.custom_elems.ObtainChildByKey('allMaterials').value != '') {
+		var libraryMaterials = String(eventDocTE.custom_elems.ObtainChildByKey('allMaterials').value).split(';');
+		for (material in libraryMaterials) {
+			curMaterial = OpenDoc(UrlFromDocID(Int(material))).TopElem;
+			name = curMaterial.name == '' ? "Безимянный" : curMaterial.name;
+			year = curMaterial.year == null ? Year(Date()) : curMaterial.year;
+			author = curMaterial.author == '' ? OpenDoc(UrlFromDocID(curMaterial.doc_info.creation.user_id)).TopElem.fullname : curMaterial.author;
+			resultArray.push({
+				id : Int(material),
+				name : name + '',
+				year : year + '',
+				author : author + ''
+			})
+		}
+	   
 	}
+	 return resultArray;
 }
 
 
@@ -739,22 +769,24 @@ function getEventTests (queryObjects) {
 
 		var eventDocTE = OpenDoc(UrlFromDocID(Int(eventID))).TopElem;
 
-		var isPrevTests = eventDocTE.prev_testing.auto_assign;
-		var isPostTests = eventDocTE.post_testing.auto_assign;
+/*		var isPrevTests = eventDocTE.prev_testing.auto_assign;
+		var isPostTests = eventDocTE.post_testing.auto_assign;*/
 		var isPostTestOnlyForAssisst = eventDocTE.custom_elems.ObtainChildByKey('post_test_for_assisst').value == 'true' ? true : false;
 		var prevTests = [];
 		var postTests = [];
 		for (assessment in eventDocTE.prev_testing.assessments) {
 			prevTests.push({
 				id : Int(assessment.assessment_id),
-				name : assessment.assessment_id.ForeignElem.title + ''
+				name : assessment.assessment_id.ForeignElem.title + '',
+				type : 'prex'
 			})
 		}
 
 		for (assessment in eventDocTE.post_testing.assessments) {
 			postTests.push({
 				id : Int(assessment.assessment_id),
-				name : assessment.assessment_id.ForeignElem.title + ''
+				name : assessment.assessment_id.ForeignElem.title + '',
+				type : 'post'
 			})
 		}
 
@@ -793,10 +825,7 @@ function getEventTests (queryObjects) {
 			});
 		}
 		return {
-			isPrevTests : isPrevTests + '',
-			prevTests : prevTests,
-			isPostTests : isPostTests + '',
-			postTests : postTests,
+			allTests : ArrayUnion(prevTests, postTests),
 			isPostTestOnlyForAssisst : isPostTestOnlyForAssisst + '',
 			testingList: testsArray
 		}
@@ -872,9 +901,7 @@ function getEventFiles (queryObjects) {
 
 		return {
 			files: filesArray,
-			libraryMaterials: lm.libraryMaterials,
-			isSendBeforeDocHref: lm.isSendBeforeDocHref,
-			isSendAfterDocHref: lm.isSendAfterDocHref
+			libraryMaterials: lm
 		}
 	}
 }
@@ -1094,5 +1121,95 @@ function getEventEditData (queryObjects) {
 	}
 }
 
+
+
+
+
+/* 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------- Сохраняем данные по мероприятию ---------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+*/
+
+function saveData(queryObjects) {
+	curEventCard = OpenDoc(UrlFromDocID(Session.eventId));
+	data = tools.read_object(queryObjects.Body);
+
+	if ( data.HasProperty('base') ) {
+		var baseData = data.base;
+
+		/*Название мероприятия*/
+		if ( baseData.HasProperty('name') && baseData.name != '' ) {
+			if (baseData.name != curEventCard.TopElem.name ) {
+				curEventCard.TopElem.name = baseData.name;
+			}
+		} else {
+			return "Название не может быть пустым";
+		}
+
+		/*Тип мероприятия*/
+		if ( baseData.HasProperty('selectedType') && baseData.selectedType != '' ) {
+			if (baseData.selectedType != curEventCard.TopElem.type_id ) {
+				curEventCard.TopElem.type_id = baseData.selectedType;
+			}
+		} else {
+			return "Отсутсвует тип мероприятия";	
+		}
+		
+		/*Код мероприятия*/
+		if ( baseData.HasProperty('selectedCode') && baseData.selectedCode != '' ) {
+			if (baseData.selectedCode != curEventCard.TopElem.code ) {
+				curEventCard.TopElem.code = baseData.selectedCode;
+			}
+		} else {	
+			return "Код не может быть пустым";
+		}
+
+		/*Расположение мероприятия*/
+		if ( baseData.HasProperty('places') ) {
+			if ( baseData.places.HasProperty('selectedNode') ) {
+				if (baseData.places.selectedNode.id != curEventCard.TopElem.place_id ) {
+				curEventCard.TopElem.place_id = baseData.places.selectedNode.id;
+				}
+			}		
+		} else {
+			return "Расположение отсутсвует";
+		}
+
+		/*Обучающая организация*/
+		if ( baseData.HasProperty('selectedEducationOrgId') && baseData.selectedEducationOrgId != null) {
+			if (baseData.selectedEducationOrgId != curEventCard.TopElem.education_org_id ) {
+				curEventCard.TopElem.education_org_id = baseData.selectedEducationOrgId;
+			}		
+		} else {
+			return "Отсутсвует обучающая органищация";
+		}
+
+		/*Учебная программа*/
+		if ( baseData.HasProperty('selectedEducationMethod') && baseData.selectedEducationMethod != null ) {
+			if ( baseData.selectedEducationMethod.HasProperty('id') ) {
+				if (baseData.selectedEducationMethod.id != curEventCard.TopElem.education_method_id ) {
+					curEventCard.TopElem.education_method_id = baseData.selectedEducationMethod.id;
+				}
+			} else {
+				return "Некорректный ID в учебной программе";
+			}		
+		} else {
+			return "Отсутсвует учебная программа";
+		}
+
+		/*Дата начала и завершения*/
+		if ( baseData.HasProperty('startDateTime') && baseData.HasProperty('finishDateTime') ) {
+			curEventCard.TopElem.start_date = StrDate(Date(baseData.startDateTime));
+			curEventCard.TopElem.finish_date = StrDate(Date(baseData.finishDateTime));
+		} else {
+			return "Выберите дату начала и завершения";
+		}
+
+	curEventCard.Save();
+	}
+}
 
 %>

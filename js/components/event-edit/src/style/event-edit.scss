@@ -13,4 +13,24 @@
       font-size: 14px;
     }
   }
+
+  .event-edit-container__save-button{
+    position: absolute;
+    top: 30px;
+    right: 32px;
+    transform: translateY(-50%);
+
+    .event-edit-container__save-icon{
+      margin-right: 8px;
+    }
+  }
+
+  .event-edit-container__complete-button{
+    position: absolute;
+    top: 30px;
+    right: 160px;
+    transform: translateY(-50%);
+    border: none;
+    padding: 6px 9px;
+  }
 }

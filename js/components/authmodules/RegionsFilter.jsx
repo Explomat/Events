@@ -1,19 +1,18 @@
-var React = require('react');
-var DropDown = require('../modules/dropdown/index');
+import React from 'react';
+import DropDown from '../modules/dropdown';
 
-var RegionsFilter = React.createClass({
+class RegionsFilter extends React.Component {
 
-	handleChangeRegion: function(e, payload, text, index) {
+	handleChangeRegion(e, payload, text, index) {
 		if (this.props.onChange) {
 			this.props.onChange(e, payload, text, index);
 		}
-	},
+	}
 
-	render: function() {
+	render() {
 		return (
-			<DropDown onChange={this.handleChangeRegion} items={this.props.items} selectedPayload={this.props.selectedPayload} deviders={[1]} className={"calendar-header__regions"} classNameButton={"calendar-header__regions-button"}/>
+			<DropDown onChange={::this.handleChangeRegion} items={this.props.items} selectedPayload={this.props.selectedPayload} deviders={[1]} className={"calendar-header__regions"} classNameButton={"calendar-header__regions-button"}/>
 		);
 	}
-});
-
-module.exports = RegionsFilter;
+};
+export default RegionsFilter;
