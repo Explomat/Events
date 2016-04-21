@@ -63,7 +63,7 @@ class SelectTree extends React.Component {
 					onClick={this.handleShowModal} 
 					onChange={this.handleChange}/>
                 <label className="select-tree__label">{this.props.placeholder}</label>
-                <i className={iconClasses}></i>
+                <i className={iconClasses} onClick={this.handleShowModal} ></i>
                 <Tree 
                 	onSave={this.handleSaveModal} 
                 	onClose={this.handleCloseModal} 

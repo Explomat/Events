@@ -28,7 +28,7 @@ class Test extends React.Component {
 					<CheckBox onChange={::this.handleToggleChecked} checked={checked}/>
 				</div>
 				<div className="table-list__body-cell">{code}</div>
-				<div className="table-list__body-cell">{name}</div>
+				<div className="table-list__body-cell table-list__body-cell--70">{name}</div>
 				<div className="table-list__body-cell">{TestTypes.values[type]}</div>
 			</div>
 		);
@@ -161,17 +161,32 @@ class Tests extends React.Component {
 
 class TestingItem extends React.Component {
 
+	_getScoreThreshold(thresholds, percent){
+		for (var i = 0, len = thresholds.length; i < len - 1; i++) {
+			let min = thresholds[i];
+			let max = thresholds[i + 1];
+			if (percent > min && percent <= max) {
+				return i;
+			}
+		};
+		return 1;
+	}
+
 	handleToggleIsAssist(){
 		EventEditActions.testing.toggleIsAssist(this.props.id, !this.props.isAssist);
 	}
 
 	render(){
-		const {fullname, assessmentName, score} = this.props;
+		const {fullname, assessmentName, score, percent, thresholds, thresholdColors} = this.props;
+		const cellColorStyle = thresholdColors[this._getScoreThreshold(thresholds, percent)];
 		return (
 			<div className="table-list__body-row">
 				<div className="table-list__body-cell">{fullname}</div>
 				<div className="table-list__body-cell">{assessmentName}</div>
-				<div className="table-list__body-cell">{score}</div>
+				<div className="table-list__body-cell" style={{'backgroundColor': cellColorStyle}}>
+					<strong className="testing-list__score">{score}</strong>
+					<span className="testing-list__percent">({percent}%)</span>
+				</div>
 			</div>
 		);
 	}
@@ -207,7 +222,7 @@ class Testing extends React.Component {
 						<div className="table-list__table">
 							<div className="table-list__header">
 								{this.props.testingList.map((item, index) => {
-									return <TestingItem key={index} {...item}/>
+									return <TestingItem key={index} {...item} thresholds={this.props.thresholds} thresholdColors={this.props.thresholdColors}/>
 								})}
 							</div>
 						</div>

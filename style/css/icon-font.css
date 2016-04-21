@@ -101,3 +101,12 @@
 .icon-popup:before {
   content: "\75";
 }
+.icon-ban:before {
+  content: "\76";
+}
+.icon-exclamation-circle:before {
+  content: "\77";
+}
+.icon-check-circle:before {
+  content: "\78";
+}

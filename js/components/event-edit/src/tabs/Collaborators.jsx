@@ -39,7 +39,7 @@ class CollaboratorItem extends React.Component {
 				<div className="table-list__body-cell">{fullname}</div>
 				<div className="table-list__body-cell">{position}</div>
 				<div className="table-list__body-cell">{subdivision}</div>
-				<div className="table-list__body-cell table-list__body-cell--5">
+				<div className="table-list__body-cell table-list__body-cell--5" title="Присутствие/отсутствие">
 					<ToggleButton id={id} onChange={::this.handleToggleIsAssist} checked={isAssist} />
 				</div>
 			</div>

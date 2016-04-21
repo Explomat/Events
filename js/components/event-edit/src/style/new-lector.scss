@@ -1,0 +1,50 @@
+@import '../../../modules/modal/src/style/modal';
+
+.new-lector {
+    @include modal-box;
+    display: block;
+
+    .new-lector__modal-box {
+        @include modal-box__dialog;
+        max-width: 450px;
+
+        .new-lector__content {
+            @include modal-box__content;
+            border-radius: 0px;
+
+            .new-lector__header{
+                @include modal-box__header;
+            }
+
+            .new-lector__body{
+                @include modal-box__body;
+                height: auto;
+                overflow: auto;
+
+                .new-lector__first-name{
+
+                }
+
+                .new-lector__last-name{
+
+                }
+
+                .new-lector__middle-name{
+
+                }
+
+                .new-lector__email{
+
+                }
+
+                .new-lector__company{
+
+                }
+            }
+
+            .new-lector__footer{
+                @include modal-box__footer;
+            }
+        }
+    }
+}

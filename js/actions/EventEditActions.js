@@ -77,9 +77,9 @@ var EventEditActions = {
 	},
 
 	requests: {
-		changeIsDateRequestBeforeBegin(checked){
+		changeIsOpen(checked){
 			AppDispatcher.handleAction({
-				actionType: EventEditConstants.EVENTEDIT_REQUESTS_CHANGE_IS_DATE_REQUEST_BEFORE_BEGIN,
+				actionType: EventEditConstants.EVENTEDIT_REQUESTS_CHANGE_IS_OPEN,
 				checked: checked
 			});
 		},
@@ -93,12 +93,6 @@ var EventEditActions = {
 			AppDispatcher.handleAction({
 				actionType: EventEditConstants.EVENTEDIT_REQUESTS_CHANGE_REQUEST_OVER_DATE,
 				date: date
-			});
-		},
-		changeIsAutomaticIncludeInCollaborators(checked){
-			AppDispatcher.handleAction({
-				actionType: EventEditConstants.EVENTEDIT_REQUESTS_CHANGE_IS_AUTOMATIC_INCLUDE,
-				checked: checked
 			});
 		},
 		changeIsApproveByBoss(checked){

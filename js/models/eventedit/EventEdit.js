@@ -55,7 +55,7 @@ export default function(args){
 
 	//requests
 	this.requests = {
-		isDateRequestBeforeBegin: args.requests.isDateRequestBeforeBegin || true, //подавать заявки до начала мероприятия
+		isOpen: args.requests.isOpen || true, //подавать заявки до начала мероприятия
 		requestBeginDate: new Date(args.requests.requestBeginDate),
 		requestOverDate: new Date(args.requests.requestOverDate),
 		isAutomaticIncludeInCollaborators: args.requests.isAutomaticIncludeInCollaborators || false, //Автоматически включать в состав участников
@@ -65,8 +65,8 @@ export default function(args){
 
 		//state fields
 		sortTypes: [
-			{ payload: '{"key": "fullname", "isAsc": "true"}', text: 'Сортировать по ФИО(по убыванию)' },
-			{ payload: '{"key": "fullname", "isAsc": "false"}', text: 'Сортировать по ФИО(по возрастанию)' }
+			{ payload: '{"key": "fullname", "isAsc": "true"}', text: 'Сортировать по ФИО(А-я)' },
+			{ payload: '{"key": "fullname", "isAsc": "false"}', text: 'Сортировать по ФИО(я-А)' }
 		],
 		selectedPayload: '{"key": "fullname", "isAsc": "true"}'
 	}
@@ -88,8 +88,8 @@ export default function(args){
 			{ payload: '{"isAssist": "true"}', text: 'Выбрать всех присутствующих' }
 		],
 		sortTypes: [
-			{ payload: '{"key": "fullname", "isAsc": "true"}', text: 'Сортировать по ФИО(по убыванию)' },
-			{ payload: '{"key": "fullname", "isAsc": "false"}', text: 'Сортировать по ФИО(по возрастанию)' }
+			{ payload: '{"key": "fullname", "isAsc": "true"}', text: 'Сортировать по ФИО(А-я)' },
+			{ payload: '{"key": "fullname", "isAsc": "false"}', text: 'Сортировать по ФИО(я-А)' }
 		],
 		selectedPayload: '{"key": "fullname", "isAsc": "true"}'
 	}
@@ -111,16 +111,16 @@ export default function(args){
 		infoStatus: '',
 
 		sortTutorTypes: [
-			{ payload: '{"key": "fullname", "isAsc": "true"}', text: 'Сортировать по ФИО(по убыванию)' },
-			{ payload: '{"key": "fullname", "isAsc": "false"}', text: 'Сортировать по ФИО(по возрастанию)' }
+			{ payload: '{"key": "fullname", "isAsc": "true"}', text: 'Сортировать по ФИО(А-я)' },
+			{ payload: '{"key": "fullname", "isAsc": "false"}', text: 'Сортировать по ФИО(я-А)' }
 		],
 		selectedTutorPayload: '{"key": "fullname", "isAsc": "true"}',
 		checkedTutorTypes: [
 			{ payload: '{"main": "true"}', text: 'Выбрать основного' }
 		],
 		sortLectorTypes: [
-			{ payload: '{"key": "fullname", "isAsc": "true"}', text: 'Сортировать по ФИО(по убыванию)' },
-			{ payload: '{"key": "fullname", "isAsc": "false"}', text: 'Сортировать по ФИО(по возрастанию)' }
+			{ payload: '{"key": "fullname", "isAsc": "true"}', text: 'Сортировать по ФИО(А-я)' },
+			{ payload: '{"key": "fullname", "isAsc": "false"}', text: 'Сортировать по ФИО(я-А)' }
 		],
 		selectedLectorPayload: '{"key": "fullname", "isAsc": "true"}'
 	}
@@ -147,6 +147,7 @@ export default function(args){
 		testingList:[],
 		isPostTestOnlyForAssisst: args.testing.isPostTestOnlyForAssisst || false,
 		thresholds: args.testing.thresholds || [], //пороговые значения для отображения результатов тестов
+		thresholdColors: ['#ff5252', '#ffb300', '#4CAF50'],
 
 		//state fields
 		checkedAll: false,
@@ -158,15 +159,17 @@ export default function(args){
 		],
 
 		sortTestTypes: [
-			{ payload: '{"key": "name", "isAsc": "true"}', text: 'Сортировать по имени(по убыванию)' },
-			{ payload: '{"key": "name", "isAsc": "false"}', text: 'Сортировать по имени(по возрастанию)' },
-			{ payload: '{"key": "type", "isAsc": "true"}', text: 'Сортировать по типу(по убыванию)' },
-			{ payload: '{"key": "type", "isAsc": "false"}', text: 'Сортировать по типу(по возрастанию)' }
+			{ payload: '{"key": "name", "isAsc": "true"}', text: 'Сортировать по имени(А-я)' },
+			{ payload: '{"key": "name", "isAsc": "false"}', text: 'Сортировать по имени(я-А)' },
+			{ payload: '{"key": "type", "isAsc": "true"}', text: 'Сортировать по типу(А-я)' },
+			{ payload: '{"key": "type", "isAsc": "false"}', text: 'Сортировать по типу(я-А)' }
 		],
 
 		sortTypes: [
-			{ payload: '{"key": "fullname", "isAsc": "true"}', text: 'Сортировать по ФИО(по убыванию)' },
-			{ payload: '{"key": "fullname", "isAsc": "false"}', text: 'Сортировать по ФИО(по возрастанию)' }
+			{ payload: '{"key": "fullname", "isAsc": "true"}', text: 'Сортировать по ФИО(А-я)' },
+			{ payload: '{"key": "fullname", "isAsc": "false"}', text: 'Сортировать по ФИО(я-А)' },
+			{ payload: '{"key": "score", "isAsc": "false"}', text: 'Сортировать по результату(по убыванию)' },
+			{ payload: '{"key": "score", "isAsc": "true"}', text: 'Сортировать по результату(по возрастанию)' }
 		],
 		selectedPayload: '{"key": "fullname", "isAsc": "true"}'
 	}

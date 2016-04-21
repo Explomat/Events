@@ -36,7 +36,7 @@ class File extends React.Component {
 				</div>
 				<div className="table-list__body-cell table-list__body-cell--75">{name}</div>
 				<div className="table-list__body-cell">{type}</div>
-				<div className="table-list__body-cell">
+				<div className="table-list__body-cell" title="Разрешить/запретить скачивание">
 					<ToggleButton id={id} onChange={::this.handleToggleIsAllowDownload} checked={isAllowDownload} />
 				</div>
 			</div>
@@ -78,6 +78,7 @@ class Files extends React.Component {
 		super(props);
 		this.MAX_LIBRARY_MATERIAL_COUNT = 2;
 		this.LIBRARY_MATERIAL_MIME_TYPE = 'application/pdf';
+		this.LIBRARY_MATERIAL_SHOW_TYPE = 'pdf';
 	} 
 
 	static defaultProps = {
@@ -196,7 +197,7 @@ class Files extends React.Component {
 		if (!this._isCorrectLibraryMaterialsType(files, this.LIBRARY_MATERIAL_MIME_TYPE)) {
 			e.preventDefault();
 			libraryMaterialRef.value = '';
-			EventEditActions.files.changeInfoMessageLibraryMaterials(`Вы не можете загрузить материалы с типом отличным от '${this.LIBRARY_MATERIAL_MIME_TYPE}' !`, 'error');
+			EventEditActions.files.changeInfoMessageLibraryMaterials(`Вы не можете загрузить материалы с типом отличным от '${this.LIBRARY_MATERIAL_SHOW_TYPE}' !`, 'error');
 			return;
 		}
 

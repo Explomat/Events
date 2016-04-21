@@ -35,6 +35,15 @@
 
 		.testing-list{
 			height: calc(100% - 57px);
+
+			.testing-list__score{
+				margin-right: 4px;
+			}
+
+			.testing-list__percent{
+				color: #fff;
+				float: right;
+			}
 		}
 	}
 	

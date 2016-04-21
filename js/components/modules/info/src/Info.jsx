@@ -26,18 +26,17 @@ class Info extends React.Component {
             return null;
         }
 
-        let status = this.props.status;
-        let infoIconClasses = cx({
+        const status = this.props.status;
+        const infoIconClasses = cx({
             'info__icon': true,
             'info__icon--error': status === this.statuses.error,
             'info__icon--info': status === this.statuses.info,
             'info__icon--done': status === this.statuses.done
         });
-        let iconClasses = cx({
-            'fa': true,
-            'fa-ban': status === this.statuses.error,
-            'fa-exclamation-circle': status === this.statuses.info,
-            'fa-check-circle': status === this.statuses.done
+        const iconClasses = cx({
+            'icon-ban': status === this.statuses.error,
+            'icon-exclamation-circle': status === this.statuses.info,
+            'icon-check-circle': status === this.statuses.done
         });
         return (
             <div className="info">

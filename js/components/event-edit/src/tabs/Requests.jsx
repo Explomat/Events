@@ -96,8 +96,8 @@ class Requests extends React.Component {
 		table.style.height = (height - base.clientHeight - 20) + 'px';
 	}
 
-	handleChangeIsDateRequestBeforeBegin(checked){
-		EventEditActions.requests.changeIsDateRequestBeforeBegin(checked);
+	handleChangeIsOpen(checked){
+		EventEditActions.requests.changeIsOpen(checked);
 	}
 
 	handleChangeRequestBeginDate(date){
@@ -106,10 +106,6 @@ class Requests extends React.Component {
 
 	handleChangeRequestOverDate(date){
 		EventEditActions.requests.changeRequestOverDate(date);
-	}
-
-	handleChangeIsAutomaticIncludeInCollaborators(checked){
-		EventEditActions.requests.changeIsAutomaticIncludeInCollaborators(checked);
 	}
 
 	handleChangeIsApproveByBoss(checked){
@@ -144,7 +140,7 @@ class Requests extends React.Component {
 	render(){
 		const dateClasses = cx({
 			'date': true,
-			'date--display': this.props.isDateRequestBeforeBegin
+			'date--display': this.props.isOpen
 		});
 		const tableDescrClasses = cx({
 			'table-list__description-is-empty': true,
@@ -159,9 +155,9 @@ class Requests extends React.Component {
 				<div ref="base" className="event-edit-requests__base">
 					<div className="is-date-requests">
 						<CheckBox 
-							onChange={this.handleChangeIsDateRequestBeforeBegin} 
+							onChange={this.handleChangeIsOpen} 
 							label="Возможна подача заявок"
-							checked={this.props.isDateRequestBeforeBegin}/>
+							checked={this.props.isOpen}/>
 						<div className={dateClasses}>
 							<div className="alert alert--info is-date-requests__date-alert">
 								<span>Обратите внимание, что дата начала и окончания подачи заявок не должна превышать дату начала мероприятия!</span>
@@ -182,11 +178,6 @@ class Requests extends React.Component {
 							</div>
 						</div>
 					</div>
-					<br />
-					<CheckBox 
-						onChange={this.handleChangeIsAutomaticIncludeInCollaborators} 
-						label="Автоматически включать в состав участников"
-						checked={this.props.isAutomaticIncludeInCollaborators}/>
 					<br />
 					<br />
 					<CheckBox 

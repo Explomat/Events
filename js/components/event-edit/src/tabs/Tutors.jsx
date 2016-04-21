@@ -4,6 +4,7 @@ import DropDownIcon from 'components/modules/dropdown-icon';
 import SelectItems from 'components/modules/select-items';
 import ToggleButton from 'components/modules/toggle-button';
 import EventEditActions from 'actions/EventEditActions';
+import NewLector from '../NewLector';
 import {some} from 'lodash';
 import cx from 'classnames';
 import config from 'config';
@@ -37,7 +38,7 @@ class TutorItem extends React.Component {
 				<div className="table-list__body-cell">{fullname}</div>
 				<div className="table-list__body-cell">{position}</div>
 				<div className="table-list__body-cell">{subdivision}</div>
-				<div className="table-list__body-cell table-list__body-cell--5">
+				<div className="table-list__body-cell table-list__body-cell--5" title="Сделать основным">
 					<ToggleButton id={id} onChange={::this.handleToggleIsMain} checked={main} />
 				</div>
 			</div>
@@ -86,7 +87,8 @@ class Tutors extends React.Component {
 
 	state = {
 		isShowTutorsModal: false,
-		isShowLectorsModal: false
+		isShowLectorsModal: false,
+		isShowNewLectorModal: false
 	}
 
 	_isSomeChecked(items){
@@ -179,12 +181,20 @@ class Tutors extends React.Component {
 		this.setState({isShowLectorsModal: true});
 	}
 
+	handleOpenNewLectorModal(){
+		this.setState({isShowNewLectorModal: true});
+	}
+
 	handleCloseTutorsModal(){
 		this.setState({isShowTutorsModal: false});
 	}
 
 	handleCloseLectorsModal(){
 		this.setState({isShowLectorsModal: false});
+	}
+
+	handleCloseNewLectorModal(){
+		this.setState({isShowNewLectorModal: false});
 	}
 
 	handleUpdateTutors(tutors){
@@ -195,6 +205,10 @@ class Tutors extends React.Component {
 	handleUpdateLectors(lectors){
 		this.setState({isShowLectorsModal: false});
 		EventEditActions.tutors.updateLectors(lectors);
+	}
+
+	handleSaveNewLector(){
+
 	}
 
 	render(){
@@ -248,10 +262,10 @@ class Tutors extends React.Component {
 							<i className="icon-arrow-combo"></i>
 						</DropDownIcon>
 						<div className="buttons__funcs">
-							<button onClick={::this.handleOpenTutorsModal} className="buttons__add default-button" title="Добавить участников">
+							<button onClick={::this.handleOpenTutorsModal} className="buttons__add default-button" title="Выбрать ответственных">
 								<i className="icon-user-plus"></i>
 							</button>
-							<button onClick={this.handleRemoveTutors} className={removeTutorsClasses} title="Удалить участников">
+							<button onClick={this.handleRemoveTutors} className={removeTutorsClasses} title="Удалить ответственных">
 								<i className="icon-user-times"></i>
 							</button>
 						</div>
@@ -278,15 +292,19 @@ class Tutors extends React.Component {
 							<i className="icon-arrow-combo"></i>
 						</DropDownIcon>
 						<div className="buttons__funcs">
-							<button onClick={::this.handleOpenLectorsModal} className="buttons__add default-button" title="Добавить участников">
+							<button onClick={::this.handleOpenNewLectorModal} className="buttons__add default-button" title="Добавить преподавателя">
 								<i className="icon-user-plus"></i>
 							</button>
-							<button onClick={this.handleRemoveLectors} className={removeLectorsClasses} title="Удалить участников">
+							<button onClick={::this.handleOpenLectorsModal} className="buttons__add default-button" title="Выбрать преподавателей">
+								<i className="icon-user-plus"></i>
+							</button>
+							<button onClick={this.handleRemoveLectors} className={removeLectorsClasses} title="Удалить преподавателей">
 								<i className="icon-user-times"></i>
 							</button>
 						</div>
 					</div>
 					<strong className="lectors__description">Преподаватели *</strong>
+					<NewLector isShow={this.state.isShowNewLectorModal} onSave={::this.handleSaveNewLector} onClose={::this.handleCloseNewLectorModal} />
 					<div className="table-list lector-list">
 						<span className={tableDescrLectorsClasses}>Нет преподавателей</span>
 						<div className="table-list__table">

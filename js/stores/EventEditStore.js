@@ -101,8 +101,8 @@ const base = {
 }
 
 const requests = {
-	changeIsDateRequestBeforeBegin(checked){
-		_eventEdit.requests.isDateRequestBeforeBegin = checked;
+	changeIsOpen(checked){
+		_eventEdit.requests.isOpen = checked;
 	},
 	changeRequestBeginDate(dateTime){
 		var startDateTime = _eventEdit.base.startDateTime;
@@ -131,9 +131,6 @@ const requests = {
 		if (requestOverDate < requestBeginDate) {
 			_eventEdit.requests.requestBeginDate = requestOverDate;
 		}
-	},
-	changeIsAutomaticIncludeInCollaborators(checked){
-		_eventEdit.requests.isAutomaticIncludeInCollaborators = checked;
 	},
 	changeIsApproveByBoss(checked){
 		_eventEdit.requests.isApproveByBoss = checked;
@@ -563,8 +560,8 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			break;
 
 		//REQUESTS
-		case EventEditConstants.EVENTEDIT_REQUESTS_CHANGE_IS_DATE_REQUEST_BEFORE_BEGIN:
-			requests.changeIsDateRequestBeforeBegin(action.checked);
+		case EventEditConstants.EVENTEDIT_REQUESTS_CHANGE_IS_OPEN:
+			requests.changeIsOpen(action.checked);
 			isEmit = true;
 			break;
 		case EventEditConstants.EVENTEDIT_REQUESTS_CHANGE_REQUEST_BEGIN_DATE:
@@ -573,10 +570,6 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			break;
 		case EventEditConstants.EVENTEDIT_REQUESTS_CHANGE_REQUEST_OVER_DATE:
 			requests.changeRequestOverDate(action.date);
-			isEmit = true;
-			break;
-		case EventEditConstants.EVENTEDIT_REQUESTS_CHANGE_IS_AUTOMATIC_INCLUDE:
-			requests.changeIsAutomaticIncludeInCollaborators(action.checked);
 			isEmit = true;
 			break;
 		case EventEditConstants.EVENTEDIT_REQUESTS_CHANGE_IS_APPROVE_BY_BOSS:
