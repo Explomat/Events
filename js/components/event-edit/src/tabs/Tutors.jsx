@@ -208,7 +208,7 @@ class Tutors extends React.Component {
 	}
 
 	handleSaveNewLector(){
-
+		
 	}
 
 	render(){
@@ -292,14 +292,14 @@ class Tutors extends React.Component {
 							<i className="icon-arrow-combo"></i>
 						</DropDownIcon>
 						<div className="buttons__funcs">
-							<button onClick={::this.handleOpenNewLectorModal} className="buttons__add default-button" title="Добавить преподавателя">
-								<i className="icon-user-plus"></i>
-							</button>
 							<button onClick={::this.handleOpenLectorsModal} className="buttons__add default-button" title="Выбрать преподавателей">
 								<i className="icon-user-plus"></i>
 							</button>
 							<button onClick={this.handleRemoveLectors} className={removeLectorsClasses} title="Удалить преподавателей">
 								<i className="icon-user-times"></i>
+							</button>
+							<button onClick={::this.handleOpenNewLectorModal} className="buttons__add default-button" title="Добавить нового преподавателя">
+								<i className="icon-plus"></i>
 							</button>
 						</div>
 					</div>

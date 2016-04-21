@@ -14,7 +14,7 @@ import SelectTestTypes from '../../utils/eventedit/SelectTestTypes';
 import {every} from 'lodash';
 
 function getBoolean(arg){
-	return (arg === undefined || arg === null) ? true : false;
+	return (arg === undefined || arg === null) ? false : arg;
 }
 
 export default function(args){
