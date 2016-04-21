@@ -179,7 +179,6 @@ class Requests extends React.Component {
 						</div>
 					</div>
 					<br />
-					<br />
 					<CheckBox 
 						onChange={this.handleChangeIsApproveByBoss} 
 						label="Необходимо подтверждение от непосредственного руководителя"

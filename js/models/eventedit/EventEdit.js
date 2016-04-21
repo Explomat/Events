@@ -55,7 +55,7 @@ export default function(args){
 
 	//requests
 	this.requests = {
-		isOpen: args.requests.isOpen || true, //подавать заявки до начала мероприятия
+		isOpen: (args.requests.isOpen === undefined || args.requests.isOpen === null) ? true : false, //подавать заявки до начала мероприятия
 		requestBeginDate: new Date(args.requests.requestBeginDate),
 		requestOverDate: new Date(args.requests.requestOverDate),
 		isAutomaticIncludeInCollaborators: args.requests.isAutomaticIncludeInCollaborators || false, //Автоматически включать в состав участников
