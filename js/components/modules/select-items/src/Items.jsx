@@ -76,8 +76,8 @@ class Item extends React.Component {
 			'body-row__add-btn--selected': this.props.isSelected
 		});
 		var classesIcon = cx({
-			'fa fa-plus': !this.props.isSelected,
-			'fa fa-check': this.props.isSelected
+			'icon-plus': !this.props.isSelected,
+			'icon-check': this.props.isSelected
 		});
 		return (
 			<tr className="body-row" onClick={this.handleAddItem}>
@@ -133,7 +133,10 @@ class Items extends React.Component {
 	render() {
 		const cols = this.getColsMarkup();
 		const items = this.getRowsMarkUp();
-		const isLoadingClass = this.props.isLoading ? 'overlay-loading--show ': '';
+		const isLoadingClass = cx({
+			'overlay-loading': true,
+			'overlay-loading--show': this.props.isLoading
+		});
 		return(
 			<div className="items-wrapper">
 				<table className="items-wrapper__header">
@@ -149,7 +152,7 @@ class Items extends React.Component {
 					</table>
 				</div>
 				
-				<div className={"overlay-loading " + isLoadingClass}></div>
+				<div className={isLoadingClass}></div>
 			</div>
 			
 		);

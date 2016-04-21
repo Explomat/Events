@@ -54,7 +54,7 @@ module.exports = React.createClass({
           value={moment(this.props.date).format('llll')}
           placeholder={this.props.placeholder} 
           readOnly={true}/>
-        <i className="fa fa-calendar input-calendar__icon"></i>
+        <i className="icon-calendar input-calendar__icon"></i>
         <div className={cx({'input-calendar__calendar': true, 'input-calendar__calendar--show': this.state.isShow})}>
           <InputMoment 
             moment={moment(this.props.date)} 

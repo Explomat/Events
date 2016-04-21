@@ -32,7 +32,7 @@ class SelectedItem extends React.Component {
 		return(
 			<div className="item" onClick={this.handleRemoveItem}>
 				<button className="item__button event-btn">
-					<i className="fa fa-minus"></i>
+					<i className="icon-minus"></i>
 				</button>
 				<label className="item__text oneline">{this._getFirstField()}</label>
 			</div>

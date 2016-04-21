@@ -8,42 +8,6 @@
 		.all-tests-list{
 			height: calc(100% - 57px);
 		}
-
-		.buttons{
-
-			.buttons__add{
-				margin-right: 8px;
-				color: #ff5252;
-			}
-			.buttons__checkbox{
-				display: none;
-
-				&.buttons__checkbox--display {
-					display: inline-block;
-				}
-			}
-
-			.buttons__sort{
-				display: none;
-				margin-right: 16px;
-
-				&.buttons__sort--display {
-					display: inline-block;
-				}
-			}
-
-			.buttons__remove{
-				display: none;
-			    line-height: 27px;
-			    height: 27px;
-			    vertical-align: middle;
-			    color: #ff5252;
-
-				&.buttons__remove--display {
-					display: inline-block;
-				}
-			}
-		}
 	}
 
 	.testing{
@@ -53,7 +17,7 @@
 		.buttons {
 			width: 70%;
 			display: inline-block;
-			
+
 			.buttons__sort{
 				display: none;
 

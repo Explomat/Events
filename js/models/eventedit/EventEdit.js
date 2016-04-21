@@ -131,7 +131,7 @@ export default function(args){
 		let isEveryNotMain = every(this.tutors.tutors, (t) => {
 			return t.main === false;
 		});
-		if (isEveryNotMain) {
+		if (isEveryNotMain && this.tutors.tutors.length > 0) {
 			this.tutors.tutors[0].main = true;
 		}
 	}

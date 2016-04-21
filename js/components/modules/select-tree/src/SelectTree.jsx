@@ -47,8 +47,7 @@ class SelectTree extends React.Component {
 			'select-tree__input_not-empty': this.props.selectedNode
 		});
 		const iconClasses = cx({
-			'fa fa-plus-circle': !this.props.selectedNode,
-			'fa fa-minus-circle': this.props.selectedNode,
+			'icon-popup': true,
 			'select-tree__icon': true,
 			'select-tree__icon--up': this.props.selectedNode
 		});

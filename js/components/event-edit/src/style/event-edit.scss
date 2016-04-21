@@ -2,6 +2,87 @@
   height: calc(100% - 60px);
   background-color: #E3E3E3;
 
+  .buttons {
+    display: inline-block;
+
+    .buttons__checkbox {
+      display: none;
+      vertical-align: middle;
+
+      &.buttons__checkbox--display {
+        display: inline-block;
+      }
+    }
+
+    .buttons__dropdown{
+      margin-right: 16px;
+      display: none;
+      vertical-align: middle;
+      color: #646464;
+
+      &.buttons__dropdown--display {
+        display: inline-block;
+      }
+    }
+
+    .buttons__funcs{
+      display: inline-block;
+
+      .buttons__upload{
+        height: 29px;
+        line-height: 29px;
+        vertical-align: middle;
+        margin-right: 16px;
+        color: #646464;
+
+        .buttons__upload-icon{
+            color: #646464;
+        }
+      }
+
+      .buttons__sort{
+        margin-right: 16px;
+        display: none;
+        vertical-align: middle;
+        color: #646464;
+
+        &.buttons__sort--display {
+          display: inline-block;
+        }
+      }
+
+      .buttons__add{
+        margin-right: 8px;
+        height: 29px;
+        line-height: 29px;
+        vertical-align: middle;
+        color: #ff5252;
+      }
+      .buttons__remove{
+        margin-right: 8px;
+        height: 29px;
+        line-height: 29px;
+        vertical-align: middle;
+        color: #ff5252;
+        display: none;
+
+        &.buttons__remove--display{
+          display: inline-block;
+        }
+      }
+    }
+  }
+
+  .icon {
+    display: inline;
+    width: auto;
+    height: auto;
+    font-size: 18px;
+    vertical-align: middle;
+    line-height: 30px;
+    vertical-align: middle;
+  }
+
   .event-edit {
     height: 100%;
     background-color: #fff;
@@ -19,10 +100,12 @@
     top: 30px;
     right: 32px;
     transform: translateY(-50%);
+    box-shadow: 0 0 4px rgba(0,0,0,0.5);
+  }
 
-    .event-edit-container__save-icon{
-      margin-right: 8px;
-    }
+  .event-edit-container__icon{
+    margin-right: 8px;
+    vertical-align: middle;
   }
 
   .event-edit-container__complete-button{
@@ -32,5 +115,6 @@
     transform: translateY(-50%);
     border: none;
     padding: 6px 9px;
+    box-shadow: 0 0 4px rgba(0,0,0,0.5);
   }
 }

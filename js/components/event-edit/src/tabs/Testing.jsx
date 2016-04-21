@@ -130,15 +130,17 @@ class Tests extends React.Component {
 					<DropDownIcon onChange={this.handleSelectTestsType} className={checkboxClasses} items={this.props.selectTypes}>
 						<CheckBox onChange={::this.handleToggleCheckedAll} checked={this.props.checkedAll} className={checkboxClasses}/>
 					</DropDownIcon>
-					<DropDownIcon onChange={::this.handleSortAllTests} className={sortClasses} items={this.props.sortTestTypes}>
-						<i className="fa fa-sort"></i>
-					</DropDownIcon>
-					<DropDownIcon onChange={::this.handleOpenTestsModal} className="buttons__add" items={this.props.testTypes}>
-						<i className="fa fa-plus"></i>
-					</DropDownIcon>
-					<button onClick={this.handleRemoveTests} className={removeClasses} title="Удалить файлы">
-						<i className="fa fa-minus"></i>
-					</button>
+					<div className="buttons__funcs">
+						<DropDownIcon onChange={::this.handleSortAllTests} className={sortClasses} items={this.props.sortTestTypes}>
+							<i className="icon-arrow-combo"></i>
+						</DropDownIcon>
+						<DropDownIcon onChange={::this.handleOpenTestsModal} className="buttons__add" items={this.props.testTypes}>
+							<i className="icon-plus"></i>
+						</DropDownIcon>
+						<button onClick={this.handleRemoveTests} className={removeClasses} title="Удалить файлы">
+							<i className="icon-minus"></i>
+						</button>
+					</div>
 				</div>
 				<div className="table-list all-tests-list">
 					<span className={tableDescrClasses}>Нет тестов</span>
@@ -196,7 +198,7 @@ class Testing extends React.Component {
 				<div className="testing">
 					<div className="buttons">
 						<DropDownIcon onChange={::this.handleSortTestingList} items={this.props.sortTypes} className={dropdownSortClasses}>
-							<i className="fa fa-sort"></i>
+							<i className="icon-arrow-combo"></i>
 						</DropDownIcon>
 					</div>
 					<strong className="testing__description">Результаты тестирования</strong>

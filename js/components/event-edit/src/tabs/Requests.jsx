@@ -34,28 +34,28 @@ class RequestItem extends React.Component {
 			'request-list__buttons--display': status === RequestStatuses.keys.active
 		});
 		const statusAddedClasses = cx({
-			"fa fa-plus": true, 
+			"icon-plus": true, 
 			"request-list__status-added": true, 
 			"request-list__status-added--display": status === RequestStatuses.keys.close});
 		const statusRemovedClasses = cx({
-			"fa fa-minus": true,
+			"icon-minus": true,
 			"request-list__status-removed": true,
 			"request-list__status-removed--display": status === RequestStatuses.keys.ignore});
 		return (
 			<div className="table-list__body-row">
 				<div className="table-list__body-cell table-list__body-cell--icon">
-					<i className="fa fa-user"></i>
+					<i className="icon-user"></i>
 				</div>
 				<div className="table-list__body-cell">{fullname}</div>
 				<div className="table-list__body-cell">{position}</div>
 				<div className="table-list__body-cell">{subdivision}</div>
-				<div className="table-list__body-cell">
+				<div className="table-list__body-cell table-list__body-cell--10">
 					<div className={buttonsClasses}>
 						<button onClick={::this.handleCloseStatus} title="Утвердить заявку" className="event-btn request-list__add-button">
-							<i className="fa fa-plus"></i>
+							<i className="icon-plus"></i>
 						</button>
 						<button onClick={::this.handleIgnoreStatus} title="Отклонить заявку" className="event-btn request-list__remove-button">
-							<i className="fa fa-minus"></i>
+							<i className="icon-minus"></i>
 						</button>
 					</div>
 					<div className="request-list__statuses">
@@ -171,18 +171,14 @@ class Requests extends React.Component {
 									placeholder="C"
 									className="date__calendar" 
 									date={this.props.requestBeginDate} 
-									onSave={this.handleChangeRequestBeginDate} 
-									prevMonthIcon='fa fa-angle-left'
-									nextMonthIcon='fa fa-angle-right'/>
+									onSave={this.handleChangeRequestBeginDate}/>
 							</div>
 							<div className="date__finish">
 								<InputCalendar
 									placeholder="По"
 									className="date__calendar" 
 									date={this.props.requestOverDate} 
-									onSave={this.handleChangeRequestOverDate} 
-									prevMonthIcon='fa fa-angle-left'
-									nextMonthIcon='fa fa-angle-right'/>
+									onSave={this.handleChangeRequestOverDate}/>
 							</div>
 						</div>
 					</div>
@@ -206,7 +202,7 @@ class Requests extends React.Component {
 					<br />
 					<br />
 					<DropDownIcon onChange={::this.handleSort} items={this.props.sortTypes} className={dropdownSortclasses}>
-						<i className="fa fa-sort"></i>
+						<i className="icon-arrow-combo"></i>
 					</DropDownIcon>
 				</div>
 				<div ref="table" className="table-list request-list">

@@ -86,10 +86,13 @@ class EventEdit extends React.Component {
 							</div>
 						</div>
 						<button className="event-edit-container__save-button event-btn event-btn--reverse" onClick={this.handleSaveData}>
-							<i className="fa fa-save event-edit-container__save-icon"></i>
+							<i className="icon-floppy-o event-edit-container__icon"></i>
 							<span>Сохранить</span>
 						</button>
-						<button className="event-edit-container__complete-button event-btn" onClick={this.handleSaveData}>Завершить</button>
+						<button className="event-edit-container__complete-button event-btn event-btn--reverse" onClick={this.handleSaveData}>
+							<i className="icon-share-square-o event-edit-container__icon"></i>
+							<span>Завершить</span>
+						</button>
 					</div>
 				</div>
 				<Info

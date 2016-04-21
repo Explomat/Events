@@ -71,8 +71,7 @@ class SelectOneItem extends React.Component {
 			'select-one-item__input_not-empty': this.props.selectedItem
 		});
 		const iconClasses = cx({
-			'fa fa-plus-circle': !this.props.selectedItem,
-			'fa fa-minus-circle': this.props.selectedItem,
+			'icon-popup': true,
 			'select-one-item__icon': true,
 			'select-one-item__icon--up': this.props.selectedItem
 		});

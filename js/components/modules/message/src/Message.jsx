@@ -14,11 +14,11 @@ class SelectedItem extends React.Component {
     }
 
     render(){
-        let {fullname} = this.props;
+        const {fullname} = this.props;
         return (
             <div onClick={::this.handleRemoveFromSelected} className="selected-item">
                 <button className="selected-item__button event-btn">
-                    <i className="fa fa-minus"></i>
+                    <i className="icon-minus"></i>
                 </button>
                 <span className="selected-item__fullname">{fullname}</span>
             </div>
@@ -35,11 +35,11 @@ class NotSelectedItem extends React.Component {
     }
 
     render(){
-        let {fullname} = this.props;
+        const {fullname} = this.props;
         return (
             <div onClick={::this.handleRemoveFromNotSelected} className="not-selected-item">
                 <button className="not-selected-item__button event-btn">
-                    <i className="fa fa-plus"></i>
+                    <i className="icon-plus"></i>
                 </button>
                 <span className="not-selected-item__fullname">{fullname}</span>
             </div>
@@ -76,9 +76,9 @@ class Message extends React.Component {
     }
 
     componentWillReceiveProps(nextProps, prevProps){
-        let selectedItems = nextProps.selectedItems || prevProps.selectedItems;
-        let notSelectedItems = nextProps.notSelectedItems || prevProps.notSelectedItems;
-        let isShow = nextProps.isShow || prevProps.isShow;
+        const selectedItems = nextProps.selectedItems || prevProps.selectedItems;
+        const notSelectedItems = nextProps.notSelectedItems || prevProps.notSelectedItems;
+        const isShow = nextProps.isShow || prevProps.isShow;
         this.setState({
             selectedItems: selectedItems, 
             notSelectedItems: notSelectedItems, 
@@ -94,10 +94,10 @@ class Message extends React.Component {
     }
 
     handleRemoveFromSelected(id){
-        let selectedItems = this.state.selectedItems;
-        let notSelectedItems = this.state.notSelectedItems;
+        var selectedItems = this.state.selectedItems;
+        var notSelectedItems = this.state.notSelectedItems;
 
-        let item = find(selectedItems, (item) => {
+        var item = find(selectedItems, (item) => {
             return item.id === id;
         });
         selectedItems = filter(selectedItems, (item) => {
@@ -110,10 +110,10 @@ class Message extends React.Component {
     }
 
     handleRemoveFromNotSelected(id){
-        let selectedItems = this.state.selectedItems;
-        let notSelectedItems = this.state.notSelectedItems;
+        var selectedItems = this.state.selectedItems;
+        var notSelectedItems = this.state.notSelectedItems;
 
-        let item = find(notSelectedItems, (item) => {
+        var item = find(notSelectedItems, (item) => {
             return item.id === id;
         });
         notSelectedItems = filter(notSelectedItems, (item) => {
@@ -137,17 +137,17 @@ class Message extends React.Component {
         if (!this.props.isShow) {
             return null;
         }
-        let isButtonDisabled = this.state.subject.trim() === '' || this.state.body.trim() === '' || this.state.selectedItems.length === 0;
-        let buttonClasses = cx({
+        const isButtonDisabled = this.state.subject.trim() === '' || this.state.body.trim() === '' || this.state.selectedItems.length === 0;
+        const buttonClasses = cx({
             'event-btn': true,
             'event-btn--reverse': true,
             'event-btn event-btn--disabled': isButtonDisabled
         });
-        let selectedItemsClasses = cx({
+        const selectedItemsClasses = cx({
             'message__items-selected': true,
             'message__items-selected--hide': this.state.selectedItems.length === 0
         });
-        let notSelectedItemsClasses = cx({
+        const notSelectedItemsClasses = cx({
             'message__items-not-selected': true,
             'message__items-not-selected--hide': this.state.notSelectedItems.length === 0
         });

@@ -85,18 +85,14 @@ class Base extends React.Component {
 								placeholder="Дата, время начала *"
 								className="date__calendar" 
 								date={this.props.startDateTime} 
-								onSave={this.handleChangeStartDateTime} 
-								prevMonthIcon='fa fa-angle-left'
-								nextMonthIcon='fa fa-angle-right'/>
+								onSave={this.handleChangeStartDateTime}/>
 						</div>
 						<div className="date__finish">
 							<InputCalendar
 								placeholder="Дата, время завершения *"
 								className="date__calendar" 
 								date={this.props.finishDateTime} 
-								onSave={this.handleChangeFinishDateTime} 
-								prevMonthIcon='fa fa-angle-left'
-								nextMonthIcon='fa fa-angle-right'/>
+								onSave={this.handleChangeFinishDateTime}/>
 						</div>
 					</div>
 				</div>

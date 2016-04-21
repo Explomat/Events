@@ -32,7 +32,7 @@ class File extends React.Component {
 					<CheckBox onChange={::this.handleToggleChecked} checked={checked}/>
 				</div>
 				<div className="table-list__body-cell table-list__body-cell--icon">
-					<i className="fa fa-file"></i>
+					<i className="icon-file"></i>
 				</div>
 				<div className="table-list__body-cell table-list__body-cell--75">{name}</div>
 				<div className="table-list__body-cell">{type}</div>
@@ -62,7 +62,7 @@ class LibraryMaterial extends React.Component {
 					<CheckBox onChange={::this.handleToggleChecked} checked={checked}/>
 				</div>
 				<div className="table-list__body-cell table-list__body-cell--icon">
-					<i className="fa fa-file"></i>
+					<i className="icon-file"></i>
 				</div>
 				<div className="table-list__body-cell table-list__body-cell--65">{name}</div>
 				<div className="table-list__body-cell">{year}</div>
@@ -77,7 +77,7 @@ class Files extends React.Component {
 	constructor(props){
 		super(props);
 		this.MAX_LIBRARY_MATERIAL_COUNT = 2;
-		this.LIBRARY_MATERIAL_TYPE = 'pdf';
+		this.LIBRARY_MATERIAL_MIME_TYPE = 'application/pdf';
 	} 
 
 	static defaultProps = {
@@ -193,10 +193,10 @@ class Files extends React.Component {
 	handleChangeLibraryMaterials(e){
 		var libraryMaterialRef = this.refs.libraryMaterial;
 		var files = e.target.files;
-		if (!this._isCorrectLibraryMaterialsType(files, this.LIBRARY_MATERIAL_TYPE)) {
+		if (!this._isCorrectLibraryMaterialsType(files, this.LIBRARY_MATERIAL_MIME_TYPE)) {
 			e.preventDefault();
 			libraryMaterialRef.value = '';
-			EventEditActions.files.changeInfoMessageLibraryMaterials(`Вы не можете загрузить материалы с типом отличным от '${this.LIBRARY_MATERIAL_TYPE}' !`, 'error');
+			EventEditActions.files.changeInfoMessageLibraryMaterials(`Вы не можете загрузить материалы с типом отличным от '${this.LIBRARY_MATERIAL_MIME_TYPE}' !`, 'error');
 			return;
 		}
 
@@ -281,17 +281,16 @@ class Files extends React.Component {
 						<DropDownIcon className={checkboxFilesClasses}>
 							<CheckBox onChange={::this.handleToggleCheckedAllFiles} checked={this.props.checkedAllFiles} className={checkboxFilesClasses}/>
 						</DropDownIcon>
-						<label className="event-edit-files__upload default-button">
-							<i className="fa fa-upload event-edit-files__upload-icon"></i>
-							<input ref="fileInput" onChange={::this.handleChangeFiles} type="file" multiple style={{display: 'none'}}/>
-						</label>
-
 						<div className="buttons__funcs">
+							<label className="buttons__upload default-button">
+								<i className="icon icon-upload"></i>
+								<input ref="fileInput" onChange={::this.handleChangeFiles} type="file" multiple style={{display: 'none'}}/>
+							</label>
 							<button onClick={::this.handleOpenFilesModal} className="buttons__add default-button" title="Добавить файлы">
-								<i className="fa fa-plus"></i>
+								<i className="icon icon-page-add"></i>
 							</button>
 							<button onClick={::this.handleRemoveFiles} className={removeFilesClasses} title="Удалить файлы">
-								<i className="fa fa-minus"></i>
+								<i className="icon icon-page-delete"></i>
 							</button>
 						</div>
 					</div>
@@ -314,16 +313,16 @@ class Files extends React.Component {
 						<DropDownIcon className={checkboxLibraryMaterialsClasses}>
 							<CheckBox onChange={::this.handleToggleCheckedAllLibraryMaterials} checked={this.props.checkedAllLibraryMaterials} className={checkboxLibraryMaterialsClasses}/>
 						</DropDownIcon>
-						<label className="event-edit-files__upload default-button">
-							<i className="fa fa-upload event-edit-files__upload-icon"></i>
-							<input ref="libraryMaterial" onClick={::this.handleInputFilesClick} onChange={::this.handleChangeLibraryMaterials} type="file" multiple style={{display: 'none'}} accept=".pdf"/>
-						</label>
 						<div className="buttons__funcs">
+							<label className="buttons__upload default-button">
+								<i className="icon icon-upload"></i>
+								<input ref="libraryMaterial" onClick={::this.handleInputFilesClick} onChange={::this.handleChangeLibraryMaterials} type="file" multiple style={{display: 'none'}} accept=".pdf"/>
+							</label>
 							<button onClick={::this.handleOpenLibraryMaterialsModal} className="buttons__add default-button" title="Добавить файлы">
-								<i className="fa fa-plus"></i>
+								<i className="icon icon-page-add"></i>
 							</button>
 							<button onClick={::this.handleRemoveLibraryMaterials} className={removeLibraryMaterialsClasses} title="Удалить файлы">
-								<i className="fa fa-minus"></i>
+								<i className="icon icon-page-delete"></i>
 							</button>
 						</div>
 					</div>

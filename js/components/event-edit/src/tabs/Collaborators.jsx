@@ -34,12 +34,12 @@ class CollaboratorItem extends React.Component {
 					<CheckBox onChange={::this.handleToggleChecked} checked={checked}/>
 				</div>
 				<div className="table-list__body-cell table-list__body-cell--icon">
-					<i className="fa fa-user"></i>
+					<i className="icon-user"></i>
 				</div>
 				<div className="table-list__body-cell">{fullname}</div>
 				<div className="table-list__body-cell">{position}</div>
 				<div className="table-list__body-cell">{subdivision}</div>
-				<div className="table-list__body-cell">
+				<div className="table-list__body-cell table-list__body-cell--5">
 					<ToggleButton id={id} onChange={::this.handleToggleIsAssist} checked={isAssist} />
 				</div>
 			</div>
@@ -187,17 +187,17 @@ class Collaborators extends React.Component {
 						<CheckBox onChange={::this.handleToggleCheckedAll} checked={this.props.checkedAll}/>
 					</DropDownIcon>
 					<DropDownIcon onChange={this.handleSort} items={this.props.sortTypes} className={dropDownClasses}>
-						<i className="fa fa-sort"></i>
+						<i className="icon-arrow-combo"></i>
 					</DropDownIcon>
 					<div className="buttons__funcs">
 						<button onClick={::this.handleOpenModal} className="buttons__add default-button" title="Добавить участников">
-							<i className="fa fa-user-plus"></i>
+							<i className="icon-user-plus"></i>
 						</button>
 						<button onClick={this.handleRemoveItems} className={removeClasses} title="Удалить участников">
-							<i className="fa fa-user-times"></i>
+							<i className="icon-user-times"></i>
 						</button>
 						<button onClick={::this.handleOpenNotificateModal} className={notificateClasses} title="Отправить уведомление">
-							<i className="fa fa-paper-plane"></i>
+							<i className="icon-envelope-o"></i>
 						</button>
 					</div>
 				</div>

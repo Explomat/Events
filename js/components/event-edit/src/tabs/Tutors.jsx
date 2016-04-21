@@ -32,12 +32,12 @@ class TutorItem extends React.Component {
 					<CheckBox onChange={::this.handleToggleChecked} checked={checked}/>
 				</div>
 				<div className="table-list__body-cell table-list__body-cell--icon">
-					<i className="fa fa-user"></i>
+					<i className="icon-user"></i>
 				</div>
 				<div className="table-list__body-cell">{fullname}</div>
 				<div className="table-list__body-cell">{position}</div>
 				<div className="table-list__body-cell">{subdivision}</div>
-				<div className="table-list__body-cell">
+				<div className="table-list__body-cell table-list__body-cell--5">
 					<ToggleButton id={id} onChange={::this.handleToggleIsMain} checked={main} />
 				</div>
 			</div>
@@ -63,7 +63,7 @@ class LectorItem extends React.Component {
 					<CheckBox onChange={::this.handleToggleChecked} checked={checked}/>
 				</div>
 				<div className="table-list__body-cell table-list__body-cell--icon">
-					<i className="fa fa-user"></i>
+					<i className="icon-user"></i>
 				</div>
 				<div className="table-list__body-cell">{fullname}</div>
 				<div className="table-list__body-cell">{type}</div>
@@ -245,14 +245,14 @@ class Tutors extends React.Component {
 							<CheckBox onChange={::this.handleToggleCheckedAllTutors} checked={this.props.checkedAllTutors} className={checkboxTutorsClasses}/>
 						</DropDownIcon>
 						<DropDownIcon onChange={this.handleSortTutors} items={this.props.sortTutorTypes} className={dropDownTutorsClasses}>
-							<i className="fa fa-sort"></i>
+							<i className="icon-arrow-combo"></i>
 						</DropDownIcon>
 						<div className="buttons__funcs">
 							<button onClick={::this.handleOpenTutorsModal} className="buttons__add default-button" title="Добавить участников">
-								<i className="fa fa-user-plus"></i>
+								<i className="icon-user-plus"></i>
 							</button>
 							<button onClick={this.handleRemoveTutors} className={removeTutorsClasses} title="Удалить участников">
-								<i className="fa fa-user-times"></i>
+								<i className="icon-user-times"></i>
 							</button>
 						</div>
 					</div>
@@ -275,14 +275,14 @@ class Tutors extends React.Component {
 							<CheckBox onChange={::this.handleToggleCheckedAllLectors} checked={this.props.checkedAllLectors} className={checkboxLectorsClasses}/>
 						</DropDownIcon>
 						<DropDownIcon onChange={this.handleSortLectors} items={this.props.sortLectorTypes} className={dropDownLectorsClasses}>
-							<i className="fa fa-sort"></i>
+							<i className="icon-arrow-combo"></i>
 						</DropDownIcon>
 						<div className="buttons__funcs">
 							<button onClick={::this.handleOpenLectorsModal} className="buttons__add default-button" title="Добавить участников">
-								<i className="fa fa-user-plus"></i>
+								<i className="icon-user-plus"></i>
 							</button>
 							<button onClick={this.handleRemoveLectors} className={removeLectorsClasses} title="Удалить участников">
-								<i className="fa fa-user-times"></i>
+								<i className="icon-user-times"></i>
 							</button>
 						</div>
 					</div>

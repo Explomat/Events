@@ -2,50 +2,6 @@
     margin-top: 20px;
 	height: calc(100% - 40px);
 
-	.buttons {
-		display: inline-block;
-
-		.buttons__dropdown{
-			margin-right: 16px;
-			display: none;
-
-			&.buttons__dropdown--display {
-				display: inline-block;
-			}
-		}
-
-		.buttons__checkbox {
-			display: none;
-
-			&.buttons__checkbox--display {
-				display: inline-block;
-			}
-		}
-
-		.buttons__funcs{
-			display: inline-block;
-
-			.buttons__add{
-				margin-right: 8px;
-				line-height: 27px;
-    			vertical-align: middle;
-				color: #ff5252;
-			}
-			.buttons__remove{
-				margin-right: 10px;
-				line-height: 27px;
-    			vertical-align: middle;
-				color: #ff5252;
-				display: none;
-
-				&.buttons__remove--display{
-					display: inline-block;
-				}
-			}
-		}
-		
-	}
-
 	.tutors {
 		height: 45%;
 
