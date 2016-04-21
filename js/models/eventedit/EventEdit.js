@@ -13,6 +13,10 @@ import EventCodes from '../../utils/eventedit/EventCodes';
 import SelectTestTypes from '../../utils/eventedit/SelectTestTypes';
 import {every} from 'lodash';
 
+function getBoolean(arg){
+	return (arg === undefined || arg === null) ? true : false;
+}
+
 export default function(args){
 	args = args || {};
 	args.base = args.base || {};
@@ -55,12 +59,12 @@ export default function(args){
 
 	//requests
 	this.requests = {
-		isOpen: (args.requests.isOpen === undefined || args.requests.isOpen === null) ? true : false, //подавать заявки до начала мероприятия
+		isOpen: getBoolean(args.requests.isOpen), //подавать заявки до начала мероприятия
 		requestBeginDate: new Date(args.requests.requestBeginDate),
 		requestOverDate: new Date(args.requests.requestOverDate),
-		isAutomaticIncludeInCollaborators: args.requests.isAutomaticIncludeInCollaborators || false, //Автоматически включать в состав участников
-		isApproveByBoss: args.requests.isApproveByBoss || false, //Необходимо подтверждение от непосредсвенного руководителя
-		isApproveByTutor: args.requests.isApproveByTutor || false, //Необходимо подтверждение ответсвенного за мероприятие
+		/*isAutomaticIncludeInCollaborators: getBoolean(args.requests.isAutomaticIncludeInCollaborators), //Автоматически включать в состав участников*/
+		isApproveByBoss: getBoolean(args.requests.isApproveByBoss), //Необходимо подтверждение от непосредсвенного руководителя
+		isApproveByTutor: getBoolean(args.requests.isApproveByTutor), //Необходимо подтверждение ответсвенного за мероприятие
 		requestItems: [],
 
 		//state fields
