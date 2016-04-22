@@ -10,7 +10,6 @@
 
         .new-lector__content {
             @include modal-box__content;
-            border-radius: 0px;
 
             .new-lector__header{
                 @include modal-box__header;
