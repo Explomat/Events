@@ -1,7 +1,7 @@
 import React from 'react';
 import EventEditActions from 'actions/EventEditActions';
 import CheckBox from 'components/modules/new-checkbox';
-import DropDownIcon from 'components/modules/dropdown-icon';
+import {DropDownIcon} from 'components/modules/dropdown-icon';
 import Info from 'components/modules/info';
 import SelectItems from 'components/modules/select-items';
 import ToggleButton from 'components/modules/toggle-button';
@@ -279,9 +279,13 @@ class Files extends React.Component {
 			<div className="event-edit-files">
 				<div className="files">
 					<div className="buttons">
-						<DropDownIcon className={checkboxFilesClasses}>
-							<CheckBox onChange={::this.handleToggleCheckedAllFiles} checked={this.props.checkedAllFiles} className={checkboxFilesClasses}/>
-						</DropDownIcon>
+						<DropDownIcon 
+							className={checkboxFilesClasses}
+							icon={<CheckBox 
+									onChange={::this.handleToggleCheckedAllFiles} 
+									checked={this.props.checkedAllFiles} 
+									className={checkboxFilesClasses}/>}
+						/>
 						<div className="buttons__funcs">
 							<label className="buttons__upload default-button">
 								<i className="icon icon-upload"></i>
@@ -311,9 +315,13 @@ class Files extends React.Component {
 				</div>
 				<div className="library-materials">
 					<div className="buttons">
-						<DropDownIcon className={checkboxLibraryMaterialsClasses}>
-							<CheckBox onChange={::this.handleToggleCheckedAllLibraryMaterials} checked={this.props.checkedAllLibraryMaterials} className={checkboxLibraryMaterialsClasses}/>
-						</DropDownIcon>
+						<DropDownIcon 
+							className={checkboxLibraryMaterialsClasses}
+							icon={<CheckBox 
+									onChange={::this.handleToggleCheckedAllLibraryMaterials} 
+									checked={this.props.checkedAllLibraryMaterials} 
+									className={checkboxLibraryMaterialsClasses}/>}
+						/>
 						<div className="buttons__funcs">
 							<label className="buttons__upload default-button">
 								<i className="icon icon-upload"></i>

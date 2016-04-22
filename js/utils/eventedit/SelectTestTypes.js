@@ -3,8 +3,8 @@ import toArrayKeys from '../toArrayKeys';
 export default {
 
 	values: {
-		prev: 'Добавить предварительные тесты',
-		post: 'Добавить  пост-тесты'
+		prev: 'Выбрать предварительные тесты',
+		post: 'Выбрать пост-тесты'
 	},
 
 	toArray: function() {

@@ -1,6 +1,6 @@
 import React from 'react';
 import CheckBox from 'components/modules/new-checkbox';
-import DropDownIcon from 'components/modules/dropdown-icon';
+import {DropDownIcon, DropDownIconItem} from 'components/modules/dropdown-icon';
 import SelectItems from 'components/modules/select-items';
 import EventEditActions from 'actions/EventEditActions';
 import TestTypes from 'utils/eventedit/TestTypes';
@@ -28,7 +28,7 @@ class Test extends React.Component {
 					<CheckBox onChange={::this.handleToggleChecked} checked={checked}/>
 				</div>
 				<div className="table-list__body-cell">{code}</div>
-				<div className="table-list__body-cell table-list__body-cell--70">{name}</div>
+				<div className="table-list__body-cell table-list__body-cell--65">{name}</div>
 				<div className="table-list__body-cell">{TestTypes.values[type]}</div>
 			</div>
 		);
@@ -127,15 +127,29 @@ class Tests extends React.Component {
 		return(
 			<div className="event-edit-testing__tests">
 				<div className="buttons">
-					<DropDownIcon onChange={this.handleSelectTestsType} className={checkboxClasses} items={this.props.selectTypes}>
-						<CheckBox onChange={::this.handleToggleCheckedAll} checked={this.props.checkedAll} className={checkboxClasses}/>
+					<DropDownIcon 
+						className={checkboxClasses}
+						icon={<CheckBox 
+								onChange={::this.handleToggleCheckedAll} 
+								checked={this.props.checkedAll} 
+								className={checkboxClasses}/>}>
+						<DropDownIconItem onClick={this.handleSelectTestsType} payload='{"type": "prev"}' text='Выбрать предварительные тесты'/>
+						<DropDownIconItem onClick={this.handleSelectTestsType} payload='{"type": "post"}' text='Выбрать пост-тесты'/>
 					</DropDownIcon>
 					<div className="buttons__funcs">
-						<DropDownIcon onChange={::this.handleSortAllTests} className={sortClasses} items={this.props.sortTestTypes}>
-							<i className="icon-arrow-combo"></i>
+						<DropDownIcon
+							icon={<i className="icon-arrow-combo"></i>} 
+							className={sortClasses}>
+								<DropDownIconItem onClick={::this.handleSortAllTests} payload='{"key": "name", "isAsc": "true"}' text='Сортировать по имени(А-я)'/>
+								<DropDownIconItem onClick={::this.handleSortAllTests} payload='{"key": "name", "isAsc": "false"}' text='Сортировать по имени(я-А)'/>
+								<DropDownIconItem onClick={::this.handleSortAllTests} payload='{"key": "type", "isAsc": "true"}' text='Сортировать по типу(А-я)'/>
+								<DropDownIconItem onClick={::this.handleSortAllTests} payload='{"key": "type", "isAsc": "false"}' text='Сортировать по типу(я-А)'/>
 						</DropDownIcon>
-						<DropDownIcon onChange={::this.handleOpenTestsModal} className="buttons__add" items={this.props.testTypes}>
-							<i className="icon-plus"></i>
+						<DropDownIcon 
+							icon={<i className="icon-plus"></i>}
+							className="buttons__add">
+								<DropDownIconItem onClick={::this.handleOpenTestsModal} payload='prev' text='Выбрать предварительные тесты'/>
+								<DropDownIconItem onClick={::this.handleOpenTestsModal} payload='post' text='Выбрать пост-тесты'/>
 						</DropDownIcon>
 						<button onClick={this.handleRemoveTests} className={removeClasses} title="Удалить файлы">
 							<i className="icon-minus"></i>
@@ -212,8 +226,13 @@ class Testing extends React.Component {
 				<Tests ref="tests" {...pick(this.props, ['isPostTestOnlyForAssisst', 'allTests', 'checkedAll', 'testTypes', 'selectTypes', 'sortTestTypes'])}/>
 				<div className="testing">
 					<div className="buttons">
-						<DropDownIcon onChange={::this.handleSortTestingList} items={this.props.sortTypes} className={dropdownSortClasses}>
-							<i className="icon-arrow-combo"></i>
+						<DropDownIcon
+							icon={<i className="icon-arrow-combo"></i>} 
+							className={dropdownSortClasses}>
+								<DropDownIconItem onClick={::this.handleSortTestingList} payload='{"key": "fullname", "isAsc": "true"}' text='Сортировать по ФИО(А-я)'/>
+								<DropDownIconItem onClick={::this.handleSortTestingList} payload='{"key": "fullname", "isAsc": "false"}' text='Сортировать по ФИО(я-А)'/>
+								<DropDownIconItem onClick={::this.handleSortTestingList} payload='{"key": "score", "isAsc": "false"}' text='Сортировать по результату(по убыванию)'/>
+								<DropDownIconItem onClick={::this.handleSortTestingList} payload='{"key": "score", "isAsc": "true"}' text='Сортировать по результату(по возрастанию)'/>
 						</DropDownIcon>
 					</div>
 					<strong className="testing__description">Результаты тестирования</strong>

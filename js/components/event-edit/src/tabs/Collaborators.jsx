@@ -1,6 +1,6 @@
 import React from 'react';
 import CheckBox from 'components/modules/new-checkbox';
-import DropDownIcon from 'components/modules/dropdown-icon';
+import {DropDownIcon, DropDownIconItem} from 'components/modules/dropdown-icon';
 import SelectItems from 'components/modules/select-items';
 import ToggleButton from 'components/modules/toggle-button';
 import Message from 'components/modules/message';
@@ -183,14 +183,21 @@ class Collaborators extends React.Component {
 		return (
 			<div className="event-edit-collaborators">
 				<div className="buttons">
-					<DropDownIcon onChange={this.handleToggleCheckedConditions} items={this.props.checkedTypes} className={checkboxClasses}>
-						<CheckBox onChange={::this.handleToggleCheckedAll} checked={this.props.checkedAll}/>
+					<DropDownIcon 
+						className={checkboxClasses}
+						icon={<CheckBox 
+								onChange={::this.handleToggleCheckedAll} 
+								checked={this.props.checkedAll}/>}>
+						<DropDownIconItem onClick={this.handleToggleCheckedConditions} payload='{"isAssist": "true"}' text='Выбрать всех присутствующих'/>
 					</DropDownIcon>
-					<DropDownIcon onChange={this.handleSort} items={this.props.sortTypes} className={dropDownClasses}>
-						<i className="icon-arrow-combo"></i>
+					<DropDownIcon
+						icon={<i className="icon-arrow-combo"></i>} 
+						className={dropDownClasses}>
+							<DropDownIconItem onClick={this.handleSort} payload='{"key": "fullname", "isAsc": "true"}' text='Сортировать по ФИО(А-я)'/>
+							<DropDownIconItem onClick={this.handleSort} payload='{"key": "fullname", "isAsc": "false"}' text='Сортировать по ФИО(я-А)'/>
 					</DropDownIcon>
 					<div className="buttons__funcs">
-						<button onClick={::this.handleOpenModal} className="buttons__add default-button" title="Добавить участников">
+						<button onClick={::this.handleOpenModal} className="buttons__add default-button" title="Выбрать участников">
 							<i className="icon-user-plus"></i>
 						</button>
 						<button onClick={this.handleRemoveItems} className={removeClasses} title="Удалить участников">

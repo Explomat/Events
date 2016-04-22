@@ -1,6 +1,6 @@
 import React from 'react';
 import CheckBox from 'components/modules/new-checkbox';
-import DropDownIcon from 'components/modules/dropdown-icon';
+import {DropDownIcon, DropDownIconItem} from 'components/modules/dropdown-icon';
 import SelectItems from 'components/modules/select-items';
 import ToggleButton from 'components/modules/toggle-button';
 import EventEditActions from 'actions/EventEditActions';
@@ -255,11 +255,17 @@ class Tutors extends React.Component {
 			<div className="event-edit-tutors">
 				<div className="tutors">
 					<div className="buttons">
-						<DropDownIcon onChange={this.handleToggleCheckedTutorsConditions} items={this.props.checkedTutorTypes} className={checkboxTutorsClasses}>
-							<CheckBox onChange={::this.handleToggleCheckedAllTutors} checked={this.props.checkedAllTutors} className={checkboxTutorsClasses}/>
+						<DropDownIcon 
+							className={checkboxTutorsClasses}
+							icon={<CheckBox 
+									onChange={::this.handleToggleCheckedAllTutors} 
+									checked={this.props.checkedAllTutors} 
+									className={checkboxTutorsClasses}/>}>
+							<DropDownIconItem onClick={this.handleToggleCheckedTutorsConditions} payload='{"main": "true"}' text='Выбрать основного' />
 						</DropDownIcon>
-						<DropDownIcon onChange={this.handleSortTutors} items={this.props.sortTutorTypes} className={dropDownTutorsClasses}>
-							<i className="icon-arrow-combo"></i>
+						<DropDownIcon className={dropDownTutorsClasses} icon={<i className="icon-arrow-combo"></i>}>
+							<DropDownIconItem onClick={this.handleSortTutors} payload='{"key": "fullname", "isAsc": "true"}' text='Сортировать по ФИО(А-я)'/>
+							<DropDownIconItem onClick={this.handleSortTutors} payload='{"key": "fullname", "isAsc": "false"}' text='Сортировать по ФИО(А-я)'/>
 						</DropDownIcon>
 						<div className="buttons__funcs">
 							<button onClick={::this.handleOpenTutorsModal} className="buttons__add default-button" title="Выбрать ответственных">
@@ -285,11 +291,18 @@ class Tutors extends React.Component {
 				</div>
 				<div className="lectors">
 					<div className="buttons">
-						<DropDownIcon className={checkboxLectorsClasses}>
-							<CheckBox onChange={::this.handleToggleCheckedAllLectors} checked={this.props.checkedAllLectors} className={checkboxLectorsClasses}/>
-						</DropDownIcon>
-						<DropDownIcon onChange={this.handleSortLectors} items={this.props.sortLectorTypes} className={dropDownLectorsClasses}>
-							<i className="icon-arrow-combo"></i>
+						<DropDownIcon 
+							className={checkboxLectorsClasses}
+							icon={<CheckBox 
+									onChange={::this.handleToggleCheckedAllLectors} 
+									checked={this.props.checkedAllLectors} 
+									className={checkboxLectorsClasses}/>}
+						/>
+						<DropDownIcon
+							icon={<i className="icon-arrow-combo"></i>} 
+							className={dropDownLectorsClasses}>
+								<DropDownIconItem onClick={this.handleSortLectors} payload='{"key": "fullname", "isAsc": "true"}' text='Сортировать по ФИО(А-я)'/>
+								<DropDownIconItem onClick={this.handleSortLectors} payload='{"key": "fullname", "isAsc": "false"}' text='Сортировать по ФИО(я-А)'/>
 						</DropDownIcon>
 						<div className="buttons__funcs">
 							<button onClick={::this.handleOpenLectorsModal} className="buttons__add default-button" title="Выбрать преподавателей">
@@ -298,9 +311,6 @@ class Tutors extends React.Component {
 							<button onClick={this.handleRemoveLectors} className={removeLectorsClasses} title="Удалить преподавателей">
 								<i className="icon-user-times"></i>
 							</button>
-							<DropDownIcon onChange={::this.handleOpenNewLectorModal} className="buttons__add" items={this.props.testTypes} title="Добавить нового преподавателя">
-								<i className="icon-plus"></i>
-							</DropDownIcon>
 							<button onClick={::this.handleOpenNewLectorModal} className="buttons__add default-button" title="Добавить нового преподавателя">
 								<i className="icon-plus"></i>
 							</button>

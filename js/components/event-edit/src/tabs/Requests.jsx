@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import EventEditActions from 'actions/EventEditActions';
 import RequestStatuses from 'utils/eventedit/RequestStatuses';
 import CheckBox from 'components/modules/new-checkbox';
-import DropDownIcon from 'components/modules/dropdown-icon';
+import {DropDownIcon, DropDownIconItem} from 'components/modules/dropdown-icon';
 import InputCalendar from 'components/modules/input-calendar';
 import RejectReasonInfo from '../RejectReasonInfo';
 import cx from 'classnames';
@@ -191,8 +191,11 @@ class Requests extends React.Component {
 						checked={this.props.isApproveByTutor}/>
 					<br />
 					<br />
-					<DropDownIcon onChange={::this.handleSort} items={this.props.sortTypes} className={dropdownSortclasses}>
-						<i className="icon-arrow-combo"></i>
+					<DropDownIcon
+						icon={<i className="icon-arrow-combo"></i>} 
+						className={dropdownSortclasses}>
+							<DropDownIconItem onClick={::this.handleSort} payload='{"key": "fullname", "isAsc": "true"}' text='Сортировать по ФИО(А-я)'/>
+							<DropDownIconItem onClick={::this.handleSort} payload='{"key": "fullname", "isAsc": "false"}' text='Сортировать по ФИО(я-А)'/>
 					</DropDownIcon>
 				</div>
 				<div ref="table" className="table-list request-list">

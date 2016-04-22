@@ -3,41 +3,61 @@ import cx from 'classnames';
 import listensToClickOutside from 'react-onclickoutside/decorator';
 import './style/dropdown-icon.scss';
 
-class Item extends React.Component {
+export class DropDownIconItem extends React.Component {
 
-	handleChange(e) {
-		if (this.props.onChange)
-			this.props.onChange(e, this.props.payload, this.props.text);
+	static propTypes = {
+		payload: React.PropTypes.string,
+		text: React.PropTypes.string
+	}
+
+	static contextTypes = {
+		onToggle: React.PropTypes.func
+	}
+
+	handleClick(e) {
+		if (this.context.onToggle){
+			this.context.onToggle();
+		}
+		if (this.props.onClick)
+			this.props.onClick(e, this.props.payload, this.props.text);
 	}
 
 	render() {
 		const {text} = this.props;
 		return (
-			<li className="dropdown-icon__item" onClick={::this.handleChange}>
+			<li className="dropdown-icon__item" onClick={::this.handleClick}>
 				<span>{text}</span>
 			</li>
 		);
 	}
 };
 
-class DropDownIcon extends React.Component {
+class _DropDownIcon extends React.Component {
 
 	static propTypes = {
-		items: React.PropTypes.array.isRequired, //[{ payload: 1, text: 'Test' },{...}]
 		//icons: React.PropTypes.array, //Количество такое же как и items. Payload должен совпадать с payload item. [ payload: 1, iconClass: icon-class ]
-		onChange: React.PropTypes.func,
-		selectedPayload: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]),
+		icon: React.PropTypes.any,
 		className: React.PropTypes.string,
 		classNameList: React.PropTypes.string
 	}
 
+	static childContextTypes = {
+		onToggle: React.PropTypes.func
+	}
+
 	static defaultProps = {
-		items: []
+		children: []
 	}
 
 	state = {
 		display: false
 	}
+
+	getChildContext(){
+    	return {
+    		onToggle: ::this.handleToggleDisplay
+    	};
+  	}
 
 	_stopPropagation(e){
 		if (!e || (!e.stopPropagation && !e.nativeEvent)) return;
@@ -49,16 +69,9 @@ class DropDownIcon extends React.Component {
 		this.setState({display: false});
 	}
 
-	handleChange(e, payload, text) {
-		if (this.props.onChange && this.props.selectedPayload !== payload) {
-			this.props.onChange(e, payload, text);
-		}
-		this.setState({display: false});
-	}
-
 	handleToggleDisplay(e) {
 		this._stopPropagation(e);
-		if (this.props.items.length > 0) {
+		if (this.props.children || this.props.children.length > 0) {
 			this.setState({display: !this.state.display});
 		}
 	}
@@ -72,22 +85,20 @@ class DropDownIcon extends React.Component {
 		const caretClassName = cx({
 			'caret': true,
 			'dropdown-icon__caret': true,
-			'dropdown-icon__caret--display': this.props.items.length > 0
+			'dropdown-icon__caret--display': this.props.children || this.props.children.length > 0
 		})
 		return (
 			<div className={className}>
 				<div className="dropdown-icon__button default-button" type="button" onClick={::this.handleToggleDisplay}>
-					{this.props.children}
+					{this.props.icon}
 					<span className={caretClassName}></span>
 				</div>
 				<ul className={classNameList}>
-					{this.props.items.map((item, index) => {
-						return <Item key={index + 1} {...item} onChange={::this.handleChange}/>
-					})}
+					{this.props.children}
 				</ul>
 			</div>
 		);
 	}
 };
 
-export default listensToClickOutside(DropDownIcon);
+export const DropDownIcon = listensToClickOutside(_DropDownIcon);

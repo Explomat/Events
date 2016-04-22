@@ -351,6 +351,7 @@ const testing = {
 			test.type = test.type && test.type !== type ? test.type : type;
 			return new Test(test);
 		});
+		_eventEdit.testing.checkedAll = false;
 	},
 
 	toggleChecked(id, checked){

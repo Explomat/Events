@@ -65,14 +65,7 @@ export default function(args){
 		/*isAutomaticIncludeInCollaborators: getBoolean(args.requests.isAutomaticIncludeInCollaborators), //Автоматически включать в состав участников*/
 		isApproveByBoss: getBoolean(args.requests.isApproveByBoss), //Необходимо подтверждение от непосредсвенного руководителя
 		isApproveByTutor: getBoolean(args.requests.isApproveByTutor), //Необходимо подтверждение ответсвенного за мероприятие
-		requestItems: [],
-
-		//state fields
-		sortTypes: [
-			{ payload: '{"key": "fullname", "isAsc": "true"}', text: 'Сортировать по ФИО(А-я)' },
-			{ payload: '{"key": "fullname", "isAsc": "false"}', text: 'Сортировать по ФИО(я-А)' }
-		],
-		selectedPayload: '{"key": "fullname", "isAsc": "true"}'
+		requestItems: []
 	}
 	if (args.requests.requestItems) {
 		this.requests.requestItems = args.requests.requestItems.map((rq) => {
@@ -87,15 +80,7 @@ export default function(args){
 		//state fields
 		checkedAll: false,
 		infoMessage: '',
-		infoStatus: '',
-		checkedTypes: [
-			{ payload: '{"isAssist": "true"}', text: 'Выбрать всех присутствующих' }
-		],
-		sortTypes: [
-			{ payload: '{"key": "fullname", "isAsc": "true"}', text: 'Сортировать по ФИО(А-я)' },
-			{ payload: '{"key": "fullname", "isAsc": "false"}', text: 'Сортировать по ФИО(я-А)' }
-		],
-		selectedPayload: '{"key": "fullname", "isAsc": "true"}'
+		infoStatus: ''
 	}
 	if (args.collaborators) {
 		this.collaborators.collaborators = args.collaborators.map(function(col){
@@ -112,21 +97,7 @@ export default function(args){
 		checkedAllTutors: false,
 		checkedAllLectors: false,
 		infoMessage: '',
-		infoStatus: '',
-
-		sortTutorTypes: [
-			{ payload: '{"key": "fullname", "isAsc": "true"}', text: 'Сортировать по ФИО(А-я)' },
-			{ payload: '{"key": "fullname", "isAsc": "false"}', text: 'Сортировать по ФИО(я-А)' }
-		],
-		selectedTutorPayload: '{"key": "fullname", "isAsc": "true"}',
-		checkedTutorTypes: [
-			{ payload: '{"main": "true"}', text: 'Выбрать основного' }
-		],
-		sortLectorTypes: [
-			{ payload: '{"key": "fullname", "isAsc": "true"}', text: 'Сортировать по ФИО(А-я)' },
-			{ payload: '{"key": "fullname", "isAsc": "false"}', text: 'Сортировать по ФИО(я-А)' }
-		],
-		selectedLectorPayload: '{"key": "fullname", "isAsc": "true"}'
+		infoStatus: ''
 	}
 	if (args.tutors.tutors) {
 		this.tutors.tutors = args.tutors.tutors.map(function(t){
@@ -155,27 +126,7 @@ export default function(args){
 
 		//state fields
 		checkedAll: false,
-		testTypes: SelectTestTypes.toArray(),
-
-		selectTypes: [
-			{ payload: '{"type": "prev"}', text: 'Выбрать предварительные тесты' },
-			{ payload: '{"type": "post"}', text: 'Выбрать пост-тесты' }
-		],
-
-		sortTestTypes: [
-			{ payload: '{"key": "name", "isAsc": "true"}', text: 'Сортировать по имени(А-я)' },
-			{ payload: '{"key": "name", "isAsc": "false"}', text: 'Сортировать по имени(я-А)' },
-			{ payload: '{"key": "type", "isAsc": "true"}', text: 'Сортировать по типу(А-я)' },
-			{ payload: '{"key": "type", "isAsc": "false"}', text: 'Сортировать по типу(я-А)' }
-		],
-
-		sortTypes: [
-			{ payload: '{"key": "fullname", "isAsc": "true"}', text: 'Сортировать по ФИО(А-я)' },
-			{ payload: '{"key": "fullname", "isAsc": "false"}', text: 'Сортировать по ФИО(я-А)' },
-			{ payload: '{"key": "score", "isAsc": "false"}', text: 'Сортировать по результату(по убыванию)' },
-			{ payload: '{"key": "score", "isAsc": "true"}', text: 'Сортировать по результату(по возрастанию)' }
-		],
-		selectedPayload: '{"key": "fullname", "isAsc": "true"}'
+		testTypes: SelectTestTypes.toArray()
 	}
 	
 	if (args.testing.allTests) {
