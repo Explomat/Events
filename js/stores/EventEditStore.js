@@ -11,7 +11,7 @@ import LibraryMaterial from '../models/eventedit/LibraryMaterial';
 import {isNumberOrReal} from '../utils/validation/Validation';
 //import CollaboratorTest from '../models/eventedit/CollaboratorTest';
 import extend from 'extend';
-import {find, filter, every, keys, differenceWith} from 'lodash';
+import {find, filter, every, keys, differenceWith, uniqueId} from 'lodash';
 import {expand} from '../utils/Object';
 
 var _eventEdit = {};
@@ -318,9 +318,34 @@ const tutors = {
 			var lector = expand(item, (value) => {
 				return value === 'true' ? true : value === 'false' ? false : value;
 			});
+			var names = lector.fullname.split(' ');
+			lector.firstName = names[0];
+			lector.lastName = names[1];
+			lector.middleName = names[2];
 			return new Lector(lector);
 		});
 		_eventEdit.tutors.checkedAllLectors = false;
+	},
+	updateInnerLectors(lectors){
+		_eventEdit.tutors.lectors = lectors.map((item) => {
+			var lector = expand(item, (value) => {
+				return value === 'true' ? true : value === 'false' ? false : value;
+			});
+			var names = lector.fullname.split(' ');
+			lector.firstName = names[0];
+			lector.lastName = names[1];
+			lector.middleName = names[2];
+			lector.type = 'Внутренний';
+			return new Lector(lector);
+		});
+		_eventEdit.tutors.checkedAllLectors = false;
+	},
+	createLector(_lector){
+		var lector = new Lector(_lector);
+		lector.id = uniqueId();
+		lector.type = 'Внешний';
+		lector.isNew = true;
+		_eventEdit.tutors.lectors.push(lector);
 	}
 }
 
@@ -671,6 +696,14 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			break;
 		case EventEditConstants.EVENTEDIT_TUTORS_UPDATE_LECTORS:
 			tutors.updateLectors(action.lectors);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_TUTORS_UPDATE_INNER_LECTORS:
+			tutors.updateInnerLectors(action.lectors);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_TUTORS_CREATE_LECTOR:
+			tutors.createLector(action.lector);
 			isEmit = true;
 			break;
 			

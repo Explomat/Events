@@ -223,7 +223,7 @@ class Testing extends React.Component {
 		});
 		return (
 			<div className="event-edit-testing">
-				<Tests ref="tests" {...pick(this.props, ['isPostTestOnlyForAssisst', 'allTests', 'checkedAll', 'testTypes', 'selectTypes', 'sortTestTypes'])}/>
+				<Tests ref="tests" {...pick(this.props, ['isPostTestOnlyForAssisst', 'allTests', 'checkedAll'])}/>
 				<div className="testing">
 					<div className="buttons">
 						<DropDownIcon

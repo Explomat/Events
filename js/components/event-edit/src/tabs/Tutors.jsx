@@ -48,16 +48,21 @@ class TutorItem extends React.Component {
 
 class LectorItem extends React.Component {
 
+	_getFullname(firstName, lastName, middleName){
+		return firstName + " " + lastName + " " + middleName;
+	}
+
 	handleToggleChecked(){
 		EventEditActions.tutors.toggleLectorChecked(this.props.id, !this.props.checked);
 	}
 
 	render(){
-		const {fullname, type, checked} = this.props;
+		const {firstName, lastName, middleName, type, checked} = this.props;
 		const classes = cx({
 			'table-list__body-row': true,
 			'table-list__body-row--selected': checked
-		})
+		});
+		const fullname = this._getFullname(firstName, lastName, middleName);
 		return (
 			<div className={classes}>
 				<div className="table-list__body-cell table-list__body-cell--icon">
@@ -66,7 +71,7 @@ class LectorItem extends React.Component {
 				<div className="table-list__body-cell table-list__body-cell--icon">
 					<i className="icon-user"></i>
 				</div>
-				<div className="table-list__body-cell">{fullname}</div>
+				<div className="table-list__body-cell table-list__body-cell--70">{fullname}</div>
 				<div className="table-list__body-cell">{type}</div>
 			</div>
 		);
@@ -75,20 +80,11 @@ class LectorItem extends React.Component {
 
 class Tutors extends React.Component {
 
-	constructor(props){
-		super(props);
-
-		this.handleUpdateTutors = this.handleUpdateTutors.bind(this);
-		this.handleUpdateLectors = this.handleUpdateLectors.bind(this);
-
-		this.handleCloseTutorsModal= this.handleCloseTutorsModal.bind(this);
-		this.handleCloseLectorsModal= this.handleCloseLectorsModal.bind(this);
-	}
-
 	state = {
 		isShowTutorsModal: false,
 		isShowLectorsModal: false,
-		isShowNewLectorModal: false
+		isShowNewLectorModal: false,
+		isShowInnerLectorsModal: false
 	}
 
 	_isSomeChecked(items){
@@ -115,7 +111,7 @@ class Tutors extends React.Component {
 			return {
 				id: l.id,
 				data: {
-					fullname: l.fullname,
+					fullname: l.firstName + " " + l.lastName + " " + l.middleName,
 					type: l.type,
 					checked: l.checked
 				}	
@@ -130,8 +126,8 @@ class Tutors extends React.Component {
 				title="Выберите ответственных"
 				selectedItems={selectedItems}
 				query={config.url.createPath({action_name: 'getCollaborators'})}
-				onClose={this.handleCloseTutorsModal} 
-				onSave={this.handleUpdateTutors}/> : null;
+				onClose={::this.handleCloseTutorsModal} 
+				onSave={::this.handleUpdateTutors}/> : null;
 	}
 
 	_getLectorsModal(){
@@ -141,8 +137,19 @@ class Tutors extends React.Component {
 				title="Выберите преподавателей"
 				selectedItems={selectedItems}
 				query={config.url.createPath({action_name: 'getLectors'})}
-				onClose={this.handleCloseLectorsModal} 
-				onSave={this.handleUpdateLectors}/> : null;
+				onClose={::this.handleCloseLectorsModal} 
+				onSave={::this.handleUpdateLectors}/> : null;
+	}
+
+	_getInnerLectorsModal(){
+		let selectedItems = this._prepareLectorsForModal(this.props.lectors);
+		return this.state.isShowInnerLectorsModal ? 
+			<SelectItems
+				title="Выберите преподавателей"
+				selectedItems={selectedItems}
+				query={config.url.createPath({action_name: 'getCollaborators'})}
+				onClose={::this.handleCloseInnerLectorsModal} 
+				onSave={::this.handleUpdateInnerLectors}/> : null;
 	}
 
 	handleSortTutors(e, payload){
@@ -185,6 +192,10 @@ class Tutors extends React.Component {
 		this.setState({isShowNewLectorModal: true});
 	}
 
+	handleOpenInnerLectorModal(){
+		this.setState({isShowInnerLectorsModal: true});
+	}
+
 	handleCloseTutorsModal(){
 		this.setState({isShowTutorsModal: false});
 	}
@@ -197,6 +208,10 @@ class Tutors extends React.Component {
 		this.setState({isShowNewLectorModal: false});
 	}
 
+	handleCloseInnerLectorsModal(){
+		this.setState({isShowInnerLectorsModal: false});
+	}
+
 	handleUpdateTutors(tutors){
 		this.setState({isShowTutorsModal: false});
 		EventEditActions.tutors.updateTutors(tutors);
@@ -207,8 +222,14 @@ class Tutors extends React.Component {
 		EventEditActions.tutors.updateLectors(lectors);
 	}
 
-	handleSaveNewLector(){
+	handleUpdateInnerLectors(lectors){
+		this.setState({isShowInnerLectorsModal: false});
+		EventEditActions.tutors.updateInnerLectors(lectors);
+	}
 
+	handleSaveNewLector(lector){
+		this.setState({isShowNewLectorModal: false});
+		EventEditActions.tutors.createLector(lector);
 	}
 
 	render(){
@@ -311,9 +332,13 @@ class Tutors extends React.Component {
 							<button onClick={this.handleRemoveLectors} className={removeLectorsClasses} title="Удалить преподавателей">
 								<i className="icon-user-times"></i>
 							</button>
-							<button onClick={::this.handleOpenNewLectorModal} className="buttons__add default-button" title="Добавить нового преподавателя">
-								<i className="icon-plus"></i>
-							</button>
+
+							<DropDownIcon
+								icon={<i className="icon-plus"></i>}
+								className="buttons__add">
+									<DropDownIconItem onClick={::this.handleOpenInnerLectorModal} payload='inner' text='Добавить внутреннего преподавателя'/>
+									<DropDownIconItem onClick={::this.handleOpenNewLectorModal} payload='new' text='Добавить нового преподавателя'/>
+							</DropDownIcon>
 						</div>
 					</div>
 					<strong className="lectors__description">Преподаватели *</strong>
@@ -328,6 +353,7 @@ class Tutors extends React.Component {
 							</div>
 						</div>
 						{this._getLectorsModal()}
+						{this._getInnerLectorsModal()}
 					</div>
 				</div>
 			</div>

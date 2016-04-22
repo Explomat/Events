@@ -1,21 +1,10 @@
 import React from 'react';
 import {TextView} from 'components/modules/text-label';
+import cx from 'classnames';
 
 import './style/new-lector.scss';
 
 class NewLector extends React.Component {
-
-    constructor(props){
-        super(props);
-
-        this.fields = {
-            firstName: '',
-            lastName: '',
-            middleName: '',
-            email: '',
-            company: ''
-        }
-    }
 
     static propTypes = {
         onSave: React.PropTypes.func,
@@ -34,34 +23,49 @@ class NewLector extends React.Component {
         company: ''
     }
 
+    _isNotAllFieldsFilled(){
+        const {firstName, lastName, middleName, email, company} = this.state;
+        return !(firstName.length > 0 && lastName.length > 0 && middleName.length > 0 && email.length > 0 && company.length > 0);
+    }
+
+    componentWillReceiveProps(){
+        this.setState({
+            firstName: '',
+            lastName: '',
+            middleName: '',
+            email: '',
+            company: ''
+        })
+    }
+
     handleChangeFirstName(firstName){
-        this.fields.firstName = firstName;
-        //this.setState({firstName: firstName});
+        //this.fields.firstName = firstName;
+        this.setState({firstName: firstName});
     }
 
     handleChangeLastName(lastName){
-        this.fields.lastName = lastName;
-        //this.setState({lastName: lastName});
+        //this.fields.lastName = lastName;
+        this.setState({lastName: lastName});
     }
 
     handleChangeMiddleName(middleName){
-        this.fields.middleName = middleName;
-        //this.setState({middleName: middleName});
+        //this.fields.middleName = middleName;
+        this.setState({middleName: middleName});
     }
 
     handleChangeEmail(email){
-        this.fields.email = email;
-        //this.setState({email: email});
+        //this.fields.email = email;
+        this.setState({email: email});
     }
 
     handleChangeCompany(company){
-        this.fields.company = company;
-        //this.setState({company: company});
+        //this.fields.company = company;
+        this.setState({company: company});
     }
 
     handleSave(){
         if (this.props.onSave){
-            this.props.onSave({...this.fields});
+            this.props.onSave({...this.state});
         }
     }
 
@@ -69,7 +73,13 @@ class NewLector extends React.Component {
         if (!this.props.isShow) {
             return null;
         }
-
+        const isDisabled = this._isNotAllFieldsFilled();
+        const buttonClasses = cx({
+            'new-lector__save-button': true,
+            'event-btn': true,
+            'event-btn--reverse': true,
+            'event-btn--disabled': isDisabled
+        });
         return (
             <div className="new-lector">
                 <div className="new-lector__modal-box">
@@ -80,34 +90,34 @@ class NewLector extends React.Component {
                         </div>
                         <div className="new-lector__body clearfix">
                             <TextView
-                                onBlur={this.handleChangeFirstName} 
+                                onBlur={::this.handleChangeFirstName} 
                                 value={this.state.firstName} 
                                 placeholder="Имя *" 
                                 className="new-lector__first-name"/>
                             <TextView
-                                onBlur={this.handleChangeLastName} 
+                                onBlur={::this.handleChangeLastName} 
                                 value={this.state.lastName} 
                                 placeholder="Фамилия *" 
                                 className="new-lector__last-name"/>
                             <TextView
-                                onBlur={this.handleChangeMiddleName} 
+                                onBlur={::this.handleChangeMiddleName} 
                                 value={this.state.middleName} 
                                 placeholder="Отчество *" 
                                 className="new-lector__middle-name"/>
                             <TextView
-                                onBlur={this.handleChangeEmail} 
+                                onBlur={::this.handleChangeEmail} 
                                 value={this.state.email} 
                                 placeholder="Электронная почта *" 
                                 className="new-lector__email"/>
                             <TextView
-                                onBlur={this.handleChangeCompany} 
+                                onBlur={::this.handleChangeCompany} 
                                 value={this.state.company} 
                                 placeholder="Компания *" 
                                 className="new-lector__company"/>
                             
                         </div>
                         <div className="new-lector__footer">
-                            <button onClick={this.handleSave} className="new-lector__save-button event-btn event-btn--reverse">Сохранить</button>
+                            <button onClick={::this.handleSave} className={buttonClasses} disabled={isDisabled}>Сохранить</button>
                         </div>
                     </div>
                 </div>

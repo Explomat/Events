@@ -265,6 +265,18 @@ var EventEditActions = {
 				actionType: EventEditConstants.EVENTEDIT_TUTORS_UPDATE_LECTORS,
 				lectors: lectors
 			});
+		},
+		updateInnerLectors(lectors){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_TUTORS_UPDATE_INNER_LECTORS,
+				lectors: lectors
+			});
+		},
+		createLector(lector){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_TUTORS_CREATE_LECTOR,
+				lector: lector
+			});
 		}
 	},
 

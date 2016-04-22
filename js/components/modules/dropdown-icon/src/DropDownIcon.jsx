@@ -59,6 +59,10 @@ class _DropDownIcon extends React.Component {
     	};
   	}
 
+  	_isChildren(children){
+  		return Array.isArray(children) ? children.length > 0 : (children !== null || children !== undefined);
+  	}
+
 	_stopPropagation(e){
 		if (!e || (!e.stopPropagation && !e.nativeEvent)) return;
 		e.stopPropagation();
@@ -71,7 +75,7 @@ class _DropDownIcon extends React.Component {
 
 	handleToggleDisplay(e) {
 		this._stopPropagation(e);
-		if (this.props.children || this.props.children.length > 0) {
+		if (this._isChildren()) {
 			this.setState({display: !this.state.display});
 		}
 	}
@@ -85,7 +89,7 @@ class _DropDownIcon extends React.Component {
 		const caretClassName = cx({
 			'caret': true,
 			'dropdown-icon__caret': true,
-			'dropdown-icon__caret--display': this.props.children || this.props.children.length > 0
+			'dropdown-icon__caret--display': this._isChildren(this.props.children)
 		})
 		return (
 			<div className={className}>

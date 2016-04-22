@@ -10,7 +10,6 @@ import CollaboratorCourse from './CollaboratorCourse';
 import Places from './Places';
 import EventTypes from '../../utils/eventedit/EventTypes';
 import EventCodes from '../../utils/eventedit/EventCodes';
-import SelectTestTypes from '../../utils/eventedit/SelectTestTypes';
 import {every} from 'lodash';
 
 function getBoolean(arg){
@@ -125,8 +124,7 @@ export default function(args){
 		thresholdColors: ['#ff5252', '#ffb300', '#4CAF50'],
 
 		//state fields
-		checkedAll: false,
-		testTypes: SelectTestTypes.toArray()
+		checkedAll: false
 	}
 	
 	if (args.testing.allTests) {
