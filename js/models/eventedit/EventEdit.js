@@ -174,4 +174,8 @@ export default function(args){
 			return new LibraryMaterial(l);
 		});
 	}
+
+	this.courses = {
+		items: []
+	}
 }

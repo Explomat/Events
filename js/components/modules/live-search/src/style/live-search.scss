@@ -1,0 +1,100 @@
+.live-search {
+    position: relative;
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    width: 33.33%;
+    margin: -1px 0 -1px -1px;
+
+    .live-search__container {
+        position: relative;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-flex: 1 1 auto;
+        -ms-flex: 1 1 auto;
+        flex: 1 1 auto;
+
+        .live-search__search-box{
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-flex: 1 1 auto;
+            -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+            position: relative;
+
+            .live-search__input{
+                font: inherit;
+                display: block;
+                -webkit-flex: 1 1 auto;
+                -ms-flex: 1 1 auto;
+                flex: 1 1 auto;
+                margin: 0;
+                padding: 0 .6666em;
+                border: 1px solid transparent;
+                background: 0 0;
+                border-radius: 0;
+                -webkit-appearance: none;
+            }
+        }
+        
+        .live-search__drop {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+
+            .live-search__content {
+                position: absolute;
+                top: 10px;
+                z-index: 4000;
+                overflow: hidden;
+                background-clip: padding-box;
+                background-color: #fff;
+                opacity: 0;
+                -webkit-transform: translateY(10px);
+                -ms-transform: translateY(10px);
+                transform: translateY(10px);
+                visibility: hidden;
+                transition-property: opacity,-webkit-transform,visibility;
+                transition-property: opacity,transform,visibility;
+                transition-duration: .15s;
+
+                &.live-search__content--visible{
+                    opacity: 1;
+                    -webkit-transform: none;
+                    -ms-transform: none;
+                    transform: none;
+                    visibility: visible;
+                }
+
+                .live-search__items {
+                    margin: 0;
+                    padding: 0;
+
+                    .live-search__item {
+                        font: 13px/36px Arial,sans-serif;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        margin: 0 -10px;
+                        padding: 0 20px;
+                        color: rgba(0,0,0,.4);
+                        cursor: pointer;
+                        list-style-type: none;
+
+                        .live-search__item-name {
+                            font-size: 15px;
+                            color: #000;
+                            margin: 0 .25em 0 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
