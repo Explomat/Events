@@ -354,7 +354,6 @@ const tutors = {
 	createLector(_lector){
 		var lector = new Lector(_lector);
 		lector.type = LectorTypes.keys.invitee;
-		lector.isNew = true;
 		_eventEdit.tutors.lectors.push(lector);
 	},
 	selectLectorType(payload){

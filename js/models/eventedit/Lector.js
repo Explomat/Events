@@ -1,9 +1,9 @@
-import {uniqueId} from 'lodash';
+import UUID from '../../utils/UUID';
 
 module.exports = function(args){
 	args = args || {};
 
-	this.id = args.id || uniqueId();
+	this.id = args.id || UUID.generate();
 	this.firstName = args.firstName || '';
     this.lastName = args.lastName || '';
     this.middleName = args.middleName || '';
@@ -15,5 +15,4 @@ module.exports = function(args){
 	//server fields for new lector
 	this.email = '';
     this.company = '';
-	this.isNew = false;
 }

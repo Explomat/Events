@@ -4,8 +4,8 @@ module.exports = function(args){
 	this.id = args.id || null;
 	this.fullname = args.fullname || '';
 	this.assessmentName = args.assessmentName || '';
-	this.score = args.score || 0;
-	this.maxscore = (args.maxscore === 0 || !args.maxscore) ? 1 : args.maxscore ;
+	this.score = Number(args.score) || 0;
+	this.maxscore = (Number(args.maxscore) === 0 || !args.maxscore) ? 1 : Number(args.maxscore) ;
 
 	//state fields
 	this.percent = (100.0 / this.maxscore) * this.score;

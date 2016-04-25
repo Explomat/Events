@@ -28,7 +28,7 @@ class Test extends React.Component {
 					<CheckBox onChange={::this.handleToggleChecked} checked={checked}/>
 				</div>
 				<div className="table-list__body-cell">{code}</div>
-				<div className="table-list__body-cell table-list__body-cell--65">{name}</div>
+				<div className="table-list__body-cell table-list__body-cell--70">{name}</div>
 				<div className="table-list__body-cell">{TestTypes.values[type]}</div>
 			</div>
 		);

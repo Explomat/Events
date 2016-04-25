@@ -90,27 +90,27 @@ class NewLector extends React.Component {
                         </div>
                         <div className="new-lector__body clearfix">
                             <TextView
-                                onBlur={::this.handleChangeFirstName} 
+                                onChange={::this.handleChangeFirstName} 
                                 value={this.state.firstName} 
                                 placeholder="Имя *" 
                                 className="new-lector__first-name"/>
                             <TextView
-                                onBlur={::this.handleChangeLastName} 
+                                onChange={::this.handleChangeLastName} 
                                 value={this.state.lastName} 
                                 placeholder="Фамилия *" 
                                 className="new-lector__last-name"/>
                             <TextView
-                                onBlur={::this.handleChangeMiddleName} 
+                                onChange={::this.handleChangeMiddleName} 
                                 value={this.state.middleName} 
                                 placeholder="Отчество" 
                                 className="new-lector__middle-name"/>
                             <TextView
-                                onBlur={::this.handleChangeEmail} 
+                                onChange={::this.handleChangeEmail} 
                                 value={this.state.email} 
                                 placeholder="Электронная почта *" 
                                 className="new-lector__email"/>
                             <TextView
-                                onBlur={::this.handleChangeCompany} 
+                                onChange={::this.handleChangeCompany} 
                                 value={this.state.company} 
                                 placeholder="Компания *" 
                                 className="new-lector__company"/>

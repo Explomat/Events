@@ -1,4 +1,3 @@
-import toArrayKeys from '../toArrayKeys';
 import keyMirror from 'keyMirror';
 
 export default {
@@ -11,9 +10,5 @@ export default {
 	keys: keyMirror({
 		collaborator: null,
 		invitee: null
-	}),
-
-	toArray: function() {
-		return toArrayKeys(this.values);
-	}
+	})
 };

@@ -93,7 +93,6 @@
 	    	.request-list__status-added {
 	    		color: green;
 	    		display: none;
-	    		padding: 10px;
 
 	    		&.request-list__status-added--display{
 	    			display: inline-block;
@@ -103,7 +102,6 @@
 	    	.request-list__status-removed{
 	    		color: #ff5252;
 	    		display: none;
-	    		padding: 10px;
 
 	    		&.request-list__status-removed--display{
 	    			display: inline-block;
@@ -123,13 +121,11 @@
 	    		font-size: 10px;
 	    		color: green;
 	    		border: 2px solid green;
-	    		line-height: 27px;
     			vertical-align: middle;
 	    	}
 	    	.request-list__remove-button{
 	    		border: 2px solid #ff5252;
 		    	font-size: 10px;
-		    	line-height: 27px;
     			vertical-align: middle;
 		    }
 	    }

@@ -1115,7 +1115,6 @@ function getEventTutors (queryObjects) {
 			order by event_lectors.lector_fullname asc")) {
 			if (lector.type == 'collaborator') {
 				curPersonCard = OpenDoc(UrlFromDocID(lector.person_id)).TopElem;
-				/*lector_type = 'внутренний';*/
 				lectorsArray.push({
 					id : Int(lector.lector_id),
 					lastName : curPersonCard.lastname + '',
@@ -1124,7 +1123,6 @@ function getEventTutors (queryObjects) {
 					type : lector.type + '' 
 				}) 	 
 			} else {
-				/*lector_type = 'внешний';*/
 				lectorsArray.push({
 					id : Int(lector.lector_id),
 					lastName : lector.lastname + '',
@@ -1308,6 +1306,9 @@ function saveData(queryObjects) {
 				arr[i].Delete();
 			}
 		}
+		function _isNew (id) {
+			return ( ArrayCount(XQuery("for $elem in lectors where $elem/id = '+id+' return $elem")) == 0 )
+		}
 
 		// Данные с клиента
 		var newLectorsArray = data.lectors;
@@ -1335,9 +1336,26 @@ function saveData(queryObjects) {
 		}
 
 		for (lector in newLectorsArray) {
-			if ( !_isLectorExist(curEventCard.TopElem.lectors, Int(lector.id)) ) {
-				newLector = curEventCard.TopElem.lectors.ObtainChildByKey( Int(lector.id) );
-				curEventCard.Save();
+			if ( _isNew(lector.id) ) {
+			doc = tools.new_doc_by_name('lector')
+				if (lector.type == 'collaborator') {
+					doc.TopElem.type = 'collaborator';
+					doc.TopElem.person_id = Int(lector.id);
+				} else {
+					doc.TopElem.type = 'invitee';
+					doc.TopElem.lastName = lector.lastName
+					doc.TopElem.middleName = lector.middleName
+					doc.TopElem.firstName = lector.firstName
+					doc.TopElem.email = lector.email
+					doc.TopElem.comment = lector.company;
+				}
+				doc.BindToDb(DefaultDb);
+				doc.Save();
+			} else {
+				if ( !_isLectorExist(curEventCard.TopElem.lectors, Int(lector.id)) ) {
+					newLector = curEventCard.TopElem.lectors.ObtainChildByKey( Int(lector.id) );
+					curEventCard.Save();
+				}
 			}
 		}
 	}

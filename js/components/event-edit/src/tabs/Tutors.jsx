@@ -121,7 +121,7 @@ class Tutors extends React.Component {
 	}
 
 	_getTutorsModal(){
-		let selectedItems = this._prepareTutorsForModal(this.props.tutors);
+		var selectedItems = this._prepareTutorsForModal(this.props.tutors);
 		return this.state.isShowTutorsModal ? 
 			<SelectItems
 				title="Выберите ответственных"
@@ -132,7 +132,7 @@ class Tutors extends React.Component {
 	}
 
 	_getLectorsModal(){
-		let selectedItems = this._prepareLectorsForModal(this.props.lectors);
+		var selectedItems = this._prepareLectorsForModal(this.props.lectors);
 		return this.state.isShowLectorsModal ? 
 			<SelectItems
 				title="Выберите преподавателей"
@@ -143,7 +143,7 @@ class Tutors extends React.Component {
 	}
 
 	_getInnerLectorsModal(){
-		let selectedItems = this._prepareLectorsForModal(this.props.lectors);
+		var selectedItems = this._prepareLectorsForModal(this.props.lectors);
 		return this.state.isShowInnerLectorsModal ? 
 			<SelectItems
 				title="Выберите преподавателей"
@@ -287,7 +287,7 @@ class Tutors extends React.Component {
 									onChange={::this.handleToggleCheckedAllTutors} 
 									checked={this.props.checkedAllTutors} 
 									className={checkboxTutorsClasses}/>}>
-							<DropDownIconItem onClick={this.handleToggleCheckedTutorsConditions} payload='{"main": "true"}' text='Выбрать основного' />
+							<DropDownIconItem onClick={this.handleToggleCheckedTutorsConditions} payload='{"main": "true"}' text='Основной' />
 						</DropDownIcon>
 						<DropDownIcon className={dropDownTutorsClasses} icon={<i className="icon-arrow-combo"></i>}>
 							<DropDownIconItem onClick={this.handleSortTutors} payload='{"key": "fullname", "isAsc": "true"}' text='Сортировать по ФИО(А-я)'/>
