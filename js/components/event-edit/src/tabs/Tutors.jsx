@@ -5,6 +5,7 @@ import SelectItems from 'components/modules/select-items';
 import ToggleButton from 'components/modules/toggle-button';
 import EventEditActions from 'actions/EventEditActions';
 import NewLector from '../NewLector';
+import LectorTypes from 'utils/eventedit/LectorTypes';
 import {some} from 'lodash';
 import cx from 'classnames';
 import config from 'config';
@@ -72,7 +73,7 @@ class LectorItem extends React.Component {
 					<i className="icon-user"></i>
 				</div>
 				<div className="table-list__body-cell table-list__body-cell--70">{fullname}</div>
-				<div className="table-list__body-cell">{type}</div>
+				<div className="table-list__body-cell">{LectorTypes.values[type]}</div>
 			</div>
 		);
 	}
@@ -232,6 +233,10 @@ class Tutors extends React.Component {
 		EventEditActions.tutors.createLector(lector);
 	}
 
+	handleSelectLectorType(e, payload){
+		EventEditActions.tutors.selectLectorType(payload);
+	}
+
 	render(){
 		const isDisplayTutorsButtons = this._isSomeChecked(this.props.tutors) && this.props.tutors.length > 0;
 		const isDisplayLectorsButtons = this._isSomeChecked(this.props.lectors) && this.props.lectors.length > 0;
@@ -317,8 +322,10 @@ class Tutors extends React.Component {
 							icon={<CheckBox 
 									onChange={::this.handleToggleCheckedAllLectors} 
 									checked={this.props.checkedAllLectors} 
-									className={checkboxLectorsClasses}/>}
-						/>
+									className={checkboxLectorsClasses}/>}>
+							<DropDownIconItem onClick={this.handleSelectLectorType} payload={'{"type": "' + LectorTypes.keys.collaborator + '"}'} text='Внутренние'/>
+							<DropDownIconItem onClick={this.handleSelectLectorType} payload={'{"type": "' + LectorTypes.keys.invitee + '"}'} text='Внешние'/>
+						</DropDownIcon>
 						<DropDownIcon
 							icon={<i className="icon-arrow-combo"></i>} 
 							className={dropDownLectorsClasses}>

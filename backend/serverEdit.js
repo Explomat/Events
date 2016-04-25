@@ -214,13 +214,18 @@ function addLibraryMaterials (queryObjects) {
 	} 
    
 	for (elem in data.files) {
-		if (!_isExist(materialsArray, elem.id) ) {
-			materialsArray.push(elem.id);
-			curEventCard.TopElem.custom_elems.ObtainChildByKey('allMaterials').value = materialsArray.join(';');
-			curEventCard.Save();
 			name = elem.name == '' ? "Безимянный" : elem.name;
 			year = elem.year == null ? Year(Date()) : elem.year;
 			author = elem.author == '' ? OpenDoc(UrlFromDocID(elem.doc_info.creation.user_id)).TopElem.fullname : elem.author;
+		if (!_isExist(materialsArray, elem.id) ) {
+			materialsArray.push(elem.id);
+			resultArray.push({
+				id : Int(elem.id),
+				name : name + '',
+				year : year + '',
+				author : author + ''
+			})
+		} else {
 			resultArray.push({
 				id : Int(elem.id),
 				name : name + '',
@@ -229,11 +234,16 @@ function addLibraryMaterials (queryObjects) {
 			})
 		}
 	}
+	materialsArray = [];
+	for (el in resultArray) {
+		materialsArray.push(el.id)
+	}
 
+	curEventCard.TopElem.custom_elems.ObtainChildByKey('allMaterials').value = materialsArray.join(';');
+	curEventCard.Save();
 	return tools.object_to_text(resultArray, 'json');
 
 }
-
 
 function isAdmin (queryObjects) {
 
@@ -467,11 +477,15 @@ function getLectors (queryObjects) {
 
 	var lectorsArray = [];
 	for (l in basicLectorsArray) {
-		l.type = (l.type == 'invitee') ? 'Внешний' : 'Внутренний';
+		/*l.type = (l.type == 'invitee') ? 'Внешний' : 'Внутренний';*/
+		type = (l.type == 'invitee') ? 'Внешний' : 'Внутренний';
 		lectorsArray.push({ 
 			id: Int(l.id), 
 			data: {
 				fullname : l.name + '',
+				type: type + ''
+			},
+			additionalData: {
 				type: l.type + ''
 			}
 		});
@@ -753,10 +767,27 @@ function getEventRequests (queryObjects) {
 				status: r.status + ''
 			});
 		}
-		return {
-			baseSetings : {
 
-			},
+		var date_request_begin = eventDocTE.date_request_begin == null ? Date() : eventDocTE.date_request_begin;
+		var date_request_over = eventDocTE.date_request_over == null ? Date() : eventDocTE.date_request_over;
+		if (eventDocTE.custom_elems.ObtainChildByKey('func_manager_accept').value.HasValue) {
+			var isApproveByBoss = eventDocTE.custom_elems.ObtainChildByKey('func_manager_accept').value
+		} else {
+			var isApproveByBoss = false
+		}
+		if (eventDocTE.custom_elems.ObtainChildByKey('main_tutor_accept').value.HasValue) {
+			var isApproveByTutor = eventDocTE.custom_elems.ObtainChildByKey('main_tutor_accept').value
+		} else {
+			var isApproveByTutor = false
+		}
+        var default_request_type_id = eventDocTE.default_request_type_id; 
+
+		return {
+			isOpen : eventDocTE.is_open + '',
+			requestBeginDate : StrMimeDate(date_request_begin) + '',
+			requestOverDate : StrMimeDate(date_request_over) + '',
+			isApproveByBoss : isApproveByBoss + '',
+			isApproveByTutor : isApproveByTutor + '',
 			requestItems: requestsArray
 		}
 	}
@@ -778,7 +809,7 @@ function getEventTests (queryObjects) {
 			prevTests.push({
 				id : Int(assessment.assessment_id),
 				name : assessment.assessment_id.ForeignElem.title + '',
-				type : 'prex'
+				type : 'prev'
 			})
 		}
 
@@ -796,7 +827,8 @@ function getEventTests (queryObjects) {
 			active_test_learnings.person_id as personId,
 			active_test_learnings.person_fullname as personFIO, 
 			active_test_learnings.assessment_name as assessment_name,
-			active_test_learnings.score as score
+			active_test_learnings.score as score,
+			0 as maxscore
 		from
 			active_test_learnings
 		where
@@ -807,7 +839,8 @@ function getEventTests (queryObjects) {
 			test_learnings.person_id as personId,
 			test_learnings.person_fullname as personFIO,
 			test_learnings.assessment_name as assessment_name,
-			test_learnings.score as score
+			test_learnings.score as score,
+			test_learnings.max_score as maxscore
 		from
 			test_learnings
 		where
@@ -818,16 +851,18 @@ function getEventTests (queryObjects) {
 		var testsArray = [];
 		for (at in basicActiveTestsArray) {
 			testsArray.push({ 
-				id: Int(at.id), 
+				id : Int(at.id), 
 				fullname : at.personFIO + '',
-				assessmentName: at.assessment_name + '',
-				score: at.score + ''
+				assessmentName : at.assessment_name + '',
+				score : at.score + '',
+				maxscore : at.maxscore + ''
 			});
 		}
 		return {
 			allTests : ArrayUnion(prevTests, postTests),
 			isPostTestOnlyForAssisst : isPostTestOnlyForAssisst + '',
-			testingList: testsArray
+			testingList: testsArray,
+			thresholds: [ 0, 50, 80, 100 ]
 		}
 	}
 }
@@ -1079,18 +1114,23 @@ function getEventTutors (queryObjects) {
 				event_lectors.event_id = "+eventID+"
 			order by event_lectors.lector_fullname asc")) {
 			if (lector.type == 'collaborator') {
-				lector_type = 'внутренний';
-				lectorsArray.push({
-					id : Int(lector.person_id),
-					fullname : lector.lector_fullname + '', 
-					type : lector_type + '' 
-				}) 	 
-			} else {
-				lector_type = 'внешний';
+				curPersonCard = OpenDoc(UrlFromDocID(lector.person_id)).TopElem;
+				/*lector_type = 'внутренний';*/
 				lectorsArray.push({
 					id : Int(lector.lector_id),
-					fullname : lector.lector_fullname + '', 
-					type : lector_type + '' 
+					lastName : curPersonCard.lastname + '',
+					firstName : curPersonCard.firstname + '',
+					middleName : curPersonCard.middlename + '',
+					type : lector.type + '' 
+				}) 	 
+			} else {
+				/*lector_type = 'внешний';*/
+				lectorsArray.push({
+					id : Int(lector.lector_id),
+					lastName : lector.lastname + '',
+					firstName : lector.firstname + '',
+					middleName : lector.middlename + '',
+					type : lector.type + '' 
 				}) 	 
 			}
 		}
@@ -1108,6 +1148,7 @@ function getEventEditData (queryObjects) {
 		Session['eventId'] = eventID;
 		Session['eventName'] = ArrayOptFirstElem(XQuery("sql: select events.name from events where events.id =" + eventID)).name
 		return tools.object_to_text({
+			id: eventID,
 			base : getEventBaseData(queryObjects),
 			requests : getEventRequests(queryObjects),
 			collaborators : getEventCollaborators(queryObjects),
@@ -1137,6 +1178,10 @@ function saveData(queryObjects) {
 	curEventCard = OpenDoc(UrlFromDocID(Session.eventId));
 	data = tools.read_object(queryObjects.Body);
 
+
+/* 
+-------------------------------------------------------Основные данные  ----------------------------------------------------------------------------------------------------------
+*/
 	if ( data.HasProperty('base') ) {
 		var baseData = data.base;
 
@@ -1169,14 +1214,14 @@ function saveData(queryObjects) {
 
 		/*Расположение мероприятия*/
 		if ( baseData.HasProperty('places') ) {
-			if ( baseData.places.HasProperty('selectedNode') ) {
+			if ( baseData.places.HasProperty('selectedNode') &&  baseData.places.selectedNode != null ) {
 				if (baseData.places.selectedNode.id != curEventCard.TopElem.place_id ) {
 				curEventCard.TopElem.place_id = baseData.places.selectedNode.id;
 				}
-			}		
-		} else {
+			}	else {
 			return "Расположение отсутсвует";
-		}
+			}	
+		} 
 
 		/*Обучающая организация*/
 		if ( baseData.HasProperty('selectedEducationOrgId') && baseData.selectedEducationOrgId != null) {
@@ -1202,14 +1247,208 @@ function saveData(queryObjects) {
 
 		/*Дата начала и завершения*/
 		if ( baseData.HasProperty('startDateTime') && baseData.HasProperty('finishDateTime') ) {
-			curEventCard.TopElem.start_date = StrDate(Date(baseData.startDateTime));
-			curEventCard.TopElem.finish_date = StrDate(Date(baseData.finishDateTime));
+			curEventCard.TopElem.start_date = Date(baseData.startDateTime);
+			curEventCard.TopElem.finish_date = Date(baseData.finishDateTime);
 		} else {
 			return "Выберите дату начала и завершения";
 		}
 
 	curEventCard.Save();
 	}
+
+	function saveTutorsData(data) {
+
+		function _isColabExist2(files, fileId) {
+			for (f in files){
+				if ( Int(f.id) == Int(fileId) ) {
+					return true;
+				}
+			}
+			return false;
+		}
+		
+		function _isColabExist(files, fileId) {
+			for (f in files){
+				if ( f.collaborator_id == Int(fileId) ) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		function _isLectorExist(files, fileId) {
+			for (f in files){
+				if ( f.lector_id == Int(fileId) ) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		function _refreshTutors (baseTutors, newTutros) {
+			var arr = [];
+			for (var c = 0; c < ArrayCount(baseTutors); c++ ) {
+				if ( !_isColabExist2( newTutros, baseTutors[c].collaborator_id ) ) {
+					arr.push(baseTutors[c]);
+				}
+			}
+			for (var i = arr.length - 1; i >= 0; i--) {
+				arr[i].Delete();
+			}
+		}
+
+		function _refreshLectors (baseLectors, newLectors) {
+			var arr = [];
+			for (var c = 0; c < ArrayCount(baseLectors); c++ ) {
+				if ( !_isColabExist2( newLectors, baseLectors[c].lector_id ) ) {
+					arr.push(baseLectors[c]);
+				}
+			}
+			for (var i = arr.length - 1; i >= 0; i--) {
+				arr[i].Delete();
+			}
+		}
+
+		// Данные с клиента
+		var newLectorsArray = data.lectors;
+		var newTutorsArray = data.tutors;
+		alert(tools.object_to_text(newTutorsArray, 'json'))
+
+		// Обновление массивов, если было удаление на клиенте, убираем в карточке
+		_refreshTutors(curEventCard.TopElem.tutors, newTutorsArray);
+		_refreshLectors(curEventCard.TopElem.lectors, newLectorsArray);
+		curEventCard.Save();
+
+
+		for (tutor in newTutorsArray) {
+			if ( !_isColabExist(curEventCard.TopElem.tutors, tutor.id) ) {
+				newTutor = curEventCard.TopElem.tutors.ObtainChildByKey( Int(tutor.id) );
+				alert(tutor.main)
+				newTutor.main = tutor.main;
+				tools.common_filling( 'collaborator', newTutor, Int(tutor.id));
+				curEventCard.Save();
+			} else {
+				newTutor = curEventCard.TopElem.tutors.ObtainChildByKey( Int(tutor.id) );
+				newTutor.main = tutor.main;
+				curEventCard.Save();
+			}
+		}
+
+		for (lector in newLectorsArray) {
+			if ( !_isLectorExist(curEventCard.TopElem.lectors, Int(lector.id)) ) {
+				newLector = curEventCard.TopElem.lectors.ObtainChildByKey( Int(lector.id) );
+				curEventCard.Save();
+			}
+		}
+	}
+
+	function saveCollaboratorsData(data) {
+
+		function _isColabExist2(files, fileId) {
+			for (f in files){
+				if ( Int(f.id) == Int(fileId) ) {
+					return true;
+				}
+			}
+			return false;
+		}
+		
+		function _isColabExist(files, fileId) {
+			for (f in files){
+				if ( f.collaborator_id == Int(fileId) ) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		function _refreshCollaborators (baseCollaborators, newCollaborators) {
+			for (c = 0; c < ArrayCount(baseCollaborators); c++ ) {
+				if ( !_isColabExist2( newCollaborators, baseCollaborators[c].collaborator_id ) ) {
+					tools.del_person_from_event( Int(baseCollaborators[c].collaborator_id), Int(Session.eventId),'', true );
+				}
+			}
+		}
+
+		var defaultCollaboratorArray = data.collaborators;
+		_refreshCollaborators(curEventCard.TopElem.collaborators, defaultCollaboratorArray);
+
+		for (colab in defaultCollaboratorArray) {
+			if ( _isColabExist(curEventCard.TopElem.collaborators, colab.id) ) {
+				eventResultCardID = ArrayOptFirstElem(XQuery("for $elem in event_results where $elem/event_id = "+Session.eventId+" and $elem/person_id = "+colab.id+" return $elem")).id;
+				if (eventResultCardID != undefined) {
+					eventResultCard = OpenDoc(UrlFromDocID(eventResultCardID));
+					eventResultCard.TopElem.is_assist = colab.isAssist;
+					eventResultCard.Save();
+				}
+			} else {
+				tools.add_person_to_event( Int(colab.id), Int(Session.eventId), null, curEventCard );
+				eventResultCardID = ArrayOptFirstElem(XQuery("for $elem in event_results where $elem/event_id = "+Session.eventId+" and $elem/person_id = "+colab.id+" return $elem")).id;
+				if (eventResultCardID != undefined) {
+					eventResultCard = OpenDoc(UrlFromDocID(eventResultCardID));
+					eventResultCard.TopElem.is_assist = colab.isAssist;
+					eventResultCard.Save();
+				}
+			}
+		}
+	}
+
+	function saveTestsData(data) {
+
+		function _isTestExist(files, fileId) {
+			for (f in files){
+				if ( Int(f.id) == Int(fileId) ) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		var newTestArray = data.allTests;
+		curEventCard.TopElem.prev_testing.Clear();
+		curEventCard.TopElem.post_testing.Clear();
+		curEventCard.Save();
+
+		if ( ArrayCount(newTestArray) ) {
+			for (test in newTestArray) {
+				if (test.type == 'prev') {
+					curEventCard.TopElem.prev_testing.auto_assign = 'true';
+					curEventCard.TopElem.prev_testing.assessments.ObtainChildByKey( Int(test.id));
+				} else {
+					curEventCard.TopElem.post_testing.assessments.ObtainChildByKey( Int(test.id));
+				}
+			}
+			curEventCard.Save();
+		}
+	}
+
+	function saveRequestData(data) {
+		if (data.isOpen) {
+			curEventCard.TopElem.is_open = data.isOpen;
+			curEventCard.TopElem.date_request_begin = Date(data.requestBeginDate);
+			curEventCard.TopElem.date_request_over = Date(data.requestOverDate);
+			curEventCard.TopElem.custom_elems.ObtainChildByKey('func_manager_accept').value = data.isApproveByBoss;
+			curEventCard.TopElem.custom_elems.ObtainChildByKey('main_tutor_accept').value = data.isApproveByTutor;
+			curEventCard.TopElem.default_request_type_id = 5984338634217761421 // заявка на мероприятие
+			curEventCard.Save()
+		} else {
+			curEventCard.TopElem.is_open = data.isOpen;
+			curEventCard.TopElem.date_request_begin = null;
+			curEventCard.TopElem.date_request_over = null;
+			alert(data.isApproveByBoss);
+			alert(data.isApproveByTutor);
+			curEventCard.TopElem.custom_elems.ObtainChildByKey('func_manager_accept').value = data.isApproveByBoss;
+			curEventCard.TopElem.custom_elems.ObtainChildByKey('main_tutor_accept').value = data.isApproveByTutor;
+			curEventCard.TopElem.default_request_type_id = null // пустота
+			curEventCard.Save()
+		}
+	}
+
+	saveCollaboratorsData(data.collaborators);
+	saveTutorsData(data.tutors);
+	saveTestsData(data.testing);
+	saveRequestData(data.requests)
 }
+
 
 %>

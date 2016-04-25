@@ -110,3 +110,6 @@
 .icon-check-circle:before {
   content: "\78";
 }
+.icon-search:before {
+  content: "\79";
+}

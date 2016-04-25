@@ -2,6 +2,7 @@ var Config = require('../config');
 var Promise = require('es6-promise').Promise;
 var Ajax = require('../utils/Ajax');
 var expand = require('../utils/Object').expand;
+var isNumberOrReal = require('../utils/validation/Validation').isNumberOrReal;
 
 module.exports = {
 
@@ -9,7 +10,8 @@ module.exports = {
 		//return Promise.resolve({});
 		return Ajax.sendRequest(Config.url.createPath({action_name: 'getEventEditData', event_id: eventId}), null, false).then(function(data){
 			return JSON.parse(data, (key, value) => {
-				return value === 'true' ? true : value === 'false' ? false : value;
+				var val = isNumberOrReal(value) ? Number(value) : value;
+				return val === 'true' ? true : val === 'false' ? false : val;
 			});
 		});
 	},

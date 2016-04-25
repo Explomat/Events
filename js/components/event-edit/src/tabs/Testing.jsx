@@ -133,8 +133,8 @@ class Tests extends React.Component {
 								onChange={::this.handleToggleCheckedAll} 
 								checked={this.props.checkedAll} 
 								className={checkboxClasses}/>}>
-						<DropDownIconItem onClick={this.handleSelectTestsType} payload='{"type": "prev"}' text='Выбрать предварительные тесты'/>
-						<DropDownIconItem onClick={this.handleSelectTestsType} payload='{"type": "post"}' text='Выбрать пост-тесты'/>
+						<DropDownIconItem onClick={this.handleSelectTestsType} payload='{"type": "prev"}' text='Предварительные тесты'/>
+						<DropDownIconItem onClick={this.handleSelectTestsType} payload='{"type": "post"}' text='Пост-тесты'/>
 					</DropDownIcon>
 					<div className="buttons__funcs">
 						<DropDownIcon
@@ -193,13 +193,26 @@ class TestingItem extends React.Component {
 	render(){
 		const {fullname, assessmentName, score, percent, thresholds, thresholdColors} = this.props;
 		const cellColorStyle = thresholdColors[this._getScoreThreshold(thresholds, percent)];
+		const scoreClasses = cx({
+			'testing-list__score': true,
+			'testing-list__score--display': score !== 0
+		});
+		const percentClasses = cx({
+			'testing-list__percent': true,
+			'testing-list__percent--display': score !== 0
+		});
+		const scoreIsNullClasses = cx({
+			'testing-list__score-is-null': true,
+			'testing-list__score-is-null--display': score === 0
+		});
 		return (
 			<div className="table-list__body-row">
 				<div className="table-list__body-cell">{fullname}</div>
 				<div className="table-list__body-cell">{assessmentName}</div>
 				<div className="table-list__body-cell" style={{'backgroundColor': cellColorStyle}}>
-					<strong className="testing-list__score">{score}</strong>
-					<span className="testing-list__percent">({percent}%)</span>
+					<strong className={scoreClasses}>{score}</strong>
+					<span className={percentClasses}>({percent}%)</span>
+					<span className={scoreIsNullClasses}>В процессе</span>
 				</div>
 			</div>
 		);

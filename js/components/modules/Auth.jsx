@@ -1,30 +1,28 @@
-var React = require('react');
+import React from 'react';
 
-var Auth = React.createClass({
+class Auth extends React.Component {
 
-	propTypes: {
+	static propTypes = {
 		componentsDenied: React.PropTypes.array,
 		children: React.PropTypes.element
-	},
+	}
 
-	getDefaultProps: function(){
-		return {
-			componentsDenied: []
-		}
-	},
+	static defaultProps = {
+		componentsDenied: []
+	}
 
-	_isDenied: function(name){
+	_isDenied(name){
 		var componentsDenied = this.props.componentsDenied;
 		return componentsDenied.indexOf(name) !== -1;
-	},
+	}
 
-	render: function() {
+	render() {
 		var children = this.props.children;
 		if (!Array.isArray(children)) {
 			return this._isDenied(children.type.displayName) ? null : children;
 		}
 		return null; 
 	}
-});
+};
 
-module.exports = Auth;
+export default Auth;

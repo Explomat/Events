@@ -188,7 +188,7 @@ class Collaborators extends React.Component {
 						icon={<CheckBox 
 								onChange={::this.handleToggleCheckedAll} 
 								checked={this.props.checkedAll}/>}>
-						<DropDownIconItem onClick={this.handleToggleCheckedConditions} payload='{"isAssist": "true"}' text='Выбрать всех присутствующих'/>
+						<DropDownIconItem onClick={this.handleToggleCheckedConditions} payload='{"isAssist": "true"}' text='Присутствующие'/>
 					</DropDownIcon>
 					<DropDownIcon
 						icon={<i className="icon-arrow-combo"></i>} 

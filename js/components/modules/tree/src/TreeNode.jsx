@@ -74,8 +74,8 @@ class TreeNode extends React.Component {
 	    });
 	    let iconClasses = cx({
 	    	'item__icon': true,
-	    	'fa fa-plus': this.props.data.children,
-	    	'fa fa-minus': this.props.data.children && this.state.children.length
+	    	'icon-plus': this.props.data.children,
+	    	'icon-minus': this.props.data.children && this.state.children.length
 	    });
 	    return (
 	        <li className={classes}>

@@ -8,10 +8,11 @@ import Lector from '../models/eventedit/Lector';
 import Collaborator from '../models/eventedit/Collaborator';
 import File from '../models/eventedit/File';
 import LibraryMaterial from '../models/eventedit/LibraryMaterial';
+import LectorTypes from '../utils/eventedit/LectorTypes';
 import {isNumberOrReal} from '../utils/validation/Validation';
 //import CollaboratorTest from '../models/eventedit/CollaboratorTest';
 import extend from 'extend';
-import {find, filter, every, keys, differenceWith, uniqueId} from 'lodash';
+import {find, filter, every, keys, differenceWith} from 'lodash';
 import {expand} from '../utils/Object';
 
 var _eventEdit = {};
@@ -103,6 +104,10 @@ const base = {
 const requests = {
 	changeIsOpen(checked){
 		_eventEdit.requests.isOpen = checked;
+		if (checked) {
+			_eventEdit.requests.isApproveByBoss = false;
+			_eventEdit.requests.isApproveByTutor = false;
+		}
 	},
 	changeRequestBeginDate(dateTime){
 		var startDateTime = _eventEdit.base.startDateTime;
@@ -134,9 +139,15 @@ const requests = {
 	},
 	changeIsApproveByBoss(checked){
 		_eventEdit.requests.isApproveByBoss = checked;
+		if (checked){
+			_eventEdit.requests.isOpen = false;
+		}
 	},
 	changeIsApproveByTutor(checked){
 		_eventEdit.requests.isApproveByTutor = checked;
+		if (checked){
+			_eventEdit.requests.isOpen = false;
+		}
 	},
 	sortTable(payload){
 		var data = JSON.parse(payload);
@@ -335,17 +346,32 @@ const tutors = {
 			lector.firstName = names[0];
 			lector.lastName = names[1];
 			lector.middleName = names[2];
-			lector.type = 'Внутренний';
+			lector.type = LectorTypes.keys.collaborator;
 			return new Lector(lector);
 		});
 		_eventEdit.tutors.checkedAllLectors = false;
 	},
 	createLector(_lector){
 		var lector = new Lector(_lector);
-		lector.id = uniqueId();
-		lector.type = 'Внешний';
+		lector.type = LectorTypes.keys.invitee;
 		lector.isNew = true;
 		_eventEdit.tutors.lectors.push(lector);
+	},
+	selectLectorType(payload){
+		var data = JSON.parse(payload, (key, value) => {
+			return value === 'true' ? true : value === 'false' ? false : value;
+		});
+		var arr = _eventEdit.tutors.lectors;
+		arr.forEach(item => {
+			var isHas = every(keys(data), (key) => {
+				return data[key] === item[key];
+			});
+			item.checked = isHas;
+		});
+		const isEveryCheked = every(arr, (item) => {
+			return item.checked === true;
+		});
+		_eventEdit.tutors.checkedAllLectors = isEveryCheked;
 	}
 }
 
@@ -510,7 +536,7 @@ const EventEditStore = extend({}, EventEmitter.prototype, {
 	},
 
 	isRequiredFieldsFilled(){
-		/*var base = _eventEdit.base;
+		var base = _eventEdit.base;
 		var tutors = _eventEdit.tutors;
 		return  base.name && 
 				base.selectedCode && 
@@ -519,8 +545,7 @@ const EventEditStore = extend({}, EventEmitter.prototype, {
 				base.selectedType && 
 				base.places.selectedNode &&
 				tutors.tutors.length > 0 &&
-				tutors.lectors.length > 0;*/
-		return true;
+				tutors.lectors.length > 0;
 	},
 
 	emitChange() {
@@ -704,6 +729,10 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			break;
 		case EventEditConstants.EVENTEDIT_TUTORS_CREATE_LECTOR:
 			tutors.createLector(action.lector);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_TUTORS_SELECT_LECTOR_TYPE:
+			tutors.selectLectorType(action.payload);
 			isEmit = true;
 			break;
 			

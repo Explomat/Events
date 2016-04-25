@@ -24,8 +24,8 @@ class NewLector extends React.Component {
     }
 
     _isNotAllFieldsFilled(){
-        const {firstName, lastName, middleName, email, company} = this.state;
-        return !(firstName.length > 0 && lastName.length > 0 && middleName.length > 0 && email.length > 0 && company.length > 0);
+        const {firstName, lastName, email, company} = this.state;
+        return !(firstName.length > 0 && lastName.length > 0 && email.length > 0 && company.length > 0);
     }
 
     componentWillReceiveProps(){
@@ -102,7 +102,7 @@ class NewLector extends React.Component {
                             <TextView
                                 onBlur={::this.handleChangeMiddleName} 
                                 value={this.state.middleName} 
-                                placeholder="Отчество *" 
+                                placeholder="Отчество" 
                                 className="new-lector__middle-name"/>
                             <TextView
                                 onBlur={::this.handleChangeEmail} 

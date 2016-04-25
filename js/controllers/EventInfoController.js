@@ -25,6 +25,8 @@ module.exports = {
 			ReactDOM.render(React.createElement(EventInfo.default), app);
 		}, function(err){
 			ReactDOM.render(React.createElement(EventError.default, {error: err}), app);
+		}).catch(function(e){
+			console.error(e.stack);
 		});
 	},
 

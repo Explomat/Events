@@ -277,6 +277,12 @@ var EventEditActions = {
 				actionType: EventEditConstants.EVENTEDIT_TUTORS_CREATE_LECTOR,
 				lector: lector
 			});
+		},
+		selectLectorType(payload){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_TUTORS_SELECT_LECTOR_TYPE,
+				payload: payload
+			});
 		}
 	},
 

@@ -37,12 +37,30 @@
 			height: calc(100% - 57px);
 
 			.testing-list__score{
+				display: none;
 				margin-right: 4px;
+
+				&.testing-list__score--display {
+					display: inline;
+				}
 			}
 
 			.testing-list__percent{
+				display: none;
 				color: #fff;
 				float: right;
+
+				&.testing-list__percent--display {
+					display: inline;
+				}
+			}
+
+			.testing-list__score-is-null{
+				display: none;
+
+				&.testing-list__score-is-null--display {
+					display: inline;
+				}
 			}
 		}
 	}
