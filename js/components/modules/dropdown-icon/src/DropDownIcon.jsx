@@ -97,9 +97,11 @@ class _DropDownIcon extends React.Component {
 					{this.props.icon}
 					<span className={caretClassName}></span>
 				</div>
-				<ul className={classNameList}>
-					{this.props.children}
-				</ul>
+				<div className="dropdown-icon__list-container">
+					<ul className={classNameList}>
+						{this.props.children}
+					</ul>
+				</div>
 			</div>
 		);
 	}

@@ -113,3 +113,18 @@
 .icon-search:before {
   content: "\79";
 }
+.icon-cog:before {
+  content: "\7a";
+}
+.icon-cogs:before {
+  content: "\41";
+}
+.icon-map-marker:before {
+  content: "\42";
+}
+.icon-phone:before {
+  content: "\43";
+}
+.icon-bullhorn:before {
+  content: "\44";
+}

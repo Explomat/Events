@@ -1,0 +1,64 @@
+@import '../../../modules/modal/src/style/modal';
+
+.event-new {
+	@include modal-box;
+	display: block;
+
+	.event-new__modal-box {
+		@include modal-box__dialog;
+		width: 990px;
+
+		.event-new__content {
+			@include modal-box__content;
+
+			.event-new__header{
+				@include modal-box__header;
+				padding: 8px;
+
+				.event-new__title-banner{
+					position: absolute;
+					top: 0;
+				    left: 0;
+					font-weight: bold;
+				    padding: .5em 1em;
+				    -webkit-transform: translate(-30px, -50%);
+				    -ms-transform: translate(-30px, -50%);
+				    transform: translate(-30px, -50%);
+				    color: #fff;
+				    background: #FF5252;
+
+				    &:before {
+				    	position: absolute;
+					    bottom: -20px;
+					    left: 0;
+					    content: '';
+					    border-top: 10px solid rgb(200, 50, 50);
+					    border-right: 15px solid rgb(200, 50, 50);
+					    border-bottom: 10px solid transparent;
+					    border-left: 15px solid transparent;
+				    }
+				}
+			}
+			.event-new__body{
+				@include modal-box__body;
+				height: 400px;
+
+				.event-new__tabs{
+					.event-new__tab{
+						float: left;
+						
+						.event-new__tab-icon{
+
+						}
+						.event-new__tab-name{
+
+						}
+					}
+				}
+			}
+			.event-new__footer{
+				@include modal-box__footer;
+			}
+		}
+	}
+}

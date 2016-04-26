@@ -14,10 +14,6 @@ import '../style/event-edit-base.scss';
 
 class Base extends React.Component {
 
-	constructor(props){
-		super(props);
-	}
-
 	static defaultProps = {
 		places: {nodes:[]}
 	}

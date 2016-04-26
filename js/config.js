@@ -1,10 +1,11 @@
+var servers = require('./servers');
 var routerId = '6238833803725312131';
 var customBaseUrl = 'http://study.merlion.ru/custom_web_template.html';
 
-var servers = [
-	{
-		id: '6230716351040721570',
-		actions: [
+servers
+	.addServer('6230716351040721570')
+	.addActions(
+		[
 			'getData',
 			'getEventsData',
 			'getEventInfo',
@@ -12,11 +13,11 @@ var servers = [
 			'removeCollaborator',
 			'startEvent',
 			'finishEvent'
-		]
-	},
-	{
-		id: '6257108030223689633',
-		actions: [
+		]);
+servers
+	.addServer('6257108030223689633')
+	.addActions(
+		[
 			'saveData',
 			'getEventEditData',
 			'getCollaborators',
@@ -32,21 +33,20 @@ var servers = [
 			'getFiles',
 			'getLibraryMaterials',
 			'addLibraryMaterials',
-			'removeLibraryMaterials'
-		]
-	}
-]
+			'removeLibraryMaterials',
+			'getCollaboratorsForLiveSearch'
+		]);
 
 module.exports = {
 
 	url: {
 		getServerId(_action) {
-			var _servers = servers.filter(s => {
-				var actions = s.actions.filter(action => {
+			var _servers = servers.getAll().filter(s => {
+				var actions = s.getActions().filter(action => {
 					return action === _action;
 				});
 				return actions.length > 0;
-			}).map(s => { return s.id; });
+			}).map(s => { return s.getId(); });
 			return _servers.length > 0 ? _servers[0] : '';
 		},
 
@@ -75,7 +75,8 @@ module.exports = {
 	hashes: {
 		calendar: 'calendar',
 		eventView: 'event/view/{id}',
-		eventEdit: 'event/edit/{id}'
+		eventEdit: 'event/edit/{id}',
+		eventNew: 'event/new'
 	},
 
 	setRouterId(_routerId){
