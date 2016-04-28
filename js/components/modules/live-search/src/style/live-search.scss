@@ -21,6 +21,9 @@
                 -webkit-appearance: none;
                 line-height: 45px;
                 outline: 0;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
             }
         }
         

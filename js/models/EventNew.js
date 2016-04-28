@@ -20,10 +20,14 @@ module.exports = function(args) {
 				text: item.name
 			}
 		}),
+		educationMethods: [],
+		tutors: [],
 
 		selectedType: null,
 		selectedCode: null,
-		selectedEducationOrgId: null
+		selectedEducationOrgId: null,
+		selectedEducationMethodId: null,
+		selectedTutorId: null
 	}
 
 	this.dateTime = {
@@ -39,13 +43,5 @@ module.exports = function(args) {
 
 	this.tutors = {
 		lector: new Lector()
-	}
-
-	this.organizer = {
-		educationMethods: [],
-		tutors: [],
-		
-		selectedEducationMethodId: null,
-		selectedTutorId: null
 	}
 }

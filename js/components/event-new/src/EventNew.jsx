@@ -4,7 +4,6 @@ import Base from './tabs/Base';
 import Datetime from './tabs/Datetime';
 import Place from './tabs/Place';
 import Tutors from './tabs/Tutors';
-import Organizer from './tabs/Organizer';
 import {merge} from 'lodash';
 import cx from 'classnames';
 
@@ -18,7 +17,7 @@ class EventNew extends React.Component {
 
 	constructor(props){
 		super(props);
-		this.tabComponents = {'base': Base, 'dateTime': Datetime, 'place': Place, 'tutors': Tutors, 'organizer': Organizer};
+		this.tabComponents = {'base': Base, 'dateTime': Datetime, 'place': Place, 'tutors': Tutors};
 	}
 
 	state = merge(getEventNewState(), {
@@ -113,7 +112,6 @@ class EventNew extends React.Component {
 		const datetimeClasses = this._getClasses('dateTime');
 		const placeClasses = this._getClasses('place');
 		const tutorsClasses = this._getClasses('tutors');
-		const organizerClasses = this._getClasses('organizer');
 
 		const isFirstTabSelected = this._isFirstTab(this.state.selectedTab);
 		const isLastTabSelected = this._isLastTab(this.state.selectedTab);
@@ -156,10 +154,6 @@ class EventNew extends React.Component {
 								<div onClick={::this.handleSelectTab} className={tutorsClasses} data-name="tutors">
 									<i className="icon-user event-new__tab-icon"></i>
 									<p className="event-new__tab-name">Преподаватель</p>
-								</div>
-								<div onClick={::this.handleSelectTab} className={organizerClasses} data-name="organizer">
-									<i className="icon-bullhorn event-new__tab-icon"></i>
-									<p className="event-new__tab-name">Организатор</p>
 								</div>
 								<div className="event-new__tab">
 									<i className="icon-cogs event-new__tab-icon"></i>

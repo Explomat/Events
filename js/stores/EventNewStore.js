@@ -22,6 +22,12 @@ var base = {
 	},
 	changeEducationOrg(orgId){
 		_eventNew.base.selectedEducationOrgId = orgId;
+	},
+	getEducationMethods(educationMethods){
+		_eventNew.base.educationMethods = educationMethods;
+	},
+	getTutors(tutors){
+		_eventNew.base.tutors = tutors;
 	}
 }
 
@@ -101,6 +107,12 @@ EventNewStore.dispatchToken = AppDispatcher.register(function(payload) {
 			break;
 		case EventNewConstants.EVENT_NEW_CHANGE_EDUCATION_ORG:
 			base.changeEducationOrg(action.orgId);
+			break;
+		case EventNewConstants.EVENT_NEW_GET_EDUCATION_METHODS:
+			base.getEducationMethods(action.educationMethods);
+			break;
+		case EventNewConstants.EVENT_NEW_GET_TUTORS:
+			base.getTutors(action.tutors);
 			break;
 
 		//DATETIME

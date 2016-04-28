@@ -1,6 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import listensToClickOutside from 'react-onclickoutside/decorator';
+import {isEqual} from 'lodash';
 import './style/live-search.scss';
 
 class Item extends React.Component {
@@ -31,6 +32,7 @@ class LiveSearch extends React.Component {
 		this.timeouts = [];
 		this.currentValue = '';
 		this.curKeyUpMilliseconds = 0;
+		this.selected = false;
 	}
 
 	static propTypes = {
@@ -50,6 +52,7 @@ class LiveSearch extends React.Component {
 	}
 
 	state = {
+		state: this.props.value,
 		display: false
 	}
 
@@ -73,38 +76,69 @@ class LiveSearch extends React.Component {
 		this.currentValue = value;
 		this.curKeyUpMilliseconds = Date.now();
 
+		this.setState({value: value});
 		var timeoutID = window.setTimeout(::this._onSearch, this.props.timeoutDelay);
 		this.timeouts.push(timeoutID);
 	}
 
-	componentWillReceiveProps(){
-		this.setState({display: true});
+	_isEqualArrays(firstArr, secondArr){
+		if (firstArr.length !== secondArr.length) {
+			return false;
+		}
+
+		for (var i = firstArr.length - 1; i >= 0; i--) {
+			if (!isEqual(firstArr[i], secondArr[i])){
+				return false;
+			}
+		};
+		return true;
+	}
+
+	componentWillReceiveProps(nextProps){
+		if (this._isEqualArrays(this.props.items, nextProps.items)) {
+			this.setState({display: false});
+		}
+		else {
+			this.setState({display: true});
+		}
+		/*if (this.selected){
+			this.setState({display: false});
+		}
+		else {
+			this.setState({display: true});
+		}*/
 	}
 
 	handleClick(e){
 		this._startSearch(e.target.value);
+		this.selected = false;
 	}
 
 	handleClickOutside(){
 		this.setState({display: false});
+		this.selected = false;
 	}
 
-	handleKeyUp(e){
+	handleChange(e){
 		this._startSearch(e.target.value);
+		this.selected = false;
 	}
 
 	handleFocus(e){
 		this._startSearch(e.target.value);
+		this.selected = false;
 	}
 
 	handleSelect(payload, value){
 		if (this.props.onSelect){
+			this.selected = true;
+			this.setState({value: value});
 			this.props.onSelect(payload, value);
 		}
 	}
 
 	render() {
-		const {value, placeholder} = this.props;
+		const {placeholder} = this.props;
 		const classes = cx('live-search', this.props.className);
 		const contentClasses = cx({
 			'live-search__content': true,
@@ -117,9 +151,9 @@ class LiveSearch extends React.Component {
 						<input
 							onClick={::this.handleClick}
 							onFocus={::this.handleFocus}
-							onKeyUp={::this.handleKeyUp} 
+							onChange={::this.handleChange} 
 							className="live-search__input" 
-							value={value} 
+							value={this.state.value} 
 							placeholder={placeholder} />
 					</span>
 					<div className="live-search__drop">

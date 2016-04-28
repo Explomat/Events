@@ -35,6 +35,22 @@ module.exports = {
 				actionType: EventNewConstants.EVENT_NEW_CHANGE_EDUCATION_ORG,
 				orgId: orgId
 			});
+		},
+		getEducationMethods(filterText){
+			EventNewAPI.getEducationMethods(filterText).then((educationMethods) => {
+				AppDispatcher.handleAction({
+					actionType: EventNewConstants.EVENT_NEW_GET_EDUCATION_METHODS,
+					educationMethods: educationMethods
+				});
+			});
+		},
+		getTutors(filterText){
+			EventNewAPI.getCollaborators(filterText).then((tutors) => {
+				AppDispatcher.handleAction({
+					actionType: EventNewConstants.EVENT_NEW_GET_TUTORS,
+					tutors: tutors
+				});
+			});
 		}
 	},
 

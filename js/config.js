@@ -34,10 +34,10 @@ servers
 			'getLibraryMaterials',
 			'addLibraryMaterials',
 			'removeLibraryMaterials',
-			'getCollaboratorsForLiveSearch',
-			'getLectorsForLiveSearch',
-			'getEducationMethodsForLiveSearch',
-			'getPlacesForLiveSearch',
+			'forLiveSearchGetCollaborators',
+			'forLiveSearchGetLectors',
+			'forLiveSearchGetEducationMethods',
+			'forLiveSearchGetPlaces',
 			'getDataForNewEvent'
 		]);
 

@@ -67,10 +67,22 @@
 				.event-new__tabview{
 					.event-new-base{
 						margin-top: 20px;
-						width: 40%;
+						
+						.event-new-base__base{
+							width: 40%;
+							float: left;
 
-						& > * {
-							margin-bottom: 20px;
+							& > * {
+								margin-bottom: 20px;
+							}
+						}
+						.event-new-base__additional{
+							width: 40%;
+							float: right;
+							
+							& > * {
+								margin-bottom: 20px;
+							}
 						}
 					}
 					.event-new-place{
