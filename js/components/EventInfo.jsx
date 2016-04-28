@@ -173,12 +173,12 @@ class EventInfo extends React.Component {
 	}
 
 	componentDidMount() {
-		EventInfoStore.addChangeListener(this._onChange);
+		EventInfoStore.addChangeListener(this._onChange.bind(this));
 	}
 
 	componentWillUnmount() {
 		EventInfoActions.disposeData();
-		EventInfoStore.removeChangeListener(this._onChange);
+		EventInfoStore.removeChangeListener(this._onChange.bind(this));
 	}
 
 	_onChange() {

@@ -34,7 +34,11 @@ servers
 			'getLibraryMaterials',
 			'addLibraryMaterials',
 			'removeLibraryMaterials',
-			'getCollaboratorsForLiveSearch'
+			'getCollaboratorsForLiveSearch',
+			'getLectorsForLiveSearch',
+			'getEducationMethodsForLiveSearch',
+			'getPlacesForLiveSearch',
+			'getDataForNewEvent'
 		]);
 
 module.exports = {

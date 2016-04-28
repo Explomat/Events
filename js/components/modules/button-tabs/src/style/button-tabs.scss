@@ -1,0 +1,23 @@
+.button-tabs {
+    display: block;
+
+    .button-tabs__tab {
+        display: inline-block;
+        outline: none;
+        padding: 8px;
+        border: 1px solid #ccc;
+        margin-right: -1px;
+        background-color: #fff;
+
+        &:first-child {
+            border-radius: 4px 0 0 4px;
+        } 
+        &:last-child {
+            border-radius: 0 4px 4px 0;
+        }
+
+        &.button-tabs__tab--selected {
+            background-color: #ccc;
+        }
+    }
+}

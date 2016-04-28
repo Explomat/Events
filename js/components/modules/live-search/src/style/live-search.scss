@@ -60,7 +60,7 @@
                     padding: 0;
 
                     .live-search__item {
-                        font: 13px/36px Arial,sans-serif;
+                        font: 13px/20px Arial,sans-serif;
                         overflow: hidden;
                         white-space: nowrap;
                         text-overflow: ellipsis;
@@ -69,7 +69,7 @@
                         color: rgba(0,0,0,.4);
                         cursor: pointer;
                         list-style-type: none;
-                        line-height: 36px;
+                        line-height: 20px;
 
                         &:hover {
                             background-color: #efefef;

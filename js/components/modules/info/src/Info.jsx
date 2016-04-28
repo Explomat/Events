@@ -10,7 +10,7 @@ class Info extends React.Component {
         this.statuses = { info: 'info', error: 'error', done: 'done' };
     }
 
-    static propsTypes = {
+    static propTypes = {
         status: React.PropTypes.string,
         message: React.PropTypes.string,
         isShow: React.PropTypes.bool,

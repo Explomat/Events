@@ -63,13 +63,13 @@ class Base extends React.Component {
 					placeholder="Название *" 
 					className="event-edit-base__name"/>
 				<DropDown 
-					description="Тип мероприятия *"
+					description="Тип *"
 					onChange={this.handleChangeType} 
 					items={this.props.types} 
 					selectedPayload={this.props.selectedType}
 					isReset={true}/>
 				<DropDown 
-					description="Код мероприятия *"
+					description="Код *"
 					onChange={this.handleChangeCode} 
 					items={this.props.codes} 
 					selectedPayload={this.props.selectedCode}

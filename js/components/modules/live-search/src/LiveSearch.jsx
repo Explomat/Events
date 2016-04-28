@@ -105,12 +105,13 @@ class LiveSearch extends React.Component {
 
 	render() {
 		const {value, placeholder} = this.props;
+		const classes = cx('live-search', this.props.className);
 		const contentClasses = cx({
 			'live-search__content': true,
 			'live-search__content--visible': this.state.display
-		})
+		});
 		return (
-			<div className="live-search">
+			<div className={classes}>
 				<div className="live-search__container">
 					<span ref="searchBox" className="live-search__search-box">
 						<input

@@ -22,7 +22,7 @@
     .default-button {
         display: inline-block;
         padding: 0 .5em;
-        background: linear-gradient(#fff, #ddd);
+        background-image: linear-gradient(#fff, #ddd);
         border: 1px solid #ccc;
         border-radius: 2px;
         text-align: center;
@@ -31,6 +31,9 @@
 
         &:active {
             background: linear-gradient(#ddd, #fff);
+        }
+        &.default-button--selected{
+            background: linear-gradient(#f2f2f2, #a0a0a0);
         }
     }
 
@@ -84,7 +87,7 @@
         border-right: 4px solid transparent;
         border-left: 4px solid transparent;
         transition: all 0.3s ease-out 0.02s;
-        color: #646464;
+        color: #444;
 
         &.caret--rotate {
             transform: rotate(180deg);

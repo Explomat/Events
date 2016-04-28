@@ -1,11 +1,12 @@
 import React from 'react';
-import LiveSearch from 'components/modules/live-search';
-import EventNewActions from 'actions/EventNewActions';
 import EventNewStore from 'stores/EventNewStore';
 import Base from './tabs/Base';
-import DateComponent from './tabs/Date';
+import Datetime from './tabs/Datetime';
 import Place from './tabs/Place';
+import Tutors from './tabs/Tutors';
+import Organizer from './tabs/Organizer';
 import {merge} from 'lodash';
+import cx from 'classnames';
 
 import './style/event-new.scss';
 
@@ -17,27 +18,66 @@ class EventNew extends React.Component {
 
 	constructor(props){
 		super(props);
-		this.tabComponents = {'base': Base, 'date': DateComponent, 'place': Place};
+		this.tabComponents = {'base': Base, 'dateTime': Datetime, 'place': Place, 'tutors': Tutors, 'organizer': Organizer};
 	}
 
 	state = merge(getEventNewState(), {
-		selectedTab: { key: 'base', value: 'Основные' }
+		selectedTab: 'base'
 	});
-
-	_prepareCollaborators(items){
-		return items.map((i) => {
-			return {
-				payload: i.id,
-				value: i.fullname,
-				description: i.description
-			}
-		});
-	}
 
 	_getTabView(tabName){
 		var partialState = EventNewStore.getPartialData(tabName);
 		var Component = this.tabComponents[tabName];
 		return Component ? <Component {...partialState}/> : null;
+	}
+
+	_getPrevTabName(selectedTab){
+		var keys = Object.keys(this.tabComponents);
+		for (var i = keys.length - 1; i > 0; i--) {
+			let key = keys[i];
+			if (key === selectedTab) {
+				return keys[i - 1];
+			}
+		};
+		return null;
+	}
+
+	_getNextTabName(selectedTab){
+		var keys = Object.keys(this.tabComponents);
+		for (let i = 0; i < keys.length - 1; i++){
+			let key = keys[i];
+			if (key === selectedTab) {
+				return keys[i + 1];
+			}
+		}
+		return null;
+	}
+
+	_isFirstTab(selectedTab){
+		var keys = Object.keys(this.tabComponents);
+		var firstTab = keys[0];
+
+		if (firstTab && firstTab === selectedTab) {
+			return true;
+		}
+		return false;
+	}
+
+	_isLastTab(selectedTab){
+		var keys = Object.keys(this.tabComponents);
+		var lastTab = keys[keys.length - 1];
+
+		if (lastTab && lastTab === selectedTab) {
+			return true;
+		}
+		return false;
+	}
+
+	_getClasses(tabName){
+		return cx({
+			'event-new__tab': true,
+			'event-new__tab--selected': this.state.selectedTab === tabName
+		});
 	}
 
 	componentDidMount() {
@@ -52,45 +92,72 @@ class EventNew extends React.Component {
 		this.setState(getEventNewState());
 	}
 
-	handleChange(val){
-		EventNewActions.getCollaborators(val);
+	handleSelectTab(e){
+		var target = e.currentTarget;
+		this.setState({selectedTab: target.getAttribute('data-name')});
 	}
 
-	handleSelect(payload){
-		EventNewActions.selectCollaborator(payload);
+	handlePrevClick(){
+		var nextTab = this._getPrevTabName(this.state.selectedTab);
+		this.setState({ selectedTab: nextTab });
+	}
+
+	handleNextClick(){
+		var nextTab = this._getNextTabName(this.state.selectedTab);
+		this.setState({ selectedTab: nextTab });
 	}
 
 	render(){
-		const collaborators = this._prepareCollaborators(this.state.collaborators);
-		var tabView = this._getTabView(this.state.selectedTab.key);
+		var tabView = this._getTabView(this.state.selectedTab);
+		const baseClasses = this._getClasses('base');
+		const datetimeClasses = this._getClasses('dateTime');
+		const placeClasses = this._getClasses('place');
+		const tutorsClasses = this._getClasses('tutors');
+		const organizerClasses = this._getClasses('organizer');
+
+		const isFirstTabSelected = this._isFirstTab(this.state.selectedTab);
+		const isLastTabSelected = this._isLastTab(this.state.selectedTab);
+
+		const prevButtonClasses = cx({
+			'event-btn': true,
+			'event-btn--reverse': true,
+			'event-btn--disabled': isFirstTabSelected,
+			'event-new__prev-button': true
+		});
+		const nextButtonClasses = cx({
+			'event-btn': true,
+			'event-btn--reverse': true,
+			'event-btn--disabled': isLastTabSelected,
+			'event-new__next-button': true
+		});
+
 		return (
 			<div className="event-new">
 				<div className="event-new__modal-box">
 					<div className="event-new__content">
 						<div className="event-new__header">
 							<div className="event-new__title-banner">Создание мероприятия</div>
-							<span>&nbsp;</span>
 							<button type="button" className="close-btn" onClick={this.handleClose}>&times;</button>
 						</div>
 						<div className="event-new__body clearfix">
-							<div className="event-new__tabs">
-								<div className="event-new__tab">
+							<div className="event-new__tabs clearfix">
+								<div onClick={::this.handleSelectTab} className={baseClasses} data-name="base">
 									<i className="icon-cog event-new__tab-icon"></i>
-									<p className="event-new__tab-name">Основное</p>
+									<p className="event-new__tab-name">Основные</p>
 								</div>
-								<div className="event-new__tab">
+								<div onClick={::this.handleSelectTab} className={datetimeClasses} data-name="dateTime">
 									<i className="icon-calendar event-new__tab-icon"></i>
 									<p className="event-new__tab-name">Дата и время</p>
 								</div>
-								<div className="event-new__tab">
+								<div onClick={::this.handleSelectTab} className={placeClasses} data-name="place">
 									<i className="icon-map-marker event-new__tab-icon"></i>
 									<p className="event-new__tab-name">Расположение</p>
 								</div>
-								<div className="event-new__tab">
+								<div onClick={::this.handleSelectTab} className={tutorsClasses} data-name="tutors">
 									<i className="icon-user event-new__tab-icon"></i>
 									<p className="event-new__tab-name">Преподаватель</p>
 								</div>
-								<div className="event-new__tab">
+								<div onClick={::this.handleSelectTab} className={organizerClasses} data-name="organizer">
 									<i className="icon-bullhorn event-new__tab-icon"></i>
 									<p className="event-new__tab-name">Организатор</p>
 								</div>
@@ -100,13 +167,16 @@ class EventNew extends React.Component {
 								</div>
 							</div>
 							<div className="event-new__tabview">{tabView}</div>
-							<LiveSearch
-								onChange={this.handleChange}
-								onSelect={this.handleSelect}
-								items={collaborators}/>
 						</div>
 						<div className="event-new__footer">
-							<button type="button" className="event-btn event-btn--reverse" onClick={this.handleSave}>Сохранить</button>
+							<button type="button" className={prevButtonClasses} disabled={isFirstTabSelected} onClick={::this.handlePrevClick}>
+								<i className="icon-left-open-big event-new__icon-prev"></i>
+								<strong>Назад</strong>
+							</button>
+							<button type="button" className={nextButtonClasses} disabled={isLastTabSelected} onClick={::this.handleNextClick}>
+								<strong>Далее</strong>
+								<i className="icon-right-open-big event-new__icon-next"></i>
+							</button>
 						</div>
 					</div>
 				</div>

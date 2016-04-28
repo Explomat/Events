@@ -6,13 +6,14 @@
 
 	.event-new__modal-box {
 		@include modal-box__dialog;
-		width: 990px;
+		width: 850px;
 
 		.event-new__content {
 			@include modal-box__content;
 
 			.event-new__header{
 				@include modal-box__header;
+				border-bottom: none;
 				padding: 8px;
 
 				.event-new__title-banner{
@@ -41,23 +42,118 @@
 			}
 			.event-new__body{
 				@include modal-box__body;
-				height: 400px;
+				height: 500px;
 
 				.event-new__tabs{
 					.event-new__tab{
 						float: left;
+						width: 16.66%;
+						text-align: center;
+						color: #ccc;
+						cursor: pointer;
+
+						&.event-new__tab--selected {
+							color: #4CAF50;
+						}
 						
 						.event-new__tab-icon{
-
+							font-size: 28px;
 						}
 						.event-new__tab-name{
+							
+						}
+					}
+				}
+				.event-new__tabview{
+					.event-new-base{
+						margin-top: 20px;
+						width: 40%;
 
+						& > * {
+							margin-bottom: 20px;
+						}
+					}
+					.event-new-place{
+						margin-top: 20px;
+						width: 40%;
+					}
+					.event-new-datetime{
+						margin-top: 20px;
+
+						.event-new-date__start{
+							display: inline-block;
+							width: 40%;
+						}
+						.event-new-date__finish{
+							display: inline-block;
+							width: 40%;
+							margin-left: 10%;
+						}
+					}
+					.event-new-tutors{
+						margin-top: 20px;
+
+						.event-new-tutors__lector-types{
+
+						}
+						.event-new-tutors__lector-search-collaborator{
+							display: none;
+							margin-top: 8px;
+
+							&.event-new-tutors__lector-search-collaborator--display {
+								display: block;
+							}
+						}
+						.event-new-tutors__lector-new-search-collaborator{
+							display: none;
+							margin-top: 8px;
+
+							&.event-new-tutors__lector-new-search-collaborator--display {
+								display: block;
+							}
+						}
+						.event-new-tutors__lector-new{
+							display: none;
+							margin-top: 8px;
+
+							&.event-new-tutors__lector-new--display {
+								display: block;
+							}
+						}
+
+						.event-new-tutors__new-lector{
+							display: none;
+							margin-top: 8px;
+							width: 40%;
+
+							&.event-new-tutors__new-lector--display {
+								display: block;
+							}
 						}
 					}
 				}
 			}
 			.event-new__footer{
 				@include modal-box__footer;
+
+				.event-new__prev-button{
+					float: left;
+					padding: 6px 10px;
+
+					.event-new__icon-prev {
+						vertical-align: middle;
+						margin-right: 16px;
+					}
+				}
+
+				.event-new__next-button{
+					padding: 6px 10px;
+
+					.event-new__icon-next {
+						vertical-align: middle;
+						margin-left: 16px;
+					}
+				}
 			}
 		}
 	}
