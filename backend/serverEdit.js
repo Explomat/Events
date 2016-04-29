@@ -1,6 +1,25 @@
 <%
 
+/* 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------  КОНСТАНТЫ  -----------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+*/
 
+CUR_USER_DOC = OpenDoc(UrlFromDocID(curUserID));
+LIBRARY_UPLOAD_SECTION_ID = 6273792921854941289; // Раздел библиотеки - "Материалы для мероприятий"
+LIBRARY_MATERILA_TYPE_ID = 5956480485185946715; // Вид материала библиотеки - "Тренинговый материал"
+LIBRARY_DEFAULT_ORIENTATION = 'vertical'; // Ориентация материала библиотеки - "Вертикальная"
+LIBRARY_MATERIAL_FORMAT_ID = 5974338485996577346; // Формат материала библиотеки - "Документ"
+
+DEFAULT_EDUCATION_ORGS = [
+	{ id: '5919417932074195731', name : 'Учебный центр MERLION'}, 
+	{ id: '5929396429688827825', name : 'ОоИР'}
+];
+TEST_RESULT_THRESHOLDS = [ 0, 50, 80, 100 ];
 
 /* 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -11,7 +30,7 @@
 */
 
 
-
+//Загрузка файла (внутреняя функция)
 function _uploadFile(queryObjects) {
 
 	function _addLink () {
@@ -42,15 +61,14 @@ function _uploadFile(queryObjects) {
 	var error = '';
 
 	try {
-		var userDoc = OpenDoc(UrlFromDocID(curUserID));
-		var docResource = OpenNewDoc( 'x-local://wtv/wtv_resource.xmd' ); 
+		var docResource = tools.new_doc_by_name('resource');		 
 		docResource.TopElem.person_id = curUserID; 
 		docResource.TopElem.allow_unauthorized_download = true; 
 		docResource.TopElem.allow_download = true; 
 		docResource.TopElem.file_name = fileName;
 		docResource.TopElem.name = fileName;
 		docResource.TopElem.type = fileType;
-		docResource.TopElem.person_fullname = userDoc.TopElem.fullname;
+		docResource.TopElem.person_fullname = CUR_USER_DOC.TopElem.fullname;
 		docResource.BindToDb();
 		_addLink();
 		docResource.TopElem.put_str(queryObjects.Body, fileName); 
@@ -67,6 +85,7 @@ function _uploadFile(queryObjects) {
 	}
 }
 
+//Загрузка файла (для вызова с клиента)
 function uploadFile(queryObjects) {
 	var currentFile = _uploadFile(queryObjects);
 	return tools.object_to_text(currentFile,'json');
@@ -74,19 +93,19 @@ function uploadFile(queryObjects) {
 
 function uploadLibraryMaterial(queryObjects) {
 	var currentObject = _uploadFile(queryObjects);
-	var file_id = currentObject.id;
-	var file_name = currentObject.name;
 	var error = '';
 
-	docResource = OpenNewDoc( 'x-local://wtv/wtv_library_material.xmd' ); 
+	docResource = tools.new_doc_by_name('library_material');
 	docResource.TopElem.code = 'CITILINK';
-	docResource.TopElem.name = file_name; 
-	docResource.TopElem.section_id = 6273792921854941289; // раздел в который помещаем документы
-	docResource.TopElem.library_material_type_id = 5956480485185946715; //тренинговый материал
-	docResource.TopElem.unfolded_document.orientation = 'vertical'; // 
-	docResource.TopElem.file_name = file_id;
-	docResource.TopElem.author = OpenDoc(UrlFromDocID(curUserID)).TopElem.firstname + ' ' + OpenDoc(UrlFromDocID(curUserID)).TopElem.lastname;
-	docResource.TopElem.year = Year(Date()); 
+	docResource.TopElem.name = currentObject.name; 
+	docResource.TopElem.section_id = LIBRARY_UPLOAD_SECTION_ID; 
+	docResource.TopElem.library_material_type_id = LIBRARY_MATERILA_TYPE_ID; 
+	docResource.TopElem.unfolded_document.orientation = LIBRARY_DEFAULT_ORIENTATION;  
+	docResource.TopElem.file_name = currentObject.id;
+	docResource.TopElem.author = CUR_USER_DOC.TopElem.firstname + ' ' + CUR_USER_DOC.TopElem.lastname;
+	docResource.TopElem.year = Year(Date());
+	newmaterialView = docResource.TopElem.library_material_formats.AddChild(); 
+	newmaterialView.library_material_format_id = LIBRARY_MATERIAL_FORMAT_ID;  
 	docResource.BindToDb(); 
 	docResource.Save();
 
@@ -108,18 +127,16 @@ function uploadLibraryMaterial(queryObjects) {
 	catch(x)
 	{		
 		error = x;
-		alert("ошибка " + x);	
+		return "ошибка ри конвертации материала бибилотеки, текст ошибки : " + x ;	
 	}
 
 	docResource.TopElem.allow_download = true;
-	newmaterialView = docResource.TopElem.library_material_formats.AddChild(); 
-	newmaterialView.library_material_format_id = Int(5974338485996577346) ; 
 	docResource.Save();
 
 	return tools.object_to_text({
 		id : docResource.DocID + '',
-		name : file_name + '', 
-		year : Year(Date()) + '',
+		name : docResource.name + '', 
+		year : docResource.year + '',
 		author : docResource.TopElem.author + '',
 		error: error 
 	} ,'json')
@@ -272,15 +289,23 @@ function createNotification (queryObjects) {
 	var ids =  data.HasProperty('ids') ?  data.ids : false;
 	var subject = data.HasProperty('subject') ? data.subject : false ;
 	var messeageText = data.HasProperty('body') ? data.body : false ;
-	var senderAdress = OpenDoc(UrlFromDocID(curUserID)).TopElem;
+	try {
+		var senderAdress = OpenDoc(UrlFromDocID(curUserID)).TopElem;
+	} catch (e) {
+		return "Не корректный ID сотрудника (отправителя) уведомления - текст ошибки : " + e;
 
+	}
 	var badPersonArray = [];
 	var notSendRequest = 0;
 
-	if (ids != false && subject != false && messeageText != false) {
+	if ( ids  && subject  && messeageText ) {
 		for (elem in ids) {
-			curAddress = OpenDoc(UrlFromDocID(Int(elem))).TopElem.email;
-			if (curAddress) {
+			try {
+				curUserCardTE = OpenDoc(UrlFromDocID(Int(elem))).TopElem
+			} catch (e) {
+				return "Не корректный ID сотрудника, (получателя) уведомления - текст ошибки : " + e;
+			}
+			if (curUserCardTE) {
 				cardDoc = OpenNewDoc("x-local://wtv/wtv_active_notification.xmd");
 				cardDoc.TopElem.is_custom ='1';
 				cardDoc.TopElem.status ='active';
@@ -290,19 +315,19 @@ function createNotification (queryObjects) {
 				cardDoc.TopElem.body = messeageText;
 				cardDoc.TopElem.body_type = "html";
 				cardDoc.TopElem.recipients.AddChild("recipient");
-				cardDoc.TopElem.recipients[0].address = curAddress;
+				cardDoc.TopElem.recipients[0].address = curUserCardTE.email;
 				cardDoc.TopElem.send_date = Date();
 				cardDoc.BindToDb();
 				cardDoc.Save();
 			} else {
-				curPersonFIO = OpenDoc(UrlFromDocID(Int(elem))).TopElem.fullname;
-				notSendRequest++; 
+				curPersonFIO = curUserCardTE.fullname;
 				badPersonArray.push(curPersonFIO);
+				notSendRequest++; 
 			}
 			
 		}
 	}
-	if (notSendRequest > 0) {
+	if ( notSendRequest > 0 ) {
 		return tools.object_to_text ({
 			notSendRequest : notSendRequest,
 			badPersonArray : badPersonArray
@@ -316,22 +341,23 @@ function processingRequest(queryObjects) {
 	var status = data.HasProperty('status') ? data.status : null;
 	var request_id = data.HasProperty('id') ? Int(data.id) : null;
 	var reason = data.HasProperty('reason') ? data.reason : null;
-	var curRequestCard = OpenDoc(UrlFromDocID(Int(request_id))).TopElem
-
+	try {
+		var curRequestCard = OpenDoc(UrlFromDocID(request_id));
+	} catch (e) {
+		return "Не корректный ID заявки - текст ошибки : " + e;
+	}
 
 	if (request_id != null && status != null ) {
 		if (status == 'close') {
-			tools.close_request(request_id); // Заявка обрабтаывается, сотрудник добавляется в мероприятие
-			requestDoc = OpenDoc(UrlFromDocID(request_id));
-			requestDoc.TopElem.workflow_state = 'sfi0o2';
-			requestDoc.Save();
+			tools.close_request(request_id); 
+			curRequestCard.TopElem.workflow_state = 'sfi0o2';
 		} else {
 			requestDoc = tools.request_rejecting(request_id);
-			requestDoc.TopElem.workflow_state = 's9v8gw';
-			requestDoc.TopElem.comment = reason;
-			requestDoc.Save();
+			curRequestCard.TopElem.workflow_state = 's9v8gw';
+			curRequestCard.TopElem.comment = reason;
 			tools.create_notification('Merlion_19', request_id )
 		}
+		curRequestCard.Save();
 	}
 
 }
@@ -346,6 +372,125 @@ function processingRequest(queryObjects) {
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
+
+function getDataForNewEvent (queryObjects) {
+	return tools.object_to_text({ 
+		base : {
+			educationOrgs : DEFAULT_EDUCATION_ORGS
+			}
+	} , 'json');
+}
+
+function forLiveSearchGetEducationMethods (queryObjects) {
+	var limitRows = queryObjects.HasProperty('limit') ? queryObjects.limit : 5;
+	var filterText = queryObjects.HasProperty('search') ? queryObjects.search : '';
+
+	var eduMethods = [];
+	var eduMethodsArray = XQuery("sql:select 
+			top " + limitRows + " education_methods.id, 
+			REPLACE(education_methods.name,'\"', '' ) as name,
+			education_methods.education_org_id
+			from 
+				education_methods
+			where
+				education_methods.name LIKE '%"+filterText+"%'	 
+			order by 
+				education_methods.name asc");
+
+		for ( edu in eduMethodsArray ) {
+			descr = OpenDoc(UrlFromDocID(edu.education_org_id)).TopElem.name;
+			eduMethods.push({ 
+				payload: Int(edu.id), 
+				value: edu.name + '', 
+				description: descr + ''
+			});
+		}
+	return tools.object_to_text( eduMethods , 'json');
+}
+
+function forLiveSearchGetLectors (queryObjects) {
+	var limitRows = queryObjects.HasProperty('limit') ? queryObjects.limit : 5;
+	var filterText = queryObjects.HasProperty('search') ? queryObjects.search : '';
+	var type = queryObjects.HasProperty('type') ? queryObjects.type : '';
+
+	var lectors = [];
+	var lectorsArray = XQuery("sql:select 
+			top " + limitRows + " lectors.id, 
+			REPLACE(lectors.lector_fullname,'\"', '' ) as name,
+			lectors.type
+			from 
+				lectors
+			where
+				lectors.lector_fullname LIKE '%"+filterText+"%' and
+				lectors.type LIKE '%"+type+"%'	 
+			order by 
+				lectors.lector_fullname asc");
+
+		for ( lect in lectorsArray ) {
+			decsr = lect.type == 'collaborator' ? 'Внутренний' : 'Внешний';
+			lectors.push({ 
+				payload: Int(lect.id), 
+				value: lect.name + '', 
+				description: decsr + ''
+			});
+		}
+	return tools.object_to_text( lectors , 'json');
+}
+
+function forLiveSearchGetPlaces (queryObjects) {
+	var limitRows = queryObjects.HasProperty('limit') ? queryObjects.limit : 5;
+	var filterText = queryObjects.HasProperty('search') ? queryObjects.search : '';
+
+	var places = [];
+	var placesArray = XQuery("sql:select 
+			top " + limitRows + " p.id, 
+			REPLACE(p.name,'\"', '' ) as name,
+			p.parent_id, 
+			r.name as region_name 
+			from 
+				places p left join regions r on p.region_id=r.id
+			where
+				p.name LIKE '%"+filterText+"%'	 
+			order by 
+				p.name asc");
+
+		for ( pl in placesArray ) {
+			places.push({ 
+				payload: Int(pl.id), 
+				value:pl.name + '', 
+				description: pl.region_name + ''
+			});
+		}
+	return tools.object_to_text( places , 'json');
+}
+
+function forLiveSearchGetCollaborators (queryObjects) {
+	var limitRows = queryObjects.HasProperty('limit') ? queryObjects.limit : 5;
+	var filterText = queryObjects.HasProperty('search') ? queryObjects.search : '';
+
+	var basicCollaboratorsArray = XQuery("sql:select
+			top " + limitRows + " CONVERT(BIGINT, collaborators.id) as id, 
+			REPLACE(collaborators.fullname, '\"', '') as name,
+			collaborators.position_parent_name as subdivision,
+			collaborators.position_name as position
+			from 
+				collaborators
+			where 
+				collaborators.fullname LIKE '%"+filterText+"%' and
+				collaborators.is_dismiss = 'false' 
+			order by 
+				collaborators.fullname asc");
+
+	var collaboratorsArray = [];
+	for (colab in basicCollaboratorsArray) {
+		collaboratorsArray.push({ 
+			payload: Int(colab.id),
+			value: colab.name + '', 
+			description: String(colab.subdivision+' / '+colab.position)		 
+		});
+	}
+	return tools.object_to_text( collaboratorsArray , 'json');
+}
 
 function getCollaborators (queryObjects) {
 	var limitRows = 20; // кол-во выдаваемых записей
@@ -705,23 +850,36 @@ function getEducationMethod (queryObjects) {
 function getEventLibraryMaterials (queryObjects) {
 
 	var eventID = queryObjects.HasProperty('event_id') ? Int(queryObjects.event_id) : null;
-	var eventDocTE = OpenDoc(UrlFromDocID(Int(eventID))).TopElem; 
+	try {
+		var eventDocTE = OpenDoc(UrlFromDocID(Int(eventID))).TopElem; 
+	} catch (e) {
+		return "Не корректный ID мероприятия, текст ошибки : " + e;
+	}
+	var meterialArrayFieldValue = eventDocTE.custom_elems.ObtainChildByKey('allMaterials').value;
 	var resultArray = [];
-	if (eventDocTE.custom_elems.ObtainChildByKey('allMaterials').value != '') {
-		var libraryMaterials = String(eventDocTE.custom_elems.ObtainChildByKey('allMaterials').value).split(';');
+	if (meterialArrayFieldValue != '') {
+		var libraryMaterials = String(meterialArrayFieldValue).split(';');
 		for (material in libraryMaterials) {
-			curMaterial = OpenDoc(UrlFromDocID(Int(material))).TopElem;
+			try {
+				materialID = Int(material);
+				curMaterial = OpenDoc(UrlFromDocID(materialID)).TopElem;
+			} catch (e) {
+				return "Не корретктный ID материала бибилотеки (доп. поле - allMaterials)";
+			}
 			name = curMaterial.name == '' ? "Безимянный" : curMaterial.name;
 			year = curMaterial.year == null ? Year(Date()) : curMaterial.year;
-			author = curMaterial.author == '' ? OpenDoc(UrlFromDocID(curMaterial.doc_info.creation.user_id)).TopElem.fullname : curMaterial.author;
+			try {
+				author = curMaterial.author == '' ? OpenDoc(UrlFromDocID(curMaterial.doc_info.creation.user_id)).TopElem.fullname : curMaterial.author;	
+			} catch (e) {
+				return "Не кореектный ID создателя материала библиотеки"
+			}
 			resultArray.push({
-				id : Int(material),
+				id : materialID,
 				name : name + '',
 				year : year + '',
 				author : author + ''
 			})
-		}
-	   
+		} 
 	}
 	 return resultArray;
 }
@@ -730,140 +888,125 @@ function getEventLibraryMaterials (queryObjects) {
 
 function getEventRequests (queryObjects) {
 
-	var eventID = queryObjects.HasProperty('event_id') ? Int(queryObjects.event_id) : null; 
-	var eventDocTE = OpenDoc(UrlFromDocID(Int(eventID))).TopElem; 
-
-	var tutorAccept = eventDocTE.custom_elems.ObtainChildByKey('main_tutor_accept').value == 'true' ? true : false;
-	var funcManagerAccept = eventDocTE.custom_elems.ObtainChildByKey('func_manager_accept').value == 'true' ? true : false;
-
-
-	if (eventID != null) {
-		basicRequestsArray = XQuery("sql: select 
-		 requests.id as id,
-		 requests.status_id as status,
-		 requests.person_fullname as fullname,
-		 requests.person_id as personId,
-		 colab.position_name as position,
-		 colab.position_parent_name as subdivision
-		 from
-		 	requests
-		 	inner join collaborators as colab on requests.person_id = colab.id
-		 where
-		 	(requests.workflow_state = 'schhk0' or
-		 	requests.workflow_state = 's9v8gw' or
-		 	requests.workflow_state = 'sfi0o2') and
-		 	requests.type = 'event' and
-		 	requests.object_id = " + eventID + "
-		 	order by requests.person_fullname asc");
+	var eventID = queryObjects.HasProperty('event_id') ? Int(queryObjects.event_id) : null;
+	try {
+		var eventDocTE = OpenDoc(UrlFromDocID(eventID)).TopElem; 
+	} catch (e) {
+		return "Не корректный ID меропирятия (заявки мероприятия), текст ошибки : " + e;
+	}
+	basicRequestsArray = XQuery("sql: select 
+		requests.id as id,
+		requests.status_id as status,
+		requests.person_fullname as fullname,
+		requests.person_id as personId,
+		colab.position_name as position,
+		colab.position_parent_name as subdivision
+	from
+		requests
+		inner join collaborators as colab on requests.person_id = colab.id
+	where
+		(requests.workflow_state = 'schhk0' or
+		requests.workflow_state = 's9v8gw' or
+		requests.workflow_state = 'sfi0o2') and
+		requests.type = 'event' and
+		requests.object_id = " + eventID + "
+		order by requests.person_fullname asc");
 	
+	var requestsArray = [];
+	for (r in basicRequestsArray) {
+		requestsArray.push({ 
+			id: Int(r.id), 
+			fullname : r.fullname + '',
+			subdivision: r.subdivision + '',
+			position: r.position + '',
+			status: r.status + ''
+		});
+	}
 
-		var requestsArray = [];
-		for (r in basicRequestsArray) {
-			requestsArray.push({ 
-				id: Int(r.id), 
-				fullname : r.fullname + '',
-				subdivision: r.subdivision + '',
-				position: r.position + '',
-				status: r.status + ''
-			});
-		}
-
-		var date_request_begin = eventDocTE.date_request_begin == null ? Date() : eventDocTE.date_request_begin;
-		var date_request_over = eventDocTE.date_request_over == null ? Date() : eventDocTE.date_request_over;
-		if (eventDocTE.custom_elems.ObtainChildByKey('func_manager_accept').value.HasValue) {
-			var isApproveByBoss = eventDocTE.custom_elems.ObtainChildByKey('func_manager_accept').value
-		} else {
-			var isApproveByBoss = false
-		}
-		if (eventDocTE.custom_elems.ObtainChildByKey('main_tutor_accept').value.HasValue) {
-			var isApproveByTutor = eventDocTE.custom_elems.ObtainChildByKey('main_tutor_accept').value
-		} else {
-			var isApproveByTutor = false
-		}
-        var default_request_type_id = eventDocTE.default_request_type_id; 
-
-		return {
-			isOpen : eventDocTE.is_open + '',
-			requestBeginDate : StrMimeDate(date_request_begin) + '',
-			requestOverDate : StrMimeDate(date_request_over) + '',
-			isApproveByBoss : isApproveByBoss + '',
-			isApproveByTutor : isApproveByTutor + '',
-			requestItems: requestsArray
-		}
+	var date_request_begin = eventDocTE.date_request_begin == null ? Date() : eventDocTE.date_request_begin;
+	var date_request_over = eventDocTE.date_request_over == null ? Date() : eventDocTE.date_request_over;
+	var isApproveByBoss = eventDocTE.custom_elems.ObtainChildByKey('func_manager_accept').value == 'true' ? true : false;
+	var isApproveByTutor = eventDocTE.custom_elems.ObtainChildByKey('main_tutor_accept').value == 'true' ? true : false;
+	return {
+		isOpen : eventDocTE.is_open + '',
+		requestBeginDate : StrMimeDate(date_request_begin) + '',
+		requestOverDate : StrMimeDate(date_request_over) + '',
+		isApproveByBoss : isApproveByBoss + '',
+		isApproveByTutor : isApproveByTutor + '',
+		requestItems: requestsArray
 	}
 }
 
 function getEventTests (queryObjects) {
 
 	var eventID = queryObjects.HasProperty('event_id') ? Int(queryObjects.event_id) : null;
-	if (eventID != null) {
+	try {
+		var eventDocTE = OpenDoc(UrlFromDocID(eventID)).TopElem; 
+	} catch (e) {
+		return "Не корректный ID меропирятия (тесты мероприятия), текст ошибки : " + e;
+	}
 
-		var eventDocTE = OpenDoc(UrlFromDocID(Int(eventID))).TopElem;
+	var isPostTestOnlyForAssisst = eventDocTE.custom_elems.ObtainChildByKey('post_test_for_assisst').value == 'true' ? true : false;
+	var prevTests = [];
+	var postTests = [];
+	for (assessment in eventDocTE.prev_testing.assessments) {
+		prevTests.push({
+			id : Int(assessment.assessment_id),
+			name : assessment.assessment_id.ForeignElem.title + '',
+			type : 'prev'
+		})
+	}
 
-/*		var isPrevTests = eventDocTE.prev_testing.auto_assign;
-		var isPostTests = eventDocTE.post_testing.auto_assign;*/
-		var isPostTestOnlyForAssisst = eventDocTE.custom_elems.ObtainChildByKey('post_test_for_assisst').value == 'true' ? true : false;
-		var prevTests = [];
-		var postTests = [];
-		for (assessment in eventDocTE.prev_testing.assessments) {
-			prevTests.push({
-				id : Int(assessment.assessment_id),
-				name : assessment.assessment_id.ForeignElem.title + '',
-				type : 'prev'
-			})
-		}
+	for (assessment in eventDocTE.post_testing.assessments) {
+		postTests.push({
+			id : Int(assessment.assessment_id),
+			name : assessment.assessment_id.ForeignElem.title + '',
+			type : 'post'
+		})
+	}
 
-		for (assessment in eventDocTE.post_testing.assessments) {
-			postTests.push({
-				id : Int(assessment.assessment_id),
-				name : assessment.assessment_id.ForeignElem.title + '',
-				type : 'post'
-			})
-		}
 
-	
-		basicActiveTestsArray = XQuery("sql: select 
-			active_test_learnings.id as id,
-			active_test_learnings.person_id as personId,
-			active_test_learnings.person_fullname as personFIO, 
-			active_test_learnings.assessment_name as assessment_name,
-			active_test_learnings.score as score,
-			0 as maxscore
-		from
-			active_test_learnings
-		where
-			active_test_learnings.event_id = " + eventID + "
-		UNION
-		select 
-			test_learnings.id as id,
-			test_learnings.person_id as personId,
-			test_learnings.person_fullname as personFIO,
-			test_learnings.assessment_name as assessment_name,
-			test_learnings.score as score,
-			test_learnings.max_score as maxscore
-		from
-			test_learnings
-		where
-			test_learnings.event_id =" + eventID + "
-		order by personFIO asc");
-	
+	basicActiveTestsArray = XQuery("sql: select 
+		active_test_learnings.id as id,
+		active_test_learnings.person_id as personId,
+		active_test_learnings.person_fullname as personFIO, 
+		active_test_learnings.assessment_name as assessment_name,
+		active_test_learnings.score as score,
+		0 as maxscore
+	from
+		active_test_learnings
+	where
+		active_test_learnings.event_id = " + eventID + "
+	UNION
+	select 
+		test_learnings.id as id,
+		test_learnings.person_id as personId,
+		test_learnings.person_fullname as personFIO,
+		test_learnings.assessment_name as assessment_name,
+		test_learnings.score as score,
+		test_learnings.max_score as maxscore
+	from
+		test_learnings
+	where
+		test_learnings.event_id =" + eventID + "
+	order by personFIO asc");
 
-		var testsArray = [];
-		for (at in basicActiveTestsArray) {
-			testsArray.push({ 
-				id : Int(at.id), 
-				fullname : at.personFIO + '',
-				assessmentName : at.assessment_name + '',
-				score : at.score + '',
-				maxscore : at.maxscore + ''
-			});
-		}
-		return {
-			allTests : ArrayUnion(prevTests, postTests),
-			isPostTestOnlyForAssisst : isPostTestOnlyForAssisst + '',
-			testingList: testsArray,
-			thresholds: [ 0, 50, 80, 100 ]
-		}
+
+	var testsArray = [];
+	for (at in basicActiveTestsArray) {
+		testsArray.push({ 
+			id : Int(at.id), 
+			fullname : at.personFIO + '',
+			assessmentName : at.assessment_name + '',
+			score : at.score + '',
+			maxscore : at.maxscore + ''
+		});
+	}
+	return {
+		allTests : ArrayUnion(prevTests, postTests),
+		isPostTestOnlyForAssisst : isPostTestOnlyForAssisst + '',
+		testingList: testsArray,
+		thresholds: TEST_RESULT_THRESHOLDS
 	}
 }
 
@@ -871,7 +1014,7 @@ function getEventCourses (queryObjects) {
 
 	var eventID = queryObjects.HasProperty('event_id') ? Int(queryObjects.event_id) : null; 
 
-	if (eventID != null) {
+	if (eventID) {
 		basicActiveCoursesArray = XQuery("sql: select 
 			active_learnings.id as id,
 			active_learnings.person_id as personId,
@@ -911,6 +1054,8 @@ function getEventCourses (queryObjects) {
 		return {
 			courses: requestsArray
 		}
+	} else {
+		return "Не корреткный ID мероприятия";
 	}
 }
 
@@ -922,13 +1067,16 @@ function getEventFiles (queryObjects) {
 		var filesArray = [];
 		var basicFilesArray = OpenDoc(UrlFromDocID(eventID)).TopElem.files;
 		for (f in basicFilesArray) {
-			curFile = OpenDoc(UrlFromDocID(f.file_id)).TopElem;
+			try {
+				curFile = OpenDoc(UrlFromDocID(f.file_id)).TopElem;
+			} catch (e) {
+				return "Не корреткный ID файла в мероприятии, текст ошибки : " + e;
+			}			
 			filesArray.push({
 				id: Int(f.file_id),
 				name: curFile.name + '',
 				type: curFile.type + '',
 				isAllowDownload : curFile.allow_download + ''
-				//isAllowUnauthorizedDownload : curFile.allow_unauthorized_download + '' // будем использовать для отображения
 			});
 		}
 
@@ -938,131 +1086,146 @@ function getEventFiles (queryObjects) {
 			files: filesArray,
 			libraryMaterials: lm
 		}
+	} else {
+		return "Не корреткный ID мероприятия";
 	}
 }
 
 function getEventPlaces(queryObjects) {
 
+	function _filterTrees(trees) {
+		for (var i = 0; i < trees.length; i++) {
+			curNode = trees[i];
+			if (curNode.HasProperty('children')) {
+				trees[i] = { id:curNode.id, name: curNode.name, descr:curNode.descr, children:curNode.children };
+				_filterTrees(curNode.children);
+			}
+			else
+				trees[i] = { id:curNode.id, name:curNode.name, descr:curNode.descr };
+		}
+	}
+
+	function _getChildren(arr, id) {
+		var children = [];
+		for (var ch = arr.length - 1; ch >= 0; ch--) {
+			child = arr[ch];
+			if (!child.checked) {
+				if (String(id) == String(child.parentId)) {
+					children.push(child);
+					child.checked = true;
+				}
+			}
+		}
+		return children;
+	}
+
+	function _getGraphs(arr) { 
+		for (var nId = 0; nId < arr.length; nId++){
+			node = arr[nId];
+			stack = [ node ];
+			while(stack.length > 0) {
+				_node = stack[stack.length - 1];
+				stack.splice(stack.length - 1, 1);
+				children = _getChildren(arr, _node.id);
+				if (children.length > 0) {
+					_node.children = children;
+					for (i = children.length - 1; i >= 0; i--) {
+						stack.push(children[i]);
+					};
+				}
+			}
+		}
+		return arr;
+	}
+
+	function _getTree(arr){
+		var  allGraphs = _getGraphs(arr);
+		var trees = [];
+		for (var i = allGraphs.length - 1; i >= 0; i--) {
+			_node = allGraphs[i];
+			if (!_node.checked)
+				trees.push(_node); 
+		};
+		_filterTrees(trees);
+		return trees;
+	}
+
 	var eventID = queryObjects.HasProperty('event_id') ? Int(queryObjects.event_id) : null;
-	var eventIDTE = OpenDoc(UrlFromDocID(Int(eventID))).TopElem;
-
-	if (eventID != null) {
-		function _filterTrees(trees) {
-			for (var i = 0; i < trees.length; i++) {
-				curNode = trees[i];
-				if (curNode.HasProperty('children')) {
-					trees[i] = { id:curNode.id, name: curNode.name, descr:curNode.descr, children:curNode.children };
-					_filterTrees(curNode.children);
-				}
-				else
-					trees[i] = { id:curNode.id, name:curNode.name, descr:curNode.descr };
-			}
-		}
-
-		function _getChildren(arr, id) {
-			var children = [];
-			for (var ch = arr.length - 1; ch >= 0; ch--) {
-				child = arr[ch];
-				if (!child.checked) {
-					if (String(id) == String(child.parentId)) {
-						children.push(child);
-						child.checked = true;
-					}
-				}
-			}
-			return children;
-		}
-
-		function _getGraphs(arr) { 
-			for (var nId = 0; nId < arr.length; nId++){
-				node = arr[nId];
-				stack = [ node ];
-				while(stack.length > 0) {
-					_node = stack[stack.length - 1];
-					stack.splice(stack.length - 1, 1);
-					children = _getChildren(arr, _node.id);
-					if (children.length > 0) {
-						_node.children = children;
-						for (i = children.length - 1; i >= 0; i--) {
-							stack.push(children[i]);
-						};
-					}
-				}
-			}
-			return arr;
-		}
-
-		function _getTree(arr){
-			var  allGraphs = _getGraphs(arr);
-			var trees = [];
-			for (var i = allGraphs.length - 1; i >= 0; i--) {
-				_node = allGraphs[i];
-				if (!_node.checked)
-					trees.push(_node); 
-			};
-			_filterTrees(trees);
-			return trees;
-		}
+	try {
+		var eventDocTE = OpenDoc(UrlFromDocID(eventID)).TopElem; 
+	} catch (e) {
+		return "Не корректный ID меропирятия (расположение мероприятия), текст ошибки : " + e;
 	}
+	if ( eventDocTE.place_id.HasValue ) {
+		var places = [];
+		for (pl in XQuery("sql:select p.id, REPLACE(p.name,'\"', '' ) as name, p.parent_id, r.name as region_name from places p left join regions r on p.region_id=r.id order by p.name desc")){
+			id = pl.id == null ? 'null' : pl.id + '';
+			name = pl.name == null ? 'null' : pl.name + '';
+			parentId = pl.parent_id == null ? 'null' : pl.parent_id + '';
+			regionName = pl.region_name == null ? '' : pl.region_name + '';
+			places.push({ id:id, name:name, parentId:parentId, descr: regionName, checked:false });
+		}
 
-	var places = [];
-	for (pl in XQuery("sql:select p.id, REPLACE(p.name,'\"', '' ) as name, p.parent_id, r.name as region_name from places p left join regions r on p.region_id=r.id order by p.name desc")){
-		id = pl.id == null ? 'null' : pl.id + '';
-		name = pl.name == null ? 'null' : pl.name + '';
-		parentId = pl.parent_id == null ? 'null' : pl.parent_id + '';
-		regionName = pl.region_name == null ? '' : pl.region_name + '';
-		places.push({ id:id, name:name, parentId:parentId, descr: regionName, checked:false });
+		var tree = _getTree(places);
+		return {
+			selectedNode: { 
+				id : eventDocTE.place_id + '', 
+				name : eventDocTE.place_id.ForeignElem.name + ''
+			},
+			nodes: tree
+		};
+	} else {
+		return "Отсутсвует расположение";
 	}
-
-	var tree = _getTree(places);
-	return {
-		selectedNode: { 
-			id : eventIDTE.place_id + '', 
-			name : OpenDoc(UrlFromDocID(Int(eventIDTE.place_id))).TopElem.name + ''
-		},
-		nodes: tree
-	};
 }
 
 function getEventBaseData (queryObjects) {
 	var eventID = queryObjects.HasProperty('event_id') ? Int(queryObjects.event_id) : null;
-	var eventCard = XQuery("sql: select 
-		REPLACE(events.name,'\"', '''' ) as name,
-		events.type_id,
-		events.code,
-		events.start_date,
-		events.finish_date,
-		events.education_org_id,
-		events.education_method_id
-		from 
-			events
-		where
-			events.id =" + eventID);
+	if ( eventID ) {
+		var eventsArray = XQuery("sql: select 
+			REPLACE(events.name,'\"', '''' ) as name,
+			events.type_id,
+			events.code,
+			events.start_date,
+			events.finish_date,
+			events.education_org_id,
+			events.education_method_id
+			from 
+				events
+			where
+				events.id =" + eventID);
 
-	for (ev in eventCard) {
-		basicData = {};
-		basicData.name = ev.name + '';
-		basicData.selectedType = ev.type_id + '';
-		basicData.selectedCode = ev.code + '';
-		basicData.startDateTime = StrMimeDate(ev.start_date) + '';
-		basicData.finishDateTime = StrMimeDate(ev.finish_date) + '';
-		basicData.educationOrgs = [{ id: '5919417932074195731', name : 'Учебный центр MERLION'}, { id: '5929396429688827825', name : 'ОоИР'}];
-		basicData.selectedEducationOrgId = ev.education_org_id + '';
-		basicData.selectedEducationMethod = {
-		id : Int(ev.education_method_id),
-		data : {
-			name : OpenDoc(UrlFromDocID(Int(ev.education_method_id))).TopElem.name + ''
-		}	
-	},
-	basicData.places = getEventPlaces(queryObjects);
+		for (ev in eventsArray) {
+			basicData = {};
+			basicData.name = ev.name + '';
+			basicData.selectedType = ev.type_id + '';
+			basicData.selectedCode = ev.code + '';
+			basicData.startDateTime = StrMimeDate(ev.start_date) + '';
+			basicData.finishDateTime = StrMimeDate(ev.finish_date) + '';
+			basicData.educationOrgs = DEFAULT_EDUCATION_ORGS;
+			basicData.selectedEducationOrgId = ev.education_org_id + '';
+			if ( ev.education_method_id.HasValue ) {
+				basicData.selectedEducationMethod = {
+					id : Int(ev.education_method_id),
+					data : {
+						name : OpenDoc(UrlFromDocID(ev.education_method_id)).TopElem.name + ''
+					}
+				}	
+			} else {
+				basicData.selectedEducationMethod = null
+			}		
+		}
+		basicData.places = getEventPlaces(queryObjects);
+		return basicData;
+	} else {
+		return "Некорректный ID мепроприятия";
 	}
-return basicData
 }
 
 function getEventCollaborators (queryObjects) {
 	var eventID = queryObjects.HasProperty('event_id') ? Int(queryObjects.event_id) : null;
 
-	if (eventID != null) {
+	if ( eventID ) {
 		var collaboratorArray = [];
 		var basicCollaboratorArray = XQuery("sql: select * 
 			from 
@@ -1080,6 +1243,8 @@ function getEventCollaborators (queryObjects) {
 		}
 
 		return collaboratorArray;
+	} else {
+		return "Не корректный ID мепроприятия";
 	}
 }
 
@@ -1087,56 +1252,58 @@ function getEventCollaborators (queryObjects) {
 function getEventTutors (queryObjects) {
 	var eventID = queryObjects.HasProperty('event_id') ? Int(queryObjects.event_id) : null;
 
-	if (eventID != null) {
-		var eventDocTE = OpenDoc(UrlFromDocID(Int(eventID))).TopElem; 
+	try {
+		var eventDocTE = OpenDoc(UrlFromDocID(eventID)).TopElem; 
+	} catch (e) {
+		return "Не корректный ID меропирятия (расположение мероприятия), текст ошибки : " + e;
+	}
+	var tutorsArray = [];
+	var lectorsArray = [];
 
-		var tutorsArray = [];
-		var lectorsArray = [];
+	for (tutor in ArraySort(eventDocTE.tutors, 'person_fullname', '+')) {
+		tutorsArray.push({
+			id : Int(tutor.collaborator_id),
+			fullname : tutor.person_fullname + '', 
+			subdivision : tutor.person_subdivision_name + '', 
+			position : tutor.person_position_name + '',
+			main : tutor.main + ''
+		})
+	}
 
-		for (tutor in ArraySort(eventDocTE.tutors, 'person_fullname', '+')) {
-			tutorsArray.push({
-				id : Int(tutor.collaborator_id),
-				fullname : tutor.person_fullname + '', 
-				subdivision : tutor.person_subdivision_name + '', 
-				position : tutor.person_position_name + '',
-				main : tutor.main + ''
-			})
+	for (lector in XQuery("sql: select 
+			event_lectors.lector_fullname, 
+			event_lectors.type, 
+			event_lectors.lector_id, 
+			event_lectors.person_id 
+		from 
+			event_lectors 
+		where 
+			event_lectors.event_id = "+eventID+"
+		order by event_lectors.lector_fullname asc")) {
+		if (lector.type == 'collaborator') {
+			curPersonCard = OpenDoc(UrlFromDocID(lector.person_id)).TopElem;
+			lectorsArray.push({
+				id : Int(lector.lector_id),
+				lastName : curPersonCard.lastname + '',
+				firstName : curPersonCard.firstname + '',
+				middleName : curPersonCard.middlename + '',
+				type : lector.type + '' 
+			}) 	 
+		} else {
+			curPersonCard = OpenDoc(UrlFromDocID(lector.lector_id)).TopElem;
+			lectorsArray.push({
+				id : Int(lector.lector_id),
+				lastName : curPersonCard.lastname + '',
+				firstName : curPersonCard.firstname + '',
+				middleName : curPersonCard.middlename + '',
+				type : curPersonCard.type + '' 
+			}) 	 
 		}
+	}
 
-		for (lector in XQuery("sql: select 
-				event_lectors.lector_fullname, 
-				event_lectors.type, 
-				event_lectors.lector_id, 
-				event_lectors.person_id 
-			from 
-				event_lectors 
-			where 
-				event_lectors.event_id = "+eventID+"
-			order by event_lectors.lector_fullname asc")) {
-			if (lector.type == 'collaborator') {
-				curPersonCard = OpenDoc(UrlFromDocID(lector.person_id)).TopElem;
-				lectorsArray.push({
-					id : Int(lector.lector_id),
-					lastName : curPersonCard.lastname + '',
-					firstName : curPersonCard.firstname + '',
-					middleName : curPersonCard.middlename + '',
-					type : lector.type + '' 
-				}) 	 
-			} else {
-				lectorsArray.push({
-					id : Int(lector.lector_id),
-					lastName : lector.lastname + '',
-					firstName : lector.firstname + '',
-					middleName : lector.middlename + '',
-					type : lector.type + '' 
-				}) 	 
-			}
-		}
-
-		return {
-			tutors : tutorsArray,
-			lectors : lectorsArray
-		}
+	return {
+		tutors : tutorsArray,
+		lectors : lectorsArray
 	}
 }
 
@@ -1307,13 +1474,13 @@ function saveData(queryObjects) {
 			}
 		}
 		function _isNew (id) {
-			return ( ArrayCount(XQuery("for $elem in lectors where $elem/id = '+id+' return $elem")) == 0 )
+			return ( ArrayCount(XQuery("for $elem in lectors where $elem/id = "+id+" return $elem")) == 0 )
 		}
 
 		// Данные с клиента
 		var newLectorsArray = data.lectors;
 		var newTutorsArray = data.tutors;
-		alert(tools.object_to_text(newTutorsArray, 'json'))
+
 
 		// Обновление массивов, если было удаление на клиенте, убираем в карточке
 		_refreshTutors(curEventCard.TopElem.tutors, newTutorsArray);
@@ -1324,9 +1491,8 @@ function saveData(queryObjects) {
 		for (tutor in newTutorsArray) {
 			if ( !_isColabExist(curEventCard.TopElem.tutors, tutor.id) ) {
 				newTutor = curEventCard.TopElem.tutors.ObtainChildByKey( Int(tutor.id) );
-				alert(tutor.main)
 				newTutor.main = tutor.main;
-				tools.common_filling( 'collaborator', newTutor, Int(tutor.id));
+				tools.common_filling( 'collaborator', newTutor, Int(tutor.id) );
 				curEventCard.Save();
 			} else {
 				newTutor = curEventCard.TopElem.tutors.ObtainChildByKey( Int(tutor.id) );
@@ -1343,14 +1509,16 @@ function saveData(queryObjects) {
 					doc.TopElem.person_id = Int(lector.id);
 				} else {
 					doc.TopElem.type = 'invitee';
-					doc.TopElem.lastName = lector.lastName
-					doc.TopElem.middleName = lector.middleName
-					doc.TopElem.firstName = lector.firstName
+					doc.TopElem.lastname = lector.lastName
+					doc.TopElem.middlename = lector.middleName
+					doc.TopElem.firstname = lector.firstName
 					doc.TopElem.email = lector.email
 					doc.TopElem.comment = lector.company;
 				}
 				doc.BindToDb(DefaultDb);
 				doc.Save();
+				newLector = curEventCard.TopElem.lectors.ObtainChildByKey( Int(doc.DocID) );
+				curEventCard.Save();	
 			} else {
 				if ( !_isLectorExist(curEventCard.TopElem.lectors, Int(lector.id)) ) {
 					newLector = curEventCard.TopElem.lectors.ObtainChildByKey( Int(lector.id) );
