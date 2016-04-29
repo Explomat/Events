@@ -130,3 +130,9 @@
 .icon-bullhorn:before {
   content: "\44";
 }
+.icon-page-search:before {
+  content: "\45";
+}
+.icon-magnifying-glass:before {
+  content: "\46";
+}

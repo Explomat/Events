@@ -6,7 +6,7 @@
 
 	.event-new__modal-box {
 		@include modal-box__dialog;
-		width: 850px;
+		width: 750px;
 
 		.event-new__content {
 			@include modal-box__content;
@@ -69,36 +69,48 @@
 						margin-top: 20px;
 						
 						.event-new-base__base{
-							width: 40%;
+							width: 45%;
 							float: left;
 
-							& > * {
+							.event-new-base__name{
 								margin-bottom: 20px;
+							}
+
+							.event-new-base__type{
+								margin-bottom: 20px;
+							}
+
+							.event-new-base__code{
+								margin-bottom: 20px;
+							}
+
+							.event-new-base__education-org{
+
+							}
+
+							.event-new-base__max-person-num{
+
 							}
 						}
 						.event-new-base__additional{
-							width: 40%;
+							width: 45%;
 							float: right;
-
-							& > * {
-								margin-bottom: 20px;
-							}
 						}
 					}
 					.event-new-place{
 						margin-top: 20px;
-						width: 40%;
+						width: 45%;
 					}
 					.event-new-datetime{
 						margin-top: 20px;
 
 						.event-new-date__start{
 							display: inline-block;
-							width: 40%;
+							width: 45%;
 						}
 						.event-new-date__finish{
 							display: inline-block;
-							width: 40%;
+							width: 45%;
 							margin-left: 10%;
 						}
 					}
@@ -113,6 +125,14 @@
 							margin-top: 8px;
 
 							&.event-new-tutors__lector-search-collaborator--display {
+								display: block;
+							}
+						}
+						.event-new-tutors__lector-search-invitee{
+							display: none;
+							margin-top: 8px;
+
+							&.event-new-tutors__lector-search-invitee--display {
 								display: block;
 							}
 						}
@@ -133,12 +153,12 @@
 							}
 						}
 
-						.event-new-tutors__new-lector{
+						.event-new-tutors__create-lector{
 							display: none;
 							margin-top: 8px;
-							width: 40%;
+							width: 45%;
 
-							&.event-new-tutors__new-lector--display {
+							&.event-new-tutors__create-lector--display {
 								display: block;
 							}
 						}
@@ -150,7 +170,7 @@
 
 				.event-new__prev-button{
 					float: left;
-					padding: 6px 10px;
+					padding: 6px 16px 6px 10px;
 
 					.event-new__icon-prev {
 						vertical-align: middle;
@@ -159,7 +179,7 @@
 				}
 
 				.event-new__next-button{
-					padding: 6px 10px;
+					padding: 6px 10px 6px 16px;
 
 					.event-new__icon-next {
 						vertical-align: middle;

@@ -21,7 +21,7 @@ var TextBase = {
 		return {
 			value: '',
 			placeholder: '',
-			notValidClass: 'not-valid',
+			notValidClass: 'input-box__input--not-valid',
 			isValid: function() {
 				return true;
 			},
@@ -48,10 +48,12 @@ var TextBase = {
 	},
 
 	handleChange: function(e) {
-		if (!this.props.isValid(e.target.value))
+		if (!this.props.isValid(e.target.value)) {
 			e.target.classList.add(this.props.notValidClass);
-		else
+		}
+		else {
 			e.target.classList.remove(this.props.notValidClass);
+		}
 		var val = e.target.value;
 		this.setState({value: e.target.value});
 		if (this.props.onChange && this.props.isValid(val)) {
@@ -67,7 +69,7 @@ var TextBase = {
 			val = this.props.value;
 		}
 
-		if (this.props.onBlur && this.state.value !== this.props.value)
+		if (this.props.onBlur)
 			this.props.onBlur(val);
 	}
 }
@@ -90,7 +92,7 @@ var TextView = React.createClass({
 
 	render: function() {
 		var isNotEmptyClass = this.state.value === '' ? '' : 'input-box__input_not-empty';
-		var isValidClass = !this.props.isValid(this.state.value) ? this.validClass : '';
+		var isValidClass = !this.props.isValid(this.state.value) ? this.props.notValidClass : '';
 		var className = this.props.className ? this.props.className : '';
 		var inputClassName = this.props.inputClassName ? this.props.inputClassName : '';
 		return (

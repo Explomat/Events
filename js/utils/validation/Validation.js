@@ -9,7 +9,7 @@ module.exports = {
 	},
 
 	isNumberOrEmpty: function(val){
-		return /^[0-9]{1,}(\d+)?$/.test(val);
+		return /^[0-9]{1,}(\d+)?$/.test(val) || val === '';
 	},
 
 	isNumberMax: function(val, maxVal){

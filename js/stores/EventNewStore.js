@@ -30,6 +30,9 @@ var base = {
 	selectTutor(id, value){
 		_eventNew.base.tutorId = id;
 		_eventNew.base.tutorValue = value;
+	},
+	changeMaxPersonNum(num){
+		_eventNew.base.maxPersonNum = num;
 	}
 }
 
@@ -57,8 +60,8 @@ var dateTime = {
 
 var place = {
 	selectPlace(id, value){
-		_eventNew.place.selectedPlaceId = id;
-		_eventNew.place.selectedPlaceValue = value;
+		_eventNew.place.placeId = id;
+		_eventNew.place.placeValue = value;
 	}
 }
 
@@ -112,6 +115,9 @@ EventNewStore.dispatchToken = AppDispatcher.register(function(payload) {
 			break;
 		case EventNewConstants.EVENT_NEW_SELECT_TUTOR:
 			base.selectTutor(action.id, action.value);
+			break;
+		case EventNewConstants.EVENT_NEW_CHANGE_MAX_PERSON_NUM:
+			base.changeMaxPersonNum(action.num);
 			break;
 
 		//DATETIME

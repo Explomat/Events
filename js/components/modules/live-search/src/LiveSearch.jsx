@@ -106,6 +106,12 @@ class LiveSearch extends React.Component {
 		this._startSearch(e.target.value);
 	}
 
+	handleKeyUp(e){
+		if (e.keyCode === 27) {
+			this.setState({ display: false });
+		}
+	}
+
 	handleFocus(e){
 		this._startSearch(e.target.value);
 	}
@@ -125,6 +131,10 @@ class LiveSearch extends React.Component {
 			'live-search__content': true,
 			'live-search__content--visible': display
 		});
+		const inputClasses = cx({
+			'live-search__input': true,
+			'live-search__input_not-empty': this.state.value
+		});
 		return (
 			<div className={classes}>
 				<div className="live-search__container">
@@ -132,10 +142,12 @@ class LiveSearch extends React.Component {
 						<input
 							onClick={::this.handleClick}
 							onFocus={::this.handleFocus}
-							onChange={::this.handleChange} 
-							className="live-search__input" 
-							value={value} 
-							placeholder={placeholder} />
+							onChange={::this.handleChange}
+							onKeyUp={::this.handleKeyUp} 
+							className={inputClasses}
+							value={value}/>
+						 <label className="live-search__label">{placeholder}</label>
+						 <span className="icon-magnifying-glass live-search__caret"></span>
 					</span>
 					<div className="live-search__drop">
 						<div className={contentClasses}>

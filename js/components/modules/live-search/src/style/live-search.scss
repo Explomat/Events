@@ -1,29 +1,47 @@
+@import '../../../text-label/src/style/text-label';
+
 .live-search {
     position: relative;
     margin: -1px 0 -1px -1px;
-    font-size: 18px;
-    display: inline-block;
+    font-size: inherit;
 
     .live-search__container {
         position: relative;
 
         .live-search__search-box{
             position: relative;
+            @include input-box;
 
             .live-search__input{
-                font: inherit;
-                display: block;
-                margin: 0;
-                padding: 0 .6666em;
-                border: 1px solid rgba(0,0,0,.2);
-                background: 0 0;
-                border-radius: 0;
-                -webkit-appearance: none;
-                line-height: 45px;
+                @include input-box__input;
+
                 outline: 0;
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 overflow: hidden;
+            }
+            .live-search__label {
+                @include input-box__label;
+                transition-delay: .1s;
+
+                &.live-search__label--detranslate {
+                    transform: translateY(0px);
+                }
+            }
+
+            .live-search__caret{
+                position: absolute;
+                right: 0;
+                top: calc(50% - 2px);
+                color: #444;
+            }
+
+            .live-search__input:focus + .live-search__label,
+            .live-search__input_not-empty + .live-search__label {
+                color: $darkPrimaryColor;
+                font-size: $fontSizeXs;
+                font-weight: bold;
+                transform: translateY(-25px);
             }
         }
         

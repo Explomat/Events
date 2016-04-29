@@ -94,6 +94,10 @@ $fontSizeXs: 12px;
     &:focus {
         border-color: $darkPrimaryColor;
         border-width: 2px;
+
+        &.input-box__input--not-valid {
+            border-bottom: 2px solid #ff5252;
+        }
     }
 }
 

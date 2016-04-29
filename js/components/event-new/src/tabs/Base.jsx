@@ -3,6 +3,7 @@ import {TextView} from 'components/modules/text-label';
 import DropDown from 'components/modules/dropdown';
 import LiveSearch from 'components/modules/live-search';
 import EventNewActions from 'actions/EventNewActions';
+import {isNumberOrEmpty} from 'utils/validation/Validation';
 
 import config from 'config';
 
@@ -33,6 +34,10 @@ class Base extends React.Component {
 		EventNewActions.base.changeEducationOrg(payload);
 	}
 
+	handleChangeMaxPersonNum(val){
+		EventNewActions.base.changeMaxPersonNum(val);
+	}
+
 	render(){
 		const { educationMethodId, educationMethodValue, tutorId, tutorValue } = this.props;
 		return (
@@ -47,20 +52,29 @@ class Base extends React.Component {
 						description="Тип *"
 						onChange={this.handleChangeType} 
 						items={this.props.types} 
-						selectedPayload={this.props.selectedType}
-						isReset={true}/>
+						selectedPayload={this.props.type}
+						isReset={true}
+						className="event-new-base__type"/>
 					<DropDown 
 						description="Код *"
 						onChange={this.handleChangeCode} 
 						items={this.props.codes} 
-						selectedPayload={this.props.selectedCode}
-						isReset={true}/>
+						selectedPayload={this.props.code}
+						isReset={true}
+						className="event-new-base__code"/>
 					<DropDown
 						description="Обучающая организация *"
 						onChange={this.handleChangeEducationOrg} 
 						items={this.props.educationOrgs} 
-						selectedPayload={this.props.selectedEducationOrgId}
-						isReset={true}/>
+						selectedPayload={this.props.educationOrgId}
+						isReset={true}
+						className="event-new-base__education-org"/>
+					<TextView
+						onBlur={this.handleChangeMaxPersonNum} 
+						value={this.props.maxPersonNum} 
+						placeholder="Количество участников *"
+						isValid={isNumberOrEmpty}
+						className="event-new-base__max-person-num"/>
 				</div>
 				<div className="event-new-base__additional">
 					<LiveSearch
@@ -68,13 +82,13 @@ class Base extends React.Component {
 						value={educationMethodValue}
 						query={config.url.createPath({action_name: 'forLiveSearchGetEducationMethods'})}
 						onSelect={this.handleSelectEducationMethod}
-						placeholder="Учебная программа"/>
+						placeholder="Учебная программа *"/>
 					<LiveSearch
 						payload={tutorId}
 						value={tutorValue}
 						query={config.url.createPath({action_name: 'forLiveSearchGetCollaborators'})}
 						onSelect={this.handleSelectTutor}
-						placeholder="Ответственный"/>
+						placeholder="Ответственный *"/>
 				</div>
 			</div>
 		);

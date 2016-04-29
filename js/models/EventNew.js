@@ -1,6 +1,6 @@
 import EventTypes from '../utils/eventedit/EventTypes';
 import EventCodes from '../utils/eventedit/EventCodes';
-import Lector from './eventedit/Lector';
+/*import Lector from './eventedit/Lector';*/
 
 module.exports = function(args) {
 	args = args || {};
@@ -27,7 +27,8 @@ module.exports = function(args) {
 		educationMethodId: null,
 		educationMethodValue: null,
 		tutorId: null,
-		tutorValue: null
+		tutorValue: null,
+		maxPersonNum: ''
 	}
 
 	this.dateTime = {
@@ -41,6 +42,7 @@ module.exports = function(args) {
 	}
 
 	this.tutors = {
-		lector: new Lector()
+		lectorId: null,
+		lectorName: null
 	}
 }
