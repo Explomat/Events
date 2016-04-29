@@ -20,14 +20,14 @@ module.exports = function(args) {
 				text: item.name
 			}
 		}),
-		educationMethods: [],
-		tutors: [],
 
-		selectedType: null,
-		selectedCode: null,
-		selectedEducationOrgId: null,
-		selectedEducationMethodId: null,
-		selectedTutorId: null
+		type: null,
+		code: null,
+		educationOrgId: null,
+		educationMethodId: null,
+		educationMethodValue: null,
+		tutorId: null,
+		tutorValue: null
 	}
 
 	this.dateTime = {
@@ -36,9 +36,8 @@ module.exports = function(args) {
 	}
 
 	this.place = {
-		places: [],
-		selectedPlaceId: null,
-		selectedPlaceValue: ''
+		placeId: null,
+		placeValue: ''
 	}
 
 	this.tutors = {

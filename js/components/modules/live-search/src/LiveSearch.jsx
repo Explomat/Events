@@ -1,7 +1,8 @@
 import React from 'react';
 import cx from 'classnames';
 import listensToClickOutside from 'react-onclickoutside/decorator';
-import {isEqual} from 'lodash';
+
+import Ajax from '../../../../utils/Ajax';
 import './style/live-search.scss';
 
 class Item extends React.Component {
@@ -32,28 +33,40 @@ class LiveSearch extends React.Component {
 		this.timeouts = [];
 		this.currentValue = '';
 		this.curKeyUpMilliseconds = 0;
-		this.selected = false;
 	}
 
 	static propTypes = {
-		items: React.PropTypes.array, // [ {payload: 1, value: "test"} ]
+		query: React.PropTypes.string.isRequired,
+		limit: React.PropTypes.number,
 		value: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]),
 		payload: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]),
 		placeholder: React.PropTypes.string,
 		className: React.PropTypes.string,
-		onChange: React.PropTypes.func,
 		onSelect: React.PropTypes.func,
 		timeoutDelay: React.PropTypes.number
 	}
 
 	static defaultProps = {
-		items: [],
+		limit: 5,
 		timeoutDelay: 300
 	}
 
 	state = {
-		state: this.props.value,
+		value: this.props.value,
+		items: [],
 		display: false
+	}
+
+	componentWillReceiveProps(nextProps){
+		this.setState({ value: nextProps.value });
+	}
+
+	_getData(query, search, limit){
+		return Ajax.sendRequest(query + '&search=' + search + '&limit=' + limit).then((items) => {
+			return JSON.parse(items);
+		}).catch(function(){
+			return [];
+		});
 	}
 
 	_clearTimeouts(){
@@ -66,9 +79,9 @@ class LiveSearch extends React.Component {
 	_onSearch(){
 		if ((Date.now() - this.curKeyUpMilliseconds) >= this.props.timeoutDelay ) {
 			this._clearTimeouts();
-			if (this.props.onChange){
-				this.props.onChange(this.currentValue);
-			}
+			this._getData(this.props.query, this.currentValue, this.props.limit).then((items) => {
+				this.setState({items: items, display: true});
+			});
 		}
 	}
 
@@ -81,68 +94,36 @@ class LiveSearch extends React.Component {
 		this.timeouts.push(timeoutID);
 	}
 
-	_isEqualArrays(firstArr, secondArr){
-		if (firstArr.length !== secondArr.length) {
-			return false;
-		}
-
-		for (var i = firstArr.length - 1; i >= 0; i--) {
-			if (!isEqual(firstArr[i], secondArr[i])){
-				return false;
-			}
-		};
-		return true;
-	}
-
-	componentWillReceiveProps(nextProps){
-		if (this._isEqualArrays(this.props.items, nextProps.items)) {
-			this.setState({display: false});
-		}
-		else {
-			this.setState({display: true});
-		}
-		/*if (this.selected){
-			this.setState({display: false});
-		}
-		else {
-			this.setState({display: true});
-		}*/
-	}
-
 	handleClick(e){
 		this._startSearch(e.target.value);
-		this.selected = false;
 	}
 
 	handleClickOutside(){
 		this.setState({display: false});
-		this.selected = false;
 	}
 
 	handleChange(e){
 		this._startSearch(e.target.value);
-		this.selected = false;
 	}
 
 	handleFocus(e){
 		this._startSearch(e.target.value);
-		this.selected = false;
 	}
 
 	handleSelect(payload, value){
 		if (this.props.onSelect){
-			this.selected = true;
-			this.setState({value: value});
+			this.setState({display: false});
 			this.props.onSelect(payload, value);
 		}
 	}
 
 	render() {
 		const {placeholder} = this.props;
+		const {items, display, value} = this.state;
 		const classes = cx('live-search', this.props.className);
 		const contentClasses = cx({
 			'live-search__content': true,
-			'live-search__content--visible': this.state.display
+			'live-search__content--visible': display
 		});
 		return (
 			<div className={classes}>
@@ -153,12 +134,12 @@ class LiveSearch extends React.Component {
 							onFocus={::this.handleFocus}
 							onChange={::this.handleChange} 
 							className="live-search__input" 
-							value={this.state.value} 
+							value={value} 
 							placeholder={placeholder} />
 					</span>
 					<div className="live-search__drop">
 						<div className={contentClasses}>
-							{this.props.items.map((i, index) => {
+							{items.map((i, index) => {
 								return <Item key={index} {...i} onSelect={::this.handleSelect}/>
 							})}
 						</div>

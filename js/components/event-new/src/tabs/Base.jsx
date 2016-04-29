@@ -4,33 +4,17 @@ import DropDown from 'components/modules/dropdown';
 import LiveSearch from 'components/modules/live-search';
 import EventNewActions from 'actions/EventNewActions';
 
+import config from 'config';
+
 
 class Base extends React.Component {
 
-	_prepareItems(items){
-		return items.map((i) => {
-			return {
-				payload: i.id,
-				value: i.fullname,
-				description: i.description
-			}
-		});
+	handleSelectEducationMethod(payload, value){
+		EventNewActions.base.selectEducationMethod(payload, value);
 	}
 
-	handleChangeEducationMethod(val){
-		EventNewActions.base.getEducationMethods(val);
-	}
-
-	handleSelectEducationMethod(payload){
-		EventNewActions.base.selectEducationMethod(payload);
-	}
-
-	handleChangeTutor(val){
-		EventNewActions.base.getTutors(val);
-	}
-
-	handleSelectTutor(payload){
-		EventNewActions.base.selectTutor(payload);
+	handleSelectTutor(payload, value){
+		EventNewActions.base.selectTutor(payload, value);
 	}
 
 	handleChangeName(val){
@@ -50,8 +34,7 @@ class Base extends React.Component {
 	}
 
 	render(){
-		const educationMethods = this._prepareItems(this.props.educationMethods);
-		const tutors = this._prepareItems(this.props.tutors);
+		const { educationMethodId, educationMethodValue, tutorId, tutorValue } = this.props;
 		return (
 			<div className="event-new-base">
 				<div className="event-new-base__base">
@@ -81,14 +64,16 @@ class Base extends React.Component {
 				</div>
 				<div className="event-new-base__additional">
 					<LiveSearch
-						onChange={this.handleChangeEducationMethod}
+						payload={educationMethodId}
+						value={educationMethodValue}
+						query={config.url.createPath({action_name: 'forLiveSearchGetEducationMethods'})}
 						onSelect={this.handleSelectEducationMethod}
-						items={educationMethods}
 						placeholder="Учебная программа"/>
 					<LiveSearch
-						onChange={this.handleChangeTutor}
+						payload={tutorId}
+						value={tutorValue}
+						query={config.url.createPath({action_name: 'forLiveSearchGetCollaborators'})}
 						onSelect={this.handleSelectTutor}
-						items={tutors}
 						placeholder="Ответственный"/>
 				</div>
 			</div>

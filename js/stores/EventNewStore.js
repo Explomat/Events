@@ -15,19 +15,21 @@ var base = {
 		_eventNew.base.name = name;
 	},
 	changeType(type){
-		_eventNew.base.selectedType = type;
+		_eventNew.base.type = type;
 	},
 	changeCode(code){
-		_eventNew.base.selectedCode = code;
+		_eventNew.base.code = code;
 	},
 	changeEducationOrg(orgId){
-		_eventNew.base.selectedEducationOrgId = orgId;
+		_eventNew.base.educationOrgId = orgId;
 	},
-	getEducationMethods(educationMethods){
-		_eventNew.base.educationMethods = educationMethods;
+	selectEducationMethod(id, value){
+		_eventNew.base.educationMethodId = id;
+		_eventNew.base.educationMethodValue = value;
 	},
-	getTutors(tutors){
-		_eventNew.base.tutors = tutors;
+	selectTutor(id, value){
+		_eventNew.base.tutorId = id;
+		_eventNew.base.tutorValue = value;
 	}
 }
 
@@ -54,9 +56,6 @@ var dateTime = {
 }
 
 var place = {
-	getPlaces(places){
-		_eventNew.place.places = places;
-	},
 	selectPlace(id, value){
 		_eventNew.place.selectedPlaceId = id;
 		_eventNew.place.selectedPlaceValue = value;
@@ -108,11 +107,11 @@ EventNewStore.dispatchToken = AppDispatcher.register(function(payload) {
 		case EventNewConstants.EVENT_NEW_CHANGE_EDUCATION_ORG:
 			base.changeEducationOrg(action.orgId);
 			break;
-		case EventNewConstants.EVENT_NEW_GET_EDUCATION_METHODS:
-			base.getEducationMethods(action.educationMethods);
+		case EventNewConstants.EVENT_NEW_SELECT_EDUCATION_METHOD:
+			base.selectEducationMethod(action.id, action.value);
 			break;
-		case EventNewConstants.EVENT_NEW_GET_TUTORS:
-			base.getTutors(action.tutors);
+		case EventNewConstants.EVENT_NEW_SELECT_TUTOR:
+			base.selectTutor(action.id, action.value);
 			break;
 
 		//DATETIME
@@ -124,9 +123,6 @@ EventNewStore.dispatchToken = AppDispatcher.register(function(payload) {
 			break;
 
 		//PLACE
-		case EventNewConstants.EVENT_NEW_GET_PLACES:
-			place.getPlaces(action.places);
-			break;
 		case EventNewConstants.EVENT_NEW_SELECT_PLACE:
 			place.selectPlace(action.id, action.value);
 			break;

@@ -1,6 +1,6 @@
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import EventNewConstants from '../constants/EventNewConstants';
-import EventNewAPI from '../api/EventNewAPI';
+/*import EventNewAPI from '../api/EventNewAPI';*/
 
 module.exports = {
 
@@ -36,20 +36,18 @@ module.exports = {
 				orgId: orgId
 			});
 		},
-		getEducationMethods(filterText){
-			EventNewAPI.getEducationMethods(filterText).then((educationMethods) => {
-				AppDispatcher.handleAction({
-					actionType: EventNewConstants.EVENT_NEW_GET_EDUCATION_METHODS,
-					educationMethods: educationMethods
-				});
+		selectEducationMethod(id, value){
+			AppDispatcher.handleAction({
+				actionType: EventNewConstants.EVENT_NEW_SELECT_EDUCATION_METHOD,
+				id: id,
+				value: value
 			});
 		},
-		getTutors(filterText){
-			EventNewAPI.getCollaborators(filterText).then((tutors) => {
-				AppDispatcher.handleAction({
-					actionType: EventNewConstants.EVENT_NEW_GET_TUTORS,
-					tutors: tutors
-				});
+		selectTutor(id, value){
+			AppDispatcher.handleAction({
+				actionType: EventNewConstants.EVENT_NEW_SELECT_TUTOR,
+				id: id,
+				value: value
 			});
 		}
 	},
@@ -70,14 +68,6 @@ module.exports = {
 	},
 
 	place: {
-		getPlaces(filterText){
-			EventNewAPI.getPlaces(filterText).then((places) => {
-				AppDispatcher.handleAction({
-					actionType: EventNewConstants.EVENT_NEW_GET_PLACES,
-					places: places
-				});
-			});
-		},
 
 		selectPlace(id, value){
 			AppDispatcher.handleAction({

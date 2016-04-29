@@ -155,10 +155,6 @@ class EventNew extends React.Component {
 									<i className="icon-user event-new__tab-icon"></i>
 									<p className="event-new__tab-name">Преподаватель</p>
 								</div>
-								<div className="event-new__tab">
-									<i className="icon-cogs event-new__tab-icon"></i>
-									<p className="event-new__tab-name">Дополнительно</p>
-								</div>
 							</div>
 							<div className="event-new__tabview">{tabView}</div>
 						</div>
