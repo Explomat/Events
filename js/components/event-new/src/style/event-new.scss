@@ -47,7 +47,7 @@
 				.event-new__tabs{
 					.event-new__tab{
 						float: left;
-						width: 25%;
+						width: 33.333333%;
 						text-align: center;
 						color: #ccc;
 						cursor: pointer;
@@ -55,12 +55,20 @@
 						&.event-new__tab--selected {
 							color: #4CAF50;
 						}
+
+						.event-new__devider {
+							padding: 0 8px;
+						}
 						
 						.event-new__tab-icon{
 							font-size: 28px;
+
+							&.event-new__tab-icon--calendar {
+								margin-left: 4px;
+							}
 						}
 						.event-new__tab-name{
-							
+							margin-bottom: 4px;
 						}
 					}
 				}
@@ -97,68 +105,82 @@
 							float: right;
 						}
 					}
-					.event-new-place{
-						margin-top: 20px;
-						width: 45%;
-					}
-					.event-new-datetime{
+					.event-new-place-and-datetime{
 						margin-top: 20px;
 
-						.event-new-date__start{
-							display: inline-block;
+						.event-new-place-and-datetime__datetime{
 							width: 45%;
+							float: left;
+							.event-new-place-and-datetime__start-datetime{
+								margin-bottom: 20px;
+							}
+							.event-new-place-and-datetime__finish-datetime{
+								
+							}
 						}
-						.event-new-date__finish{
-							display: inline-block;
+						.event-new-place-and-datetime__place{
 							width: 45%;
-							margin-left: 10%;
+							float: right;
 						}
+						
 					}
 					.event-new-tutors{
 						margin-top: 20px;
 
-						.event-new-tutors__lector-types{
-
+						.lector-types{
+							display: inline-block;
 						}
-						.event-new-tutors__lector-search-collaborator{
-							display: none;
-							margin-top: 8px;
 
-							&.event-new-tutors__lector-search-collaborator--display {
-								display: block;
+						.lector-types-inner{
+							display: none;
+							margin-left: 20px;
+
+							&.lector-types-inner--display {
+								display: inline-block;
 							}
 						}
-						.event-new-tutors__lector-search-invitee{
+						.lector-types-outer{
 							display: none;
-							margin-top: 8px;
+							margin-left: 20px;
 
-							&.event-new-tutors__lector-search-invitee--display {
-								display: block;
+							&.lector-types-outer--display {
+								display: inline-block;
 							}
 						}
-						.event-new-tutors__lector-new-search-collaborator{
+						.lector-types-inner-list-search{
 							display: none;
-							margin-top: 8px;
-
-							&.event-new-tutors__lector-new-search-collaborator--display {
-								display: block;
-							}
-						}
-						.event-new-tutors__lector-new{
-							display: none;
-							margin-top: 8px;
-
-							&.event-new-tutors__lector-new--display {
-								display: block;
-							}
-						}
-
-						.event-new-tutors__create-lector{
-							display: none;
-							margin-top: 8px;
+							margin-top: 16px;
 							width: 45%;
 
-							&.event-new-tutors__create-lector--display {
+							&.lector-types-inner-list-search--display {
+								display: block;
+							}
+						}
+						.lector-types-inner-add-search{
+							display: none;
+							margin-top: 16px;
+							width: 45%;
+
+							&.lector-types-inner-add-search--display {
+								display: block;
+							}
+						}
+
+						.lector-types-outer-list-search{
+							display: none;
+							margin-top: 16px;
+							width: 45%;
+
+							&.lector-types-outer-list-search--display {
+								display: block;
+							}
+						}
+						.lector-types-outer-add{
+							display: none;
+							margin-top: 16px;
+							width: 45%;
+
+							&.lector-types-outer-add--display {
 								display: block;
 							}
 						}
@@ -171,6 +193,11 @@
 				.event-new__prev-button{
 					float: left;
 					padding: 6px 16px 6px 10px;
+					display: none;
+
+					&.event-new__prev-button--display {
+						display: inline-block;
+					}
 
 					.event-new__icon-prev {
 						vertical-align: middle;

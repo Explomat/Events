@@ -14,8 +14,16 @@ class Base extends React.Component {
 		EventNewActions.base.selectEducationMethod(payload, value);
 	}
 
+	handleResetEducationMethod(payload, value){
+		EventNewActions.base.selectEducationMethod(null, value);
+	}
+
 	handleSelectTutor(payload, value){
 		EventNewActions.base.selectTutor(payload, value);
+	}
+
+	handleResetTutor(payload, value){
+		EventNewActions.base.selectTutor(null, value);
 	}
 
 	handleChangeName(val){
@@ -82,12 +90,14 @@ class Base extends React.Component {
 						value={educationMethodValue}
 						query={config.url.createPath({action_name: 'forLiveSearchGetEducationMethods'})}
 						onSelect={this.handleSelectEducationMethod}
+						onChange={this.handleResetEducationMethod}
 						placeholder="Учебная программа *"/>
 					<LiveSearch
 						payload={tutorId}
 						value={tutorValue}
 						query={config.url.createPath({action_name: 'forLiveSearchGetCollaborators'})}
 						onSelect={this.handleSelectTutor}
+						onChange={this.handleResetTutor}
 						placeholder="Ответственный *"/>
 				</div>
 			</div>

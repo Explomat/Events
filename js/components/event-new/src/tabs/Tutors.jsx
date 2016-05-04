@@ -3,223 +3,203 @@ import { ButtonTabs, ButtonTab } from 'components/modules/button-tabs';
 import {TextView} from 'components/modules/text-label';
 import LiveSearch from 'components/modules/live-search';
 import LectorTypes from 'utils/eventedit/LectorTypes';
+import LectorSelectTypes from 'utils/eventnew/LectorSelectTypes';
 
 import EventNewActions from 'actions/EventNewActions';
 import cx from 'classnames';
 
 import config from 'config';
 
-const LectorNewTypes = {
-	keys: {
-		select: 'select',
-		add: 'add'
-	},
-	values: {
-		select: 'Выбрать из списка',
-		add: 'Добавить нового'
-	}
-}
-
 class Tutors extends React.Component {
 
-	state = {
-		lectorSelectedType: LectorTypes.keys.collaborator,
-		lectorSearchType: LectorNewTypes.keys.select,
-		lectorNewSelectedType: LectorNewTypes.keys.select
-	}
-
 	handleSelectLectorType(payload){
-		this.setState({lectorSelectedType: payload});
+		EventNewActions.tutors.selectLectorType(payload);
 	}
 
-	handleSelectNewLectorType(payload){
-		this.setState({lectorNewSelectedType: payload});
+	handleSelectAddLectorType(payload){
+		EventNewActions.tutors.selectAddLectorType(payload);
 	}
 
 	handleSelectSearchLectorType(payload){
-		this.setState({lectorSearchType: payload});
+		EventNewActions.tutors.selectSearchLectorType(payload);
+	}
+
+	handleSelectInnerListLector(payload, value){
+		EventNewActions.tutors.selectInnerListLector(payload, value);
+	}
+
+	handleResetInnerListLector(payload, value){
+		EventNewActions.tutors.selectInnerListLector(null, value);
+	}
+
+	handleSelectInnerNewLector(payload, value){
+		EventNewActions.tutors.selectInnerNewLector(payload, value);
+	}
+
+	handleResetInnerNewLector(payload, value){
+		EventNewActions.tutors.selectInnerNewLector(null, value);
+	}
+
+	handleSelectOuterListLector(payload, value){
+		EventNewActions.tutors.selectOuterListLector(payload, value);
+	}
+
+	handleResetOuterListLector(payload, value){
+		EventNewActions.tutors.selectOuterListLector(null, value);
 	}
 
 	handleChangeFirstName(firstName){
         //this.fields.firstName = firstName;
         //this.setState({firstName: firstName});
-        EventNewActions.changeNewLectorFirstName(firstName);
+        EventNewActions.tutors.changeLectorFirstName(firstName);
     }
 
     handleChangeLastName(lastName){
         //this.fields.lastName = lastName;
         //this.setState({lastName: lastName});
-        EventNewActions.changeNewLectorLastName(lastName);
+        EventNewActions.tutors.changeLectorLastName(lastName);
     }
 
     handleChangeMiddleName(middleName){
         //this.fields.middleName = middleName;
         //this.setState({middleName: middleName});
-        EventNewActions.changeNewLectorMiddleName(middleName);
+        EventNewActions.tutors.changeLectorMiddleName(middleName);
     }
 
     handleChangeEmail(email){
         //this.fields.email = email;
         //this.setState({email: email});
-        EventNewActions.changeNewLectorEmail(email);
+        EventNewActions.tutors.changeLectorEmail(email);
     }
 
     handleChangeCompany(company){
         //this.fields.company = company;
         //this.setState({company: company});
-        EventNewActions.changeNewLectorCompany(company);
+        EventNewActions.tutors.changeLectorCompany(company);
     }
 
 	render(){
-		const {lectorId, lectorName} = this.props;
+		const { lectorSelectedType, lectorSearchType, lectorAddSelectedType } = this.props;
+		const {innerListLectorId, innerListLectorFullname, innerNewLectorId, innerNewLectorFullname, outerListLectorId, outerListLectorFullname} = this.props;
+		const {firstName, lastName, middleName, email, company} = this.props.lector;
 
-		const collaboratorButtonClasses = cx({
-			'default-button': true,
-			'default-button--selected': this.state.lectorSelectedType === LectorTypes.keys.collaborator
-		});
-		const collaboratorSelected = this.state.lectorSelectedType === LectorTypes.keys.collaborator;
+		const lectorTypeInnerSelectedButton = lectorSelectedType === LectorTypes.keys.collaborator;
+		const lectorTypeOuterSelectedButton = lectorSelectedType === LectorTypes.keys.invitee;
 
-		const inviteeButtonClasses = cx({
-			'default-button': true,
-			'default-button--selected': this.state.lectorSelectedType === LectorTypes.keys.invitee
+		const selectLectorTypeInnerClasses = cx({
+			'lector-types-inner': true,
+			'lector-types-inner--display': lectorTypeInnerSelectedButton
 		});
-		const inviteeSelected = this.state.lectorSelectedType === LectorTypes.keys.invitee;
+		const selectListInnerSelectedButton = lectorTypeInnerSelectedButton && lectorSearchType === LectorSelectTypes.keys.select;
+		const selectAddInnerSelectedButton = lectorTypeInnerSelectedButton && lectorSearchType === LectorSelectTypes.keys.add;
+		
+		const selectLectorTypeOuterClasses = cx({
+			'lector-types-outer': true,
+			'lector-types-outer--display': lectorTypeOuterSelectedButton
+		});
+		const selectListOuterSelectedButton = lectorAddSelectedType === LectorSelectTypes.keys.select;
+		const selectAddOuterSelectedButton = lectorAddSelectedType === LectorSelectTypes.keys.add;
 
-		const searchLectorButtonClasses = cx({
-			'default-button': true,
-			'default-button--selected': this.state.lectorSearchType === LectorNewTypes.keys.select
+		const innerListSearch = cx({
+			'lector-types-inner-list-search': true,
+			'lector-types-inner-list-search--display': lectorTypeInnerSelectedButton && selectListInnerSelectedButton
 		});
-		const searchLectorSelected = this.state.lectorSearchType === LectorNewTypes.keys.select;
-		const newSearchLectorButtonClasses = cx({
-			'default-button': true,
-			'default-button--selected': this.state.lectorSearchType === LectorNewTypes.keys.add
-		});
-		const newSearchLectorSelected = this.state.lectorSearchType === LectorNewTypes.keys.add;
-
-		const collaboratorLectorSearchClasses = cx({
-			'event-new-tutors__lector-search-collaborator': true,
-			'event-new-tutors__lector-search-collaborator--display': this.state.lectorSelectedType === LectorTypes.keys.collaborator && this.state.lectorSearchType === LectorTypes.keys.collaborator
-		});
-		const inviteeLectorSearchClasses = cx({
-			'event-new-tutors__lector-search-invitee': true,
-			'event-new-tutors__lector-search-invitee--display': this.state.lectorSearchType === LectorTypes.keys.collaborator
+		const innerAddSearch = cx({
+			'lector-types-inner-add-search': true,
+			'lector-types-inner-add-search--display': lectorTypeInnerSelectedButton && selectAddInnerSelectedButton
 		});
 
-		const lectorNewClasses = cx({
-			'event-new-tutors__lector-new': true,
-			'event-new-tutors__lector-new--display': this.state.lectorSelectedType === LectorTypes.keys.invitee
+		const outerListSearch = cx({
+			'lector-types-outer-list-search': true,
+			'lector-types-outer-list-search--display': lectorTypeOuterSelectedButton && selectListOuterSelectedButton
 		});
-
-		const selectLectorNewButtonClasses = cx({
-			'default-button': true,
-			'default-button--selected': this.state.lectorNewSelectedType === LectorNewTypes.keys.select
-		});
-		const selectLectorNewSelected = this.state.lectorNewSelectedType === LectorNewTypes.keys.select;
-
-		const addLectorNewButtonClasses = cx({
-			'default-button': true,
-			'default-button--selected': this.state.lectorNewSelectedType === LectorNewTypes.keys.add
-		});
-		const addLectorNewSelected = this.state.lectorNewSelectedType === LectorNewTypes.keys.add;
-
-		const lectorNewSearchCollaborator = cx({
-			'event-new-tutors__lector-new-search-collaborator': true,
-			'event-new-tutors__lector-new-search-collaborator--display': this.state.lectorNewSelectedType === LectorNewTypes.keys.select && this.state.lectorSelectedType === LectorTypes.keys.invitee
-		});
-		const createLectorClasses = cx({
-			'event-new-tutors__create-lector': true,
-			'event-new-tutors__create-lector--display': this.state.lectorNewSelectedType === LectorNewTypes.keys.add && this.state.lectorSelectedType === LectorTypes.keys.invitee
+		const outerAdd = cx({
+			'lector-types-outer-add': true,
+			'lector-types-outer-add--display': lectorTypeOuterSelectedButton && selectAddOuterSelectedButton
 		});
 		return (
 			<div className="event-new-tutors">
-				<ButtonTabs className="event-new-tutors__lector-types">
+				<ButtonTabs className="lector-types">
 					<ButtonTab
-						onClick={::this.handleSelectLectorType} 
-						className={collaboratorButtonClasses} 
-						selected={collaboratorSelected} 
+						onClick={::this.handleSelectLectorType}
 						payload={LectorTypes.keys.collaborator} 
-						value={LectorTypes.values.collaborator}/>
+						value={LectorTypes.values.collaborator}
+						selected={lectorTypeInnerSelectedButton}/>
 					<ButtonTab
 						onClick={::this.handleSelectLectorType} 
-						className={inviteeButtonClasses} 
-						selected={inviteeSelected} 
 						payload={LectorTypes.keys.invitee} 
-						value={LectorTypes.values.invitee}/>
+						value={LectorTypes.values.invitee}
+						selected={lectorTypeOuterSelectedButton}/>
 				</ButtonTabs>
-				<ButtonTabs className='event-new-tutors__search-lector-types'>
+				<ButtonTabs className={selectLectorTypeInnerClasses}>
 					<ButtonTab
 						onClick={::this.handleSelectSearchLectorType} 
-						className={searchLectorButtonClasses} 
-						selected={searchLectorSelected}
-						payload={LectorNewTypes.keys.select} 
-						value={LectorNewTypes.values.select}/>
+						payload={LectorSelectTypes.keys.select} 
+						value={LectorSelectTypes.values.select}
+						selected={selectListInnerSelectedButton}/>
 					<ButtonTab
 						onClick={::this.handleSelectSearchLectorType} 
-						className={newSearchLectorButtonClasses} 
-						selected={newSearchLectorSelected} 
-						payload={LectorNewTypes.keys.add} 
-						value={LectorNewTypes.values.add} />
+						payload={LectorSelectTypes.keys.add} 
+						value={LectorSelectTypes.values.add}
+						selected={selectAddInnerSelectedButton}/>
+				</ButtonTabs>
+				<ButtonTabs className={selectLectorTypeOuterClasses}>
+					<ButtonTab
+						onClick={::this.handleSelectAddLectorType} 
+						payload={LectorSelectTypes.keys.select} 
+						value={LectorSelectTypes.values.select}
+						selected={selectListOuterSelectedButton}/>
+					<ButtonTab
+						onClick={::this.handleSelectAddLectorType}
+						payload={LectorSelectTypes.keys.add} 
+						value={LectorSelectTypes.values.add} 
+						selected={selectAddOuterSelectedButton}/>
 				</ButtonTabs>
 				<LiveSearch
 					query={config.url.createPath({action_name: 'forLiveSearchGetLectors', type: 'collaborator'})}
-					payload={lectorId}
-					value={lectorName}
-					onSelect={this.handleSelect}
-					placeholder="Выберите преподавателя"
-					className={collaboratorLectorSearchClasses}/>
+					payload={innerListLectorId}
+					value={innerListLectorFullname}
+					onSelect={this.handleSelectInnerListLector}
+					placeholder="Преподаватель *"
+					className={innerListSearch}/>
 				<LiveSearch
 					query={config.url.createPath({action_name: 'forLiveSearchGetCollaborators'})}
-					payload={lectorId}
-					value={lectorName}
-					onSelect={this.handleSelect}
-					placeholder="Выберите преподавателя 1"
-					className={inviteeLectorSearchClasses}/>
-
-				<ButtonTabs className={lectorNewClasses}>
-					<ButtonTab
-						onClick={::this.handleSelectNewLectorType} 
-						className={selectLectorNewButtonClasses} 
-						selected={selectLectorNewSelected}
-						payload={LectorNewTypes.keys.select} 
-						value={LectorNewTypes.values.select}/>
-					<ButtonTab
-						onClick={::this.handleSelectNewLectorType} 
-						className={addLectorNewButtonClasses} 
-						selected={addLectorNewSelected} 
-						payload={LectorNewTypes.keys.add} 
-						value={LectorNewTypes.values.add} />
-				</ButtonTabs>
+					payload={innerNewLectorId}
+					value={innerNewLectorFullname}
+					onSelect={this.handleSelectInnerNewLector}
+					placeholder="Преподаватель *"
+					className={innerAddSearch}/>
 				<LiveSearch
-					query={config.url.createPath({action_name: 'forLiveSearchGetCollaborators', type: 'invitee'})}
-					payload={lectorId}
-					value={lectorName}
-					onSelect={this.handleSelect}
-					placeholder="Выберите преподавателя"
-					className={lectorNewSearchCollaborator}/>
-				<div className={createLectorClasses}>
+					query={config.url.createPath({action_name: 'forLiveSearchGetLectors', type: 'invitee'})}
+					payload={outerListLectorId}
+					value={outerListLectorFullname}
+					onSelect={this.handleSelectOuterListLector}
+					placeholder="Преподаватель *"
+					className={outerListSearch}/>
+				<div className={outerAdd}>
 					 <TextView
                         onChange={::this.handleChangeFirstName} 
-                        value={this.props.firstName} 
+                        value={firstName} 
                         placeholder="Имя *" 
                         className="new-lector__first-name"/>
                     <TextView
                         onChange={::this.handleChangeLastName} 
-                        value={this.props.lastName} 
+                        value={lastName} 
                         placeholder="Фамилия *" 
                         className="new-lector__last-name"/>
                     <TextView
                         onChange={::this.handleChangeMiddleName} 
-                        value={this.props.middleName} 
+                        value={middleName} 
                         placeholder="Отчество" 
                         className="new-lector__middle-name"/>
                     <TextView
                         onChange={::this.handleChangeEmail} 
-                        value={this.props.email} 
+                        value={email} 
                         placeholder="Электронная почта *" 
                         className="new-lector__email"/>
                     <TextView
                         onChange={::this.handleChangeCompany} 
-                        value={this.props.company} 
+                        value={company} 
                         placeholder="Компания *" 
                         className="new-lector__company"/>
 				</div>

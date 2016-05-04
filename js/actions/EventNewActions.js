@@ -58,7 +58,7 @@ module.exports = {
 		}
 	},
 
-	dateTime: {
+	placeAndDateTime: {
 		changeStartDatetime(dateTime){
 			AppDispatcher.handleAction({
 				actionType: EventNewConstants.EVENT_NEW_CHANGE_START_DATE_TIME,
@@ -70,11 +70,7 @@ module.exports = {
 				actionType: EventNewConstants.EVENT_NEW_CHANGE_START_FINISH_TIME,
 				dateTime: dateTime
 			});
-		}
-	},
-
-	place: {
-
+		},
 		selectPlace(id, value){
 			AppDispatcher.handleAction({
 				actionType: EventNewConstants.EVENT_NEW_SELECT_PLACE,
@@ -85,10 +81,75 @@ module.exports = {
 	},
 
 	tutors: {
+		selectLectorType(lectorType) {
+			AppDispatcher.handleAction({
+				actionType: EventNewConstants.EVENT_NEW_SELECT_LECTOR_TYPE,
+				lectorType: lectorType
+			});
+		},
+		selectAddLectorType(lectorType) {
+			AppDispatcher.handleAction({
+				actionType: EventNewConstants.EVENT_NEW_SELECT_ADD_LECTOR_TYPE,
+				lectorType: lectorType
+			});
+		},
+		selectSearchLectorType(lectorType) {
+			AppDispatcher.handleAction({
+				actionType: EventNewConstants.EVENT_NEW_SELECT_SEARCH_LECTOR_TYPE,
+				lectorType: lectorType
+			});
+		},
+		selectInnerListLector(id, value){
+			AppDispatcher.handleAction({
+				actionType: EventNewConstants.EVENT_NEW_SELECT_INNER_LIST_LECTOR,
+				id: id,
+				value: value
+			});
+		},
+		selectInnerNewLector(id, value){
+			AppDispatcher.handleAction({
+				actionType: EventNewConstants.EVENT_NEW_SELECT_INNER_NEW_LECTOR,
+				id: id,
+				value: value
+			});
+		},
+		selectOuterListLector(id, value){
+			AppDispatcher.handleAction({
+				actionType: EventNewConstants.EVENT_NEW_SELECT_OUTER_LIST_LECTOR,
+				id: id,
+				value: value
+			});
+		},
 
-	},
-
-	organizer: {
-
+		changeLectorFirstName(firstName){
+			AppDispatcher.handleAction({
+				actionType: EventNewConstants.EVENT_NEW_CHANGE_LECTOR_FIRST_NAME,
+				firstName: firstName
+			});
+		},
+		changeLectorLastName(lastName){
+			AppDispatcher.handleAction({
+				actionType: EventNewConstants.EVENT_NEW_CHANGE_LECTOR_LAST_NAME,
+				lastName: lastName
+			});
+		},
+		changeLectorMiddleName(middleName){
+			AppDispatcher.handleAction({
+				actionType: EventNewConstants.EVENT_NEW_CHANGE_LECTOR_MIDDLE_NAME,
+				middleName: middleName
+			});
+		},
+		changeLectorEmail(email){
+			AppDispatcher.handleAction({
+				actionType: EventNewConstants.EVENT_NEW_CHANGE_LECTOR_EMAIL,
+				email: email
+			});
+		},
+		changeLectorCompany(company){
+			AppDispatcher.handleAction({
+				actionType: EventNewConstants.EVENT_NEW_CHANGE_LECTOR_COMPANY,
+				company: company
+			});
+		}
 	}
 }

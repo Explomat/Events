@@ -1,6 +1,8 @@
 import EventTypes from '../utils/eventedit/EventTypes';
 import EventCodes from '../utils/eventedit/EventCodes';
-/*import Lector from './eventedit/Lector';*/
+import LectorTypes from '../utils/eventedit/LectorTypes';
+import LectorSelectTypes from '../utils/eventnew/LectorSelectTypes';
+import Lector from './eventedit/Lector';
 
 module.exports = function(args) {
 	args = args || {};
@@ -31,18 +33,26 @@ module.exports = function(args) {
 		maxPersonNum: ''
 	}
 
-	this.dateTime = {
+	this.placeAndDateTime = {
 		startDateTime: new Date(),
-		finishDateTime: new Date()
-	}
-
-	this.place = {
+		finishDateTime: new Date(),
 		placeId: null,
-		placeValue: ''
+		placeValue: null
 	}
 
 	this.tutors = {
-		lectorId: null,
-		lectorName: null
+		innerListLectorId: null,
+		innerListLectorFullname: null,
+		innerNewLectorId: null,
+		innerNewLectorFullname: null,
+		outerListLectorId: null,
+		outerListLectorFullname: null,
+
+		lector: new Lector(),
+
+		//state fields
+		lectorSelectedType: LectorTypes.keys.collaborator,
+		lectorAddSelectedType: LectorSelectTypes.keys.select,
+		lectorSearchType: LectorSelectTypes.keys.select
 	}
 }

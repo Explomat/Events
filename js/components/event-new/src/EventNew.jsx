@@ -1,8 +1,7 @@
 import React from 'react';
 import EventNewStore from 'stores/EventNewStore';
 import Base from './tabs/Base';
-import Datetime from './tabs/Datetime';
-import Place from './tabs/Place';
+import PlaceAndDatetime from './tabs/PlaceAndDatetime';
 import Tutors from './tabs/Tutors';
 import {merge} from 'lodash';
 import cx from 'classnames';
@@ -17,7 +16,7 @@ class EventNew extends React.Component {
 
 	constructor(props){
 		super(props);
-		this.tabComponents = {'base': Base, 'dateTime': Datetime, 'place': Place, 'tutors': Tutors};
+		this.tabComponents = {'base': Base, 'placeAndDateTime': PlaceAndDatetime, 'tutors': Tutors};
 	}
 
 	state = merge(getEventNewState(), {
@@ -109,26 +108,28 @@ class EventNew extends React.Component {
 	render(){
 		var tabView = this._getTabView(this.state.selectedTab);
 		const baseClasses = this._getClasses('base');
-		const datetimeClasses = this._getClasses('dateTime');
-		const placeClasses = this._getClasses('place');
+		const datetimeClasses = this._getClasses('placeAndDateTime');
 		const tutorsClasses = this._getClasses('tutors');
 
 		const isFirstTabSelected = this._isFirstTab(this.state.selectedTab);
 		const isLastTabSelected = this._isLastTab(this.state.selectedTab);
 
+		const isAllFieldsFilled = EventNewStore.isAllFieldsFilled(this.state.selectedTab);
+
 		const prevButtonClasses = cx({
 			'event-btn': true,
 			'event-btn--reverse': true,
-			'event-btn--disabled': isFirstTabSelected,
-			'event-new__prev-button': true
+			'event-new__prev-button': true,
+			'event-new__prev-button--display': !isFirstTabSelected
+			
 		});
 		const nextButtonClasses = cx({
 			'event-btn': true,
 			'event-btn--reverse': true,
-			'event-btn--disabled': isLastTabSelected,
+			'event-btn--disabled': isLastTabSelected || !isAllFieldsFilled,
 			'event-new__next-button': true
 		});
-
+		
 		return (
 			<div className="event-new">
 				<div className="event-new__modal-box">
@@ -143,13 +144,12 @@ class EventNew extends React.Component {
 									<i className="icon-cog event-new__tab-icon"></i>
 									<p className="event-new__tab-name">Основные</p>
 								</div>
-								<div onClick={::this.handleSelectTab} className={datetimeClasses} data-name="dateTime">
-									<i className="icon-calendar event-new__tab-icon"></i>
-									<p className="event-new__tab-name">Дата и время</p>
-								</div>
-								<div onClick={::this.handleSelectTab} className={placeClasses} data-name="place">
+								<div onClick={::this.handleSelectTab} className={datetimeClasses} data-name="placeAndDateTime">
 									<i className="icon-map-marker event-new__tab-icon"></i>
+									<span className="event-new__devider">&</span>
+									<i className="icon-calendar event-new__tab-icon event-new__tab-icon--calendar"></i>
 									<p className="event-new__tab-name">Расположение</p>
+									<span className="event-new__tab-name">Дата и время</span>
 								</div>
 								<div onClick={::this.handleSelectTab} className={tutorsClasses} data-name="tutors">
 									<i className="icon-user event-new__tab-icon"></i>
@@ -159,7 +159,7 @@ class EventNew extends React.Component {
 							<div className="event-new__tabview">{tabView}</div>
 						</div>
 						<div className="event-new__footer">
-							<button type="button" className={prevButtonClasses} disabled={isFirstTabSelected} onClick={::this.handlePrevClick}>
+							<button type="button" className={prevButtonClasses} onClick={::this.handlePrevClick}>
 								<i className="icon-left-open-big event-new__icon-prev"></i>
 								<strong>Назад</strong>
 							</button>

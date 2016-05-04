@@ -43,6 +43,7 @@ class LiveSearch extends React.Component {
 		placeholder: React.PropTypes.string,
 		className: React.PropTypes.string,
 		onSelect: React.PropTypes.func,
+		onChange: React.PropTypes.func,
 		timeoutDelay: React.PropTypes.number
 	}
 
@@ -104,6 +105,9 @@ class LiveSearch extends React.Component {
 
 	handleChange(e){
 		this._startSearch(e.target.value);
+		if (this.props.onChange){
+			this.props.onChange(this.props.payload, e.target.value);
+		}
 	}
 
 	handleKeyUp(e){
