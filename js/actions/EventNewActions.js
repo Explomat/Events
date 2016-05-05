@@ -155,29 +155,7 @@ module.exports = {
 
 	complete: {
 		saveEvent(data){
-			AppDispatcher.handleAction({
-				actionType: EventNewConstants.EVENT_NEW_SAVING
-			});
-			EventNewAPI.saveEvent(data).then((receivedData) => {
-				const { id, error } = receivedData;
-				if (error) {
-					AppDispatcher.handleAction({
-						actionType: EventNewConstants.EVENT_NEW_SAVE_ERROR,
-						error: error
-					});
-				}
-				else if (id) {
-					AppDispatcher.handleAction({
-						actionType: EventNewConstants.EVENT_NEW_SAVED,
-						id: id
-					});
-				}
-			});
-		},
-		removeError(){
-			AppDispatcher.handleAction({
-				actionType: EventNewConstants.EVENT_NEW_REMOVE_ERROR
-			});
+			return EventNewAPI.saveEvent(data);
 		}
 	}
 }

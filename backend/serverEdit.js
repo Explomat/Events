@@ -1349,14 +1349,14 @@ function saveNewEvent(queryObjects){
 	eventDoc.Save();
 	return tools.object_to_text({
 		id: eventDoc.DocID,
-		error: ''
+		error: null
 	}, 'json');
 }
 
 function saveData(queryObjects) {
 	var data = tools.read_object(queryObjects.Body);
 
-	var curEventCard = data.HasProperty('event_id') ? OpenDoc(UrlFromDocID(Int(data.event_id))) : OpenDoc(UrlFromDocID(Session.eventId));
+	var curEventCard = OpenDoc(UrlFromDocID(Session.eventId));
 	
 
 

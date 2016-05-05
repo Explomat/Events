@@ -9,26 +9,29 @@ var isLoaded = false;
 
 var exp = {
 
-	isLoaded: function () {
+	isLoaded: function (_isLoaded) {
+		if (_isLoaded !== null && _isLoaded !== undefined){
+			isLoaded = _isLoaded;
+		}
 		return isLoaded;
 	},
 
 	start: function(){
 		var app = document.getElementById(Config.dom.appId) || document.body;
 		this.stop(app);
-		isLoaded = true;
-
+		
 		return CalendarAPI.getData().then(function(calendarData){
 			CalendarActions.receiveData(calendarData);
 			ReactDOM.render(React.createElement(Calendar.default), app);
+			isLoaded = true;
 		}.bind(this), function(err){
 			console.log(err);
 		});
 	},
 
 	stop: function () {
-		var app = document.getElementById(Config.dom.appId) || document.body;
-		if (app) ReactDOM.unmountComponentAtNode(app);
+		/*var app = document.getElementById(Config.dom.appId) || document.body;
+		if (app) ReactDOM.unmountComponentAtNode(app);*/
 		isLoaded = false;
 	}
 }

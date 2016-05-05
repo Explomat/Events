@@ -18,12 +18,13 @@ module.exports = {
 
 		var app = document.getElementById(Config.dom.appId) || document.body;
 		this.stop(app);
-		isLoaded = true;
+		
 		//ReactDOM.render(React.createElement(EventEdit.default), app);
 
 		EventEditAPI.getData(id).then(function(eventData){
 			EventEditActions.receiveData(eventData);
 			ReactDOM.render(React.createElement(EventEdit.default), app);
+			isLoaded = true;
 		}, function(err){
 			ReactDOM.render(React.createElement(EventError.default, {error: err.message}), app);
 		}).catch(function(e){
@@ -32,8 +33,8 @@ module.exports = {
 	},
 
 	stop () {
-		var app = document.getElementById(Config.dom.appId) || document.body;
-		if (app) ReactDOM.unmountComponentAtNode(app);
+		/*var app = document.getElementById(Config.dom.appId) || document.body;
+		if (app) ReactDOM.unmountComponentAtNode(app);*/
 		isLoaded = false;
 	}
 }

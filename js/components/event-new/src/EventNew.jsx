@@ -6,6 +6,7 @@ import Tutors from './tabs/Tutors';
 import Complete from './tabs/Complete';
 import {merge} from 'lodash';
 import cx from 'classnames';
+import Hasher from 'utils/Hasher';
 
 import './style/event-new.scss';
 
@@ -18,6 +19,7 @@ class EventNew extends React.Component {
 	constructor(props){
 		super(props);
 		this.tabComponents = {'base': Base, 'placeAndDateTime': PlaceAndDatetime, 'tutors': Tutors, 'complete': Complete};
+		this._onChange = this._onChange.bind(this);
 	}
 
 	state = merge(getEventNewState(), {
@@ -80,15 +82,19 @@ class EventNew extends React.Component {
 	}
 
 	componentDidMount() {
-		EventNewStore.addChangeListener(this._onChange.bind(this));
+		EventNewStore.addChangeListener(this._onChange);
 	}
 
 	componentWillUnmount() {
-		EventNewStore.removeChangeListener(this._onChange.bind(this));
+		EventNewStore.removeChangeListener(this._onChange);
 	}
 
 	_onChange() {
 		this.setState(getEventNewState());
+	}
+
+	handleClose(){
+		Hasher.setHash('#calendar');
 	}
 
 	handleSelectTab(e){

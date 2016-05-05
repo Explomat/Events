@@ -17,6 +17,10 @@ window.onload = function(){
 			EventInfoController.stop();
 			return;
 		}
+		if (EventNewController.isLoaded()) {
+			EventNewController.stop();
+			return;
+		}
 		CalendarController.start();
 	});
 
@@ -26,11 +30,17 @@ window.onload = function(){
 				EventInfoController.start(id);
 			});
 		}
-	    else EventInfoController.start(id);
+	    else {
+	    	EventInfoController.start(id);
+	    }
 	});
 
 	Router.addRoute(Config.hashes.eventEdit, function(id){
+		if (EventNewController.isLoaded()) {
+			EventNewController.stop();
+		}
 		EventEditController.start(id);
+		CalendarController.isLoaded(false)
 	});
 
 	Router.addRoute(Config.hashes.eventNew, function(){
@@ -39,7 +49,9 @@ window.onload = function(){
 				EventNewController.start();
 			});
 		}
-	    else EventNewController.start();
+	    else {
+	    	EventNewController.start();
+	    }
 	});
 
 	function init(curHash){

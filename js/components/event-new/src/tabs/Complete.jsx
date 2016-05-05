@@ -1,51 +1,59 @@
 import React from 'react';
 import Info from 'components/modules/info';
-import cx from 'classnames';
 import EventNewActions from 'actions/EventNewActions';
 import EventNewStore from 'stores/EventNewStore';
 import Hasher from 'utils/Hasher';
 
 class Complete extends React.Component {
 
-	constructor(props){
-		super(props);
-		this.isComplete = false;
-		this.isSave = false;
+	state = {
+		error: null
 	}
 
-	componentWillReceiveProps(nextProps){
-		if (nextProps.id === null) {
-			return;
-		}
-		if (this.isComplete) {
-			Hasher.setHash('#calendar');
-		}
-		else if(this.isSave){
-			Hasher.setHash('#event/edit/' + nextProps.id);
-		}
+	_showLoading(){
+		var node = this.refs.isLoading;
+		node.classList.add('overlay-loading--show');
+	}
+
+	_hideLoading(){
+		var node = this.refs.isLoading;
+		node.classList.remove('overlay-loading--show');
 	}
 
 	handleCompleteEvent(){
-		EventNewActions.complete.saveEvent(EventNewStore.getData());
-		this.isComplete = true;
+		this._showLoading();
+		EventNewActions.complete.saveEvent(EventNewStore.getData()).then((data) => {
+			this._hideLoading();
+			const error = data.error;
+			if (error) {
+				this.setState({error: error});
+			}
+			else {
+				Hasher.setHash('#calendar');
+			}
+		});
 	}
 
 	handleSaveEvent(){
-		EventNewActions.complete.saveEvent(EventNewStore.getData());
-		this.isSave = true;
+		this._showLoading();
+		EventNewActions.complete.saveEvent(EventNewStore.getData()).then((data) => {
+			this._hideLoading();
+			const {id, error} = data;
+			if (error && !id) {
+				this.setState({error: error});
+			}
+			else {
+				Hasher.setHash('#event/edit/' + id);
+			}
+		});
 	}
 
 	handleRemoveError(){
-		EventNewActions.complete.removeError();
+		this.setState({error: null});
 	}
 
 	render(){
-		const {error, isLoading} = this.props;
-		const isLoadingClass = cx({
-			'overlay-loading': true,
-			'overlay-loading--show': isLoading
-		});
-		const isShowInfoModal = error !== null;
+		const isShowInfoModal = this.state.error !== null;
 		return (
 			<div className="event-new-complete">
 				<div className="event-new-complete__buttons">
@@ -57,12 +65,12 @@ class Complete extends React.Component {
 						onClick={::this.handleSaveEvent}  
 						className="event-btn event-btn--reverse event-new-complete__save-button">Сохранить и продолжить</button>
 				</div>
-				<div className={isLoadingClass}></div>
+				<div ref="isLoading" className="overlay-loading"></div>
 				<Info
 					status='error'
-					message={error}
+					message={this.state.error}
 					isShow={isShowInfoModal}
-					onClose={this.handleRemoveError}/>
+					onClose={::this.handleRemoveError}/>
 			</div>	
 		);
 	}
