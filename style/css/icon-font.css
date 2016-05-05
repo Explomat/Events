@@ -136,3 +136,9 @@
 .icon-magnifying-glass:before {
   content: "\46";
 }
+.icon-check-square-o:before {
+  content: "\47";
+}
+.icon-help:before {
+  content: "\48";
+}

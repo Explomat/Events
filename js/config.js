@@ -38,7 +38,8 @@ servers
 			'forLiveSearchGetLectors',
 			'forLiveSearchGetEducationMethods',
 			'forLiveSearchGetPlaces',
-			'getDataForNewEvent'
+			'getDataForNewEvent',
+			'saveNewEvent'
 		]);
 
 module.exports = {

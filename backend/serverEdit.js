@@ -1339,9 +1339,25 @@ function getEventEditData (queryObjects) {
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
+function saveNewEvent(queryObjects){
+	var eventDoc = OpenNewDoc("x-local://wtv/wtv_event.xmd");
+	eventDoc.TopElem.name = 'Пробное';
+	eventDoc.TopElem.code = 'ASSESSMENT';
+	eventDoc.TopElem.start_date = Date();
+	eventDoc.TopElem.finish_date = Date();
+	eventDoc.BindToDb();
+	eventDoc.Save();
+	return tools.object_to_text({
+		id: eventDoc.DocID,
+		error: ''
+	}, 'json');
+}
+
 function saveData(queryObjects) {
-	curEventCard = OpenDoc(UrlFromDocID(Session.eventId));
-	data = tools.read_object(queryObjects.Body);
+	var data = tools.read_object(queryObjects.Body);
+
+	var curEventCard = data.HasProperty('event_id') ? OpenDoc(UrlFromDocID(Int(data.event_id))) : OpenDoc(UrlFromDocID(Session.eventId));
+	
 
 
 /* 

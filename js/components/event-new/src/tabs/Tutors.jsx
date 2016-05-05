@@ -160,6 +160,7 @@ class Tutors extends React.Component {
 					payload={innerListLectorId}
 					value={innerListLectorFullname}
 					onSelect={this.handleSelectInnerListLector}
+					onChange={this.handleResetInnerListLector}
 					placeholder="Преподаватель *"
 					className={innerListSearch}/>
 				<LiveSearch
@@ -167,6 +168,7 @@ class Tutors extends React.Component {
 					payload={innerNewLectorId}
 					value={innerNewLectorFullname}
 					onSelect={this.handleSelectInnerNewLector}
+					onChange={this.handleResetInnerNewLector}
 					placeholder="Преподаватель *"
 					className={innerAddSearch}/>
 				<LiveSearch
@@ -174,6 +176,7 @@ class Tutors extends React.Component {
 					payload={outerListLectorId}
 					value={outerListLectorFullname}
 					onSelect={this.handleSelectOuterListLector}
+					onChange={this.handleResetOuterListLector}
 					placeholder="Преподаватель *"
 					className={outerListSearch}/>
 				<div className={outerAdd}>

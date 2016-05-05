@@ -9,6 +9,12 @@ module.exports = {
 		});
 	},
 
+	saveEvent(data){
+		return Ajax.sendRequest(Config.url.createPath({action_name: 'saveNewEvent'}), JSON.stringify(data), false, true, null, 'POST').then((data) => {
+			return JSON.parse(data);
+		});
+	},
+
 	getPlaces(search){
 		return Ajax.sendRequest(Config.url.createPath({action_name: 'forLiveSearchGetPlaces', search: search, limit: 5}), null, false).then((data) => {
 			return JSON.parse(data);

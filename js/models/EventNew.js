@@ -55,4 +55,10 @@ module.exports = function(args) {
 		lectorAddSelectedType: LectorSelectTypes.keys.select,
 		lectorSearchType: LectorSelectTypes.keys.select
 	}
+
+	this.complete = {
+		id: null,
+		error: null,
+		isLoading: false
+	}
 }

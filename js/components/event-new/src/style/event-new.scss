@@ -47,7 +47,7 @@
 				.event-new__tabs{
 					.event-new__tab{
 						float: left;
-						width: 33.333333%;
+						width: 25%;
 						text-align: center;
 						color: #ccc;
 						cursor: pointer;
@@ -73,6 +73,8 @@
 					}
 				}
 				.event-new__tabview{
+					height: calc(100% - 88px);
+
 					.event-new-base{
 						margin-top: 20px;
 						
@@ -185,6 +187,36 @@
 							}
 						}
 					}
+					.event-new-complete {
+					    height: 100%;
+					    position: relative;
+
+					    .event-new-complete__buttons{
+					    	position: absolute;
+						    top: calc(50% - 69px);
+						    left: calc(50% - 194.5px);
+						    padding: 16px;
+						    border: 1px solid #ccc;
+
+					    	.event-new-complete__icon-question{
+						    	display: block;
+							    text-align: center;
+							    font-size: 3em;
+							    margin-bottom: 16px;
+							    color: #444;
+						    }
+
+						    .event-new-complete__complete-button{
+						    	margin-right: 24px;
+						    	padding: 8px 12px;
+						    	box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+						    }
+						    .event-new-complete__save-button{
+						    	padding: 8px 12px;
+						    	box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+						    }
+					    }
+					}
 				}
 			}
 			.event-new__footer{
@@ -194,6 +226,7 @@
 					float: left;
 					padding: 6px 16px 6px 10px;
 					display: none;
+					box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
 
 					&.event-new__prev-button--display {
 						display: inline-block;
@@ -207,6 +240,7 @@
 
 				.event-new__next-button{
 					padding: 6px 10px 6px 16px;
+					box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
 
 					.event-new__icon-next {
 						vertical-align: middle;

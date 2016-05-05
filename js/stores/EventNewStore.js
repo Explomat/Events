@@ -158,6 +158,24 @@ var tutors = {
 	}
 }
 
+var complete = {
+	savingEvent(){
+		_eventNew.complete.isLoading = true;
+	},
+	savingErrorEvent(error){
+		_eventNew.complete.error = error;
+		_eventNew.complete.isLoading = false;
+	},
+	savedEvent(id){
+		_eventNew.complete.id = id;
+		_eventNew.complete.error = null;
+		_eventNew.complete.isLoading = false;
+	},
+	removeError(){
+		_eventNew.complete.error = null;
+	}
+}
+
 var EventNewStore = extend({}, EventEmitter.prototype, {
 	
 	getData: function(){
@@ -170,13 +188,17 @@ var EventNewStore = extend({}, EventEmitter.prototype, {
 
 	isAllFieldsFilled(key){
 		var partialData = {..._eventNew[key]};
-		if (key === 'base' || 'placeAndDateTime') {
+		if (key === 'base' || key === 'placeAndDateTime') {
 			return every(Object.keys(partialData), (i) => {
 				return Boolean(partialData[i]);
 			});
 		}
 		else if (key === 'tutors'){
-			return (partialData.innerListLectorId || partialData.innerNewLectorId || partialData.outerListLectorId || partialData.lector.fullname);
+			let {innerListLectorId, innerNewLectorId, outerListLectorId, lector} = partialData;
+			return Boolean(innerListLectorId || 
+							innerNewLectorId || 
+							outerListLectorId || 
+							(lector.firstName.trim() && lector.lastName.trim() && lector.email.trim() && lector.company.trim()));
 		}
 		return false;
 	},
@@ -272,6 +294,20 @@ EventNewStore.dispatchToken = AppDispatcher.register(function(payload) {
 			break;
 		case EventNewConstants.EVENT_NEW_CHANGE_LECTOR_COMPANY:
 			tutors.changeLectorCompany(action.company);
+			break;
+
+		//COMPLETE
+		case EventNewConstants.EVENT_NEW_SAVING:
+			complete.savingEvent();
+			break;
+		case EventNewConstants.EVENT_NEW_SAVE_ERROR:
+			complete.savingErrorEvent(action.error);
+			break;
+		case EventNewConstants.EVENT_NEW_SAVED:
+			complete.savedEvent(action.id);
+			break;
+		case EventNewConstants.EVENT_NEW_REMOVE_ERROR:
+			complete.removeError();
 			break;
 
 		default:
