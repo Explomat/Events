@@ -4,6 +4,8 @@ import DropDown from 'components/modules/dropdown';
 import LiveSearch from 'components/modules/live-search';
 import EventNewActions from 'actions/EventNewActions';
 import {isNumberOrEmpty} from 'utils/validation/Validation';
+import EventTypes from 'utils/eventedit/EventTypes';
+import cx from 'classnames';
 
 import config from 'config';
 
@@ -47,39 +49,43 @@ class Base extends React.Component {
 	}
 
 	render(){
-		const { educationMethodId, educationMethodValue, tutorId, tutorValue } = this.props;
+		const { name, types, codes, educationOrgs, type, code, educationOrgId, educationMethodId, educationMethodValue, tutorId, tutorValue, maxPersonNum } = this.props;
+		const educationMethodClasses = cx({
+			'event-new-base__edication-method': true,
+			'event-new-base__edication-method--display': type !== EventTypes.keys.one_time
+		});
 		return (
 			<div className="event-new-base">
 				<div className="event-new-base__base">
 					<TextView
 						onBlur={this.handleChangeName} 
-						value={this.props.name} 
+						value={name} 
 						placeholder="Название *" 
 						className="event-new-base__name"/>
 					<DropDown 
 						description="Тип *"
 						onChange={this.handleChangeType} 
-						items={this.props.types} 
-						selectedPayload={this.props.type}
+						items={types} 
+						selectedPayload={type}
 						isReset={true}
 						className="event-new-base__type"/>
 					<DropDown 
 						description="Код *"
 						onChange={this.handleChangeCode} 
-						items={this.props.codes} 
-						selectedPayload={this.props.code}
+						items={codes} 
+						selectedPayload={code}
 						isReset={true}
 						className="event-new-base__code"/>
 					<DropDown
 						description="Обучающая организация *"
 						onChange={this.handleChangeEducationOrg} 
-						items={this.props.educationOrgs} 
-						selectedPayload={this.props.educationOrgId}
+						items={educationOrgs} 
+						selectedPayload={educationOrgId}
 						isReset={true}
 						className="event-new-base__education-org"/>
 					<TextView
 						onBlur={this.handleChangeMaxPersonNum} 
-						value={this.props.maxPersonNum} 
+						value={maxPersonNum} 
 						placeholder="Количество участников *"
 						isValid={isNumberOrEmpty}
 						className="event-new-base__max-person-num"/>
@@ -91,7 +97,8 @@ class Base extends React.Component {
 						query={config.url.createPath({action_name: 'forLiveSearchGetEducationMethods'})}
 						onSelect={this.handleSelectEducationMethod}
 						onChange={this.handleResetEducationMethod}
-						placeholder="Учебная программа *"/>
+						placeholder="Учебная программа *"
+						className={educationMethodClasses}/>
 					<LiveSearch
 						payload={tutorId}
 						value={tutorValue}

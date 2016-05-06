@@ -41,9 +41,9 @@ class Tutor extends React.Component {
 				</div>
 				<div className="event-wrapper">
 					<a href={this.props.href} title={this.props.fullname} target="__blank" className="event-wrapper__fullname">{this.props.fullname}</a>
-					<i className="event-wrapper__phone-icon fa fa-phone"></i>
+					<i className="event-wrapper__phone-icon icon-phone"></i>
 					<span className="event-wrapper__phone">{this.props.phone}</span>
-					<i className="event-wrapper__mail-icon fa fa-envelope"></i>
+					<i className="event-wrapper__mail-icon icon-envelope-o"></i>
 					<span className="event-wrapper__mail">{this.props.email}</span>
 				</div>
 			</div>
@@ -60,9 +60,9 @@ class Lector extends React.Component {
 				</div>
 				<div className="event-wrapper">
 					<a href={this.props.href} title={this.props.fullname} target="__blank" className="event-wrapper__fullname">{this.props.fullname}</a>
-					<i className="event-wrapper__phone-icon fa fa-phone"></i>
+					<i className="event-wrapper__phone-icon icon-phone"></i>
 					<span className="event-wrapper__phone">{this.props.phone}</span>
-					<i className="event-wrapper__mail-icon fa fa-envelope"></i>
+					<i className="event-wrapper__mail-icon icon-envelope-o"></i>
 					<span className="event-wrapper__mail">{this.props.email}</span>
 				</div>
 			</div>
@@ -164,6 +164,7 @@ class EventInfo extends React.Component {
 
 	constructor(props){
 		super(props);
+		this._onChange = this._onChange.bind(this);
 		this.handleClose = this.handleClose.bind(this);
 		this.handleCreateRequest = this.handleCreateRequest.bind(this);
 		this.handleRemoveCollaborator = this.handleRemoveCollaborator.bind(this);
@@ -173,12 +174,12 @@ class EventInfo extends React.Component {
 	}
 
 	componentDidMount() {
-		EventInfoStore.addChangeListener(this._onChange.bind(this));
+		EventInfoStore.addChangeListener(this._onChange);
 	}
 
 	componentWillUnmount() {
 		EventInfoActions.disposeData();
-		EventInfoStore.removeChangeListener(this._onChange.bind(this));
+		EventInfoStore.removeChangeListener(this._onChange);
 	}
 
 	_onChange() {
@@ -294,6 +295,9 @@ class EventInfo extends React.Component {
 								<span>Место проведения: {this.state.event.place}</span><br/>
 								<a href='#' className="event-info__map-link"> Схема проезда</a>
 							</p>
+							<a href={"#event/edit/" + this.state.event.id} className="event-info__edit-event" title="Редактировать мероприятие">
+								<i className="icon-pencil-square-o"></i>
+							</a>
 						</div>
 						<EventInfoBody members={this.state.event.members} collaborators={this.state.event.collaborators} tutors={this.state.event.tutors} lectors={this.state.event.lectors} files={this.state.event.files}/>
 					</div>

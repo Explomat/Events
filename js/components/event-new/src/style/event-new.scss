@@ -4,9 +4,23 @@
 	@include modal-box;
 	display: block;
 
+	position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(91, 91, 91, 0.26);
+    z-index: 100;
+    top: 0;
+
 	.event-new__modal-box {
 		@include modal-box__dialog;
 		width: 750px;
+
+		margin: 10px auto;
+	    position: absolute;
+	    top: 10%;
+	    left: 12.5%;
+	    width: 75%;
+	    z-index: 3;
 
 		.event-new__content {
 			@include modal-box__content;
@@ -105,6 +119,14 @@
 						.event-new-base__additional{
 							width: 45%;
 							float: right;
+
+							.event-new-base__edication-method {
+								display: none;
+
+								&.event-new-base__edication-method--display{
+									display: block;
+								}
+							}
 						}
 					}
 					.event-new-place-and-datetime{
@@ -240,7 +262,12 @@
 
 				.event-new__next-button{
 					padding: 6px 10px 6px 16px;
+					display: none;
 					box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+
+					&.event-new__next-button--display {
+						display: inline-block;
+					}
 
 					.event-new__icon-next {
 						vertical-align: middle;

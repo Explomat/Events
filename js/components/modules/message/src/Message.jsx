@@ -145,11 +145,14 @@ class Message extends React.Component {
         });
         const selectedItemsClasses = cx({
             'message__items-selected': true,
-            'message__items-selected--hide': this.state.selectedItems.length === 0
+            'message__items-selected--hide': this.state.selectedItems.length === 0,
+            'message__items-selected--100': this.state.notSelectedItems.length === 0
+
         });
         const notSelectedItemsClasses = cx({
             'message__items-not-selected': true,
-            'message__items-not-selected--hide': this.state.notSelectedItems.length === 0
+            'message__items-not-selected--hide': this.state.notSelectedItems.length === 0,
+            'message__items-not-selected--100': this.state.selectedItems.length === 0
         });
         return (
             <div className="message">

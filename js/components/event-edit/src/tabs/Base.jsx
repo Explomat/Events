@@ -51,10 +51,10 @@ class Base extends React.Component {
 	}
 
 	render(){
-		const educationMethodlasses = cx({
+		const educationMethodClasses = cx({
 			'event-edit-base__edication-method': true,
 			'event-edit-base__edication-method--display': this.props.selectedType !== EventTypes.keys.one_time
-		})
+		});
 		return (
 			<div className="event-edit-base">
 				<TextView
@@ -99,7 +99,7 @@ class Base extends React.Component {
 					selectedPayload={this.props.selectedEducationOrgId}
 					isReset={true}/>
 				<SelectOneItem
-					className={educationMethodlasses}
+					className={educationMethodClasses}
 					selectedItem={this.props.selectedEducationMethod} 
 					placeholder="Учебная программа *" 
 					modalTitle="Выберите учебную программу"

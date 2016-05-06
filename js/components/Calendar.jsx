@@ -30,11 +30,11 @@ var EventSideBar = React.createClass({
 		return(
 			<section className="timetable__event clearfix">
 				<div className="timetable__event-info-wrapper">
-					<i className="info-icon fa fa-clock-o"></i>
+					<i className="info-icon icon-clock-o"></i>
 					<p className="timetable__event-info timetable__event-info--time">{time}</p>
 					<i className={"icon icon--small "+ typeIconClass +" info-icon"}></i>
 					<TextOverflow className={"timetable__event-info timetable__event-info--name"} value={this.props.name} rowsCount={2} />
-					<i className="fa fa-map-marker info-icon"></i>
+					<i className="icon-map-marker info-icon"></i>
 					<p className="timetable__event-info timetable__event-info--region">{this.props.place}</p>
 				</div>
 				<a href={"#event/view/" + this.props.id} className="event-btn timetable__event-details-btn">Подробнее</a>
@@ -68,7 +68,7 @@ var SideBar = React.createClass({
 		return (
 			<aside className="timetable">
 				<header className="timetable__header">
-					<i className="timetable__header-icon fa fa-calendar"></i>
+					<i className="timetable__header-icon icon-calendar"></i>
 					<p className="timetable__header-date">{selectedDate}</p>
 				</header>
 				<div className={"timetable__message " + isDisplayMessageClass}>Нет мероприятий на выбранную дату</div>
@@ -346,6 +346,11 @@ var Calendar = React.createClass({
 								{this.getRows()}
 							</div>
 						</div>
+					</div>
+					<div className="calendar-table__footer clearfix">
+						<a href="#event/new" className="event-btn event-btn--reverse calendar-table__create-event">
+							<i className="icon-plus"></i>
+						</a>
 					</div>
 					<div className={"overlay-loading " + isLoadingClass}></div>
 					<div id={Config.dom.eventViewModalId}></div>

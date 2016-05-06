@@ -142,3 +142,9 @@
 .icon-help:before {
   content: "\48";
 }
+.icon-pencil-square-o:before {
+  content: "\49";
+}
+.icon-pencil:before {
+  content: "\4a";
+}

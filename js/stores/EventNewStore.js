@@ -5,6 +5,7 @@ var EventNew = require('../models/EventNew');
 var Lector = require('../models/eventedit/Lector');
 var extend = require('extend');
 var every = require('lodash/every');
+var EventTypes = require('../utils/eventedit/EventTypes').default;
 
 var _eventNew = {};
 
@@ -18,6 +19,10 @@ var base = {
 	},
 	changeType(type){
 		_eventNew.base.type = type;
+		if (type === EventTypes.keys.one_time) {
+			_eventNew.base.educationMethodId = null;
+			_eventNew.base.educationMethodValue = null;
+		}
 	},
 	changeCode(code){
 		_eventNew.base.code = code;
@@ -170,8 +175,16 @@ var EventNewStore = extend({}, EventEmitter.prototype, {
 
 	isAllFieldsFilled(key){
 		var partialData = {..._eventNew[key]};
-		if (key === 'base' || key === 'placeAndDateTime') {
+		if (key === 'placeAndDateTime') {
 			return every(Object.keys(partialData), (i) => {
+				return Boolean(partialData[i]);
+			});
+		}
+		else if (key === 'base') {
+			return every(Object.keys(partialData), (i) => {
+				if ((i === 'educationMethodId' || i === 'educationMethodValue') && partialData['type'] === EventTypes.keys.one_time) {
+					return true;
+				}
 				return Boolean(partialData[i]);
 			});
 		}

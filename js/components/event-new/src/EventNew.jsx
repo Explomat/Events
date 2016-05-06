@@ -123,7 +123,7 @@ class EventNew extends React.Component {
 		const isLastTabSelected = this._isLastTab(this.state.selectedTab);
 
 		const isAllFieldsFilled = EventNewStore.isAllFieldsFilled(this.state.selectedTab);
-		const isNextButtonDisabled = isLastTabSelected || !isAllFieldsFilled;
+		const isNextButtonDiplay = !isLastTabSelected && isAllFieldsFilled;
 
 		const prevButtonClasses = cx({
 			'event-btn': true,
@@ -135,15 +135,15 @@ class EventNew extends React.Component {
 		const nextButtonClasses = cx({
 			'event-btn': true,
 			'event-btn--reverse': true,
-			'event-btn--disabled': isNextButtonDisabled,
-			'event-new__next-button': true
+			'event-new__next-button': true,
+			'event-new__next-button--display': isNextButtonDiplay
 		});
 		
 		return (
 			<div className="event-new">
 				<div className="event-new__modal-box">
 					<div className="event-new__content">
-						<div className="event-new__header">
+						<div className="event-new__header clearfix">
 							<div className="event-new__title-banner">Создание мероприятия</div>
 							<button type="button" className="close-btn" onClick={this.handleClose}>&times;</button>
 						</div>
@@ -171,12 +171,12 @@ class EventNew extends React.Component {
 							</div>
 							<div className="event-new__tabview">{tabView}</div>
 						</div>
-						<div className="event-new__footer">
+						<div className="event-new__footer clearfix">
 							<button type="button" className={prevButtonClasses} onClick={::this.handlePrevClick}>
 								<i className="icon-left-open-big event-new__icon-prev"></i>
 								<strong>Назад</strong>
 							</button>
-							<button type="button" className={nextButtonClasses} disabled={isNextButtonDisabled} onClick={::this.handleNextClick}>
+							<button type="button" className={nextButtonClasses} onClick={::this.handleNextClick}>
 								<strong>Далее</strong>
 								<i className="icon-right-open-big event-new__icon-next"></i>
 							</button>
