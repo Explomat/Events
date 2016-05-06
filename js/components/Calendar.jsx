@@ -46,7 +46,7 @@ var EventSideBar = React.createClass({
 
 var SideBar = React.createClass({
 
-	propsTypes: {
+	propTypes: {
 		events: React.PropTypes.array
 	},
 
@@ -85,7 +85,7 @@ var SideBar = React.createClass({
 
 var Filters = React.createClass({
 
-	propsTypes: {
+	propTypes: {
 		selectedYear: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]).isRequired,
 		selectedMonthIndex: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.number]).isRequired
 	},
@@ -143,7 +143,7 @@ var Filters = React.createClass({
 
 var CalendarCell = React.createClass({
 	
-	propsTypes: {
+	propTypes: {
 		day: React.PropTypes.number,
 		isCurrentDay: React.PropTypes.bool,
 		events: React.PropTypes.array
@@ -201,7 +201,7 @@ var CalendarCell = React.createClass({
 
 var Calendar = React.createClass({
 
-	propsTypes: {
+	propTypes: {
 		currentDate(props, propName){
 			if (typeof(props[propName] !== Date)) {
 				return new Error('Validation for \'currentDate\' failed!');

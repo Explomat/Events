@@ -217,20 +217,20 @@ class Collaborators extends React.Component {
 							})}
 						</div>
 					</div>
-					<Info
-						status={this.props.infoStatus}
-						message={this.props.infoMessage}
-						isShow={isShowInfoModal}
-						onClose={this.handleRemoveInfoMessage}/>
-					<Message
-						title="Новое уведомление"
-						selectedItems={items.selectedItems}
-						notSelectedItems={items.notSelectedItems}
-						onClose={this.handleCloseNotificateModal} 
-						onSend={this.handleNotificateItems}
-						isShow={this.state.isShowNotificateModal}/>
-					{this._getCollaboratorsModal()}
 				</div>
+				<Info
+					status={this.props.infoStatus}
+					message={this.props.infoMessage}
+					isShow={isShowInfoModal}
+					onClose={this.handleRemoveInfoMessage}/>
+				<Message
+					title="Новое уведомление"
+					selectedItems={items.selectedItems}
+					notSelectedItems={items.notSelectedItems}
+					onClose={this.handleCloseNotificateModal} 
+					onSend={this.handleNotificateItems}
+					isShow={this.state.isShowNotificateModal}/>
+				{this._getCollaboratorsModal()}
 			</div>
 		);
 	}

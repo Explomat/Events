@@ -4,9 +4,22 @@
 	@include modal-box;
 	display: block;
 
+	position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(91, 91, 91, 0.26);
+    z-index: 100;
+    top: 0;
+
 	.select-items__modal-box {
 		@include modal-box__dialog;
-		width: 990px;
+
+		margin: 10px auto;
+	    position: absolute;
+	    top: 10%;
+	    left: 2.5%;
+	    width: 95%;
+	    z-index: 3;
 
 		.select-items__content {
 			@include modal-box__content;
@@ -15,7 +28,7 @@
 			}
 			.select-item__body{
 				@include modal-box__body;
-				height: 400px;
+				height: 450px;
 			}
 			.select-item__footer{
 				@include modal-box__footer;

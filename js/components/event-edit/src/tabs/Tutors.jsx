@@ -312,7 +312,6 @@ class Tutors extends React.Component {
 								})}
 							</div>
 						</div>
-						{this._getTutorsModal()}
 					</div>
 				</div>
 				<div className="lectors">
@@ -359,10 +358,11 @@ class Tutors extends React.Component {
 								})}
 							</div>
 						</div>
-						{this._getLectorsModal()}
-						{this._getInnerLectorsModal()}
 					</div>
 				</div>
+				{this._getTutorsModal()}
+				{this._getLectorsModal()}
+				{this._getInnerLectorsModal()}
 			</div>
 		);
 	}

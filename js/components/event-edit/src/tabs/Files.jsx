@@ -310,7 +310,6 @@ class Files extends React.Component {
 								})}
 							</div>
 						</div>
-						{this._getFilesModal()}
 					</div>		
 				</div>
 				<div className="library-materials">
@@ -346,14 +345,16 @@ class Files extends React.Component {
 								})}
 							</div>
 						</div>
-						{this._getLibraryMaterialsModal()}
+						
 					</div>
-					<Info
-						status={this.props.infoStatusDownloadLibraryMaterials}
-						message={this.props.infoMessageDownloadLibraryMaterials}
-						isShow={isShowInfoModal}
-						onClose={this.handleRemoveInfoMessage}/>	
 				</div>
+				{this._getFilesModal()}
+				<Info
+					status={this.props.infoStatusDownloadLibraryMaterials}
+					message={this.props.infoMessageDownloadLibraryMaterials}
+					isShow={isShowInfoModal}
+					onClose={this.handleRemoveInfoMessage}/>
+				{this._getLibraryMaterialsModal()}
 			</div>
 		);
 	}

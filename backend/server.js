@@ -22,7 +22,7 @@
 	var groups = [
 		{
 			name: 'event_admin',
-			actionsDenied: [actionsDenied.newEvent],
+			actionsDenied: [],
 			componentsDenied: [],
 			priority: 0
 		},

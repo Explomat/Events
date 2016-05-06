@@ -286,9 +286,9 @@ function isAdmin (queryObjects) {
 function createNotification (queryObjects) {
 	var data = tools.read_object(queryObjects.Body);
 
-	var ids =  data.HasProperty('ids') ?  data.ids : false;
-	var subject = data.HasProperty('subject') ? data.subject : false ;
-	var messeageText = data.HasProperty('body') ? data.body : false ;
+	var ids =  data.HasProperty('ids') ?  data.ids : null;
+	var subject = data.HasProperty('subject') ? data.subject : null ;
+	var messeageText = data.HasProperty('body') ? data.body : null ;
 	try {
 		var senderAdress = OpenDoc(UrlFromDocID(curUserID)).TopElem;
 	} catch (e) {
@@ -298,7 +298,7 @@ function createNotification (queryObjects) {
 	var badPersonArray = [];
 	var notSendRequest = 0;
 
-	if ( ids  && subject  && messeageText ) {
+	if ( ids !== null  && subject !== null && messeageText !== null ) {
 		for (elem in ids) {
 			try {
 				curUserCardTE = OpenDoc(UrlFromDocID(Int(elem))).TopElem

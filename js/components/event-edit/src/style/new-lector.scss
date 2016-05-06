@@ -4,9 +4,22 @@
     @include modal-box;
     display: block;
 
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(91, 91, 91, 0.26);
+    z-index: 100;
+    top: 0;
+
     .new-lector__modal-box {
         @include modal-box__dialog;
-        max-width: 450px;
+
+        margin: 10px auto;
+        position: absolute;
+        top: 10%;
+        left: 25%;
+        width: 50%;
+        z-index: 3;
 
         .new-lector__content {
             @include modal-box__content;
