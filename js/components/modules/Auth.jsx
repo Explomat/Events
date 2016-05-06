@@ -19,7 +19,7 @@ class Auth extends React.Component {
 	render() {
 		var children = this.props.children;
 		if (!Array.isArray(children)) {
-			return this._isDenied(children.type.displayName) ? null : children;
+			return this._isDenied(children.type.name) ? null : children;
 		}
 		return null; 
 	}

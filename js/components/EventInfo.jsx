@@ -1,10 +1,12 @@
 import React from 'react';
+import Auth from './modules/Auth';
 import Hasher from '../utils/Hasher';
 import EventInfoStore from '../stores/EventInfoStore';
 import CalendarStore from '../stores/CalendarStore';
 import EventInfoActions from '../actions/EventInfoActions';
 import EventStatuses from '../utils/event/EventStatuses';
 import EventTypes from '../utils/event/EventTypes';
+import EditEventButton from './authmodules/EditEventButton';
 import DropDown from './modules/dropdown';
 import TextOverflow from './modules/text-overflow';
 import FileTypes from '../utils/event/FileTypes';
@@ -279,6 +281,7 @@ class EventInfo extends React.Component {
 		var isDisplayPlaceClass = isWebinar ? 'event-info__map--hide': '';
 		var buttons = this.getButtons();
 		var infoClass = this.state.info ? 'event-info__info-block--show' : '';
+		var componentsDenied = CalendarStore.getUserComponentsDenied();
 		return(
 			<div className="event-info-box">
 				<section className="event-info">
@@ -295,9 +298,9 @@ class EventInfo extends React.Component {
 								<span>Место проведения: {this.state.event.place}</span><br/>
 								<a href='#' className="event-info__map-link"> Схема проезда</a>
 							</p>
-							<a href={"#event/edit/" + this.state.event.id} className="event-info__edit-event" title="Редактировать мероприятие">
-								<i className="icon-pencil-square-o"></i>
-							</a>
+							<Auth componentsDenied={componentsDenied}>
+								<EditEventButton href={"#event/edit/" + this.state.event.id} className='event-info__edit-event' />
+							</Auth>
 						</div>
 						<EventInfoBody members={this.state.event.members} collaborators={this.state.event.collaborators} tutors={this.state.event.tutors} lectors={this.state.event.lectors} files={this.state.event.files}/>
 					</div>

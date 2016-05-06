@@ -2,6 +2,7 @@ import React from 'react';
 import Auth from './modules/Auth';
 import BusinessTypeFilter from './authmodules/BusinessTypeFilter';
 import RegionsFilter from './authmodules/RegionsFilter';
+import CreateEventButton from './authmodules/CreateEventButton';
 import DropDown from './modules/dropdown';
 import SearchBar from './modules/search-bar';
 import TextOverflow from './modules/text-overflow';
@@ -324,6 +325,7 @@ var Calendar = React.createClass({
 	render() {
 		var filtersProps = this.getFiltersProps();
 		var isLoadingClass = this.state.isLoading ? 'overlay-loading--show ': '';
+		const componentsDenied = CalendarStore.getUserComponentsDenied();
 		return (
 			<div className="container">
 				<SideBar selectedDate={this.state.selectedDate} events={this.state.filterEvents}/>
@@ -348,9 +350,9 @@ var Calendar = React.createClass({
 						</div>
 					</div>
 					<div className="calendar-table__footer clearfix">
-						<a href="#event/new" className="event-btn event-btn--reverse calendar-table__create-event">
-							<i className="icon-plus"></i>
-						</a>
+						<Auth componentsDenied={componentsDenied}>
+							<CreateEventButton href='#event/new' className='calendar-table__create-event' />
+						</Auth>
 					</div>
 					<div className={"overlay-loading " + isLoadingClass}></div>
 					<div id={Config.dom.eventViewModalId}></div>

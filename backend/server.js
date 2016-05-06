@@ -14,7 +14,9 @@
 
 	var componentsDenied = {
 		BusinessTypeFilter: 'BusinessTypeFilter',
-		RegionsFilter: 'RegionsFilter'
+		RegionsFilter: 'RegionsFilter',
+		CreateEventButton: 'CreateEventButton',
+		EditEventButton: 'EditEventButton'
 	}
 
 	var groups = [
@@ -421,7 +423,6 @@
 	function createRequest(queryObjects) {
 		var curEventCard = Int(queryObjects.event_id); // ID мероприятия
 		var repeatRequests = XQuery("sql: select req.id from requests as req where req.status_id = 'active' and req.person_id="+curUserID+" and req.object_id = "+curEventCard)
-		alert("кол-во" + ArrayCount(repeatRequests))
 		if (ArrayCount(repeatRequests) == 0 ) {
 			var curUserCard = OpenDoc(UrlFromDocID(curUserID)); // Сотруник подавший заявку
 			var requestTypeId = Int(5984338634217761421); // id заявки на мероприятие
