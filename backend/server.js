@@ -8,8 +8,8 @@
 	}
 
 	var actionsDenied = {
-		createRequest: 'createRequest',
-		removeCollaborator: 'removeCollaborator'
+		newEvent: 'new',
+		editEvent: 'edit'
 	}
 
 	var componentsDenied = {
@@ -22,7 +22,7 @@
 	var groups = [
 		{
 			name: 'event_admin',
-			actionsDenied: [],
+			actionsDenied: [actionsDenied.newEvent],
 			componentsDenied: [],
 			priority: 0
 		},
@@ -134,7 +134,21 @@
 		return DateNewTime(RawSecondsToDate(Int(DateToRawSeconds(myDate)) - 1));
 	}
 
-	
+	function isDeniedActionAccess(queryObjects){
+		var action = queryObjects.HasProperty('action') ? queryObjects.action : null;
+		if (action == null) {
+			return true;
+		}
+
+		var userGroup = getGroupByMaxPriority(getMatchedUserGroups(curUserID));
+		var actions = userGroup.actionsDenied;
+		for (var i = actions.length - 1; i >= 0; i--) {
+			if (actions[i] == action) {
+				return true;
+			}
+		};
+		return false;
+	}
 
 	function getEventInfo (queryObjects) {
 		function _isEventExist(eventId){
@@ -410,7 +424,6 @@
 			user: {
 				id: curUserID,
 				componentsDenied: userGroup.componentsDenied,
-				actionsDenied: userGroup.actionsDenied,
 				businessType: personBusinessType,
 				region: curPersonCard.TopElem.custom_elems.ObtainChildByKey('office_code').value + ''
 			},

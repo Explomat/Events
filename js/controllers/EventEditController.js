@@ -18,17 +18,19 @@ module.exports = {
 
 		var app = document.getElementById(Config.dom.appId) || document.body;
 		this.stop(app);
-		
-		//ReactDOM.render(React.createElement(EventEdit.default), app);
 
-		EventEditAPI.getData(id).then(function(eventData){
-			EventEditActions.receiveData(eventData);
-			ReactDOM.render(React.createElement(EventEdit.default), app);
-			isLoaded = true;
-		}, function(err){
-			ReactDOM.render(React.createElement(EventError.default, {error: err.message}), app);
-		}).catch(function(e){
-			console.error(e.stack);
+		EventEditAPI.isDeniedActionAccess('edit').then(function(isDenied) {
+			if (!isDenied){
+				EventEditAPI.getData(id).then(function(eventData){
+					EventEditActions.receiveData(eventData);
+					ReactDOM.render(React.createElement(EventEdit.default), app);
+					isLoaded = true;
+				}, function(err){
+					ReactDOM.render(React.createElement(EventError.default, {error: err.message}), app);
+				}).catch(function(e){
+					console.error(e.stack);
+				});
+			}
 		});
 	},
 

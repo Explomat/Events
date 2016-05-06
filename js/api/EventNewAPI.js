@@ -3,6 +3,12 @@ var Ajax = require('../utils/Ajax');
 
 module.exports = {
 
+	isDeniedActionAccess(action){
+		return Ajax.sendRequest(Config.url.createPath({action_name: 'isDeniedActionAccess', action: action}), null, false).then((data) => {
+			return JSON.parse(data);
+		});
+	},
+
 	getData(){
 		return Ajax.sendRequest(Config.url.createPath({action_name: 'getDataForNewEvent'}), null, false).then((data) => {
 			return JSON.parse(data);

@@ -16,12 +16,16 @@ module.exports = {
 	start: function(){
 		var appElem = document.getElementById(Config.dom.eventViewModalId) || document.body;
 
-		EventNewAPI.getData().then(function(eventData){
-			EventNewActions.receiveData(eventData);
-			ReactDOM.render(React.createElement(EventNew.default), appElem);
-			isLoaded = true;
-		}).catch(function(e){
-			console.error(e.stack);
+		EventNewAPI.isDeniedActionAccess('new').then(function(isDenied) {
+			if (!isDenied) {
+				EventNewAPI.getData().then(function(eventData){
+					EventNewActions.receiveData(eventData);
+					ReactDOM.render(React.createElement(EventNew.default), appElem);
+					isLoaded = true;
+				}).catch(function(e){
+					console.error(e.stack);
+				});
+			} 
 		});
 	},
 

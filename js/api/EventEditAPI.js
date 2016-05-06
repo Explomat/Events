@@ -6,6 +6,12 @@ var expand = require('../utils/Object').expand;
 
 module.exports = {
 
+	isDeniedActionAccess: function(action){
+		return Ajax.sendRequest(Config.url.createPath({action_name: 'isDeniedActionAccess', action: action}), null, false).then((data) => {
+			return JSON.parse(data);
+		});
+	},
+
 	getData: function(eventId){
 		//return Promise.resolve({});
 		return Ajax.sendRequest(Config.url.createPath({action_name: 'getEventEditData', event_id: eventId}), null, false).then(function(data){

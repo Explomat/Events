@@ -12,7 +12,8 @@ servers
 			'createRequest',
 			'removeCollaborator',
 			'startEvent',
-			'finishEvent'
+			'finishEvent',
+			'isDeniedActionAccess'
 		]);
 servers
 	.addServer('6257108030223689633')
