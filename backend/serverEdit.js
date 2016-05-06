@@ -1154,28 +1154,29 @@ function getEventPlaces(queryObjects) {
 	try {
 		var eventDocTE = OpenDoc(UrlFromDocID(eventID)).TopElem; 
 	} catch (e) {
-		return "Не корректный ID меропирятия (расположение мероприятия), текст ошибки : " + e;
+		return "Некорректный ID меропирятия (расположение мероприятия), текст ошибки : " + e;
 	}
-	if ( eventDocTE.place_id.HasValue ) {
-		var places = [];
-		for (pl in XQuery("sql:select p.id, REPLACE(p.name,'\"', '' ) as name, p.parent_id, r.name as region_name from places p left join regions r on p.region_id=r.id order by p.name desc")){
-			id = pl.id == null ? 'null' : pl.id + '';
-			name = pl.name == null ? 'null' : pl.name + '';
-			parentId = pl.parent_id == null ? 'null' : pl.parent_id + '';
-			regionName = pl.region_name == null ? '' : pl.region_name + '';
-			places.push({ id:id, name:name, parentId:parentId, descr: regionName, checked:false });
-		}
+	var places = [];
+	for (pl in XQuery("sql:select p.id, REPLACE(p.name,'\"', '' ) as name, p.parent_id, r.name as region_name from places p left join regions r on p.region_id=r.id order by p.name desc")){
+		id = pl.id == null ? 'null' : pl.id + '';
+		name = pl.name == null ? 'null' : pl.name + '';
+		parentId = pl.parent_id == null ? 'null' : pl.parent_id + '';
+		regionName = pl.region_name == null ? '' : pl.region_name + '';
+		places.push({ id:id, name:name, parentId:parentId, descr: regionName, checked:false });
+	}
 
-		var tree = _getTree(places);
-		return {
-			selectedNode: { 
-				id : eventDocTE.place_id + '', 
-				name : eventDocTE.place_id.ForeignElem.name + ''
-			},
-			nodes: tree
-		};
-	} else {
-		return "Отсутсвует расположение";
+	var tree = _getTree(places);
+	var selectedNode = null;
+	if (eventDocTE.place_id.HasValue) {
+		selectedNode = {
+			id : eventDocTE.place_id + '', 
+			name : eventDocTE.place_id.ForeignElem.name + ''
+		}
+	}
+
+	return {
+		selectedNode: selectedNode,
+		nodes: tree
 	}
 }
 
@@ -1307,12 +1308,43 @@ function getEventTutors (queryObjects) {
 	}
 }
 
+function stringifyWT(obj) {
+	var type = DataType(obj);
+	var curObj = obj;
+	var outStr = '';
+
+	if (obj == null || obj == undefined) 
+		return 'null';
+	if (type == 'string' || type == 'integer')
+		return '\"' + obj + '\"'  
+	if (type == 'bool')
+		return obj;
+
+	if (IsArray(obj)) {
+		var temp = '';
+		for (prop in obj) {
+			temp += stringifyWT(prop) + ',';
+		}
+		temp = temp.substr(0, temp.length - 1);
+		outStr += '[' + temp +']';
+	}
+	else {
+		var temp = '';
+		for (prop in obj) {
+			temp += '"' + prop + '":' + stringifyWT(obj[prop]) + ',';
+		}
+		temp = temp.substr(0, temp.length - 1);
+		outStr +='{' + temp + '}';
+	}
+	return outStr;
+}
+
 function getEventEditData (queryObjects) {
 	var eventID = queryObjects.HasProperty('event_id') ? Int(queryObjects.event_id) : null;
 	if (ArrayCount(XQuery("sql: select * from events where events.id =" + eventID)) > 0) {
 		Session['eventId'] = eventID;
 		Session['eventName'] = ArrayOptFirstElem(XQuery("sql: select events.name from events where events.id =" + eventID)).name
-		return tools.object_to_text({
+		return stringifyWT({
 			id: eventID,
 			base : getEventBaseData(queryObjects),
 			requests : getEventRequests(queryObjects),
