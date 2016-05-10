@@ -21,31 +21,37 @@
 
 	var groups = [
 		{
-			name: 'event_admin',
+			name: 'super_event_admin',
 			actionsDenied: [],
 			componentsDenied: [],
 			priority: 0
 		},
-
 		{
-			name: 'event_training',
-			actionsDenied: [],
-			componentsDenied: [],
+			name: 'event_admin',
+			actionsDenied: getObjectValues(actionsDenied),
+			componentsDenied: getObjectValues(componentsDenied),
 			priority: 1
 		},
 
 		{
-			name: 'event_user',
-			actionsDenied: [],
-			componentsDenied: [],
+			name: 'event_training',
+			actionsDenied: getObjectValues(actionsDenied),
+			componentsDenied: getObjectValues(componentsDenied),
 			priority: 2
+		},
+
+		{
+			name: 'event_user',
+			actionsDenied: getObjectValues(actionsDenied),
+			componentsDenied: getObjectValues(componentsDenied),
+			priority: 3
 		},
 
 		{
 			name: 'event_all',
 			actionsDenied: getObjectValues(actionsDenied),
 			componentsDenied: getObjectValues(componentsDenied),
-			priority: 3
+			priority: 4
 		}
 	]
 

@@ -10,6 +10,7 @@
     background-color: rgba(91, 91, 91, 0.26);
     z-index: 100;
     top: 0;
+    overflow-x: hidden;
 
 	.event-new__modal-box {
 		@include modal-box__dialog;
@@ -133,18 +134,18 @@
 						margin-top: 20px;
 
 						.event-new-place-and-datetime__datetime{
-							width: 45%;
-							float: left;
+							margin-bottom: 20px;
 							.event-new-place-and-datetime__start-datetime{
-								margin-bottom: 20px;
+								width: 45%;
+								float: left;
 							}
 							.event-new-place-and-datetime__finish-datetime{
-								
+								width: 45%;
+								float: right;
 							}
 						}
 						.event-new-place-and-datetime__place{
 							width: 45%;
-							float: right;
 						}
 						
 					}

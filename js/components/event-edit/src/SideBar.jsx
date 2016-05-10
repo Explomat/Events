@@ -19,7 +19,7 @@ class SideBar extends React.Component {
 		return (
 			<aside className="side-bar">
 				<div className="side-bar__header">
-					<i className="fa fa-angle-left backward-icon"></i>
+					<a href="#calendar" className="icon-left-open-big side-bar__backward-icon"></a>
 					<span className="header-txt">Редактирование</span>
 				</div>
 				<div className="side-bar__body">

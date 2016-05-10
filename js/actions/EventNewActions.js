@@ -49,12 +49,6 @@ module.exports = {
 				id: id,
 				value: value
 			});
-		},
-		changeMaxPersonNum(num){
-			AppDispatcher.handleAction({
-				actionType: EventNewConstants.EVENT_NEW_CHANGE_MAX_PERSON_NUM,
-				num: num
-			});
 		}
 	},
 

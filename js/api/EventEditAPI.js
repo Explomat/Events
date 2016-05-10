@@ -24,7 +24,15 @@ module.exports = {
 	},
 
 	saveData: function(data){
-		Ajax.sendRequest(Config.url.createPath({action_name: 'saveData'}), JSON.stringify(data), false, true, null, 'POST');
+		return Ajax.sendRequest(Config.url.createPath({action_name: 'saveData'}), JSON.stringify(data), false, true, null, 'POST').then((data) => {
+			return JSON.parse(data);
+		});
+	},
+
+	changeStatus: function(status){
+		return Ajax.sendRequest(Config.url.createPath({action_name: 'changeStatus'}), JSON.stringify({status: status}), false, true, null, 'POST').then((data) => {
+			return JSON.parse(data);
+		});
 	},
 
 	notificateItems: function(items, subject, body){

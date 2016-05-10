@@ -22,7 +22,8 @@
   width: 220px;
   padding: 6px 8px;
   border: 1px solid $color-gray;
-
+  box-shadow: 0 0 0 1px rgba(0,0,0,.1),0 10px 20px -5px rgba(0,0,0,.4);
+  
   .options {
     width: 100%;
     display: inline-block;

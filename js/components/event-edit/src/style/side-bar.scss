@@ -16,8 +16,11 @@ $headerColor: #646464;
     font-size: 1.1em;
     margin: 0;
 
-    .backward-icon{
+    .side-bar__backward-icon{
       font-size: 1.5em;
+      color: #fff;
+      text-decoration: none;
+      vertical-align: middle;
     }
 
     .header-txt{

@@ -40,7 +40,8 @@ servers
 			'forLiveSearchGetEducationMethods',
 			'forLiveSearchGetPlaces',
 			'getDataForNewEvent',
-			'saveNewEvent'
+			'createEvent',
+			'changeStatus'
 		]);
 
 module.exports = {

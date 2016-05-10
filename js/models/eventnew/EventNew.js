@@ -1,14 +1,13 @@
-import EventTypes from '../utils/eventedit/EventTypes';
-import EventCodes from '../utils/eventedit/EventCodes';
-import LectorTypes from '../utils/eventedit/LectorTypes';
-import LectorSelectTypes from '../utils/eventnew/LectorSelectTypes';
-import Lector from './eventedit/Lector';
+import EventTypes from '../../utils/eventedit/EventTypes';
+import EventCodes from '../../utils/eventedit/EventCodes';
+import LectorTypes from '../../utils/eventedit/LectorTypes';
+import LectorSelectTypes from '../../utils/eventnew/LectorSelectTypes';
+import Lector from './Lector';
 
 module.exports = function(args) {
 	args = args || {};
 	args.base = args.base || {};
-	args.dateTime = args.dateTime || {};
-	args.place = args.place || {};
+	args.placeAndDateTime = args.placeAndDateTime || {};
 	args.tutors = args.tutors || {};
 	args.organizer = args.organizer || {};
 
@@ -29,8 +28,7 @@ module.exports = function(args) {
 		educationMethodId: null,
 		educationMethodValue: null,
 		tutorId: null,
-		tutorValue: null,
-		maxPersonNum: ''
+		tutorValue: null
 	}
 
 	this.placeAndDateTime = {
@@ -40,7 +38,7 @@ module.exports = function(args) {
 		placeValue: null
 	}
 
-	this.tutors = {
+	this.lectors = {
 		innerListLectorId: null,
 		innerListLectorFullname: null,
 		innerNewLectorId: null,

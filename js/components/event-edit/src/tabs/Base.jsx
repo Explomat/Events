@@ -6,6 +6,7 @@ import InputCalendar from 'components/modules/input-calendar';
 import SelectOneItem from 'components/modules/select-one-item';
 import SelectTree from 'components/modules/select-tree';
 import EventTypes from 'utils/eventedit/EventTypes';
+import {isNumberOrEmpty} from 'utils/validation/Validation';
 import cx from 'classnames';
 
 import Config from 'config';
@@ -48,6 +49,10 @@ class Base extends React.Component {
 
 	handleChangePlace(place){
 		EventEditActions.base.changePlace(place);
+	}
+
+	handleChangeMaxPersonNum(num){
+		EventEditActions.base.changeMaxPersonNum(num);
 	}
 
 	render(){
@@ -112,6 +117,12 @@ class Base extends React.Component {
 					modalTitle="Выберите расположение"
 					onSave={this.handleChangePlace}
 					isExpand={true}/>
+				<TextView
+					onBlur={this.handleChangeMaxPersonNum} 
+					value={this.props.maxPersonNum} 
+					placeholder="Максимальное количество участников"
+					isValid={isNumberOrEmpty}
+					className="event-edit-base__max-person-num"/>
 			</div>
 		);
 	}

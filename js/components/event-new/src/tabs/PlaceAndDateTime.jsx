@@ -26,7 +26,7 @@ class PlaceAndDatetime extends React.Component {
 	render(){
 		return (
 			<div className="event-new-place-and-datetime">
-				<div className="event-new-place-and-datetime__datetime">
+				<div className="event-new-place-and-datetime__datetime clearfix">
 					<InputCalendar
 						placeholder="Дата, время начала *"
 						className="event-new-place-and-datetime__start-datetime" 
@@ -39,6 +39,7 @@ class PlaceAndDatetime extends React.Component {
 						onSave={this.handleChangeFinishDateTime}/>
 				</div>
 				<LiveSearch
+					limit={6}
 					query={config.url.createPath({action_name: 'forLiveSearchGetPlaces'})}
 					payload={this.props.placeId}
 					value={this.props.placeValue}

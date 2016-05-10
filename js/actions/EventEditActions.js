@@ -13,7 +13,22 @@ var EventEditActions = {
 	},
 
 	saveData(data){
-		EventEditAPI.saveData(data);
+		EventEditAPI.saveData(data).then(function(data) {
+			if (data.error === '') {
+				AppDispatcher.handleAction({
+					actionType: EventEditConstants.CHANGE_INFO_MESSAGE,
+					message: 'Мероприятие сохранено!',
+					status: 'done'
+				});
+			}
+			else {
+				AppDispatcher.handleAction({
+					actionType: EventEditConstants.CHANGE_INFO_MESSAGE,
+					message: 'При сохранении произошла ошибка: \'' + data.error + '\'',
+					status: 'error'
+				});
+			}
+		});
 	},
 
 	changeInfoMessage(message, status){
@@ -21,6 +36,24 @@ var EventEditActions = {
 			actionType: EventEditConstants.CHANGE_INFO_MESSAGE,
 			message: message,
 			status: status
+		});
+	},
+
+	changeStatus(status){
+		EventEditAPI.changeStatus(status).then(function(data){
+			if (data.error === '') {
+				AppDispatcher.handleAction({
+					actionType: EventEditConstants.CHANGE_STATUS,
+					status: status
+				});
+			}
+			else {
+				AppDispatcher.handleAction({
+					actionType: EventEditConstants.CHANGE_INFO_MESSAGE,
+					message: data.error,
+					status: 'error'
+				});
+			}
 		});
 	},
 
@@ -72,6 +105,12 @@ var EventEditActions = {
 			AppDispatcher.handleAction({
 				actionType: EventEditConstants.EVENTEDIT_BASE_CHANGE_PLACE,
 				place: place
+			});
+		},
+		changeMaxPersonNum(num){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_BASE_CHANGE_MAX_PERSON_NUM,
+				num: num
 			});
 		}
 	},

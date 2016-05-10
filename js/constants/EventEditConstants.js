@@ -3,6 +3,7 @@ var keyMirror = require('keyMirror');
 module.exports = keyMirror({
 	RECEIVE_EVENTEDIT_DATA: null,
 	CHANGE_INFO_MESSAGE: null,
+	CHANGE_STATUS: null,
 
 	//BASE
 	EVENTEDIT_BASE_CHANGE_NAME: null,
@@ -13,6 +14,7 @@ module.exports = keyMirror({
 	EVENTEDIT_BASE_CHANGE_EDUCATION_ORG: null,
 	EVENTEDIT_BASE_CHANGE_EDUCATION_METHOD: null,
 	EVENTEDIT_BASE_CHANGE_PLACE: null,
+	EVENTEDIT_BASE_CHANGE_MAX_PERSON_NUM: null,
 
 	//REQUESTS
 	EVENTEDIT_REQUESTS_CHANGE_IS_OPEN: null,

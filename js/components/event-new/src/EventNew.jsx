@@ -2,7 +2,7 @@ import React from 'react';
 import EventNewStore from 'stores/EventNewStore';
 import Base from './tabs/Base';
 import PlaceAndDatetime from './tabs/PlaceAndDatetime';
-import Tutors from './tabs/Tutors';
+import Lectors from './tabs/Lectors';
 import Complete from './tabs/Complete';
 import {merge} from 'lodash';
 import cx from 'classnames';
@@ -18,7 +18,7 @@ class EventNew extends React.Component {
 
 	constructor(props){
 		super(props);
-		this.tabComponents = {'base': Base, 'placeAndDateTime': PlaceAndDatetime, 'tutors': Tutors, 'complete': Complete};
+		this.tabComponents = {'base': Base, 'placeAndDateTime': PlaceAndDatetime, 'lectors': Lectors, 'complete': Complete};
 		this._onChange = this._onChange.bind(this);
 	}
 
@@ -97,9 +97,9 @@ class EventNew extends React.Component {
 		Hasher.setHash('#calendar');
 	}
 
-	handleSelectTab(e){
-		var target = e.currentTarget;
-		this.setState({selectedTab: target.getAttribute('data-name')});
+	handleSelectTab(/*e*/){
+		/*var target = e.currentTarget;
+		this.setState({selectedTab: target.getAttribute('data-name')});*/
 	}
 
 	handlePrevClick(){
@@ -116,7 +116,7 @@ class EventNew extends React.Component {
 		var tabView = this._getTabView(this.state.selectedTab);
 		const baseClasses = this._getClasses('base');
 		const datetimeClasses = this._getClasses('placeAndDateTime');
-		const tutorsClasses = this._getClasses('tutors');
+		const lectorsClasses = this._getClasses('lectors');
 		const completeClasses = this._getClasses('complete');
 
 		const isFirstTabSelected = this._isFirstTab(this.state.selectedTab);
@@ -160,7 +160,7 @@ class EventNew extends React.Component {
 									<p className="event-new__tab-name">Расположение</p>
 									<span className="event-new__tab-name">Дата и время</span>
 								</div>
-								<div onClick={::this.handleSelectTab} className={tutorsClasses} data-name="tutors">
+								<div onClick={::this.handleSelectTab} className={lectorsClasses} data-name="lectors">
 									<i className="icon-user event-new__tab-icon"></i>
 									<p className="event-new__tab-name">Преподаватель</p>
 								</div>

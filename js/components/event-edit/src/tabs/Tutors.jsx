@@ -50,7 +50,7 @@ class TutorItem extends React.Component {
 class LectorItem extends React.Component {
 
 	_getFullname(firstName, lastName, middleName){
-		return firstName + " " + lastName + " " + middleName;
+		return lastName + " " + firstName + " " + middleName;
 	}
 
 	handleToggleChecked(){

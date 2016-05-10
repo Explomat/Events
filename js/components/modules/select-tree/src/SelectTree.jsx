@@ -53,18 +53,20 @@ class SelectTree extends React.Component {
 		});
 		const name = this.props.selectedNode ? this.props.selectedNode.name : null;
         return (
-        	<div className={cx('select-tree', this.props.className)}>
-				<input
-					readOnly 
-					className={inputClasses} 
-					type="text" 
-					value={name}
-					title={name}
-					onClick={this.handleShowModal} 
-					onChange={this.handleChange}/>
-                <label className="select-tree__label">{this.props.placeholder}</label>
-                <i className={iconClasses} onClick={this.handleShowModal} ></i>
-                <Tree 
+        	<div className="select-tree-container">
+	        	<div className={cx('select-tree', this.props.className)}>
+					<input
+						readOnly 
+						className={inputClasses} 
+						type="text" 
+						value={name}
+						title={name}
+						onClick={this.handleShowModal} 
+						onChange={this.handleChange}/>
+	                <label className="select-tree__label">{this.props.placeholder}</label>
+	                <i className={iconClasses} onClick={this.handleShowModal} ></i>
+	            </div>
+	            <Tree
                 	onSave={this.handleSaveModal} 
                 	onClose={this.handleCloseModal} 
                 	data={this.props.nodes}

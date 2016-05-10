@@ -1,8 +1,8 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var EventNewConstants = require('../constants/EventNewConstants');
-var EventNew = require('../models/EventNew');
-var Lector = require('../models/eventedit/Lector');
+var EventNew = require('../models/eventnew/EventNew');
+var Lector = require('../models/eventnew/Lector');
 var extend = require('extend');
 var every = require('lodash/every');
 var EventTypes = require('../utils/eventedit/EventTypes').default;
@@ -37,9 +37,6 @@ var base = {
 	selectTutor(id, value){
 		_eventNew.base.tutorId = id;
 		_eventNew.base.tutorValue = value;
-	},
-	changeMaxPersonNum(num){
-		_eventNew.base.maxPersonNum = num;
 	}
 }
 
@@ -69,97 +66,97 @@ var placeAndDateTime = {
 	}
 }
 
-var tutors = {
+var lectors = {
 	selectLectorType(lectorType){
-		_eventNew.tutors.lectorSelectedType = lectorType;
+		_eventNew.lectors.lectorSelectedType = lectorType;
 	},
 	selectAddLectorType(lectorType){
-		_eventNew.tutors.lectorAddSelectedType = lectorType;
+		_eventNew.lectors.lectorAddSelectedType = lectorType;
 	},
 	selectSearchLectorType(lectorType){
-		_eventNew.tutors.lectorSearchType = lectorType;
+		_eventNew.lectors.lectorSearchType = lectorType;
 	},
 
 	selectInnerListLector(id, value){
-		_eventNew.tutors.innerListLectorId = id;
-		_eventNew.tutors.innerListLectorFullname = value;
+		_eventNew.lectors.innerListLectorId = id;
+		_eventNew.lectors.innerListLectorFullname = value;
 
-		_eventNew.tutors.innerNewLectorId = null;
-		_eventNew.tutors.innerNewLectorFullname = null;
-		_eventNew.tutors.outerListLectorId = null;
-		_eventNew.tutors.outerListLectorFullname = null;
-		_eventNew.tutors.lector = new Lector();
+		_eventNew.lectors.innerNewLectorId = null;
+		_eventNew.lectors.innerNewLectorFullname = null;
+		_eventNew.lectors.outerListLectorId = null;
+		_eventNew.lectors.outerListLectorFullname = null;
+		_eventNew.lectors.lector = new Lector();
 	},
 	selectInnerNewLector(id, value){
-		_eventNew.tutors.innerNewLectorId = id;
-		_eventNew.tutors.innerNewLectorFullname = value;
+		_eventNew.lectors.innerNewLectorId = id;
+		_eventNew.lectors.innerNewLectorFullname = value;
 
-		_eventNew.tutors.innerListLectorId = null;
-		_eventNew.tutors.innerListLectorFullname = null;
-		_eventNew.tutors.outerListLectorId = null;
-		_eventNew.tutors.outerListLectorFullname = null;
-		_eventNew.tutors.lector = new Lector();
+		_eventNew.lectors.innerListLectorId = null;
+		_eventNew.lectors.innerListLectorFullname = null;
+		_eventNew.lectors.outerListLectorId = null;
+		_eventNew.lectors.outerListLectorFullname = null;
+		_eventNew.lectors.lector = new Lector();
 	},
 	selectOuterListLector(id, value){
-		_eventNew.tutors.outerListLectorId = id;
-		_eventNew.tutors.outerListLectorFullname = value;
+		_eventNew.lectors.outerListLectorId = id;
+		_eventNew.lectors.outerListLectorFullname = value;
 
-		_eventNew.tutors.innerListLectorId = null;
-		_eventNew.tutors.innerListLectorFullname = null;
-		_eventNew.tutors.innerNewLectorId = null;
-		_eventNew.tutors.innerNewLectorFullname = null;
-		_eventNew.tutors.lector = new Lector();
+		_eventNew.lectors.innerListLectorId = null;
+		_eventNew.lectors.innerListLectorFullname = null;
+		_eventNew.lectors.innerNewLectorId = null;
+		_eventNew.lectors.innerNewLectorFullname = null;
+		_eventNew.lectors.lector = new Lector();
 	},
 
 	changeLectorFirstName(firstName){
-		_eventNew.tutors.lector.firstName = firstName;
+		_eventNew.lectors.lector.firstName = firstName;
 
-		_eventNew.tutors.innerListLectorId = null;
-		_eventNew.tutors.innerListLectorFullname = null;
-		_eventNew.tutors.innerNewLectorId = null;
-		_eventNew.tutors.innerNewLectorFullname = null;
-		_eventNew.tutors.outerListLectorId = null;
-		_eventNew.tutors.outerListLectorFullname = null;
+		_eventNew.lectors.innerListLectorId = null;
+		_eventNew.lectors.innerListLectorFullname = null;
+		_eventNew.lectors.innerNewLectorId = null;
+		_eventNew.lectors.innerNewLectorFullname = null;
+		_eventNew.lectors.outerListLectorId = null;
+		_eventNew.lectors.outerListLectorFullname = null;
 	},
 	changeLectorLastName(lastName){
-		_eventNew.tutors.lector.lastName = lastName;
+		_eventNew.lectors.lector.lastName = lastName;
 
-		_eventNew.tutors.innerListLectorId = null;
-		_eventNew.tutors.innerListLectorFullname = null;
-		_eventNew.tutors.innerNewLectorId = null;
-		_eventNew.tutors.innerNewLectorFullname = null;
-		_eventNew.tutors.outerListLectorId = null;
-		_eventNew.tutors.outerListLectorFullname = null;
+		_eventNew.lectors.innerListLectorId = null;
+		_eventNew.lectors.innerListLectorFullname = null;
+		_eventNew.lectors.innerNewLectorId = null;
+		_eventNew.lectors.innerNewLectorFullname = null;
+		_eventNew.lectors.outerListLectorId = null;
+		_eventNew.lectors.outerListLectorFullname = null;
 	},
 	changeLectorMiddleName(middleName){
-		_eventNew.tutors.lector.middleName = middleName;
+		_eventNew.lectors.lector.middleName = middleName;
 
-		_eventNew.tutors.innerListLectorId = null;
-		_eventNew.tutors.innerListLectorFullname = null;
-		_eventNew.tutors.innerNewLectorId = null;
-		_eventNew.tutors.innerNewLectorFullname = null;
-		_eventNew.tutors.outerListLectorId = null;
-		_eventNew.tutors.outerListLectorFullname = null;
+		_eventNew.lectors.innerListLectorId = null;
+		_eventNew.lectors.innerListLectorFullname = null;
+		_eventNew.lectors.innerNewLectorId = null;
+		_eventNew.lectors.innerNewLectorFullname = null;
+		_eventNew.lectors.outerListLectorId = null;
+		_eventNew.lectors.outerListLectorFullname = null;
 	},
 	changeLectorEmail(email){
-		_eventNew.tutors.lector.email = email;
+		_eventNew.lectors.lector.email = email;
 
-		_eventNew.tutors.innerListLectorId = null;
-		_eventNew.tutors.innerListLectorFullname = null;
-		_eventNew.tutors.innerNewLectorId = null;
-		_eventNew.tutors.innerNewLectorFullname = null;
-		_eventNew.tutors.outerListLectorId = null;
-		_eventNew.tutors.outerListLectorFullname = null;
+		_eventNew.lectors.innerListLectorId = null;
+		_eventNew.lectors.innerListLectorFullname = null;
+		_eventNew.lectors.innerNewLectorId = null;
+		_eventNew.lectors.innerNewLectorFullname = null;
+		_eventNew.lectors.outerListLectorId = null;
+		_eventNew.lectors.outerListLectorFullname = null;
 	},
 	changeLectorCompany(company){
-		_eventNew.tutors.lector.company = company;
+		_eventNew.lectors.lector.company = company;
 
-		_eventNew.tutors.innerListLectorId = null;
-		_eventNew.tutors.innerListLectorFullname = null;
-		_eventNew.tutors.innerNewLectorId = null;
-		_eventNew.tutors.innerNewLectorFullname = null;
-		_eventNew.tutors.outerListLectorId = null;
-		_eventNew.tutors.outerListLectorFullname = null;
+		_eventNew.lectors.innerListLectorId = null;
+		_eventNew.lectors.innerListLectorFullname = null;
+		_eventNew.lectors.innerNewLectorId = null;
+		_eventNew.lectors.innerNewLectorFullname = null;
+		_eventNew.lectors.outerListLectorId = null;
+		_eventNew.lectors.outerListLectorFullname = null;
 	}
 }
 
@@ -188,12 +185,12 @@ var EventNewStore = extend({}, EventEmitter.prototype, {
 				return Boolean(partialData[i]);
 			});
 		}
-		else if (key === 'tutors'){
+		else if (key === 'lectors'){
 			let {innerListLectorId, innerNewLectorId, outerListLectorId, lector} = partialData;
 			return Boolean(innerListLectorId || 
 							innerNewLectorId || 
 							outerListLectorId || 
-							(lector.firstName.trim() && lector.lastName.trim() && lector.email.trim() && lector.company.trim()));
+							((lector.firstName && lector.firstName.trim()) && (lector.lastName && lector.lastName.trim()) && (lector.email && lector.email.trim()) && (lector.company && lector.company.trim())));
 		}
 		return false;
 	},
@@ -239,9 +236,6 @@ EventNewStore.dispatchToken = AppDispatcher.register(function(payload) {
 		case EventNewConstants.EVENT_NEW_SELECT_TUTOR:
 			base.selectTutor(action.id, action.value);
 			break;
-		case EventNewConstants.EVENT_NEW_CHANGE_MAX_PERSON_NUM:
-			base.changeMaxPersonNum(action.num);
-			break;
 
 		//PLACE & DATETIME
 		case EventNewConstants.EVENT_NEW_CHANGE_START_DATE_TIME:
@@ -256,39 +250,39 @@ EventNewStore.dispatchToken = AppDispatcher.register(function(payload) {
 
 		//TUTORS
 		case EventNewConstants.EVENT_NEW_SELECT_LECTOR_TYPE:
-			tutors.selectLectorType(action.lectorType);
+			lectors.selectLectorType(action.lectorType);
 			break;
 		case EventNewConstants.EVENT_NEW_SELECT_ADD_LECTOR_TYPE:
-			tutors.selectAddLectorType(action.lectorType);
+			lectors.selectAddLectorType(action.lectorType);
 			break;
 		case EventNewConstants.EVENT_NEW_SELECT_SEARCH_LECTOR_TYPE:
-			tutors.selectSearchLectorType(action.lectorType);
+			lectors.selectSearchLectorType(action.lectorType);
 			break;
 
 		case EventNewConstants.EVENT_NEW_SELECT_INNER_LIST_LECTOR:
-			tutors.selectInnerListLector(action.id, action.value);
+			lectors.selectInnerListLector(action.id, action.value);
 			break;
 		case EventNewConstants.EVENT_NEW_SELECT_INNER_NEW_LECTOR:
-			tutors.selectInnerNewLector(action.id, action.value);
+			lectors.selectInnerNewLector(action.id, action.value);
 			break;
 		case EventNewConstants.EVENT_NEW_SELECT_OUTER_LIST_LECTOR:
-			tutors.selectOuterListLector(action.id, action.value);
+			lectors.selectOuterListLector(action.id, action.value);
 			break;
 
 		case EventNewConstants.EVENT_NEW_CHANGE_LECTOR_FIRST_NAME:
-			tutors.changeLectorFirstName(action.firstName);
+			lectors.changeLectorFirstName(action.firstName);
 			break;
 		case EventNewConstants.EVENT_NEW_CHANGE_LECTOR_LAST_NAME:
-			tutors.changeLectorLastName(action.lastName);
+			lectors.changeLectorLastName(action.lastName);
 			break;
 		case EventNewConstants.EVENT_NEW_CHANGE_LECTOR_MIDDLE_NAME:
-			tutors.changeLectorMiddleName(action.middleName);
+			lectors.changeLectorMiddleName(action.middleName);
 			break;
 		case EventNewConstants.EVENT_NEW_CHANGE_LECTOR_EMAIL:
-			tutors.changeLectorEmail(action.email);
+			lectors.changeLectorEmail(action.email);
 			break;
 		case EventNewConstants.EVENT_NEW_CHANGE_LECTOR_COMPANY:
-			tutors.changeLectorCompany(action.company);
+			lectors.changeLectorCompany(action.company);
 			break;
 
 		default:

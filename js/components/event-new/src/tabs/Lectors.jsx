@@ -156,6 +156,7 @@ class Tutors extends React.Component {
 						selected={selectAddOuterSelectedButton}/>
 				</ButtonTabs>
 				<LiveSearch
+					limit={6}
 					query={config.url.createPath({action_name: 'forLiveSearchGetLectors', type: 'collaborator'})}
 					payload={innerListLectorId}
 					value={innerListLectorFullname}
@@ -164,6 +165,7 @@ class Tutors extends React.Component {
 					placeholder="Преподаватель *"
 					className={innerListSearch}/>
 				<LiveSearch
+					limit={6}
 					query={config.url.createPath({action_name: 'forLiveSearchGetCollaborators'})}
 					payload={innerNewLectorId}
 					value={innerNewLectorFullname}
@@ -172,6 +174,7 @@ class Tutors extends React.Component {
 					placeholder="Преподаватель *"
 					className={innerAddSearch}/>
 				<LiveSearch
+					limit={6}
 					query={config.url.createPath({action_name: 'forLiveSearchGetLectors', type: 'invitee'})}
 					payload={outerListLectorId}
 					value={outerListLectorFullname}

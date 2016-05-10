@@ -3,7 +3,6 @@ import {TextView} from 'components/modules/text-label';
 import DropDown from 'components/modules/dropdown';
 import LiveSearch from 'components/modules/live-search';
 import EventNewActions from 'actions/EventNewActions';
-import {isNumberOrEmpty} from 'utils/validation/Validation';
 import EventTypes from 'utils/eventedit/EventTypes';
 import cx from 'classnames';
 
@@ -44,12 +43,8 @@ class Base extends React.Component {
 		EventNewActions.base.changeEducationOrg(payload);
 	}
 
-	handleChangeMaxPersonNum(val){
-		EventNewActions.base.changeMaxPersonNum(val);
-	}
-
 	render(){
-		const { name, types, codes, educationOrgs, type, code, educationOrgId, educationMethodId, educationMethodValue, tutorId, tutorValue, maxPersonNum } = this.props;
+		const { name, types, codes, educationOrgs, type, code, educationOrgId, educationMethodId, educationMethodValue, tutorId, tutorValue } = this.props;
 		const educationMethodClasses = cx({
 			'event-new-base__edication-method': true,
 			'event-new-base__edication-method--display': type !== EventTypes.keys.one_time
@@ -83,15 +78,10 @@ class Base extends React.Component {
 						selectedPayload={educationOrgId}
 						isReset={true}
 						className="event-new-base__education-org"/>
-					<TextView
-						onBlur={this.handleChangeMaxPersonNum} 
-						value={maxPersonNum} 
-						placeholder="Количество участников *"
-						isValid={isNumberOrEmpty}
-						className="event-new-base__max-person-num"/>
 				</div>
 				<div className="event-new-base__additional">
 					<LiveSearch
+						limit={6}
 						payload={educationMethodId}
 						value={educationMethodValue}
 						query={config.url.createPath({action_name: 'forLiveSearchGetEducationMethods'})}
@@ -100,6 +90,7 @@ class Base extends React.Component {
 						placeholder="Учебная программа *"
 						className={educationMethodClasses}/>
 					<LiveSearch
+						limit={6}
 						payload={tutorId}
 						value={tutorValue}
 						query={config.url.createPath({action_name: 'forLiveSearchGetCollaborators'})}

@@ -94,27 +94,4 @@
       font-size: 14px;
     }
   }
-
-  .event-edit-container__save-button{
-    position: absolute;
-    top: 30px;
-    right: 32px;
-    transform: translateY(-50%);
-    box-shadow: 0 0 4px rgba(0,0,0,0.5);
-  }
-
-  .event-edit-container__icon{
-    margin-right: 8px;
-    vertical-align: middle;
-  }
-
-  .event-edit-container__complete-button{
-    position: absolute;
-    top: 30px;
-    right: 160px;
-    transform: translateY(-50%);
-    border: none;
-    padding: 6px 9px;
-    box-shadow: 0 0 4px rgba(0,0,0,0.5);
-  }
 }

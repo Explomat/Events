@@ -148,3 +148,6 @@
 .icon-pencil:before {
   content: "\4a";
 }
+.icon-play:before {
+  content: "\4b";
+}

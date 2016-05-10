@@ -31,6 +31,7 @@ export default function(args){
 	args.requests.requestOverDate = args.requests.requestOverDate || Date();
 
 	this.id = args.id || null;
+	this.status = args.status || null;
 	this.infoMessage = '';
 	this.infoStatus = '';
 
@@ -49,6 +50,7 @@ export default function(args){
 			}
 		}),
 		places: Places(args.base.places),
+		maxPersonNum: args.maxPersonNum || '',
 
 		selectedType: args.base.selectedType,
 		selectedCode: args.base.selectedCode,

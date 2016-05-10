@@ -9,10 +9,11 @@ import Requests from './tabs/Requests';
 import Testing from './tabs/Testing';
 import Tutors from './tabs/Tutors';
 
-//import Hasher from '../../../utils/Hasher';
-import EventEditActions from '../../../actions/EventEditActions';
-import EventEditStore from '../../../stores/EventEditStore';
+import EventStatuses from 'utils/eventedit/EventStatuses';
+import EventEditActions from 'actions/EventEditActions';
+import EventEditStore from 'stores/EventEditStore';
 import {merge} from 'lodash';
+import cx from 'classnames';
 
 import './style/event-edit.scss';
 import './style/table-list.scss';
@@ -25,6 +26,7 @@ class EventEdit extends React.Component {
 
 	constructor(props){
 		super(props);
+		this.fillError = 'Вы не заполнили обязательные поля в мероприятии, помеченные "звездочкой *" !';
 		this.sideBarComponents = {'base': Base, 'requests': Requests, 'collaborators': Collaborators, 'tutors': Tutors, 'testing': Testing, 'files': Files};
 		this._onChange = this._onChange.bind(this);
 		this.getTabView = this.getTabView.bind(this);
@@ -54,7 +56,23 @@ class EventEdit extends React.Component {
 	}
 
 	handleSelectTab(tabName){
-		this.setState({selectedTab: tabName})
+		this.setState({selectedTab: tabName});
+	}
+
+	handleStartEvent(){
+		if (EventEditStore.isRequiredFieldsFilled()){
+			EventEditActions.changeStatus(EventStatuses.keys.active);
+			return;
+		}
+		EventEditActions.changeInfoMessage(this.fillError, 'error');
+	}
+
+	handleCloseEvent(){
+		if (EventEditStore.isRequiredFieldsFilled()){
+			EventEditActions.changeStatus(EventStatuses.keys.close);
+			return;
+		}
+		EventEditActions.changeInfoMessage(this.fillError, 'error');
 	}
 
 	handleSaveData(){
@@ -62,7 +80,7 @@ class EventEdit extends React.Component {
 			EventEditActions.saveData(EventEditStore.getData());
 			return;
 		}
-		EventEditActions.changeInfoMessage(`Вы не заполнили обязательные поля в мероприятии, помеченные ' * '  !`, 'error');
+		EventEditActions.changeInfoMessage(this.fillError, 'error');
 	}
 
 	handleRemoveInfoMessage(){
@@ -70,14 +88,41 @@ class EventEdit extends React.Component {
 	}
 
 	render(){
-		var tabView = this.getTabView(this.state.selectedTab.key);
-		const isShowInfoModal = this.state.infoMessage !== '';
+		const {status, infoMessage, infoStatus, selectedTab} = this.state;
+		var tabView = this.getTabView(selectedTab.key);
+		const isShowInfoModal = infoMessage !== '';
+		const playButtonClasses = cx({
+			'event-edit-container__play-button': true,
+			'event-edit-container__play-button--display': status === EventStatuses.keys.plan,
+			'event-btn': true,
+			'event-btn--reverse': true
+		});
+		const completeButtonClasses = cx({
+			'event-edit-container__complete-button': true,
+			'event-edit-container__complete-button--display': status === EventStatuses.keys.active,
+			'event-btn': true,
+			'event-btn--reverse': true
+		});
 		return(
 			<div className="container">
-				<SideBar onSelect={this.handleSelectTab} selectedTab={this.state.selectedTab.key}/>
+				<SideBar onSelect={this.handleSelectTab} selectedTab={selectedTab.key}/>
 				<div className="calendar">
 					<header className ="calendar-header">
-						<span className="calendar-header__description">{this.state.selectedTab.value}</span>
+						<span className="calendar-header__description">{selectedTab.value}</span>
+						<div className="calendar-header__action-buttons">
+							<button className={playButtonClasses} onClick={::this.handleStartEvent}>
+								<i className="icon-play event-edit-container__icon"></i>
+								<span>Начать проведение</span>
+							</button>
+							<button className={completeButtonClasses} onClick={::this.handleCloseEvent}>
+								<i className="icon-share-square-o event-edit-container__icon"></i>
+								<span>Завершить</span>
+							</button>
+							<button className="event-edit-container__save-button event-btn event-btn--reverse" onClick={::this.handleSaveData}>
+								<i className="icon-floppy-o event-edit-container__icon"></i>
+								<span>Сохранить</span>
+							</button>
+						</div>
 					</header>
 					<div className="event-edit-container">
 						<div className="event-edit">
@@ -85,19 +130,11 @@ class EventEdit extends React.Component {
 								{tabView}
 							</div>
 						</div>
-						<button className="event-edit-container__save-button event-btn event-btn--reverse" onClick={this.handleSaveData}>
-							<i className="icon-floppy-o event-edit-container__icon"></i>
-							<span>Сохранить</span>
-						</button>
-						<button className="event-edit-container__complete-button event-btn event-btn--reverse" onClick={this.handleSaveData}>
-							<i className="icon-share-square-o event-edit-container__icon"></i>
-							<span>Завершить</span>
-						</button>
 					</div>
 				</div>
 				<Info
-					status={this.state.infoStatus}
-					message={this.state.infoMessage}
+					status={infoStatus}
+					message={infoMessage}
 					isShow={isShowInfoModal}
 					onClose={this.handleRemoveInfoMessage}/>
 			</div>

@@ -23,6 +23,41 @@
       font-size: 1.1em;
     }
 
+    .calendar-header__action-buttons{
+      display: inline-block;
+      float: right;
+
+      .event-edit-container__play-button{
+        box-shadow: 0 0 4px rgba(0,0,0,0.5);
+        margin-left: 8px;
+        display: none;
+
+        &.event-edit-container__play-button--display {
+          display: inline-block;
+        }
+      }
+
+      .event-edit-container__save-button{
+        box-shadow: 0 0 4px rgba(0,0,0,0.5);
+        margin-left: 8px;
+      }
+
+      .event-edit-container__complete-button{
+        margin-left: 8px;
+        box-shadow: 0 0 4px rgba(0,0,0,0.5);
+        display: none;
+
+        &.event-edit-container__complete-button--display {
+          display: inline-block;
+        }
+      }
+
+      .event-edit-container__icon{
+        margin-right: 8px;
+        vertical-align: middle;
+      }
+    }
+
     &:before {  
       content: '';
       display: inline-block;

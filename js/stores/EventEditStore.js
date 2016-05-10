@@ -9,6 +9,7 @@ import Collaborator from '../models/eventedit/Collaborator';
 import File from '../models/eventedit/File';
 import LibraryMaterial from '../models/eventedit/LibraryMaterial';
 import LectorTypes from '../utils/eventedit/LectorTypes';
+import EventTypes from '../utils/eventedit/EventTypes';
 import {isNumberOrReal} from '../utils/validation/Validation';
 //import CollaboratorTest from '../models/eventedit/CollaboratorTest';
 import extend from 'extend';
@@ -31,6 +32,10 @@ function toggleCheckedAll(container, array, checked, checkedAllKeyName){
 		item.checked = checked;
 	});
 	container[checkedAllKeyName] = checked;
+}
+
+function changeStatus(status){
+	_eventEdit.status = status;
 }
 
 function toggleChecked(container, array, id, checked, checkedAllKeyName){
@@ -98,13 +103,16 @@ const base = {
 	},
 	changePlace(place){
 		_eventEdit.base.places.selectedNode = place;
+	},
+	changeMaxPersonNum(num){
+		_eventEdit.base.maxPersonNum = num;
 	}
 }
 
 const requests = {
 	changeIsOpen(checked){
 		_eventEdit.requests.isOpen = checked;
-		if (checked) {
+		if (!checked) {
 			_eventEdit.requests.isApproveByBoss = false;
 			_eventEdit.requests.isApproveByTutor = false;
 		}
@@ -140,13 +148,13 @@ const requests = {
 	changeIsApproveByBoss(checked){
 		_eventEdit.requests.isApproveByBoss = checked;
 		if (checked){
-			_eventEdit.requests.isOpen = false;
+			_eventEdit.requests.isOpen = true;
 		}
 	},
 	changeIsApproveByTutor(checked){
 		_eventEdit.requests.isApproveByTutor = checked;
 		if (checked){
-			_eventEdit.requests.isOpen = false;
+			_eventEdit.requests.isOpen = true;
 		}
 	},
 	sortTable(payload){
@@ -537,9 +545,10 @@ const EventEditStore = extend({}, EventEmitter.prototype, {
 	isRequiredFieldsFilled(){
 		var base = _eventEdit.base;
 		var tutors = _eventEdit.tutors;
+		//this.props.selectedType !== EventTypes.keys.one_time
 		return  base.name && 
 				base.selectedCode && 
-				base.selectedEducationMethod && 
+				(base.selectedEducationMethod || _eventEdit.base.selectedType === EventTypes.keys.one_time) && 
 				base.selectedEducationOrgId && 
 				base.selectedType && 
 				base.places.selectedNode &&
@@ -574,6 +583,10 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			changeInfoMessage(action.message, action.status);
 			isEmit = true;
 			break;
+		case EventEditConstants.CHANGE_STATUS:
+			changeStatus(action.status);
+			isEmit = true;
+			break;
 
 		//BASE
 		case EventEditConstants.EVENTEDIT_BASE_CHANGE_NAME:
@@ -606,6 +619,10 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			break;
 		case EventEditConstants.EVENTEDIT_BASE_CHANGE_PLACE:
 			base.changePlace(action.place);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_BASE_CHANGE_MAX_PERSON_NUM:
+			base.changeMaxPersonNum(action.num);
 			isEmit = true;
 			break;
 

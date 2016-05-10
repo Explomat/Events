@@ -144,7 +144,7 @@ var Filters = React.createClass({
 var CalendarCell = React.createClass({
 	
 	propTypes: {
-		day: React.PropTypes.number,
+		day: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
 		isCurrentDay: React.PropTypes.bool,
 		events: React.PropTypes.array
 	},
@@ -202,16 +202,8 @@ var CalendarCell = React.createClass({
 var Calendar = React.createClass({
 
 	propTypes: {
-		currentDate(props, propName){
-			if (typeof(props[propName] !== Date)) {
-				return new Error('Validation for \'currentDate\' failed!');
-			}
-		},
-		selectedDate(props, propName){
-			if (typeof(props[propName] !== Date)) {
-				return new Error('Validation for \'currentDate\' failed!');
-			}
-		},
+		currentDate: React.PropTypes.object,
+		selectedDate: React.PropTypes.object,
 		events: React.PropTypes.array
 	},
 

@@ -66,7 +66,7 @@
                 transition-property: opacity,-webkit-transform,visibility;
                 transition-property: opacity,transform,visibility;
                 transition-duration: .15s;
-                box-shadow: 0 0 0 1px rgba(0,0,0,.1),0 10px 20px -5px;
+                box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 10px 20px -5px rgba(0, 0, 0, 0.4);
 
                 &.live-search__content--visible{
                     opacity: 1;
