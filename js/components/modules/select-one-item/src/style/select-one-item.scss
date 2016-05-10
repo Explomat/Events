@@ -1,36 +1,39 @@
 @import '../../../text-label/src/style/text-label';
 
-.select-one-item {
-    @include input-box;
+.select-one-item-container{
+    .select-one-item {
+        @include input-box;
 
-    .select-one-item__input {
-        @include input-box__input;
-        cursor: pointer;
-    }
+        .select-one-item__input {
+            @include input-box__input;
+            cursor: pointer;
+        }
 
-    .select-one-item__label{
-        @include input-box__label;
-        transition: none;
-    }
+        .select-one-item__label{
+            @include input-box__label;
+            transition: none;
+        }
 
-    .select-one-item__icon{
-        position: absolute;
-        bottom: 5px;
-        right: 5px;
-        color: #444;
+        .select-one-item__icon{
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            color: #444;
 
-        &.select-one-item__icon--up {
-            bottom: 8px;
+            &.select-one-item__icon--up {
+                bottom: 8px;
+            }
+        }
+
+        .select-one-item__input_not-empty + .select-one-item__label {
+            color: $darkPrimaryColor;
+            font-size: $fontSizeXs;
+            font-weight: bold;
+            transform: translateY(-25px);
         }
     }
-
-    .select-one-item__input_not-empty + .select-one-item__label {
-        color: $darkPrimaryColor;
-        font-size: $fontSizeXs;
-        font-weight: bold;
-        transform: translateY(-25px);
-    }
 }
+
 
 
     

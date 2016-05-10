@@ -15,13 +15,13 @@ window.onload = function(){
 	Router.addRoute(Config.hashes.calendar, function(){
 		if (EventInfoController.isLoaded()) {
 			EventInfoController.stop();
-			return;
 		}
 		if (EventNewController.isLoaded()) {
 			EventNewController.stop();
-			return;
 		}
-		CalendarController.start();
+		if (!CalendarController.isLoaded()){
+			CalendarController.start();
+		}
 	});
 
 	Router.addRoute(Config.hashes.eventView, function(id){

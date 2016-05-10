@@ -18,7 +18,6 @@ var exp = {
 
 	start: function(){
 		var app = document.getElementById(Config.dom.appId) || document.body;
-		this.stop(app);
 		
 		return CalendarAPI.getData().then(function(calendarData){
 			CalendarActions.receiveData(calendarData);
@@ -27,12 +26,6 @@ var exp = {
 		}.bind(this), function(err){
 			console.log(err);
 		});
-	},
-
-	stop: function () {
-		/*var app = document.getElementById(Config.dom.appId) || document.body;
-		if (app) ReactDOM.unmountComponentAtNode(app);*/
-		isLoaded = false;
 	}
 }
 

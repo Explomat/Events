@@ -77,18 +77,20 @@ class SelectOneItem extends React.Component {
 		});
 		const val = this.getItemValue();
 		return (
-			<div className={cx('select-one-item', this.props.className)}>
-				<input
-					readOnly 
-					className={inputClasses} 
-					type="text" 
-					value={val}
-					title={val}
-					onClick={this.handleShowModal} 
-					onChange={this.handleChange}/>
-                <label className="select-one-item__label">{this.props.placeholder}</label>
-                <i className={iconClasses} onClick={this.handleShowModal}></i>
-                {this.getModal()}
+			<div className="select-one-item-container">
+				<div className={cx('select-one-item', this.props.className)}>
+					<input
+						readOnly 
+						className={inputClasses} 
+						type="text" 
+						value={val}
+						title={val}
+						onClick={this.handleShowModal} 
+						onChange={this.handleChange}/>
+	                <label className="select-one-item__label">{this.props.placeholder}</label>
+	                <i className={iconClasses} onClick={this.handleShowModal}></i>
+	            </div>
+	            {this.getModal()}
 			</div>
 		);
 	}
