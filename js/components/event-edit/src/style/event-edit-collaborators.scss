@@ -1,6 +1,6 @@
 .event-edit-collaborators {
 	margin-top: 20px;
-	height: calc(100% - 69px);
+    height: calc(100% - 20px);
 
 	.buttons {
 		.buttons__dropdown{
@@ -42,7 +42,7 @@
 			}
 			.buttons__notificate{
 				display: none;
-				line-height: 27px;
+				height: 29px;
     			vertical-align: middle;
 				color: #ff5252;
 
@@ -54,6 +54,6 @@
 		
 	}
 	.collaborators-list{
-		height: calc(100% - 40px);
+		height: calc(100% - 69px);
 	}
 }

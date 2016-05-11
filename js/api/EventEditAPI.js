@@ -39,7 +39,13 @@ module.exports = {
 		var ids = items.map(function(item){
 			return item.id;
 		});
-		return Ajax.sendRequest(Config.url.createPath({action_name: 'createNotification'}), JSON.stringify({ids: ids, subject: subject, body: body}), false, true, null, 'POST');
+		return Ajax.sendRequest(Config.url.createPath({action_name: 'createNotification'}), JSON.stringify({ids: ids, subject: subject, body: body}), false, true, null, 'POST').then((data) => {
+			return JSON.parse(data, (key, value) => {
+				/*if (key === 'id') return value;
+				var val = isNumberOrReal(value) ? Number(value) : value;*/
+				return value === 'true' ? true : value === 'false' ? false : value;
+			});
+		});
 	},
 
 	changeRequestStatus: function(id, status, reason){

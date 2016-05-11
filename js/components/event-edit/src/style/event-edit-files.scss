@@ -1,6 +1,6 @@
 .event-edit-files {
 	margin-top: 20px;
-	height: calc(100% - 40px);
+    height: calc(100% - 20px);
 
 	.buttons {
 		display: inline-block;
@@ -58,7 +58,7 @@
 	}
 
 	.files {
-		height: 45%;
+		height: calc(50% - 30px);
 
 		.files__description{
 			float: right;
@@ -66,13 +66,13 @@
 		}
 
 		.file-list {
-			height: calc(100% - 47px);
+			height: calc(100% - 49px);
 		}
 	}
 
 	.library-materials{
-		height: 45%;
 		margin-top: 40px;
+    	height: calc(50% - 30px);
 
 		.library-materials__description{
 			float: right;
@@ -80,7 +80,7 @@
 		}
 
 		.library-material-list {
-			height: calc(100% - 47px);
+			height: calc(100% - 49px);
 		}
 	}
 }

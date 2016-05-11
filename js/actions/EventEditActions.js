@@ -205,8 +205,9 @@ var EventEditActions = {
 		},
 		notificateItems(items, subject, body){
 			EventEditAPI.notificateItems(items, subject, body).then(function(data){
-				let message = data === '' ? 'Сообщение успешно отправлено.' : 'Произошла ошибка при отправке, проверьте подключение к сети.'
-				let infoStatus = data === '' ? 'done' : 'error';
+				let message = data.message;
+				let error = data.error;
+				let infoStatus = error ? 'error': 'done';
 				AppDispatcher.handleAction({
 					actionType: EventEditConstants.EVENTEDIT_COLLABORATORS_CHANGE_INFO_MESSAGE,
 					infoMesage: message,

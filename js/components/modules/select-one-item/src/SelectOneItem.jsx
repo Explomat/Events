@@ -77,8 +77,8 @@ class SelectOneItem extends React.Component {
 		});
 		const val = this.getItemValue();
 		return (
-			<div className="select-one-item-container">
-				<div className={cx('select-one-item', this.props.className)}>
+			<div className={cx('select-one-item-container', this.props.className)}>
+				<div className='select-one-item'>
 					<input
 						readOnly 
 						className={inputClasses} 

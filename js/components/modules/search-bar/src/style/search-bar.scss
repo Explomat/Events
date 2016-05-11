@@ -15,8 +15,9 @@
     .search-box__search-icon {
         position: absolute;
         left: 8px;
-        line-height: 32px;
-        color: #B6B6B6;
+        color: #b6b6b6;
+        top: 50%;
+        transform:translateY(-50%);
     }
 }
 

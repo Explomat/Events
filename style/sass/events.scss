@@ -15,6 +15,22 @@
         box-sizing: border-box;
     }
 
+    .dropdown-icon__button {
+        i.icon-arrow-combo, i.icon-plus {
+            display: inline-block;
+            height: 27px;
+            vertical-align: middle;
+
+            &:before {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                left: 5px;
+            }
+        }
+    }
+    
+
     .container{
         width: 1200px;
         margin: 0 auto;

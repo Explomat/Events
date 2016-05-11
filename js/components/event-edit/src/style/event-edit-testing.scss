@@ -1,18 +1,18 @@
 .event-edit-testing {
 	margin-top: 20px;
-	height: calc(100% - 40px);
+    height: calc(100% - 20px);
 
 	.event-edit-testing__tests{
-		height: 45%;
+		height: calc(50% - 30px);
 
 		.all-tests-list{
-			height: calc(100% - 57px);
+			height: calc(100% - 49px);
 		}
 	}
 
 	.testing{
-		height: 45%;
-		margin-top: 40px;
+		height: calc(50% - 30px);
+    	margin-top: 40px;
 
 		.buttons {
 			width: 70%;
@@ -34,7 +34,7 @@
 		}
 
 		.testing-list{
-			height: calc(100% - 57px);
+			height: calc(100% - 36px);
 
 			.testing-list__score{
 				display: none;

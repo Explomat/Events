@@ -21,8 +21,15 @@ module.exports = {
 		isLoaded = true;
 
 		EventInfoAPI.getData(id).then(function(eventData){
-			EventInfoActions.receiveData(eventData);
-			ReactDOM.render(React.createElement(EventInfo.default), app);
+			var error = eventData.error;
+			if (!error) {
+				EventInfoActions.receiveData(eventData);
+				ReactDOM.render(React.createElement(EventInfo.default), app);
+			}
+			else {
+				ReactDOM.render(React.createElement(EventError.default, {error: error}), app);
+			}
+			
 		}, function(err){
 			ReactDOM.render(React.createElement(EventError.default, {error: err}), app);
 		}).catch(function(e){

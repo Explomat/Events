@@ -286,54 +286,58 @@ function isAdmin (queryObjects) {
 
 function createNotification (queryObjects) {
 	var data = tools.read_object(queryObjects.Body);
-
-	var ids =  data.HasProperty('ids') ?  data.ids : null;
-	var subject = data.HasProperty('subject') ? data.subject : null ;
-	var messeageText = data.HasProperty('body') ? data.body : null ;
+	var error = false;
+	var goodMessage = "Сообщение отправлено";
+	var badMessage = "Сообщение не отправлено : ";
+	var ids =  data.HasProperty('ids') ? data.ids : null;
+	var subject = data.HasProperty('subject') ? data.subject : null;
+	var messeageText = data.HasProperty('body') ? data.body : null;
 	try {
 		var senderAdress = OpenDoc(UrlFromDocID(curUserID)).TopElem;
 	} catch (e) {
 		return "Не корректный ID сотрудника (отправителя) уведомления - текст ошибки : " + e;
-
 	}
-	var badPersonArray = [];
-	var notSendRequest = 0;
 
-	if ( ids !== null  && subject !== null && messeageText !== null ) {
+	if ( ids != null  && subject != null && messeageText != null ) {
 		for (elem in ids) {
-			try {
-				curUserCardTE = OpenDoc(UrlFromDocID(Int(elem))).TopElem
-			} catch (e) {
-				return "Не корректный ID сотрудника, (получателя) уведомления - текст ошибки : " + e;
-			}
-			if (curUserCardTE) {
-				cardDoc = OpenNewDoc("x-local://wtv/wtv_active_notification.xmd");
-				cardDoc.TopElem.is_custom ='1';
-				cardDoc.TopElem.status ='active';
-				cardDoc.TopElem.sender.address = senderAdress.email;
-				cardDoc.TopElem.sender.name = senderAdress.fullname;
-				cardDoc.TopElem.subject = subject;
-				cardDoc.TopElem.body = messeageText;
-				cardDoc.TopElem.body_type = "html";
-				cardDoc.TopElem.recipients.AddChild("recipient");
-				cardDoc.TopElem.recipients[0].address = curUserCardTE.email;
-				cardDoc.TopElem.send_date = Date();
-				cardDoc.BindToDb();
-				cardDoc.Save();
+			curUserCardTE = OpenDoc(UrlFromDocID(Int(elem))).TopElem;
+			if ( curUserCardTE.email != '' ) {
+				try {
+					cardDoc = OpenNewDoc("x-local://wtv/wtv_active_notification.xmd");
+					cardDoc.TopElem.is_custom ='1';
+					cardDoc.TopElem.status ='active';
+					cardDoc.TopElem.sender.address = senderAdress.email;
+					cardDoc.TopElem.sender.name = senderAdress.fullname;
+					cardDoc.TopElem.subject = subject;
+					cardDoc.TopElem.body = messeageText;
+					cardDoc.TopElem.body_type = "html";
+					cardDoc.TopElem.recipients.AddChild("recipient");
+					cardDoc.TopElem.recipients[0].address = curUserCardTE.email;
+					cardDoc.TopElem.send_date = Date();
+					cardDoc.BindToDb();
+					cardDoc.Save();
+				} catch (e) {
+					error = true;
+					badMessage = badMessage + curUserCardTE.fullname ;
+				}
 			} else {
-				curPersonFIO = curUserCardTE.fullname;
-				badPersonArray.push(curPersonFIO);
-				notSendRequest++; 
-			}
-			
+				error = true;
+				badMessage = badMessage + curUserCardTE.fullname ;
+			}						
 		}
 	}
-	if ( notSendRequest > 0 ) {
-		return tools.object_to_text ({
-			notSendRequest : notSendRequest,
-			badPersonArray : badPersonArray
+	if (error) {
+		return tools.object_to_text ({ 
+			error : error + '',
+			message : badMessage
+		}, 'json');
+	} else {
+		return tools.object_to_text ({ 
+			error : error + '',
+			message : goodMessage + ''
 		}, 'json');
 	}
+	
 }
 
 function processingRequest(queryObjects) {
@@ -1182,11 +1186,11 @@ function getEventPlaces(queryObjects) {
 }
 
 function getEventBaseData (queryObjects) {
-	var eventID = queryObjects.HasProperty('event_id') ? Int(queryObjects.event_id) : null;
+	var eventID = queryObjects.HasProperty('event_id') ? queryObjects.event_id : null;
 	try {
-		var eventDocTE = OpenDoc(UrlFromDocID(eventID)).TopElem; 
+		var eventDocTE = OpenDoc(UrlFromDocID(Int(eventID))).TopElem; 
 	} catch (e) {
-		return "Некорректный ID меропирятия (основные данные), текст ошибки : " + e;
+		return "Некорректный ID мероприятия (основные данные), текст ошибки : " + e;
 	}
 	if ( eventID ) {
 		var eventsArray = XQuery("sql: select 
@@ -1254,7 +1258,9 @@ function getEventCollaborators (queryObjects) {
 
 		return collaboratorArray;
 	} else {
-		return "Не корректный ID мепроприятия";
+		return tools.object_to_text({
+			error : "Не корректный ID мепроприятия"
+		}, 'json');
 	}
 }
 
@@ -1265,7 +1271,9 @@ function getEventTutors (queryObjects) {
 	try {
 		var eventDocTE = OpenDoc(UrlFromDocID(eventID)).TopElem; 
 	} catch (e) {
-		return "Не корректный ID меропирятия (расположение мероприятия), текст ошибки : " + e;
+		return tools.object_to_text({
+			error : "Не корректный ID меропирятия (расположение мероприятия), текст ошибки : " + e
+		}, 'json');
 	}
 	var tutorsArray = [];
 	var lectorsArray = [];
@@ -1349,12 +1357,14 @@ function stringifyWT(obj) {
 }
 
 function getEventEditData (queryObjects) {
-	var eventID = queryObjects.HasProperty('event_id') ? Int(queryObjects.event_id) : null;
+	var eventID = queryObjects.HasProperty('event_id') ? queryObjects.event_id : null;
 	if (ArrayCount(XQuery("sql: select * from events where events.id =" + eventID)) > 0) {
 		try {
-			var eventDocTE = OpenDoc(UrlFromDocID(eventID)).TopElem; 
+			var eventDocTE = OpenDoc(UrlFromDocID(Int(eventID))).TopElem; 
 		} catch (e) {
-			return "Некорректный ID меропирятия (основные данные), текст ошибки : " + e;
+			return tools.object_to_text({
+				error : "Некорректный ID меропирятия (основные данные), текст ошибки : " + e
+			}, 'json');
 		}
 		Session['eventId'] = eventID;
 		Session['eventName'] = eventDocTE.name;
@@ -1370,7 +1380,9 @@ function getEventEditData (queryObjects) {
 			files : getEventFiles(queryObjects)
 		}, 'json');
 	} else {
-		return "Такого мероприятия не существует, пожалуйста обратитесь в техническую поддержку учебного портала"
+		return tools.object_to_text({
+			error : "Такого мероприятия не существует, пожалуйста обратитесь в техническую поддержку учебного портала"
+		}, 'json');
 	}
 }
 

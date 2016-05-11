@@ -53,8 +53,8 @@ class SelectTree extends React.Component {
 		});
 		const name = this.props.selectedNode ? this.props.selectedNode.name : null;
         return (
-        	<div className="select-tree-container">
-	        	<div className={cx('select-tree', this.props.className)}>
+        	<div className={cx('select-tree-container', this.props.className)}>
+	        	<div className='select-tree'>
 					<input
 						readOnly 
 						className={inputClasses} 

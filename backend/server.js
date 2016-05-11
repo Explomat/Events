@@ -160,12 +160,14 @@
 		function _isEventExist(eventId){
 			var curEventID = null;
 			try { curEventID = Int(eventId); }
-			catch(e) { return false; }
+				catch(e) { return false; }
 			return ArraySelectAll(XQuery("sql: select events.id from events where events.id=" +curEventID)).length > 0;
 		}
 		
 		if (!_isEventExist(queryObjects.event_id)) {
-			return 'Данного мероприятия не существует!';
+			return tools.object_to_text({
+				error : 'Данного мероприятия не существует!'
+			}, 'json');
 		}
 
 		var curEventID = Int(queryObjects.event_id);

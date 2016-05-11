@@ -20,7 +20,7 @@ class CreateEventButton extends React.Component {
 		}, className);
 		return (
 			<a href={href} className={classes} title="Создать мероприятие">
-				<i className="icon-plus"></i>
+				<i className="calendar-table__create-event-icon icon-plus"></i>
 			</a>
 		);
 	}

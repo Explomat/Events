@@ -1,22 +1,22 @@
 .event-edit-tutors {
     margin-top: 20px;
-	height: calc(100% - 40px);
+    height: calc(100% - 20px);
 
 	.tutors {
-		height: 45%;
+		height: calc(50% - 30px);
 
 		.tutors__description{
 			float: right;
 			margin-top: 10px;
 		}
 		.tutor-list {
-			height: calc(100% - 47px);
+			height: calc(100% - 49px);
 		}
 	}
 	
 	.lectors {
-		height: 45%;
-		margin-top: 40px;
+		height: calc(50% - 30px);
+    	margin-top: 40px;
 
 		.lectors__description{
 			float: right;
@@ -24,7 +24,7 @@
 		}
 
 		.lector-list {
-			height: calc(100% - 47px);
+			height: calc(100% - 49px);
 		}
 	}
 	

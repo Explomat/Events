@@ -17,14 +17,18 @@ module.exports = {
 	start(id){
 
 		var app = document.getElementById(Config.dom.appId) || document.body;
-		this.stop(app);
 
 		EventEditAPI.isDeniedActionAccess('edit').then(function(isDenied) {
 			if (!isDenied){
 				EventEditAPI.getData(id).then(function(eventData){
-					EventEditActions.receiveData(eventData);
-					ReactDOM.render(React.createElement(EventEdit.default), app);
-					isLoaded = true;
+					var error = eventData.error;
+					if (!error) {
+						EventEditActions.receiveData(eventData);
+						ReactDOM.render(React.createElement(EventEdit.default), app);
+						isLoaded = true;
+					}else {
+						ReactDOM.render(React.createElement(EventError.default, {error: error}), app);
+					}
 				}, function(err){
 					ReactDOM.render(React.createElement(EventError.default, {error: err.message}), app);
 				}).catch(function(e){
@@ -32,11 +36,5 @@ module.exports = {
 				});
 			}
 		});
-	},
-
-	stop () {
-		/*var app = document.getElementById(Config.dom.appId) || document.body;
-		if (app) ReactDOM.unmountComponentAtNode(app);*/
-		isLoaded = false;
 	}
 }
