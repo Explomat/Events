@@ -1,3 +1,5 @@
+@import 'variables';
+
 .events {
     font-family: sans-serif;
     font-size: 100%;
@@ -147,15 +149,15 @@
         height: 80px;
 
         &.icon--type--webinar {
-            background-image: url("/build/icons/webinar.png");
+            background-image: url($rootPath + "/build/icons/webinar.png");
         }
 
         &.icon--type--fulltime {
-            background-image: url("/build/icons/teacher.png");
+            background-image: url($rootPath + "/build/icons/teacher.png");
         }
 
         &.icon--type--webinar-record {
-            background-image: url("/icons/webinar_record.png");
+            background-image: url($rootPath + "/build/icons/webinar_record.png");
         }
 
         &.icon--small {
@@ -182,7 +184,7 @@
         &:before {
             content: "";
             position: absolute;
-            background-image: url("/build/icons/loading6.gif");
+            background-image: url($rootPath + "/build/icons/loading6.gif");
             background-position: center center;
             background-repeat: no-repeat;
             background-size: 100%;
@@ -230,17 +232,17 @@
         }
         &:before
         {
-          content:'';
-          position:absolute;
-          left:-40px;
-          top:0px;
-          width:40px;
-          border-radius:12px;
-          height:24px;
+          content: '';
+          position: absolute;
+          left: -40px;
+          top: 0px;
+          width: 40px;
+          border-radius: 12px;
+          height: 24px;
 
-          background:linear-gradient(#4AC94D, #5FE462);      
-          z-index:1;
-          transition:all .2s ease;
+          background: linear-gradient(#4AC94D, #5FE462);      
+          z-index: 1;
+          transition: all .2s ease;
         }
       }
       &:checked ~ &__checkbox:before{
