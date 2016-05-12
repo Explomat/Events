@@ -1,7 +1,7 @@
 @import 'variables';
 
 .events {
-    font-family: sans-serif;
+    font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 100%;
     margin: 0;
     box-sizing: border-box;
@@ -47,6 +47,14 @@
         text-align: center;
         cursor: pointer;
         outline: 0;
+
+        &:after {
+            content: '';
+            display: inline-block;
+            width: 0;
+            height: 100%;
+            vertical-align: middle;
+        }
 
         &:active {
             background: linear-gradient(#ddd, #fff);

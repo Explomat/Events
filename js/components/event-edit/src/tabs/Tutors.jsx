@@ -295,10 +295,10 @@ class Tutors extends React.Component {
 						</DropDownIcon>
 						<div className="buttons__funcs">
 							<button onClick={::this.handleOpenTutorsModal} className="buttons__add default-button" title="Выбрать ответственных">
-								<i className="icon-user-plus"></i>
+								<i className="icon-user-plus buttons__icon"></i>
 							</button>
 							<button onClick={this.handleRemoveTutors} className={removeTutorsClasses} title="Удалить ответственных">
-								<i className="icon-user-times"></i>
+								<i className="icon-user-times buttons__icon"></i>
 							</button>
 						</div>
 					</div>
@@ -333,16 +333,16 @@ class Tutors extends React.Component {
 						</DropDownIcon>
 						<div className="buttons__funcs">
 							<button onClick={::this.handleOpenLectorsModal} className="buttons__add default-button" title="Выбрать преподавателей">
-								<i className="icon-user-plus"></i>
+								<i className="icon-user-plus buttons__icon"></i>
 							</button>
 							<button onClick={this.handleRemoveLectors} className={removeLectorsClasses} title="Удалить преподавателей">
-								<i className="icon-user-times"></i>
+								<i className="icon-user-times buttons__icon"></i>
 							</button>
 
 							<DropDownIcon
 								icon={<i className="icon-plus"></i>}
 								className="buttons__add">
-									<DropDownIconItem onClick={::this.handleOpenInnerLectorModal} payload='inner' text='Добавить внутреннего преподавателя'/>
+									<DropDownIconItem onClick={::this.handleOpenInnerLectorModal} payload='inner' text='Выбрать внутреннего преподавателя'/>
 									<DropDownIconItem onClick={::this.handleOpenNewLectorModal} payload='new' text='Добавить нового преподавателя'/>
 							</DropDownIcon>
 						</div>

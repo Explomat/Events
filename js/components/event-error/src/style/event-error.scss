@@ -1,5 +1,6 @@
 @import '../../../modules/modal/src/style/modal';
-///react/events/build/icons/event_not_found.png
+@import '../../../../../style/sass/variables';
+
 .event-error-box {
 	@include modal-box;
 	display: block;
@@ -23,258 +24,35 @@
 	    width: 75%;
 	    z-index: 3;
 
-		.event-new__content {
+		.event-error__content {
 			@include modal-box__content;
 
-			.event-new__header{
+			.event-error__header{
 				@include modal-box__header;
 				border-bottom: none;
 				padding: 4px 6px;
-
-				.event-new__title-banner{
-					position: absolute;
-					top: 0;
-				    left: 0;
-					font-weight: bold;
-				    padding: .5em 1em;
-				    -webkit-transform: translate(-30px, -50%);
-				    -ms-transform: translate(-30px, -50%);
-				    transform: translate(-30px, -50%);
-				    color: #fff;
-				    background: #FF5252;
-
-				    &:before {
-				    	position: absolute;
-					    bottom: -20px;
-					    left: 0;
-					    content: '';
-					    border-top: 10px solid rgb(200, 50, 50);
-					    border-right: 15px solid rgb(200, 50, 50);
-					    border-bottom: 10px solid transparent;
-					    border-left: 15px solid transparent;
-				    }
-				}
 			}
-			.event-new__body{
+			.event-error__body{
 				@include modal-box__body;
 				height: 500px;
+				background-image: url($rootPath + "/build/icons/event_not_found.png");
+				background-repeat: no-repeat;
 
-				.event-new__tabs{
-					.event-new__tab{
-						float: left;
-						width: 25%;
-						text-align: center;
-						color: #ccc;
-						cursor: pointer;
+				.event-error__error-text{
+					width: 45%;
+					margin-left: 55%;
+					color: #565a5c;
 
-						&.event-new__tab--selected {
-							color: #4CAF50;
-						}
-
-						.event-new__devider {
-							padding: 0 8px;
-						}
-						
-						.event-new__tab-icon{
-							font-size: 28px;
-
-							&.event-new__tab-icon--calendar {
-								margin-left: 4px;
-							}
-						}
-						.event-new__tab-name{
-							margin-bottom: 4px;
-						}
-					}
-				}
-				.event-new__tabview{
-					height: calc(100% - 88px);
-
-					.event-new-base{
-						margin-top: 20px;
-						
-						.event-new-base__base{
-							width: 45%;
-							float: left;
-
-							.event-new-base__name{
-								margin-bottom: 20px;
-							}
-
-							.event-new-base__type{
-								margin-bottom: 20px;
-							}
-
-							.event-new-base__code{
-								margin-bottom: 20px;
-							}
-
-							.event-new-base__education-org{
-
-							}
-
-							.event-new-base__max-person-num{
-
-							}
-						}
-						.event-new-base__additional{
-							width: 45%;
-							float: right;
-
-							.event-new-base__edication-method {
-								display: none;
-
-								&.event-new-base__edication-method--display{
-									display: block;
-								}
-							}
-						}
-					}
-					.event-new-place-and-datetime{
-						margin-top: 20px;
-
-						.event-new-place-and-datetime__datetime{
-							margin-bottom: 20px;
-							.event-new-place-and-datetime__start-datetime{
-								width: 45%;
-								float: left;
-							}
-							.event-new-place-and-datetime__finish-datetime{
-								width: 45%;
-								float: right;
-							}
-						}
-						.event-new-place-and-datetime__place{
-							width: 45%;
-						}
-						
-					}
-					.event-new-tutors{
-						margin-top: 20px;
-
-						.lector-types{
-							display: inline-block;
-						}
-
-						.lector-types-inner{
-							display: none;
-							margin-left: 20px;
-
-							&.lector-types-inner--display {
-								display: inline-block;
-							}
-						}
-						.lector-types-outer{
-							display: none;
-							margin-left: 20px;
-
-							&.lector-types-outer--display {
-								display: inline-block;
-							}
-						}
-						.lector-types-inner-list-search{
-							display: none;
-							margin-top: 16px;
-							width: 45%;
-
-							&.lector-types-inner-list-search--display {
-								display: block;
-							}
-						}
-						.lector-types-inner-add-search{
-							display: none;
-							margin-top: 16px;
-							width: 45%;
-
-							&.lector-types-inner-add-search--display {
-								display: block;
-							}
-						}
-
-						.lector-types-outer-list-search{
-							display: none;
-							margin-top: 16px;
-							width: 45%;
-
-							&.lector-types-outer-list-search--display {
-								display: block;
-							}
-						}
-						.lector-types-outer-add{
-							display: none;
-							margin-top: 16px;
-							width: 45%;
-
-							&.lector-types-outer-add--display {
-								display: block;
-							}
-						}
-					}
-					.event-new-complete {
-					    height: 100%;
-					    position: relative;
-
-					    .event-new-complete__buttons{
-					    	position: absolute;
-						    top: calc(50% - 85px);
-						    left: calc(50% - 210px);
-						    padding: 32px;
-						    border: 1px solid #ccc;
-
-					    	.event-new-complete__icon-question{
-						    	display: block;
-							    text-align: center;
-							    font-size: 3em;
-							    margin-bottom: 16px;
-							    color: #444;
-						    }
-
-						    .event-new-complete__complete-button{
-						    	margin-right: 24px;
-						    	padding: 8px 12px;
-						    	box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
-						    }
-						    .event-new-complete__save-button{
-						    	padding: 8px 12px;
-						    	box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
-						    }
-					    }
+					.event-error__oops{
+					    font-size: 4em;
+				        font-weight: 900;
+				        margin-bottom: 15px;
+				        line-height: 1.1;
 					}
 				}
 			}
-			.event-new__footer{
+			.event-error__footer{
 				@include modal-box__footer;
-
-				.event-new__prev-button{
-					float: left;
-					padding: 6px 16px 6px 10px;
-					display: none;
-					box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
-
-					&.event-new__prev-button--display {
-						display: inline-block;
-					}
-
-					.event-new__icon-prev {
-						vertical-align: middle;
-						margin-right: 16px;
-					}
-				}
-
-				.event-new__next-button{
-					padding: 6px 10px 6px 16px;
-					display: none;
-					box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
-
-					&.event-new__next-button--display {
-						display: inline-block;
-					}
-
-					.event-new__icon-next {
-						vertical-align: middle;
-						margin-left: 16px;
-					}
-				}
 			}
 		}
 	}

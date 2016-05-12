@@ -292,10 +292,10 @@ class Files extends React.Component {
 								<input ref="fileInput" onChange={::this.handleChangeFiles} type="file" multiple style={{display: 'none'}}/>
 							</label>
 							<button onClick={::this.handleOpenFilesModal} className="buttons__add default-button" title="Добавить файлы">
-								<i className="icon icon-page-add"></i>
+								<i className="icon icon-page-add buttons__icon"></i>
 							</button>
 							<button onClick={::this.handleRemoveFiles} className={removeFilesClasses} title="Удалить файлы">
-								<i className="icon icon-page-delete"></i>
+								<i className="icon icon-page-delete buttons__icon"></i>
 							</button>
 						</div>
 					</div>
@@ -327,10 +327,10 @@ class Files extends React.Component {
 								<input ref="libraryMaterial" onClick={::this.handleInputFilesClick} onChange={::this.handleChangeLibraryMaterials} type="file" multiple style={{display: 'none'}} accept=".pdf"/>
 							</label>
 							<button onClick={::this.handleOpenLibraryMaterialsModal} className="buttons__add default-button" title="Добавить файлы">
-								<i className="icon icon-page-add"></i>
+								<i className="icon icon-page-add buttons__icon"></i>
 							</button>
 							<button onClick={::this.handleRemoveLibraryMaterials} className={removeLibraryMaterialsClasses} title="Удалить файлы">
-								<i className="icon icon-page-delete"></i>
+								<i className="icon icon-page-delete buttons__icon"></i>
 							</button>
 						</div>
 					</div>

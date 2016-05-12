@@ -21,6 +21,10 @@ class Info extends React.Component {
         isShow: false
     }
 
+    _createMarkup(markup) { 
+        return {__html: markup}; 
+    }
+
     render() {
         if (!this.props.isShow) {
             return null;
@@ -38,6 +42,7 @@ class Info extends React.Component {
             'icon-exclamation-circle': status === this.statuses.info,
             'icon-check-circle': status === this.statuses.done
         });
+        const markup = this._createMarkup(this.props.message);
         return (
             <div className="info">
                 <div className="info__modal-box">
@@ -46,7 +51,7 @@ class Info extends React.Component {
                             <span className={infoIconClasses}>
                                 <i className={iconClasses}></i>
                             </span>
-                            <div className="info__message">{this.props.message}</div>
+                            <div className="info__message" dangerouslySetInnerHTML={markup}></div>
                             <button onClick={this.props.onClose} className="info__button event-btn">Ok</button>
                         </div>
                     </div>

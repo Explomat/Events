@@ -152,7 +152,7 @@ class Tests extends React.Component {
 								<DropDownIconItem onClick={::this.handleOpenTestsModal} payload='post' text='Выбрать пост-тесты'/>
 						</DropDownIcon>
 						<button onClick={this.handleRemoveTests} className={removeClasses} title="Удалить файлы">
-							<i className="icon-minus"></i>
+							<i className="icon-minus buttons__icon"></i>
 						</button>
 					</div>
 				</div>

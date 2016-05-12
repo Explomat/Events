@@ -198,13 +198,13 @@ class Collaborators extends React.Component {
 					</DropDownIcon>
 					<div className="buttons__funcs">
 						<button onClick={::this.handleOpenModal} className="buttons__add default-button" title="Выбрать участников">
-							<i className="icon-user-plus"></i>
+							<i className="icon-user-plus buttons__icon"></i>
 						</button>
 						<button onClick={this.handleRemoveItems} className={removeClasses} title="Удалить участников">
-							<i className="icon-user-times"></i>
+							<i className="icon-user-times buttons__icon"></i>
 						</button>
 						<button onClick={::this.handleOpenNotificateModal} className={notificateClasses} title="Отправить уведомление">
-							<i className="icon-envelope-o"></i>
+							<i className="icon-envelope-o buttons__icon"></i>
 						</button>
 					</div>
 				</div>

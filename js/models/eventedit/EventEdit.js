@@ -50,7 +50,7 @@ export default function(args){
 			}
 		}),
 		places: Places(args.base.places),
-		maxPersonNum: args.maxPersonNum || '',
+		maxPersonNum: args.base.maxPersonNum || '',
 
 		selectedType: args.base.selectedType,
 		selectedCode: args.base.selectedCode,

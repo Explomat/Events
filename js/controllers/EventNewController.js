@@ -2,6 +2,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var EventNewActions = require('../actions/EventNewActions');
 var EventNew = require('../components/event-new');
+var EventError = require('../components/event-error');
 var Config = require('../config');
 var EventNewAPI = require('../api/EventNewAPI');
 
@@ -25,6 +26,9 @@ module.exports = {
 				}).catch(function(e){
 					console.error(e.stack);
 				});
+			}
+			else {
+				ReactDOM.render(React.createElement(EventError.default, {error: "У вас нет прав на создание мероприятия!"}), appElem);
 			} 
 		});
 	},
