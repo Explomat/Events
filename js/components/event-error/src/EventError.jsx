@@ -1,15 +1,19 @@
 import React from 'react';
+import cx from 'classnames';
 import './style/event-error.scss';
+import './style/event-edit-error.scss';
 
 class EventError extends React.Component {
 
 	static propTypes = {
-		error: React.PropTypes.string.isRequired
+		error: React.PropTypes.string.isRequired,
+		className: React.PropTypes.string
 	}
 
 	render() {
+		const classes = cx('event-error-box', this.props.className);
 		return (
-			<div className="event-error-box">
+			<div className={classes}>
 				<div className="event-error">
 					<div className="event-error__content">
 						<div className="event-error__header">

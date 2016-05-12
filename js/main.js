@@ -6,6 +6,7 @@ var CalendarController = require('./controllers/CalendarController');
 var EventInfoController = require('./controllers/EventInfoController');
 var EventEditController = require('./controllers/EventEditController');
 var EventNewController = require('./controllers/EventNewController');
+var UtilsForControllers = require('./controllers/UtilsForControllers');
 var moment = require('moment');
 
 Date.prototype.toJSON = function(){ return moment(this).format(); }
@@ -13,12 +14,7 @@ Date.prototype.toJSON = function(){ return moment(this).format(); }
 window.onload = function(){
 
 	Router.addRoute(Config.hashes.calendar, function(){
-		if (EventInfoController.isLoaded()) {
-			EventInfoController.stop();
-		}
-		if (EventNewController.isLoaded()) {
-			EventNewController.stop();
-		}
+		UtilsForControllers.unmountModal();
 		if (!CalendarController.isLoaded()){
 			CalendarController.start();
 		}
@@ -36,8 +32,8 @@ window.onload = function(){
 	});
 
 	Router.addRoute(Config.hashes.eventEdit, function(id){
-		if (EventNewController.isLoaded()) {
-			EventNewController.stop();
+		if (EventInfoController.isLoaded()) {
+			EventInfoController.stop();
 		}
 		EventEditController.start(id);
 		CalendarController.isLoaded(false)

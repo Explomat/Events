@@ -36,7 +36,7 @@ module.exports = {
 				});
 			}
 			else {
-				ReactDOM.render(React.createElement(EventError.default, {error: "У вас нет доступа к редактированию этого мероприятия!"}), app);
+				ReactDOM.render(React.createElement(EventError.default, {error: "У вас нет доступа к редактированию этого мероприятия!", className: 'event-edit-error-box'}), app);
 			}
 		});
 	}

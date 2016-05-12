@@ -15,7 +15,6 @@
 
 	.event-error {
 		@include modal-box__dialog;
-		width: 750px;
 
 		margin: 10px auto;
 	    position: absolute;
@@ -30,7 +29,6 @@
 			.event-error__header{
 				@include modal-box__header;
 				border-bottom: none;
-				padding: 4px 6px;
 			}
 			.event-error__body{
 				@include modal-box__body;
