@@ -16,8 +16,7 @@ module.exports = {
 
 	start: function(id){
 
-		var app = document.getElementById(Config.dom.eventViewModalId) || document.body;
-		this.stop(app);
+		var app = document.getElementById(Config.dom.eventViewModalId);
 		isLoaded = true;
 
 		EventInfoAPI.getData(id).then(function(eventData){
@@ -38,7 +37,7 @@ module.exports = {
 	},
 
 	stop: function () {
-		var app = document.getElementById(Config.dom.eventViewModalId) || document.body;
+		var app = document.getElementById(Config.dom.eventViewModalId);
 		if (app) ReactDOM.unmountComponentAtNode(app);
 		isLoaded = false;
 	}

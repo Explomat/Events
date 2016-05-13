@@ -32,9 +32,7 @@ window.onload = function(){
 	});
 
 	Router.addRoute(Config.hashes.eventEdit, function(id){
-		if (EventInfoController.isLoaded()) {
-			EventInfoController.stop();
-		}
+		UtilsForControllers.unmountModal();
 		EventEditController.start(id);
 		CalendarController.isLoaded(false)
 	});

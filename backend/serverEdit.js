@@ -1755,12 +1755,12 @@ function createEvent (queryObjects) {
 	}, 'json');
 }
 
-function changeStatus (queryObjects) {
+function changeStatus(queryObjects) {
 	var data = tools.read_object(queryObjects.Body);
 	var eventStatus = data.HasProperty('status') ? data.status : '';
 	if (eventStatus != '') {
 		try {
-			var eventCard = OpenDoc(UrlFromDocID(Session.eventId));
+			var eventCard = OpenDoc(UrlFromDocID(Int(Session.eventId)));
 			eventCard.TopElem.status_id = eventStatus;
 			eventCard.Save()
 		} catch (e) {
@@ -1771,6 +1771,25 @@ function changeStatus (queryObjects) {
 	return tools.object_to_text({
 		error: null
 	}, 'json');
+}
+
+function isEventEditing(queryObjects){
+	var eventId = queryObjects.event_id;
+	var sessions = queryObjects.Request.AllSessions;
+	for (var i = sessions.length - 1; i >= 0; i--) {
+		session = sessions[i];
+		if (session.HasProperty('eventId') && session.eventId == eventId && session.cur_user_id != curUserID){
+			userName = String(OpenDoc(UrlFromDocID(Int(session.cur_user_id))).TopElem.fullname);
+			return tools.object_to_text({
+				isEditing: true,
+				error: 'В данный момент это мероприятие редактирует : ' + userName
+			}, 'json');
+		}
+	};
+	return tools.object_to_text({
+				isEditing: false,
+				error: null
+			}, 'json');
 }
 
 

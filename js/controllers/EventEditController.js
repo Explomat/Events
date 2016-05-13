@@ -18,25 +18,32 @@ module.exports = {
 
 		var app = document.getElementById(Config.dom.appId) || document.body;
 
-		EventEditAPI.isDeniedActionAccess('edit').then(function(isDenied) {
-			if (!isDenied){
-				EventEditAPI.getData(id).then(function(eventData){
-					var error = eventData.error;
-					if (!error) {
-						EventEditActions.receiveData(eventData);
-						ReactDOM.render(React.createElement(EventEdit.default), app);
-						isLoaded = true;
-					}else {
-						ReactDOM.render(React.createElement(EventError.default, {error: error}), app);
-					}
-				}, function(err){
-					ReactDOM.render(React.createElement(EventError.default, {error: err.message}), app);
-				}).catch(function(e){
-					console.error(e.stack);
-				});
+		EventEditAPI.isEventEditing(id).then(function(data){
+			if (data.isEditing){
+				ReactDOM.render(React.createElement(EventError.default, {error: data.error, className: 'event-edit-error-box'}), app);
 			}
 			else {
-				ReactDOM.render(React.createElement(EventError.default, {error: "У вас нет доступа к редактированию этого мероприятия!", className: 'event-edit-error-box'}), app);
+				EventEditAPI.isDeniedActionAccess('edit').then(function(isDenied) {
+					if (!isDenied){
+						EventEditAPI.getData(id).then(function(eventData){
+							var error = eventData.error;
+							if (!error) {
+								EventEditActions.receiveData(eventData);
+								ReactDOM.render(React.createElement(EventEdit.default), app);
+								isLoaded = true;
+							}else {
+								ReactDOM.render(React.createElement(EventError.default, {error: error}), app);
+							}
+						}, function(err){
+							ReactDOM.render(React.createElement(EventError.default, {error: err.message}), app);
+						}).catch(function(e){
+							console.error(e.stack);
+						});
+					}
+					else {
+						ReactDOM.render(React.createElement(EventError.default, {error: "У вас нет доступа к редактированию этого мероприятия!", className: 'event-edit-error-box'}), app);
+					}
+				});
 			}
 		});
 	}

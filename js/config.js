@@ -41,7 +41,8 @@ servers
 			'forLiveSearchGetPlaces',
 			'getDataForNewEvent',
 			'createEvent',
-			'changeStatus'
+			'changeStatus',
+			'isEventEditing'
 		]);
 
 module.exports = {

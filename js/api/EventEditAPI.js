@@ -12,6 +12,14 @@ module.exports = {
 		});
 	},
 
+	isEventEditing: function(eventId){
+		return Ajax.sendRequest(Config.url.createPath({action_name: 'isEventEditing', event_id: eventId}), null, false).then((data) => {
+			return JSON.parse(data, (key, value) => {
+				return value === 'true' ? true : value === 'false' ? false : value;
+			});
+		});
+	},
+
 	getData: function(eventId){
 		//return Promise.resolve({});
 		return Ajax.sendRequest(Config.url.createPath({action_name: 'getEventEditData', event_id: eventId}), null, false).then(function(data){
