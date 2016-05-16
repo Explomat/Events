@@ -3,18 +3,14 @@ import React from 'react';
 class EditEventButton extends React.Component {
 
 	static propTypes = {
-		href: React.PropTypes.string,
+		onClick: React.PropTypes.func,
 		className: React.PropTypes.string
 	}
 
-	static defaultProps = {
-		href: '#'
-	}
-
 	render() {
-		const { href, className } = this.props;
+		const { onClick, className } = this.props;
 		return (
-			<a href={href} className={className} title="Редактировать мероприятие">
+			<a onClick={onClick} href='#' className={className} title="Редактировать мероприятие">
 				<i className="icon-pencil-square-o"></i>
 			</a>
 		);

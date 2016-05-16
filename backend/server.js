@@ -414,6 +414,8 @@
 	}
 
 	function getData(queryObjects){
+		Session['eventId'] = undefined;
+		
 		var currentDate = Date();
 		var currentYear = Year(currentDate);
 		var currentMonth = Month(currentDate);

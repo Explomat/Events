@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Auth from './modules/Auth';
 import BusinessTypeFilter from './authmodules/BusinessTypeFilter';
 import RegionsFilter from './authmodules/RegionsFilter';
@@ -212,6 +213,10 @@ var Calendar = React.createClass({
 	},
 
 	componentWillUnmount() {
+		var modalApp = document.getElementById(Config.dom.eventViewModalId);
+		if (modalApp) {
+			ReactDOM.unmountComponentAtNode(modalApp);
+		}
 		CalendarStore.removeChangeListener(this._onChange);
 	},
 

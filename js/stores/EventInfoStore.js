@@ -43,7 +43,7 @@ function changeInfo(text){
 var EventInfoStore = extend({}, EventEmitter.prototype, {
 	
 	getData: function(){
-		return _eventInfo;
+		return {..._eventInfo};
 	},
 	
 	getInfo: function(){

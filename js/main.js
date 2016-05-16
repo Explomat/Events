@@ -32,7 +32,6 @@ window.onload = function(){
 	});
 
 	Router.addRoute(Config.hashes.eventEdit, function(id){
-		UtilsForControllers.unmountModal();
 		EventEditController.start(id);
 		CalendarController.isLoaded(false)
 	});
