@@ -1728,13 +1728,18 @@ function createEvent (queryObjects) {
 		newTutor.main = true;
 		tools.common_filling( 'collaborator', newTutor, Int(data.base.tutorId) );
 
-		if ( data.lectors.innerListLectorId != '' ) {
+		
+		if ( data.lectors.innerListLectorId != null ) {
+			
 			eventDoc.TopElem.lectors.ObtainChildByKey( Int(data.lectors.innerListLectorId) );
-		} else if ( data.lectors.innerNewLectorId != '' ) {
+		} else if ( data.lectors.innerNewLectorId != null ) {
+			
 			eventDoc.TopElem.lectors.ObtainChildByKey( Int(data.lectors.innerNewLectorId) );
-		} else if ( data.lectors.outerListLectorId != '' ) {
+		} else if ( data.lectors.outerListLectorId != null ) {
+			
 			eventDoc.TopElem.lectors.ObtainChildByKey( Int(data.lectors.outerListLectorId) );
-		} else ( data.lectors.lector.outerListLectorId != '' ) {
+		} else if( data.lectors.lector.outerListLectorId != null ) {
+			
 			doc = tools.new_doc_by_name('lector')
 			doc.TopElem.type = 'invitee';
 			doc.TopElem.lastname = data.lectors.lector.firstName
@@ -1745,6 +1750,7 @@ function createEvent (queryObjects) {
 			doc.BindToDb(DefaultDb);
 			doc.Save();
 		}
+		alert(6);
 		eventDoc.BindToDb();
 		eventDoc.Save();
 	} catch (e) {
