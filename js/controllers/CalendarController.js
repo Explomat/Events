@@ -25,6 +25,8 @@ var exp = {
 			isLoaded = true;
 		}.bind(this), function(err){
 			console.log(err);
+		}).catch(function(e){
+			console.log(e);
 		});
 	}
 }

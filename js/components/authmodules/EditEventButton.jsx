@@ -2,6 +2,8 @@ import React from 'react';
 
 class EditEventButton extends React.Component {
 
+	displayName: 'EditEventButton'
+
 	static propTypes = {
 		onClick: React.PropTypes.func,
 		className: React.PropTypes.string

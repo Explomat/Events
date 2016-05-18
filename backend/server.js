@@ -29,7 +29,7 @@
 		{
 			name: 'event_admin',
 			actionsDenied: getObjectValues(actionsDenied),
-			componentsDenied: getObjectValues(componentsDenied),
+			componentsDenied: [componentsDenied.CreateEventButton, componentsDenied.EditEventButton],
 			priority: 1
 		},
 
@@ -95,7 +95,8 @@
 
 	function getGroupByMaxPriority(_groups){
 		if (!IsArray(_groups) || _groups.length == 0) return null;
-
+		if (_groups.length == 1) return _groups[0];
+		
 		var min = _groups[_groups.length - 1].priority;
 		var index = _groups.length - 1;
 		for (var i = _groups.length - 1; i >= 0; i--) {
@@ -104,6 +105,7 @@
 				index = i;
 			}
 		};
+		alert(index);
 		return groups[index];
 	}
 
@@ -311,7 +313,7 @@
 		var selectedMonth = Int(queryObjects.month);
 		var region = queryObjects.HasProperty('region') ? queryObjects.region : curUser.custom_elems.ObtainChildByKey('office_code').value;
 		if (queryObjects.HasProperty('business_type')) {
-			var personBusinessType = queryObjects.business_type
+			var personBusinessType = queryObjects.business_type;
 		} else {
 			var personBusinessType = curPersonCard.TopElem.custom_elems.ObtainChildByKey('id_business_list').value == 'CL' ? 
 		'CITILINK' : curPersonCard.TopElem.custom_elems.ObtainChildByKey('id_business_list').value == 'MERLION' ? 'MERLION' : 'CITILINK';

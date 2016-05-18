@@ -1561,6 +1561,7 @@ function saveData(queryObjects) {
 				tools.common_filling( 'collaborator', newTutor, Int(tutor.id) );
 			} else {
 				curEventCard.TopElem.tutors.ObtainChildByKey( Int(tutor.id) );
+				newTutor.main = tutor.main;
 			}
 		}
 

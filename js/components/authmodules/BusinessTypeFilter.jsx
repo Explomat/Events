@@ -3,6 +3,8 @@ import DropDown from '../modules/dropdown';
 
 class BusinessTypeFilter extends React.Component {
 
+	displayName: 'BusinessTypeFilter'
+
 	handleChangeBusinessType(e, payload, text, index) {
 		if (this.props.onChange) {
 			this.props.onChange(e, payload, text, index);
