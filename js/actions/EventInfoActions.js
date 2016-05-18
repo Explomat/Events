@@ -64,11 +64,15 @@ var EventInfoActions = {
 	startEvent: function(eventId){
 		EventInfoAPI.startEvent(eventId).then(function(err){
 			if (!err) {
-				AppDispatcher.handleAction({
-					actionType: EventInfoConstants.START_EVENT_EVENTINFO,
-					eventId: eventId,
-					text: 'Вы успешно стартовали мероприятие.'
-				});
+				console.log(1);
+				try {
+					AppDispatcher.handleAction({
+						actionType: EventInfoConstants.START_EVENT_EVENTINFO,
+						eventId: eventId,
+						text: 'Вы успешно стартовали мероприятие.'
+					});
+				}catch(e) { console.log(e.stack); }
+				
 			}
 			else {
 				AppDispatcher.handleAction({

@@ -1,7 +1,7 @@
 import keyMirror from 'keyMirror';
 import toArrayKeys from '../toArrayKeys';
 
-export default {
+module.exports =  {
 
 	values: {
 		close: 'Завершено',

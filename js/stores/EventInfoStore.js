@@ -1,7 +1,7 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var EventInfoConstants = require('../constants/EventInfoConstants');
-import EventStatuses from '../utils/event/EventStatuses';
+var EventStatuses = require('../utils/event/EventStatuses');
 var EventInfo = require('../models/EventInfo');
 var extend = require('extend');
 
