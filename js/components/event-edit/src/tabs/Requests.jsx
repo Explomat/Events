@@ -211,13 +211,13 @@ class Requests extends React.Component {
 							})}
 						</div>
 					</div>
-					<RejectReasonInfo 
-						rejectRequestId={this.state.rejectRequestId}
-						rejectRequestStatus={this.state.rejectRequestStatus}
-						onClose={::this.handleCloseRejectRequest} 
-						onReject={::this.handleRejectRequest} 
-						isShow={this.state.isShowRejectReasonInfo}/>
 				</div>
+				<RejectReasonInfo 
+					rejectRequestId={this.state.rejectRequestId}
+					rejectRequestStatus={this.state.rejectRequestStatus}
+					onClose={::this.handleCloseRejectRequest} 
+					onReject={::this.handleRejectRequest} 
+					isShow={this.state.isShowRejectReasonInfo}/>
 			</div>
 		);
 	}
