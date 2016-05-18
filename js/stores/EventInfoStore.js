@@ -1,7 +1,7 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var EventInfoConstants = require('../constants/EventInfoConstants');
-var EventStatuses = require('../utils/event/EventStatuses');
+import EventStatuses from '../utils/event/EventStatuses';
 var EventInfo = require('../models/EventInfo');
 var extend = require('extend');
 
@@ -131,7 +131,9 @@ EventInfoStore.dispatchToken = AppDispatcher.register(function(payload) {
 			return true;
 	}
 
-	if (isEmit) EventInfoStore.emitChange();
+	if (isEmit) {
+		EventInfoStore.emitChange();
+	}
 	return true;
 });
 
