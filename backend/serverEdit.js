@@ -149,7 +149,7 @@ function removeFiles(queryObjects) {
 	var filesArray = data.HasProperty('ids') ? data.ids : [];
 	var files = [];
 
-	var eventCard = OpenDoc(UrlFromDocID(Session.eventId));
+	var eventCard = OpenDoc(UrlFromDocID(Int(Session.eventId)));
 	for (file in filesArray) {
 		doc = ArrayOptFirstElem(XQuery('sql:select r.id from resource r where r.id=' + file));
 		if (doc != undefined) {
@@ -957,7 +957,7 @@ function getEventTests (queryObjects) {
 	for (assessment in eventDocTE.prev_testing.assessments) {
 		prevTests.push({
 			id : Int(assessment.assessment_id),
-			name : assessment.assessment_id.ForeignElem.title + '',
+			name : StrReplace(assessment.assessment_id.ForeignElem.title + '', '"', '\''),
 			type : 'prev'
 		})
 	}
@@ -965,7 +965,7 @@ function getEventTests (queryObjects) {
 	for (assessment in eventDocTE.post_testing.assessments) {
 		postTests.push({
 			id : Int(assessment.assessment_id),
-			name : assessment.assessment_id.ForeignElem.title + '',
+			name : StrReplace(assessment.assessment_id.ForeignElem.title + '', '"', '\''),
 			type : 'post'
 		})
 	}
@@ -975,7 +975,7 @@ function getEventTests (queryObjects) {
 		active_test_learnings.id as id,
 		active_test_learnings.person_id as personId,
 		active_test_learnings.person_fullname as personFIO, 
-		active_test_learnings.assessment_name as assessment_name,
+		REPLACE(active_test_learnings.assessment_name, '\"', '''' ) as assessment_name,
 		active_test_learnings.score as score,
 		0 as maxscore
 	from
@@ -987,7 +987,7 @@ function getEventTests (queryObjects) {
 		test_learnings.id as id,
 		test_learnings.person_id as personId,
 		test_learnings.person_fullname as personFIO,
-		test_learnings.assessment_name as assessment_name,
+		REPLACE(test_learnings.assessment_name, '\"', '''' ) as assessment_name,
 		test_learnings.score as score,
 		test_learnings.max_score as maxscore
 	from
@@ -1024,7 +1024,7 @@ function getEventCourses (queryObjects) {
 			active_learnings.id as id,
 			active_learnings.person_id as personId,
 			active_learnings.person_fullname as personFIO, 
-			active_learnings.assessment_name as assessment_name,
+			REPLACE(active_learnings.assessment_name, '\"', '''' ) as assessment_name,
 			active_learnings.state_id as status,
 			active_learnings.score as score
 		from
@@ -1036,7 +1036,7 @@ function getEventCourses (queryObjects) {
 			learnings.id as id,
 			learnings.person_id as personId,
 			learnings.person_fullname as personFIO,
-			learnings.assessment_name as assessment_name,
+			REPLACE(learnings.assessment_name, '\"', '''' ) as assessment_name,
 			learnings.state_id as status,
 			learnings.score as score
 		from
