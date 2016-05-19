@@ -13,6 +13,10 @@ function receiveData(data) {
 	_eventNew = new EventNew(data);
 }
 
+function disposeData(){
+	_eventNew = null;
+}
+
 var base = {
 	changeName(name){
 		_eventNew.base.name = name;
@@ -210,86 +214,114 @@ var EventNewStore = extend({}, EventEmitter.prototype, {
 
 EventNewStore.dispatchToken = AppDispatcher.register(function(payload) {
 	var action = payload.action;
+	var isEmit = false;
 
 	switch(action.actionType) {
 
 		case EventNewConstants.EVENT_NEW_RECEIVE_DATA:
 			receiveData(action.data);
+			isEmit = true;
+			break;
+		case EventNewConstants.EVENT_NEW_DISPOSE_DATA:
+			disposeData();
 			break;
 
 		//BASE
 		case EventNewConstants.EVENT_NEW_CHANGE_NAME:
 			base.changeName(action.name);
+			isEmit = true;
 			break;
 		case EventNewConstants.EVENT_NEW_CHANGE_TYPE:
 			base.changeType(action.type);
+			isEmit = true;
 			break;
 		case EventNewConstants.EVENT_NEW_CHANGE_CODE:
 			base.changeCode(action.code);
+			isEmit = true;
 			break;
 		case EventNewConstants.EVENT_NEW_CHANGE_EDUCATION_ORG:
 			base.changeEducationOrg(action.orgId);
+			isEmit = true;
 			break;
 		case EventNewConstants.EVENT_NEW_SELECT_EDUCATION_METHOD:
 			base.selectEducationMethod(action.id, action.value);
+			isEmit = true;
 			break;
 		case EventNewConstants.EVENT_NEW_SELECT_TUTOR:
 			base.selectTutor(action.id, action.value);
+			isEmit = true;
 			break;
 
 		//PLACE & DATETIME
 		case EventNewConstants.EVENT_NEW_CHANGE_START_DATE_TIME:
 			placeAndDateTime.changeStartDateTime(action.dateTime);
+			isEmit = true;
 			break;
 		case EventNewConstants.EVENT_NEW_CHANGE_START_FINISH_TIME:
 			placeAndDateTime.changeFinishDateTime(action.dateTime);
+			isEmit = true;
 			break;
 		case EventNewConstants.EVENT_NEW_SELECT_PLACE:
 			placeAndDateTime.selectPlace(action.id, action.value);
+			isEmit = true;
 			break;
 
 		//TUTORS
 		case EventNewConstants.EVENT_NEW_SELECT_LECTOR_TYPE:
 			lectors.selectLectorType(action.lectorType);
+			isEmit = true;
 			break;
 		case EventNewConstants.EVENT_NEW_SELECT_ADD_LECTOR_TYPE:
 			lectors.selectAddLectorType(action.lectorType);
+			isEmit = true;
 			break;
 		case EventNewConstants.EVENT_NEW_SELECT_SEARCH_LECTOR_TYPE:
 			lectors.selectSearchLectorType(action.lectorType);
+			isEmit = true;
 			break;
 
 		case EventNewConstants.EVENT_NEW_SELECT_INNER_LIST_LECTOR:
 			lectors.selectInnerListLector(action.id, action.value);
+			isEmit = true;
 			break;
 		case EventNewConstants.EVENT_NEW_SELECT_INNER_NEW_LECTOR:
 			lectors.selectInnerNewLector(action.id, action.value);
+			isEmit = true;
 			break;
 		case EventNewConstants.EVENT_NEW_SELECT_OUTER_LIST_LECTOR:
 			lectors.selectOuterListLector(action.id, action.value);
+			isEmit = true;
 			break;
 
 		case EventNewConstants.EVENT_NEW_CHANGE_LECTOR_FIRST_NAME:
 			lectors.changeLectorFirstName(action.firstName);
+			isEmit = true;
 			break;
 		case EventNewConstants.EVENT_NEW_CHANGE_LECTOR_LAST_NAME:
 			lectors.changeLectorLastName(action.lastName);
+			isEmit = true;
 			break;
 		case EventNewConstants.EVENT_NEW_CHANGE_LECTOR_MIDDLE_NAME:
 			lectors.changeLectorMiddleName(action.middleName);
+			isEmit = true;
 			break;
 		case EventNewConstants.EVENT_NEW_CHANGE_LECTOR_EMAIL:
 			lectors.changeLectorEmail(action.email);
+			isEmit = true;
 			break;
 		case EventNewConstants.EVENT_NEW_CHANGE_LECTOR_COMPANY:
 			lectors.changeLectorCompany(action.company);
+			isEmit = true;
 			break;
 
 		default:
 			return true;
 	}
 
-	EventNewStore.emitChange();
+	if (isEmit){
+		EventNewStore.emitChange();
+	}
+	
 	return true;
 });
 

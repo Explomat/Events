@@ -17,7 +17,7 @@ module.exports = React.createClass({
         </div>
 
         <div className="sliders">
-          <div className="time-text">Hours:</div>
+          <div className="time-text">Часы:</div>
           <InputSlider
             className="u-slider-time"
             xmin={0}
@@ -25,7 +25,7 @@ module.exports = React.createClass({
             x={m.hour()}
             onChange={this.changeHours}
           />
-          <div className="time-text">Minutes:</div>
+          <div className="time-text">Минуты:</div>
           <InputSlider
             className="u-slider-time"
             xmin={0}

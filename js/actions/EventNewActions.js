@@ -11,6 +11,12 @@ module.exports = {
 		});
 	},
 
+	disposeData(){
+		AppDispatcher.handleAction({
+			actionType: EventNewConstants.EVENT_NEW_DISPOSE_DATA
+		});
+	},
+
 	base: {
 		changeName(name) {
 			AppDispatcher.handleAction({

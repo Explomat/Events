@@ -12,18 +12,24 @@ var EventEditActions = {
 		});
 	},
 
+	disposeData(){
+		AppDispatcher.handleAction({
+			actionType: EventEditConstants.EVENTEDIT_DISPOSE_DATA
+		});
+	},
+
 	saveData(data){
 		EventEditAPI.saveData(data).then(function(data) {
 			if (data.error === '') {
 				AppDispatcher.handleAction({
-					actionType: EventEditConstants.CHANGE_INFO_MESSAGE,
+					actionType: EventEditConstants.EVENTEDIT_CHANGE_INFO_MESSAGE,
 					message: 'Мероприятие сохранено!',
 					status: 'done'
 				});
 			}
 			else {
 				AppDispatcher.handleAction({
-					actionType: EventEditConstants.CHANGE_INFO_MESSAGE,
+					actionType: EventEditConstants.EVENTEDIT_CHANGE_INFO_MESSAGE,
 					message: 'При сохранении произошла ошибка: \'' + data.error + '\'',
 					status: 'error'
 				});
@@ -33,7 +39,7 @@ var EventEditActions = {
 
 	changeInfoMessage(message, status){
 		AppDispatcher.handleAction({
-			actionType: EventEditConstants.CHANGE_INFO_MESSAGE,
+			actionType: EventEditConstants.EVENTEDIT_CHANGE_INFO_MESSAGE,
 			message: message,
 			status: status
 		});
@@ -43,13 +49,13 @@ var EventEditActions = {
 		EventEditAPI.changeStatus(status).then(function(data){
 			if (data.error === '') {
 				AppDispatcher.handleAction({
-					actionType: EventEditConstants.CHANGE_STATUS,
+					actionType: EventEditConstants.EVENTEDIT_CHANGE_STATUS,
 					status: status
 				});
 			}
 			else {
 				AppDispatcher.handleAction({
-					actionType: EventEditConstants.CHANGE_INFO_MESSAGE,
+					actionType: EventEditConstants.EVENTEDIT_CHANGE_INFO_MESSAGE,
 					message: data.error,
 					status: 'error'
 				});

@@ -22,6 +22,10 @@ function loadData(data) {
 	_eventEdit = new EventEdit(data);
 }
 
+function disposeData(){
+	_eventEdit = null;
+}
+
 function changeInfoMessage(message, status){
 	_eventEdit.infoMessage = message;
 	_eventEdit.infoStatus = status;
@@ -579,11 +583,14 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			loadData(action.data);
 			isEmit = true;
 			break;
-		case EventEditConstants.CHANGE_INFO_MESSAGE:
+		case EventEditConstants.EVENTEDIT_DISPOSE_DATA:
+			disposeData();
+			break;
+		case EventEditConstants.EVENTEDIT_CHANGE_INFO_MESSAGE:
 			changeInfoMessage(action.message, action.status);
 			isEmit = true;
 			break;
-		case EventEditConstants.CHANGE_STATUS:
+		case EventEditConstants.EVENTEDIT_CHANGE_STATUS:
 			changeStatus(action.status);
 			isEmit = true;
 			break;

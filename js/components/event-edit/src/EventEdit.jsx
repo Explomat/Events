@@ -42,6 +42,7 @@ class EventEdit extends React.Component {
 	}
 
 	componentWillUnmount() {
+		EventEditActions.disposeData();
 		EventEditStore.removeChangeListener(this._onChange);
 	}
 

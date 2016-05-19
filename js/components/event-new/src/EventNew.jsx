@@ -1,5 +1,6 @@
 import React from 'react';
 import EventNewStore from 'stores/EventNewStore';
+import EventNewActions from 'actions/EventNewActions';
 import Base from './tabs/Base';
 import PlaceAndDatetime from './tabs/PlaceAndDatetime';
 import Lectors from './tabs/Lectors';
@@ -86,6 +87,7 @@ class EventNew extends React.Component {
 	}
 
 	componentWillUnmount() {
+		EventNewActions.disposeData();
 		EventNewStore.removeChangeListener(this._onChange);
 	}
 

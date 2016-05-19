@@ -2,8 +2,9 @@ var keyMirror = require('keyMirror');
 
 module.exports = keyMirror({
 	RECEIVE_EVENTEDIT_DATA: null,
-	CHANGE_INFO_MESSAGE: null,
-	CHANGE_STATUS: null,
+	EVENTEDIT_DISPOSE_DATA: null,
+	EVENTEDIT_CHANGE_INFO_MESSAGE: null,
+	EVENTEDIT_CHANGE_STATUS: null,
 
 	//BASE
 	EVENTEDIT_BASE_CHANGE_NAME: null,
