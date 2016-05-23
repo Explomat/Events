@@ -21,6 +21,7 @@ module.exports = function(args){
 	this.status = args.status || EventStatuses.keys.plan;
 	this.place = args.place || '';
 	this.reportHref = args.reportHref || '#';
+	this.componentsDenied = args.componentsDenied || [];
 
 	this.collaborators = [];
 	if (args.collaborators) {

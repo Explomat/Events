@@ -23,7 +23,7 @@ module.exports = {
 				ReactDOM.render(React.createElement(EventError.default, {error: data.error, className: 'event-edit-error-box'}), app);
 			}
 			else {
-				EventEditAPI.isDeniedActionAccess('edit').then(function(isDenied) {
+				EventEditAPI.isDeniedActionAccess(id, 'edit').then(function(isDenied) {
 					if (!isDenied){
 						EventEditAPI.getData(id).then(function(eventData){
 							var error = eventData.error;

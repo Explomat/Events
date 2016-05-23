@@ -288,7 +288,7 @@ class EventInfo extends React.Component {
 		var isDisplayPlaceClass = isWebinar ? 'event-info__map--hide': '';
 		var buttons = this.getButtons();
 		var infoClass = this.state.info ? 'event-info__info-block--show' : '';
-		var componentsDenied = CalendarStore.getUserComponentsDenied();
+		var componentsDenied = this.state.event.componentsDenied;
 		return(
 			<div className="event-info-box">
 				<section className="event-info">
