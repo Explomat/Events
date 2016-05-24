@@ -1,4 +1,11 @@
 <%
+
+	function isCreatorOrTutor (eventId) {
+		var isTutor = ArrayCount(XQuery("for $elem in event_collaborators where $elem/event_id = "+eventId+" and $elem/collaborator_id = "+curUserID+" return $elem ")) == 0 ? false : true;
+		var isCreator = OpenDoc(UrlFromDocID(Int(eventId))).TopElem.doc_info.creation.user_id == curUserID;
+		return isTutor || isCreator;
+	}
+
 	function getObjectValues(obj){
 		var values = [];
 		for (o in obj){
@@ -95,8 +102,8 @@
 
 	function getGroupByMaxPriority(_groups){
 		if (!IsArray(_groups) || _groups.length == 0) return null;
-		if (_groups.length == 1) return _groups[0];
-		
+		if (_groups.length === 1) return _groups[0];
+
 		var min = _groups[_groups.length - 1].priority;
 		var index = _groups.length - 1;
 		for (var i = _groups.length - 1; i >= 0; i--) {
@@ -105,7 +112,6 @@
 				index = i;
 			}
 		};
-		alert(index);
 		return groups[index];
 	}
 
@@ -143,12 +149,21 @@
 	}
 
 	function isDeniedActionAccess(queryObjects){
+		var eventId = queryObjects.HasProperty('event_id') ? Int(queryObjects.event_id) : null;
 		var action = queryObjects.HasProperty('action') ? queryObjects.action : null;
-		if (action == null) {
+		var eventsCount =  ArrayOptFirstElem(XQuery("sql: select COUNT(*) as count from events where events.id =" + eventId)).count;
+
+		if ((eventId != null && eventsCount == 0) || action == null) {
 			return true;
+		}
+			
+		if (action == actionsDenied.editEvent && isCreatorOrTutor(eventId)) {
+			return false;
 		}
 
 		var userGroup = getGroupByMaxPriority(getMatchedUserGroups(curUserID));
+		userGroup = userGroup == null ? getGroupByName('event_all') : userGroup;
+
 		var actions = userGroup.actionsDenied;
 		for (var i = actions.length - 1; i >= 0; i--) {
 			if (actions[i] == action) {
@@ -287,6 +302,16 @@
 			filesArray.push(webinarDownloadInfo);
 		}	
 
+		//alert(tools.object_to_text(getMatchedUserGroups(curUserID), 'json'));
+
+		
+
+		var _componentsDenied = [];
+		if (!isCreatorOrTutor(curEventID)) {
+			var userGroup = getGroupByMaxPriority(getMatchedUserGroups(curUserID));
+			userGroup = userGroup == null ? getGroupByName('event_all') : userGroup;
+			_componentsDenied = userGroup.componentsDenied;
+		}
 
 		return stringifyWT({
 			id: curEventID, 
@@ -301,7 +326,8 @@
 			lectors: lectorsArray,
 			files: filesArray,
 			webinarInfo: webinarInfo,
-			reportHref: reportHref
+			reportHref: reportHref,
+			componentsDenied: _componentsDenied
 		});
 	}
 
@@ -313,7 +339,7 @@
 		var selectedMonth = Int(queryObjects.month);
 		var region = queryObjects.HasProperty('region') ? queryObjects.region : curUser.custom_elems.ObtainChildByKey('office_code').value;
 		if (queryObjects.HasProperty('business_type')) {
-			var personBusinessType = queryObjects.business_type;
+			var personBusinessType = queryObjects.business_type
 		} else {
 			var personBusinessType = curPersonCard.TopElem.custom_elems.ObtainChildByKey('id_business_list').value == 'CL' ? 
 		'CITILINK' : curPersonCard.TopElem.custom_elems.ObtainChildByKey('id_business_list').value == 'MERLION' ? 'MERLION' : 'CITILINK';
@@ -339,7 +365,6 @@
 				(CONVERT(DATETIME, CONVERT(VARCHAR(15), ec.start_date, 10)) <= '"+lastDate+"' and
 				ec.start_date >= '"+firstDate+"') and
 				ec.status_id <> 'cancel'
-
 			UNION 
 			select events.id as id, 
 					REPLACE(events.name, '\"', '''') as name,
@@ -417,13 +442,14 @@
 
 	function getData(queryObjects){
 		Session['eventId'] = undefined;
-		
+
 		var currentDate = Date();
 		var currentYear = Year(currentDate);
 		var currentMonth = Month(currentDate);
 		var curPersonCard = OpenDoc(UrlFromDocID(curUserID));
 		var personBusinessType = curPersonCard.TopElem.custom_elems.ObtainChildByKey('id_business_list').value == 'CL' ? 
 		'CITILINK' : curPersonCard.TopElem.custom_elems.ObtainChildByKey('id_business_list').value == 'MERLION' ? 'MERLION' : 'CITILINK';
+
 		var userGroup = getGroupByMaxPriority(getMatchedUserGroups(curUserID));
 		userGroup = userGroup == null ? getGroupByName('event_all') : userGroup;
 
