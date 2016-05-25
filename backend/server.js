@@ -240,8 +240,8 @@
 		if (ArrayCount(curEventCard.TopElem.tutors) > 0 ) {
 			for (tutor in curEventCard.TopElem.tutors) {
 				tutorCard = OpenDoc(UrlFromDocID(Int(tutor.collaborator_id)))
-				tutorPhoneNumber = tutorCard.TopElem.phone != '' ? tutorCard.TopElem.phone : 'отсутсвует';
-				tutorMail = tutorCard.TopElem.email != '' ? tutorCard.TopElem.email : "отсутсвует";
+				tutorPhoneNumber = tutorCard.TopElem.phone != '' ? tutorCard.TopElem.phone : 'отсутствует';
+				tutorMail = tutorCard.TopElem.email != '' ? tutorCard.TopElem.email : "отсутствует";
 				_img = tutor.collaborator_id.ForeignElem.pict_url.HasValue == true ? tutor.collaborator_id.ForeignElem.pict_url : '/download_file.html?file_id=6255254688392629294';
 				tutorsArray.push({
 					id : Int(tutor.collaborator_id),
@@ -260,8 +260,8 @@
 				lectorCard = OpenDoc(UrlFromDocID(Int(lector.lector_id)))
 				if (lectorCard.TopElem.type == 'collaborator') {
 					lectorData = OpenDoc(UrlFromDocID(Int(lectorCard.TopElem.person_id)));
-					lectorPhoneNumber = lectorData.TopElem.phone != '' ? lectorData.TopElem.phone : "отсутсвует";
-					lectorMail = lectorData.TopElem.email != '' ? lectorData.TopElem.email : "отсутсвует";
+					lectorPhoneNumber = lectorData.TopElem.phone != '' ? lectorData.TopElem.phone : "отсутствует";
+					lectorMail = lectorData.TopElem.email != '' ? lectorData.TopElem.email : "отсутствует";
 					_img = lectorCard.TopElem.person_id.ForeignElem.pict_url.HasValue == true ? lectorCard.TopElem.person_id.ForeignElem.pict_url : '/download_file.html?file_id=6255254688392629294';
 
 					lectorsArray.push({
@@ -273,8 +273,8 @@
 						imgHref : _img + ''
 					});
 				} else {
-					lectorPhoneNumber = lectorCard.TopElem.phone != '' ? lectorData.TopElem.phone : "отсутсвует";
-					lectorMail = lectorCard.TopElem.email != '' ? lectorData.TopElem.email : "отсутсвует";
+					lectorPhoneNumber = lectorCard.TopElem.phone != '' ? lectorData.TopElem.phone : "отсутствует";
+					lectorMail = lectorCard.TopElem.email != '' ? lectorData.TopElem.email : "отсутствует";
 					lectorsArray.push({
 						id : Int(lector.lector_id),
 						fullname : lectorCard.TopElem.lastname + lectorCard.TopElem.firstname + lectorCard.TopElem.middlename + '',
