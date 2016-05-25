@@ -151,9 +151,9 @@
 	function isDeniedActionAccess(queryObjects){
 		var eventId = queryObjects.HasProperty('event_id') ? Int(queryObjects.event_id) : null;
 		var action = queryObjects.HasProperty('action') ? queryObjects.action : null;
-		var eventsCount =  ArrayOptFirstElem(XQuery("sql: select COUNT(*) as count from events where events.id =" + eventId)).count;
+		var eventsCount =  ArrayOptFirstElem(XQuery("sql: select COUNT(*) as count from events where events.id =" + eventId));
 
-		if ((eventId != null && eventsCount == 0) || action == null) {
+		if (eventId == null || (eventId != null && eventsCount.count == 0) || action == null) {
 			return true;
 		}
 			
