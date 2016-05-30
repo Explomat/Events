@@ -1,4 +1,5 @@
 <%
+	Server.Execute("include/user_init.html");
 
 	function isCreatorOrTutor (eventId) {
 		var isTutor = ArrayCount(XQuery("for $elem in event_collaborators where $elem/event_id = "+eventId+" and $elem/collaborator_id = "+curUserID+" return $elem ")) == 0 ? false : true;
