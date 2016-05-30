@@ -153,7 +153,7 @@
 		var action = queryObjects.HasProperty('action') ? queryObjects.action : null;
 		var eventsCount =  ArrayOptFirstElem(XQuery("sql: select COUNT(*) as count from events where events.id =" + eventId));
 
-		if (eventId == null || (eventId != null && eventsCount.count == 0) || action == null) {
+		if ((eventId == null && action == actionsDenied.editEvent) || (eventId != null && eventsCount.count == 0) || action == null) {
 			return true;
 		}
 			
