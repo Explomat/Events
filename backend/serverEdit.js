@@ -14,13 +14,13 @@ LIBRARY_UPLOAD_SECTION_ID = 6273792921854941289; // Раздел библиот�
 LIBRARY_MATERILA_TYPE_ID = 5956480485185946715; // Вид материала библиотеки - "Тренинговый материал"
 LIBRARY_DEFAULT_ORIENTATION = 'vertical'; // Ориентация материала библиотеки - "Вертикальная"
 LIBRARY_MATERIAL_FORMAT_ID = 5974338485996577346; // Формат материала библиотеки - "Документ"
+WEBINAR_SYSTEM_ID = 6113876915336734058; // Система вебинаров по умолчанию
 
 DEFAULT_EDUCATION_ORGS = [
 	{ id: '5919417932074195731', name : 'Учебный центр MERLION'}, 
 	{ id: '5929396429688827825', name : 'ОоИР'}
 ];
 TEST_RESULT_THRESHOLDS = [ 0, 50, 80, 100 ];
-
 /* 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1222,7 +1222,7 @@ function getEventBaseData (queryObjects) {
 				basicData.selectedEducationMethod = {
 					id : Int(ev.education_method_id),
 					data : {
-						name : OpenDoc(UrlFromDocID(ev.education_method_id)).TopElem.name + ''
+						name : StrReplace(OpenDoc(UrlFromDocID(ev.education_method_id)).TopElem.name + '', '"', '\'')
 					}
 				}	
 			} else {
@@ -1723,35 +1723,37 @@ function createEvent (queryObjects) {
 		eventDoc.TopElem.education_org_id = Int(data.base.educationOrgId);
 		eventDoc.TopElem.start_date = Date(data.placeAndDateTime.startDateTime);
 		eventDoc.TopElem.finish_date = Date(data.placeAndDateTime.finishDateTime);
+		eventDoc.TopElem.webinar_system_id = Int(WEBINAR_SYSTEM_ID);
 		eventDoc.TopElem.place_id = Int(data.placeAndDateTime.placeId);
 		var newTutor = eventDoc.TopElem.tutors.ObtainChildByKey( Int(data.base.tutorId) );
 		newTutor.main = true;
 		tools.common_filling( 'collaborator', newTutor, Int(data.base.tutorId) );
 
-		
 		if ( data.lectors.innerListLectorId != null ) {
-			
 			eventDoc.TopElem.lectors.ObtainChildByKey( Int(data.lectors.innerListLectorId) );
 		} else if ( data.lectors.innerNewLectorId != null ) {
-			
-			eventDoc.TopElem.lectors.ObtainChildByKey( Int(data.lectors.innerNewLectorId) );
+			doc = tools.new_doc_by_name('lector')
+			doc.TopElem.type = 'collaborator';
+			doc.TopElem.person_id = Int(data.lectors.innerNewLectorId);
+			doc.BindToDb();
+			doc.Save()
+			eventDoc.TopElem.lectors.ObtainChildByKey( Int(doc.DocID) );
 		} else if ( data.lectors.outerListLectorId != null ) {
-			
 			eventDoc.TopElem.lectors.ObtainChildByKey( Int(data.lectors.outerListLectorId) );
-		} else if( data.lectors.lector.outerListLectorId != null ) {
-			
+		} else {
 			doc = tools.new_doc_by_name('lector')
 			doc.TopElem.type = 'invitee';
-			doc.TopElem.lastname = data.lectors.lector.firstName
-			doc.TopElem.middlename = data.lectors.lector.lastName
-			doc.TopElem.firstname = data.lectors.lector.middleName
-			doc.TopElem.email = data.lectors.lector.email
+			doc.TopElem.lastname = data.lectors.lector.lastName;
+			doc.TopElem.middlename = data.lectors.lector.middleName;
+			doc.TopElem.firstname = data.lectors.lector.firstName;
+			doc.TopElem.email = data.lectors.lector.email;
 			doc.TopElem.comment = data.lectors.lector.company;
 			doc.BindToDb(DefaultDb);
 			doc.Save();
+			eventDoc.TopElem.lectors.ObtainChildByKey( Int(doc.DocID) );
 		}
-		alert(6);
 		eventDoc.BindToDb();
+
 		eventDoc.Save();
 	} catch (e) {
 		return tools.object_to_text({ error: e +''}, 'json');
@@ -1761,7 +1763,6 @@ function createEvent (queryObjects) {
 		error: null
 	}, 'json');
 }
-
 function changeStatus(queryObjects) {
 	var data = tools.read_object(queryObjects.Body);
 	var eventStatus = data.HasProperty('status') ? data.status : '';
