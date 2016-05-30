@@ -3,7 +3,7 @@ import DropDown from '../modules/dropdown';
 
 class RegionsFilter extends React.Component {
 
-	displayName: 'RegionsFilter'
+	static displayName = 'RegionsFilter'
 
 	handleChangeRegion(e, payload, text, index) {
 		if (this.props.onChange) {

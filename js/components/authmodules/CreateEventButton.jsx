@@ -3,7 +3,7 @@ import cx from 'classnames';
 
 class CreateEventButton extends React.Component {
 
-	displayName: 'CreateEventButton'
+	static displayName = 'CreateEventButton'
 
 	static propTypes = {
 		href: React.PropTypes.string,

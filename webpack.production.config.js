@@ -71,14 +71,7 @@ module.exports = {
         }),
         new ExtractTextPlugin('style/style.min.css', { allChunks: true }),
         new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ru/),
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                keep_fnames: true
-            },
-            mangle: {
-                keep_fnames: true
-            }
-        })
+        new webpack.optimize.UglifyJsPlugin({ mangle: false })
     ]
 }
 
