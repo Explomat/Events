@@ -1716,6 +1716,8 @@ function createEvent (queryObjects) {
 		var eventDoc = OpenNewDoc("x-local://wtv/wtv_event.xmd");
 		eventDoc.TopElem.name = data.base.name;
 		eventDoc.TopElem.code = data.base.code;
+		eventDoc.BindToDb();
+		eventDoc.Save()
 		eventDoc.TopElem.type_id = data.base.type;
 		if ( data.base.type != 'one_time' ) {
 			eventDoc.TopElem.education_method_id = Int(data.base.educationMethodId);
@@ -1752,8 +1754,7 @@ function createEvent (queryObjects) {
 			doc.Save();
 			eventDoc.TopElem.lectors.ObtainChildByKey( Int(doc.DocID) );
 		}
-		eventDoc.BindToDb();
-
+		
 		eventDoc.Save();
 	} catch (e) {
 		return tools.object_to_text({ error: e +''}, 'json');

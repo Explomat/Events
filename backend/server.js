@@ -274,8 +274,8 @@
 						imgHref : _img + ''
 					});
 				} else {
-					lectorPhoneNumber = lectorCard.TopElem.phone != '' ? lectorData.TopElem.phone : "отсутствует";
-					lectorMail = lectorCard.TopElem.email != '' ? lectorData.TopElem.email : "отсутствует";
+					lectorPhoneNumber = lectorCard.TopElem.phone != '' ? lectorCard.TopElem.phone : "отсутствует";
+					lectorMail = lectorCard.TopElem.email != '' ? lectorCard.TopElem.email : "отсутствует";
 					lectorsArray.push({
 						id : Int(lector.lector_id),
 						fullname : lectorCard.TopElem.lastname + lectorCard.TopElem.firstname + lectorCard.TopElem.middlename + '',
