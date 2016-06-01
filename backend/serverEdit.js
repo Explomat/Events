@@ -406,7 +406,7 @@ function forLiveSearchGetEducationMethods (queryObjects) {
 			descr = OpenDoc(UrlFromDocID(edu.education_org_id)).TopElem.name;
 			eduMethods.push({ 
 				payload: Int(edu.id), 
-				value: edu.name + '', 
+				value: edu.name + '',
 				description: descr + ''
 			});
 		}
@@ -815,7 +815,8 @@ function getEducationMethod (queryObjects) {
 
 	var basiceducationMethodsArray = XQuery("sql:select 
 		top " + limitRows + " ed.id, 
-		REPLACE(ed.name, '\"', '') as name 
+		REPLACE(ed.name, '\"', '') as name,
+		ed.code 
 		from (
 			select ROW_NUMBER() OVER(ORDER BY education_methods.name) rowNum,* 
 			from 
@@ -824,6 +825,7 @@ function getEducationMethod (queryObjects) {
 				education_methods.name LIKE '%"+filterText+"%'
 		) ed
 		where 
+			ed.code <> 'ARCHIVE' and
 			ed.rowNum > " + startPage * limitRows);
 
 	var educationMethodsArray = [];
@@ -831,7 +833,8 @@ function getEducationMethod (queryObjects) {
 		educationMethodsArray.push({ 
 			id: Int(ed.id), 
 			data: {
-				name : ed.name + ''
+				name : ed.name + '',
+				code : ed.code + ''
 			}
 		});
 	}
@@ -839,7 +842,8 @@ function getEducationMethod (queryObjects) {
 		pagesCount: queryPageCount + 1,
 		items: educationMethodsArray,
 		headerCols: [
-			{'name' : 'Название программы', 'type':'string' }
+			{'name' : 'Название программы', 'type':'string' },
+			{'name' : 'Код программы', 'type':'string'}
 		]
 	},'json');
 }
@@ -880,7 +884,7 @@ function getEventLibraryMaterials (queryObjects) {
 			}
 			resultArray.push({
 				id : materialID,
-				name : name + '',
+				name : StrReplace(name, '\"', '\''),
 				year : year + '',
 				author : author + ''
 			})
@@ -999,9 +1003,11 @@ function getEventTests (queryObjects) {
 
 	var testsArray = [];
 	for (at in basicActiveTestsArray) {
+		region = OpenDoc(UrlFromDocID(at.personId)).TopElem.custom_elems.ObtainChildByKey('office_code').value;
 		testsArray.push({ 
 			id : Int(at.id), 
 			fullname : at.personFIO + '',
+			region : region + '',
 			assessmentName : at.assessment_name + '',
 			score : at.score + '',
 			maxscore : at.maxscore + ''

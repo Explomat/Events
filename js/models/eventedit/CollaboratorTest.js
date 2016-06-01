@@ -5,6 +5,7 @@ module.exports = function(args){
 
 	this.id = args.id || null;
 	this.fullname = args.fullname || '';
+	this.region = args.region || '';
 	this.assessmentName = args.assessmentName || '';
 	this.score = Number(args.score) || 0;
 	this.maxscore = (Number(args.maxscore) === 0 || !args.maxscore) ? 1 : Number(args.maxscore) ;

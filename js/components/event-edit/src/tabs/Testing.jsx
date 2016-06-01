@@ -191,7 +191,7 @@ class TestingItem extends React.Component {
 	}
 
 	render(){
-		const {fullname, assessmentName, score, percent, thresholds, thresholdColors} = this.props;
+		const {fullname, assessmentName, region, score, percent, thresholds, thresholdColors} = this.props;
 		const cellColorStyle = thresholdColors[this._getScoreThreshold(thresholds, percent)];
 		const scoreClasses = cx({
 			'testing-list__score': true,
@@ -209,6 +209,7 @@ class TestingItem extends React.Component {
 			<div className="table-list__body-row">
 				<div className="table-list__body-cell">{fullname}</div>
 				<div className="table-list__body-cell">{assessmentName}</div>
+				<div className="table-list__body-cell">{region}</div>
 				<div className="table-list__body-cell" style={{'backgroundColor': cellColorStyle}}>
 					<strong className={scoreClasses}>{score}</strong>
 					<span className={percentClasses}>({percent}%)</span>

@@ -299,6 +299,35 @@
 				isDownload : fileCard.TopElem.allow_download + ''
 			});
 		}
+
+		var meterialArrayFieldValue = curEventCard.TopElem.custom_elems.ObtainChildByKey('allMaterials').value;
+		if (meterialArrayFieldValue != '') {
+			var libraryMaterials = String(meterialArrayFieldValue).split(';');
+			for (material in libraryMaterials) {
+				try {
+					materialID = Int(material);
+					curMaterial = OpenDoc(UrlFromDocID(materialID)).TopElem;
+				} catch (e) {
+					return "Не корретктный ID материала бибилотеки (доп. поле - allMaterials)";
+				}
+				name = curMaterial.name == '' ? "Безимянный" : curMaterial.name;
+				try {
+					author = curMaterial.author == '' ? OpenDoc(UrlFromDocID(curMaterial.doc_info.creation.user_id)).TopElem.fullname : curMaterial.author;	
+				} catch (e) {
+					return "Не кореектный ID создателя материала библиотеки"
+				}
+				filesArray.push({
+					id : materialID,
+					href : '/view_doc.html?mode=library_material&doc_id=&object_id='+materialID,
+					name : StrReplace(name, '\"', '\''),
+					type : 'unknown',
+					isDownload : true + ''
+				})
+			} 
+		}
+
+
+
 		if (eventType == 'webinar' && curEventCard.TopElem.show_record && webinarDownloadInfo != null) {
 			filesArray.push(webinarDownloadInfo);
 		}	
