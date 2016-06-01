@@ -299,7 +299,7 @@
 				isDownload : fileCard.TopElem.allow_download + ''
 			});
 		}
-		if (eventType == 'webinar' && curEventCard.TopElem.show_record) {
+		if (eventType == 'webinar' && curEventCard.TopElem.show_record && webinarDownloadInfo != null) {
 			filesArray.push(webinarDownloadInfo);
 		}	
 

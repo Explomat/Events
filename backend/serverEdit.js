@@ -1783,7 +1783,7 @@ function changeStatus(queryObjects) {
 }
 
 function isEventEditing(queryObjects){
-	var eventId = queryObjects.event_id;
+	/*var eventId = queryObjects.event_id;
 	var sessions = queryObjects.Request.AllSessions;
 	for (var i = sessions.length - 1; i >= 0; i--) {
 		session = sessions[i];
@@ -1794,11 +1794,11 @@ function isEventEditing(queryObjects){
 				error: 'В данный момент это мероприятие редактирует : ' + userName
 			}, 'json');
 		}
-	};
+	};*/
 	return tools.object_to_text({
-				isEditing: false,
-				error: null
-			}, 'json');
+		isEditing: false,
+		error: null
+	}, 'json');
 }
 
 
