@@ -42,7 +42,8 @@ servers
 			'getDataForNewEvent',
 			'createEvent',
 			'changeStatus',
-			'isEventEditing'
+			'isEventEditing',
+			'exportTestResultsToExcel'
 		]);
 
 module.exports = {

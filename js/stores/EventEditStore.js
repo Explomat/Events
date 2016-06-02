@@ -110,6 +110,12 @@ const base = {
 	},
 	changeMaxPersonNum(num){
 		_eventEdit.base.maxPersonNum = num;
+	},
+	changeIsPublic(isPublic){
+		_eventEdit.base.isPublic = isPublic;
+	},
+	changeIsTestRepeat(isTestRepeat){
+		_eventEdit.base.isTestRepeat = isTestRepeat;
 	}
 }
 
@@ -630,6 +636,14 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			break;
 		case EventEditConstants.EVENTEDIT_BASE_CHANGE_MAX_PERSON_NUM:
 			base.changeMaxPersonNum(action.num);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_BASE_CHANGE_IS_PUBLIC:
+			base.changeIsPublic(action.isPublic);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_BASE_CHANGE_IS_TEST_REPEAT:
+			base.changeIsTestRepeat(action.isTestRepeat);
 			isEmit = true;
 			break;
 

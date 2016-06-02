@@ -1206,7 +1206,8 @@ function getEventBaseData (queryObjects) {
 			events.start_date,
 			events.finish_date,
 			events.education_org_id,
-			events.education_method_id
+			events.education_method_id,
+			events.is_public
 			from 
 				events
 			where
@@ -1218,6 +1219,8 @@ function getEventBaseData (queryObjects) {
 			basicData = {};
 			basicData.maxPersonNum = eventDocTE.max_person_num + '';
 			basicData.name = ev.name + '';
+			basicData.isPublic = ev.is_public + '';
+			basicData.isTestRepeat = eventDocTE.custom_elems.ObtainChildByKey('test_repeat').value == 'true' ? true : false;
 			basicData.selectedType = ev.type_id + '';
 			basicData.selectedCode = ev.code + '';
 			basicData.startDateTime = StrMimeDate(ev.start_date) + '';
@@ -1373,7 +1376,9 @@ function getEventEditData (queryObjects) {
 			}, 'json');
 		}
 		Session['eventId'] = eventID;
+		Session['userIdEditingEvent'] = curUserID;
 		Session['eventName'] = eventDocTE.name;
+
 		return stringifyWT({
 			id: eventID,
 			status : eventDocTE.status_id + '',
@@ -1440,6 +1445,22 @@ function saveData(queryObjects) {
 				}
 			} else {
 				return tools.object_to_text({ error: "Код не может быть пустым"}, 'json');
+			}
+
+			/*Повторное назначение*/
+			if ( baseData.HasProperty('isTestRepeat') ) {
+					curEventCard.TopElem.custom_elems.ObtainChildByKey('test_repeat').value = baseData.isTestRepeat;
+			} else {
+				return tools.object_to_text({ error: "Не параметра isTestRepeat"}, 'json');
+			}
+
+			/*Публичное меропирятие*/
+			if ( baseData.HasProperty('isPublic') ) {
+				if (baseData.isPublic != curEventCard.TopElem.is_public ) {
+					curEventCard.TopElem.is_public = baseData.isPublic;
+				}
+			} else {
+				return tools.object_to_text({ error: "Не параметра isPublic"}, 'json');
 			}
 
 			/*Расположение мероприятия*/
@@ -1788,8 +1809,8 @@ function changeStatus(queryObjects) {
 	}, 'json');
 }
 
-function isEventEditing(queryObjects){
-	/*var eventId = queryObjects.event_id;
+function isEventEditing( queryObjects){
+	var eventId = queryObjects.event_id;
 	var sessions = queryObjects.Request.AllSessions;
 	for (var i = sessions.length - 1; i >= 0; i--) {
 		session = sessions[i];
@@ -1800,12 +1821,123 @@ function isEventEditing(queryObjects){
 				error: 'В данный момент это мероприятие редактирует : ' + userName
 			}, 'json');
 		}
-	};*/
+	};
 	return tools.object_to_text({
 		isEditing: false,
 		error: null
 	}, 'json');
 }
 
+/* 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------- Экспорт в Excel ---------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+*/
+
+function exportTestResultsToExcel ( queryObjects ) {
+	var eventID = Session.eventId;
+	var testDataArray = XQuery("sql: select 
+		active_test_learnings.id as id,
+		active_test_learnings.person_id as personId,
+		active_test_learnings.person_fullname as personFIO, 
+		REPLACE(active_test_learnings.assessment_name, '\"', '''' ) as assessment_name,
+		active_test_learnings.score as score,
+		0 as maxscore
+	from
+		active_test_learnings
+	where
+		active_test_learnings.event_id = " + eventID + "
+	UNION
+	select 
+		test_learnings.id as id,
+		test_learnings.person_id as personId,
+		test_learnings.person_fullname as personFIO,
+		REPLACE(test_learnings.assessment_name, '\"', '''' ) as assessment_name,
+		test_learnings.score as score,
+		test_learnings.max_score as maxscore
+	from
+		test_learnings
+	where
+		test_learnings.event_id =" + eventID + "
+	order by personFIO asc");
+
+
+	var testsArray = [];
+	for (at in testDataArray) {
+		region = OpenDoc(UrlFromDocID(at.personId)).TopElem.custom_elems.ObtainChildByKey('office_code').value;
+		testsArray.push({ 
+			fullname : at.personFIO + '',
+			assessmentName : at.assessment_name + '',
+			region : region + '',
+			score : at.score + '',
+			maxscore : at.maxscore + ''
+		});
+	}
+
+
+	var columnTitles = ['ФИО', 'Название теста', 'Регион', 'Набранный балл', 'Максимальный балл'];
+
+/*	function splitObjectValueByIndex(obj, index){
+		var count = 0;
+		var outObj = {};
+
+		for (o in obj){
+			if (index == count) {
+				count++;
+				continue;
+			}
+			outObj[o] = obj[o];
+			count++;
+		}
+		return outObj;
+	}*/
+
+	function addTitle ( array, titles ) {
+		var title = {};
+		for (var i = 0; i < titles.length; i++){
+			title[titles[i]] = titles[i];
+		}
+		alert(tools.object_to_text(ArrayUnion([title], array), 'json') )
+		return ArrayUnion([title], array);
+	}
+
+	function createExcelFile ( array , columnTitles ) {
+
+		var oExcelDoc = new ActiveXObject("Websoft.Office.Excel.Document");
+		oExcelDoc.CreateWorkBook();
+		var oWorksheet = oExcelDoc.GetWorksheet(0);
+
+		array = addTitle(array, columnTitles);
+		var rowsCount = array.length;
+		var arrColumnTitles = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
+		for (var i = 0; i < rowsCount ; i++ ) {
+			rowValue = array[i];
+			colIndex = 0;
+
+			for (el in rowValue){
+				colValue = rowValue[el];
+				columnTitle = arrColumnTitles[colIndex];
+				oWorksheet.Cells.GetCell(columnTitle + (i + 1) ).Value = colValue;
+				oWorksheet.Cells.SetColumnWidth(colIndex, 32);
+				colIndex++;
+			}
+		}
+
+		oExcelDoc.SaveAs("C:\\"+curUserID+".xlsx");
+	}
+
+
+
+	createExcelFile( testsArray, columnTitles );
+	var fileName = FileName("C:\\"+curUserID+".xlsx");
+	var fileData = LoadFileData("C:\\"+curUserID+".xlsx");
+	Request.RespContentType = 'application/ms-excel';
+	Request.AddRespHeader("Content-Disposition","attachment; filename=" + fileName);
+	DeleteFile("C:\\"+curUserID+".xlsx");
+	return fileData;
+}
 
 %>

@@ -94,6 +94,13 @@
 		return outStr;
 	}
 
+	function _isEventExist(eventId){
+		var curEventID = null;
+		try { curEventID = Int(eventId); }
+			catch(e) { return false; }
+		return ArraySelectAll(XQuery("sql: select events.id from events where events.id=" +curEventID)).length > 0;
+	}
+
 	//Работа с группами ----------------------------------------------------------------------------------------------
 	function getGroupByName(groupName){
 		for (var i = groups.length - 1; i >= 0; i--) {
@@ -150,7 +157,12 @@
 	}
 
 	function isDeniedActionAccess(queryObjects){
-		var eventId = queryObjects.HasProperty('event_id') ? Int(queryObjects.event_id) : null;
+		var eventId = queryObjects.HasProperty('event_id') ? queryObjects.event_id : null;
+		if (!_isEventExist(eventId)) {
+			return true;
+		}
+
+		eventId = Int(eventId);
 		var action = queryObjects.HasProperty('action') ? queryObjects.action : null;
 		var eventsCount =  ArrayOptFirstElem(XQuery("sql: select COUNT(*) as count from events where events.id =" + eventId));
 
@@ -175,12 +187,6 @@
 	}
 
 	function getEventInfo (queryObjects) {
-		function _isEventExist(eventId){
-			var curEventID = null;
-			try { curEventID = Int(eventId); }
-				catch(e) { return false; }
-			return ArraySelectAll(XQuery("sql: select events.id from events where events.id=" +curEventID)).length > 0;
-		}
 		
 		if (!_isEventExist(queryObjects.event_id)) {
 			return tools.object_to_text({
@@ -471,7 +477,9 @@
 	}
 
 	function getData(queryObjects){
+
 		Session['eventId'] = undefined;
+		Session['eventName'] = undefined;
 
 		var currentDate = Date();
 		var currentYear = Year(currentDate);

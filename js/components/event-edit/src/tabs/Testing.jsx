@@ -235,6 +235,11 @@ class Testing extends React.Component {
 			'buttons__sort': true,
 			'buttons__sort--display': this.props.testingList.length > 0
 		});
+		const exportToExcelClasses = cx({
+			'default-button': true,
+			'testing__export-to-excel': true,
+			'testing__export-to-excel--display': this.props.testingList.length > 0
+		});
 		return (
 			<div className="event-edit-testing">
 				<Tests ref="tests" {...pick(this.props, ['isPostTestOnlyForAssisst', 'allTests', 'checkedAll'])}/>
@@ -248,6 +253,10 @@ class Testing extends React.Component {
 								<DropDownIconItem onClick={::this.handleSortTestingList} payload='{"key": "score", "isAsc": "false"}' text='Сортировать по результату(по убыванию)'/>
 								<DropDownIconItem onClick={::this.handleSortTestingList} payload='{"key": "score", "isAsc": "true"}' text='Сортировать по результату(по возрастанию)'/>
 						</DropDownIcon>
+						<a href={config.url.createPath({action_name: 'exportTestResultsToExcel'})} className={exportToExcelClasses}>
+							<i className="testing__export-to-excel-icon icon fa fa-file-excel-o"></i>
+							<span>Экспорт в excel</span>
+						</a>
 					</div>
 					<strong className="testing__description">Результаты тестирования</strong>
 					<div className="table-list testing-list">

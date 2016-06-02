@@ -48,6 +48,9 @@
         text-align: center;
         cursor: pointer;
         outline: 0;
+        height: 29px;
+        line-height: 29px;
+        vertical-align: middle;
 
         &:after {
             content: '';

@@ -1,6 +1,7 @@
 import React from 'react';
 import EventEditActions from 'actions/EventEditActions';
 import {TextView} from 'components/modules/text-label';
+import CheckBox from 'components/modules/new-checkbox';
 import DropDown from 'components/modules/dropdown';
 import InputCalendar from 'components/modules/input-calendar';
 import SelectOneItem from 'components/modules/select-one-item';
@@ -55,74 +56,97 @@ class Base extends React.Component {
 		EventEditActions.base.changeMaxPersonNum(num);
 	}
 
+	handleChangeIsPublic(isPublic){
+		EventEditActions.base.changeIsPublic(isPublic);
+	}
+
+	handleChangeIsTestRepeat(isTestRepeat){
+		EventEditActions.base.changeIsTestRepeat(isTestRepeat);
+	}
+
 	render(){
 		const educationMethodClasses = cx({
 			'event-edit-base__edication-method': true,
 			'event-edit-base__edication-method--display': this.props.selectedType !== EventTypes.keys.one_time
 		});
+		const {name, types, selectedType, codes, selectedCode, startDateTime, finishDateTime, educationOrgs, selectedEducationOrgId, selectedEducationMethod, places, maxPersonNum, isPublic, isTestRepeat} = this.props;
 		return (
 			<div className="event-edit-base">
-				<TextView
-					onBlur={this.handleChangeName} 
-					value={this.props.name} 
-					placeholder="Название *" 
-					className="event-edit-base__name"/>
-				<DropDown 
-					description="Тип *"
-					onChange={this.handleChangeType} 
-					items={this.props.types} 
-					selectedPayload={this.props.selectedType}
-					isReset={true}/>
-				<DropDown 
-					description="Код *"
-					onChange={this.handleChangeCode} 
-					items={this.props.codes} 
-					selectedPayload={this.props.selectedCode}
-					isReset={true}/>
-				<div className="event-edit-base__date-time">
-					<div className="date">
-						<div className="date__start">
-							<InputCalendar
-								placeholder="Дата, время начала *"
-								className="date__calendar" 
-								date={this.props.startDateTime} 
-								onSave={this.handleChangeStartDateTime}/>
-						</div>
-						<div className="date__finish">
-							<InputCalendar
-								placeholder="Дата, время завершения *"
-								className="date__calendar" 
-								date={this.props.finishDateTime} 
-								onSave={this.handleChangeFinishDateTime}/>
+				<div className="event-edit-base__left-block">
+					<TextView
+						onBlur={this.handleChangeName} 
+						value={name} 
+						placeholder="Название *" 
+						className="event-edit-base__name"/>
+					<DropDown 
+						description="Тип *"
+						onChange={this.handleChangeType} 
+						items={types} 
+						selectedPayload={selectedType}
+						isReset={true}/>
+					<DropDown 
+						description="Код *"
+						onChange={this.handleChangeCode} 
+						items={codes} 
+						selectedPayload={selectedCode}
+						isReset={true}/>
+					<div className="event-edit-base__date-time">
+						<div className="date">
+							<div className="date__start">
+								<InputCalendar
+									placeholder="Дата, время начала *"
+									className="date__calendar" 
+									date={startDateTime} 
+									onSave={this.handleChangeStartDateTime}/>
+							</div>
+							<div className="date__finish">
+								<InputCalendar
+									placeholder="Дата, время завершения *"
+									className="date__calendar" 
+									date={finishDateTime} 
+									onSave={this.handleChangeFinishDateTime}/>
+							</div>
 						</div>
 					</div>
+					<DropDown
+						description="Обучающая организация *"
+						onChange={this.handleChangeEducationOrg} 
+						items={educationOrgs} 
+						selectedPayload={selectedEducationOrgId}
+						isReset={true}/>
+					<SelectOneItem
+						className={educationMethodClasses}
+						selectedItem={selectedEducationMethod} 
+						placeholder="Учебная программа *" 
+						modalTitle="Выберите учебную программу"
+						query={Config.url.createPath({action_name: 'getEducationMethod'})}
+						onSave={this.handleChangeEducationMethod}/>
+					<SelectTree 
+						nodes={places.nodes}
+						selectedNode={places.selectedNode} 
+						placeholder="Расположение *"
+						modalTitle="Выберите расположение"
+						onSave={this.handleChangePlace}
+						isExpand={true}/>
+					<TextView
+						onBlur={this.handleChangeMaxPersonNum} 
+						value={maxPersonNum} 
+						placeholder="Максимальное количество участников"
+						isValid={isNumberOrEmpty}
+						className="event-edit-base__max-person-num"/>
 				</div>
-				<DropDown
-					description="Обучающая организация *"
-					onChange={this.handleChangeEducationOrg} 
-					items={this.props.educationOrgs} 
-					selectedPayload={this.props.selectedEducationOrgId}
-					isReset={true}/>
-				<SelectOneItem
-					className={educationMethodClasses}
-					selectedItem={this.props.selectedEducationMethod} 
-					placeholder="Учебная программа *" 
-					modalTitle="Выберите учебную программу"
-					query={Config.url.createPath({action_name: 'getEducationMethod'})}
-					onSave={this.handleChangeEducationMethod}/>
-				<SelectTree 
-					nodes={this.props.places.nodes}
-					selectedNode={this.props.places.selectedNode} 
-					placeholder="Расположение *"
-					modalTitle="Выберите расположение"
-					onSave={this.handleChangePlace}
-					isExpand={true}/>
-				<TextView
-					onBlur={this.handleChangeMaxPersonNum} 
-					value={this.props.maxPersonNum} 
-					placeholder="Максимальное количество участников"
-					isValid={isNumberOrEmpty}
-					className="event-edit-base__max-person-num"/>
+				<div className="event-edit-base__right-block">
+					<CheckBox 
+						onChange={this.handleChangeIsPublic} 
+						label="Публичное мероприятие"
+						checked={isPublic}/>
+					<br />
+					<br />
+					<CheckBox 
+						onChange={this.handleChangeIsTestRepeat} 
+						label="Повторно назначать тесты при отрицательном результате"
+						checked={isTestRepeat}/>
+				</div>
 			</div>
 		);
 	}

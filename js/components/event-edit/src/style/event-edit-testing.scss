@@ -27,6 +27,24 @@
 			}
 		}
 
+		.testing__export-to-excel{
+			display: none;
+			color: #000;
+			text-decoration: none;
+
+			&:hover, &:active, &:visited {
+	            text-decoration: none;
+	        }
+
+			&.testing__export-to-excel--display {
+				display: inline-block;
+			}
+
+			.testing__export-to-excel-icon{
+				margin-right: 8px;
+			}
+		}
+
 		.testing__description{
 			width: 30%;
 			display: inline-block;

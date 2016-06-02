@@ -118,6 +118,20 @@ var EventEditActions = {
 				actionType: EventEditConstants.EVENTEDIT_BASE_CHANGE_MAX_PERSON_NUM,
 				num: num
 			});
+		},
+
+		changeIsPublic(isPublic){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_BASE_CHANGE_IS_PUBLIC,
+				isPublic: isPublic
+			});
+		},
+
+		changeIsTestRepeat(isTestRepeat){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_BASE_CHANGE_IS_TEST_REPEAT,
+				isTestRepeat: isTestRepeat
+			});
 		}
 	},
 

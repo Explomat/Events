@@ -41,6 +41,7 @@ export default function(args){
 		types: args.base.types || EventTypes.toArray(),
 		codes: args.base.codes || EventCodes.toArray(),
 		isPublic: args.base.isPublic || false,
+		isTestRepeat: args.base.isTestRepeat || false,
 		startDateTime: new Date(args.base.startDateTime),
 		finishDateTime: new Date(args.base.finishDateTime),
 		educationOrgs: (args.base.educationOrgs || []).map(item => {
