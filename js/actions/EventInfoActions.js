@@ -64,12 +64,11 @@ var EventInfoActions = {
 	startEvent: function(eventId){
 		EventInfoAPI.startEvent(eventId).then(function(err){
 			if (!err) {
-				console.log(1);
 				try {
 					AppDispatcher.handleAction({
 						actionType: EventInfoConstants.START_EVENT_EVENTINFO,
 						eventId: eventId,
-						text: 'Вы успешно стартовали мероприятие.'
+						text: 'Вы стартовали мероприятие.'
 					});
 				}catch(e) { console.log(e.stack); }
 				
@@ -94,7 +93,53 @@ var EventInfoActions = {
 				AppDispatcher.handleAction({
 					actionType: EventInfoConstants.FINISH_EVENT_EVENTINFO,
 					eventId: eventId,
-					text: 'Вы успешно завершили мероприятие.'
+					text: 'Вы завершили мероприятие.'
+				});
+			}
+			else {
+				AppDispatcher.handleAction({
+					actionType: EventInfoConstants.CHANGE_INFO_EVENTINFO,
+					text: err
+				});
+			}
+		}, function(err){
+			AppDispatcher.handleAction({
+				actionType: EventInfoConstants.CHANGE_INFO_EVENTINFO,
+				text: err
+			});
+		});
+	},
+
+	planEvent: function(eventId){
+		EventInfoAPI.planEvent(eventId).then(function(err){
+			if (!err) {
+				AppDispatcher.handleAction({
+					actionType: EventInfoConstants.PLAN_EVENT_EVENTINFO,
+					eventId: eventId,
+					text: 'Вы перевели мероприятие в статус "Планируется"'
+				});
+			}
+			else {
+				AppDispatcher.handleAction({
+					actionType: EventInfoConstants.CHANGE_INFO_EVENTINFO,
+					text: err
+				});
+			}
+		}, function(err){
+			AppDispatcher.handleAction({
+				actionType: EventInfoConstants.CHANGE_INFO_EVENTINFO,
+				text: err
+			});
+		});
+	},
+
+	cancelEvent: function(eventId){
+		EventInfoAPI.cancelEvent(eventId).then(function(err){
+			if (!err) {
+				AppDispatcher.handleAction({
+					actionType: EventInfoConstants.CANCEL_EVENT_EVENTINFO,
+					eventId: eventId,
+					text: 'Вы отменили мероприятие.'
 				});
 			}
 			else {

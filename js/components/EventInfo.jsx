@@ -172,6 +172,8 @@ class EventInfo extends React.Component {
 		this.handleRemoveCollaborator = this.handleRemoveCollaborator.bind(this);
 		this.handleStartEvent = this.handleStartEvent.bind(this);
 		this.handleFinishEvent = this.handleFinishEvent.bind(this);
+		this.handlePlanEvent = this.handlePlanEvent.bind(this);
+		this.handleCancelEvent = this.handleCancelEvent.bind(this);
 		this.handleClose = this.handleClose.bind(this);
 	}
 
@@ -210,6 +212,14 @@ class EventInfo extends React.Component {
 		EventInfoActions.finishEvent(this.state.event.id);
 	}
 
+	handlePlanEvent(){
+		EventInfoActions.planEvent(this.state.event.id);
+	}
+
+	handleCancelEvent(){
+		EventInfoActions.cancelEvent(this.state.event.id);
+	}
+
 	getButtons(){
 		var buttons = [];
 		var status = this.state.event.status;
@@ -222,6 +232,8 @@ class EventInfo extends React.Component {
 		var isUserInTutors = EventInfoStore.isUserInTutors(userId);
 		var isUserInLectors = EventInfoStore.isUserInLectors(userId);
 		var index = 0;
+
+		console.log((status === EventStatuses.keys.close || status === EventStatuses.keys.cancel) && (isUserInTutors || isUserInLectors))
 
 		if (isUserInEvent){
 			if (status === EventStatuses.keys.close){
@@ -238,6 +250,15 @@ class EventInfo extends React.Component {
 			}
 			else if (status === EventStatuses.keys.active && (isUserInTutors || isUserInLectors)) {
 				buttons.push(<button onClick={this.handleFinishEvent} key={index} className="event-btn event-info__btn event-info__buttons-finish">Завершить мероприятие</button>);
+				index++;
+			}
+			else if ((status === EventStatuses.keys.close || status === EventStatuses.keys.cancel) && (isUserInTutors || isUserInLectors)) {
+				buttons.push(<button onClick={this.handlePlanEvent} key={index} className="event-btn event-info__btn event-info__buttons-plan">Перевести к планированию</button>);
+				index++;
+			}
+			if (status !== EventStatuses.keys.cancel && (isUserInTutors || isUserInLectors)) {
+				console.log(EventStatuses);
+				buttons.push(<button onClick={this.handleCancelEvent} key={index} className="event-btn event-info__btn event-info__buttons-calcel">Отменить</button>);
 				index++;
 			}
 		}

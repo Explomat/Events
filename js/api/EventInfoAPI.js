@@ -38,5 +38,17 @@ module.exports = {
 		return Ajax.sendRequest(Config.url.createPath({action_name: 'finishEvent', event_id: eventId})).then(function(error){
 			return error;
 		});
+	},
+
+	planEvent: function(eventId) {
+		return Ajax.sendRequest(Config.url.createPath({action_name: 'planEvent', event_id: eventId})).then(function(error){
+			return error;
+		});
+	},
+
+	cancelEvent: function(eventId) {
+		return Ajax.sendRequest(Config.url.createPath({action_name: 'cancelEvent', event_id: eventId})).then(function(error){
+			return error;
+		});
 	}
 }

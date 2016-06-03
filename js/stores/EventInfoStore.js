@@ -36,6 +36,16 @@ function finishEvent(text){
 	_info = text;
 }
 
+function planEvent(text){
+	_eventInfo.status = EventStatuses.keys.plan;
+	_info = text;
+}
+
+function cancelEvent(text){
+	_eventInfo.status = EventStatuses.keys.cancel;
+	_info = text;
+}
+
 function changeInfo(text){
 	_info = text;
 }
@@ -123,6 +133,16 @@ EventInfoStore.dispatchToken = AppDispatcher.register(function(payload) {
 			finishEvent(action.text);
 			isEmit = true;
 			break;
+
+		case EventInfoConstants.PLAN_EVENT_EVENTINFO:
+			planEvent(action.text);
+			isEmit = true;
+			break;
+		case EventInfoConstants.CANCEL_EVENT_EVENTINFO:
+			cancelEvent(action.text);
+			isEmit = true;
+			break;
+
 		case EventInfoConstants.CHANGE_INFO_EVENTINFO:
 			changeInfo(action.text);
 			isEmit = true;

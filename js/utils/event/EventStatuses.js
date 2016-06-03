@@ -6,13 +6,15 @@ module.exports =  {
 	values: {
 		close: 'Завершено',
 		active: 'Проводится',
-		plan: 'Планируется'
+		plan: 'Планируется',
+		cancel: 'Отменено'
 	},
 
 	keys: keyMirror({
 		close: null,
 		active: null,
-		plan: null
+		plan: null,
+		cancel: null
 	}),
 
 	toArray: function() {
