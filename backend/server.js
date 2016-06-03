@@ -157,21 +157,21 @@
 	}
 
 	function isDeniedActionAccess(queryObjects){
-		var eventId = queryObjects.HasProperty('event_id') ? queryObjects.event_id : null;
-		if (!_isEventExist(eventId)) {
-			return true;
-		}
-
-		eventId = Int(eventId);
 		var action = queryObjects.HasProperty('action') ? queryObjects.action : null;
-		var eventsCount =  ArrayOptFirstElem(XQuery("sql: select COUNT(*) as count from events where events.id =" + eventId));
-
-		if ((eventId == null && action == actionsDenied.editEvent) || (eventId != null && eventsCount.count == 0) || action == null) {
+		if (action == null) {
 			return true;
 		}
-			
-		if (action == actionsDenied.editEvent && isCreatorOrTutor(eventId)) {
-			return false;
+
+		if (action == actionsDenied.editEvent){
+			var eventId = queryObjects.HasProperty('event_id') ? queryObjects.event_id : null;
+
+			if (!_isEventExist(eventId)){
+				return true;
+			}
+
+			if (isCreatorOrTutor(eventId)) {
+				return false;
+			}
 		}
 
 		var userGroup = getGroupByMaxPriority(getMatchedUserGroups(curUserID));
@@ -183,6 +183,7 @@
 				return true;
 			}
 		};
+
 		return false;
 	}
 

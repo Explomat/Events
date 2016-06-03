@@ -210,7 +210,7 @@ class TestingItem extends React.Component {
 				<div className="table-list__body-cell">{fullname}</div>
 				<div className="table-list__body-cell">{assessmentName}</div>
 				<div className="table-list__body-cell">{region}</div>
-				<div className="table-list__body-cell" style={{'backgroundColor': cellColorStyle}}>
+				<div className="table-list__body-cell table-list__body-cell--15" style={{'backgroundColor': cellColorStyle}}>
 					<strong className={scoreClasses}>{score}</strong>
 					<span className={percentClasses}>({percent}%)</span>
 					<span className={scoreIsNullClasses}>В процессе</span>

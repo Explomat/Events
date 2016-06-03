@@ -33,6 +33,7 @@
         box-shadow: 0 0 4px rgba(0,0,0,0.5);
         margin-left: 8px;
         display: none;
+        line-height: normal;
 
         &.event-edit-container__play-button--display {
           display: inline-block;
@@ -42,12 +43,14 @@
       .event-edit-container__save-button{
         box-shadow: 0 0 4px rgba(0,0,0,0.5);
         margin-left: 8px;
+        line-height: normal;
       }
 
       .event-edit-container__complete-button{
         margin-left: 8px;
         box-shadow: 0 0 4px rgba(0,0,0,0.5);
         display: none;
+        line-height: normal;
 
         &.event-edit-container__complete-button--display {
           display: inline-block;
