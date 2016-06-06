@@ -14,6 +14,7 @@ module.exports = function(args){
 	args.finishDate = args.finishDate || Date();
 
 	this.id = args.id || UUID.generate();
+	this.creatorId = args.creatorId || null;
 	this.name = args.name || 'Нет названия';
 	this.type = args.type || EventTypes.keys.full_time;
 	this.startDate = new Date(args.startDate);

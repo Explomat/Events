@@ -9,11 +9,9 @@ import Requests from './tabs/Requests';
 import Testing from './tabs/Testing';
 import Tutors from './tabs/Tutors';
 
-import EventStatuses from 'utils/eventedit/EventStatuses';
 import EventEditActions from 'actions/EventEditActions';
 import EventEditStore from 'stores/EventEditStore';
 import {merge} from 'lodash';
-import cx from 'classnames';
 
 import './style/event-edit.scss';
 import './style/table-list.scss';
@@ -60,7 +58,7 @@ class EventEdit extends React.Component {
 		this.setState({selectedTab: tabName});
 	}
 
-	handleStartEvent(){
+	/*handleStartEvent(){
 		if (EventEditStore.isRequiredFieldsFilled()){
 			EventEditActions.changeStatus(EventStatuses.keys.active);
 			return;
@@ -74,7 +72,7 @@ class EventEdit extends React.Component {
 			return;
 		}
 		EventEditActions.changeInfoMessage(this.fillError, 'error');
-	}
+	}*/
 
 	handleSaveData(){
 		if (EventEditStore.isRequiredFieldsFilled()){
@@ -89,21 +87,9 @@ class EventEdit extends React.Component {
 	}
 
 	render(){
-		const {status, infoMessage, infoStatus, selectedTab} = this.state;
+		const {infoMessage, infoStatus, selectedTab} = this.state;
 		var tabView = this.getTabView(selectedTab.key);
 		const isShowInfoModal = infoMessage !== '';
-		const playButtonClasses = cx({
-			'event-edit-container__play-button': true,
-			'event-edit-container__play-button--display': status === EventStatuses.keys.plan,
-			'event-btn': true,
-			'event-btn--reverse': true
-		});
-		const completeButtonClasses = cx({
-			'event-edit-container__complete-button': true,
-			'event-edit-container__complete-button--display': status === EventStatuses.keys.active,
-			'event-btn': true,
-			'event-btn--reverse': true
-		});
 		return(
 			<div className="container">
 				<SideBar onSelect={this.handleSelectTab} selectedTab={selectedTab.key}/>
@@ -111,14 +97,6 @@ class EventEdit extends React.Component {
 					<header className ="calendar-header">
 						<span className="calendar-header__description">{selectedTab.value}</span>
 						<div className="calendar-header__action-buttons">
-							<button className={playButtonClasses} onClick={::this.handleStartEvent}>
-								<i className="icon-play event-edit-container__icon"></i>
-								<span>Начать проведение</span>
-							</button>
-							<button className={completeButtonClasses} onClick={::this.handleCloseEvent}>
-								<i className="icon-share-square-o event-edit-container__icon"></i>
-								<span>Завершить</span>
-							</button>
 							<button className="event-edit-container__save-button event-btn event-btn--reverse" onClick={::this.handleSaveData}>
 								<i className="icon-floppy-o event-edit-container__icon"></i>
 								<span>Сохранить</span>

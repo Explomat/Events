@@ -37,11 +37,11 @@ module.exports = {
 		});
 	},
 
-	changeStatus: function(status){
+	/*changeStatus: function(status){
 		return Ajax.sendRequest(Config.url.createPath({action_name: 'changeStatus'}), JSON.stringify({status: status}), false, true, null, 'POST').then((data) => {
 			return JSON.parse(data);
 		});
-	},
+	},*/
 
 	notificateItems: function(items, subject, body){
 		var ids = items.map(function(item){

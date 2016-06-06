@@ -60,19 +60,6 @@ var EventInfoStore = extend({}, EventEmitter.prototype, {
 		return _info;
 	},
 
-	isUserInEvent: function(userId){
-		var collaborator = _eventInfo.collaborators.find(function(col){
-			return userId == col.id;
-		});
-		var tutor = _eventInfo.tutors.find(function(t){
-			return userId == t.id;
-		});
-		var lector = _eventInfo.lectors.find(function(l){
-			return userId == l.id;
-		});
-		return collaborator !== undefined || tutor !== undefined || lector !== undefined;
-	},
-
 	isUserInCollaborators: function(userId){
 		return _eventInfo.collaborators.find(function(col){
 			return userId == col.id;
@@ -89,6 +76,10 @@ var EventInfoStore = extend({}, EventEmitter.prototype, {
 		return _eventInfo.lectors.find(function(l){
 			return userId == l.id;
 		}) !== undefined;
+	},
+
+	isUserCreator: function(userId){
+		return _eventInfo.creatorId == userId;
 	},
 
 	getWebinarInfo: function(){

@@ -226,46 +226,39 @@ class EventInfo extends React.Component {
 		var type = this.state.event.type;
 		var userId = CalendarStore.getUserId();
 		var isWebinar = type === EventTypes.keys.webinar;
-		var isUserInEvent = EventInfoStore.isUserInEvent(userId);
 
 		var isUserInCollaborators = EventInfoStore.isUserInCollaborators(userId);
 		var isUserInTutors = EventInfoStore.isUserInTutors(userId);
 		var isUserInLectors = EventInfoStore.isUserInLectors(userId);
+		var isUserCreator = EventInfoStore.isUserCreator(userId);
+		var isUserInEvent = isUserInCollaborators || isUserInTutors || isUserInLectors;
 		var index = 0;
 
-		console.log((status === EventStatuses.keys.close || status === EventStatuses.keys.cancel) && (isUserInTutors || isUserInLectors))
+		if (isUserInTutors || isUserInLectors || isUserCreator) {
+			if (status === EventStatuses.keys.cancel || status === EventStatuses.keys.close) {
+				buttons.push(<button onClick={this.handlePlanEvent} key={index++} className="event-btn event-info__btn event-info__buttons-plan">Перевести к планированию</button>);
+			}
+			else if (status === EventStatuses.keys.plan) {
+				buttons.push(<button onClick={this.handleStartEvent} key={index++} className="event-btn event-info__btn event-info__buttons-start">Начать мероприятие</button>);
+				buttons.push(<button onClick={this.handleCancelEvent} key={index++} className="event-btn event-info__btn event-info__buttons-calcel">Отменить</button>);
+			}
+			else if (status === EventStatuses.keys.active) {
+				buttons.push(<button onClick={this.handleFinishEvent} key={index++} className="event-btn event-info__btn event-info__buttons-finish">Завершить мероприятие</button>);
+				buttons.push(<button onClick={this.handleCancelEvent} key={index++} className="event-btn event-info__btn event-info__buttons-calcel">Отменить</button>);
+			}
+		}
 
 		if (isUserInEvent){
 			if (status === EventStatuses.keys.close){
-				buttons.push(<a key={index} className="event-btn event-info__btn" target="__blank" href={this.state.event.reportHref}>Добавить отзыв</a>);
-				index++;
+				buttons.push(<a key={index++} className="event-btn event-info__btn" target="__blank" href={this.state.event.reportHref}>Добавить отзыв</a>);
 			}
 			else if (status === EventStatuses.keys.plan && isUserInCollaborators) {
-				buttons.push(<button onClick={this.handleRemoveCollaborator} key={index} className="event-btn event-info__btn">Отказаться от участия</button>);
-				index++;
-			}
-			else if (status === EventStatuses.keys.plan && (isUserInTutors || isUserInLectors)) {
-				buttons.push(<button onClick={this.handleStartEvent} key={index} className="event-btn event-info__btn event-info__buttons-start">Начать мероприятие</button>);
-				index++;
-			}
-			else if (status === EventStatuses.keys.active && (isUserInTutors || isUserInLectors)) {
-				buttons.push(<button onClick={this.handleFinishEvent} key={index} className="event-btn event-info__btn event-info__buttons-finish">Завершить мероприятие</button>);
-				index++;
-			}
-			else if ((status === EventStatuses.keys.close || status === EventStatuses.keys.cancel) && (isUserInTutors || isUserInLectors)) {
-				buttons.push(<button onClick={this.handlePlanEvent} key={index} className="event-btn event-info__btn event-info__buttons-plan">Перевести к планированию</button>);
-				index++;
-			}
-			if (status !== EventStatuses.keys.cancel && (isUserInTutors || isUserInLectors)) {
-				console.log(EventStatuses);
-				buttons.push(<button onClick={this.handleCancelEvent} key={index} className="event-btn event-info__btn event-info__buttons-calcel">Отменить</button>);
-				index++;
+				buttons.push(<button onClick={this.handleRemoveCollaborator} key={index++} className="event-btn event-info__btn">Отказаться от участия</button>);
 			}
 		}
 		else {
 			if (status === EventStatuses.keys.plan) {
-				buttons.push(<button onClick={this.handleCreateRequest} key={index} className="event-btn event-info__btn">Подать заявку</button>);
-				index++;
+				buttons.push(<button onClick={this.handleCreateRequest} key={index++} className="event-btn event-info__btn">Подать заявку</button>);
 			}
 		}
 
@@ -273,8 +266,7 @@ class EventInfo extends React.Component {
 			var webinarInfo = EventInfoStore.getWebinarInfo();
 			if (webinarInfo && isUserInEvent) {
 				if (status === EventStatuses.keys.active) {
-					buttons.push(<a key={index} className="event-btn event-info__btn" target="__blank" href={webinarInfo.enterHref}>Войти в вебинар</a>);
-					index++;
+					buttons.push(<a key={index++} className="event-btn event-info__btn" target="__blank" href={webinarInfo.enterHref}>Войти в вебинар</a>);
 				}
 			}
 			if (webinarInfo && webinarInfo.href && status === EventStatuses.keys.close) {

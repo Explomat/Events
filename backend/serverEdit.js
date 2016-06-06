@@ -354,13 +354,13 @@ function processingRequest(queryObjects) {
 
 	if (request_id != null && status != null ) {
 		if (status == 'close') {
-			tools.close_request(request_id); 
+			curRequestCard.TopElem.status_id = 'close';
 			curRequestCard.TopElem.workflow_state = 'sfi0o2';
 		} else {
 			requestDoc = tools.request_rejecting(request_id);
 			curRequestCard.TopElem.workflow_state = 's9v8gw';
 			curRequestCard.TopElem.comment = reason;
-			tools.create_notification('Merlion_19', request_id )
+			tools.create_notification('Merlion_19', request_id )	
 		}
 		curRequestCard.Save();
 	}

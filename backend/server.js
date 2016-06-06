@@ -2,7 +2,7 @@
 	Server.Execute("include/user_init.html");
 
 	function isCreatorOrTutor (eventId) {
-		var isTutor = ArrayCount(XQuery("for $elem in event_collaborators where $elem/event_id = "+eventId+" and $elem/collaborator_id = "+curUserID+" return $elem ")) == 0 ? false : true;
+		var isTutor = ArrayCount(XQuery("for $elem in event_collaborators where $elem/event_id = "+eventId+" and $elem/collaborator_id = "+curUserID+" and $elem/is_tutor = true() return $elem ")) == 0 ? false : true;
 		var isCreator = OpenDoc(UrlFromDocID(Int(eventId))).TopElem.doc_info.creation.user_id == curUserID;
 		return isTutor || isCreator;
 	}
@@ -36,30 +36,15 @@
 		},
 		{
 			name: 'event_admin',
-			actionsDenied: getObjectValues(actionsDenied),
-			componentsDenied: [componentsDenied.CreateEventButton, componentsDenied.EditEventButton],
+			actionsDenied: [actionsDenied.editEvent],
+			componentsDenied: [componentsDenied.EditEventButton],
 			priority: 1
 		},
-
-		{
-			name: 'event_training',
-			actionsDenied: getObjectValues(actionsDenied),
-			componentsDenied: getObjectValues(componentsDenied),
-			priority: 2
-		},
-
-		{
-			name: 'event_user',
-			actionsDenied: getObjectValues(actionsDenied),
-			componentsDenied: getObjectValues(componentsDenied),
-			priority: 3
-		},
-
 		{
 			name: 'event_all',
 			actionsDenied: getObjectValues(actionsDenied),
 			componentsDenied: getObjectValues(componentsDenied),
-			priority: 4
+			priority: 2
 		}
 	]
 
@@ -351,7 +336,8 @@
 		}
 
 		return stringifyWT({
-			id: curEventID, 
+			id: curEventID,
+			creatorId : curEventCard.TopElem.doc_info.creation.user_id + '',
 			name: StrReplace(curEventCard.TopElem.name, '\"', '\''),
 			startDate: StrMimeDate(curEventCard.TopElem.start_date),
 			finishDate: StrMimeDate(curEventCard.TopElem.finish_date),
@@ -558,6 +544,26 @@
 	function finishEvent(queryObjects) {
 		try {
 			tools.event_finish(queryObjects.event_id)
+		} catch (e) {
+			return e;
+		}
+	}
+
+	function planEvent(queryObjects) {
+		try {
+			var curEventCard = OpenDoc(UrlFromDocID(Int(queryObjects.event_id)));
+			curEventCard.TopElem.status_id = 'plan';
+			curEventCard.Save();
+		} catch (e) {
+			return e;
+		}
+	}
+
+	function cancelEvent(queryObjects) {
+		try {
+			var curEventCard = OpenDoc(UrlFromDocID(Int(queryObjects.event_id)));
+			curEventCard.TopElem.status_id = 'cancel';
+			curEventCard.Save();
 		} catch (e) {
 			return e;
 		}

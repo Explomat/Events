@@ -45,7 +45,7 @@ var EventEditActions = {
 		});
 	},
 
-	changeStatus(status){
+	/*changeStatus(status){
 		EventEditAPI.changeStatus(status).then(function(data){
 			if (data.error === '') {
 				AppDispatcher.handleAction({
@@ -61,7 +61,7 @@ var EventEditActions = {
 				});
 			}
 		});
-	},
+	},*/
 
 	//BASE
 	base: {
