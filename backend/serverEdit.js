@@ -357,7 +357,7 @@ function processingRequest(queryObjects) {
 			curRequestCard.TopElem.status_id = 'close';
 			curRequestCard.TopElem.workflow_state = 'sfi0o2';
 		} else {
-			requestDoc = tools.request_rejecting(request_id);
+			curRequestCard.TopElem.status_id = 'ignore';
 			curRequestCard.TopElem.workflow_state = 's9v8gw';
 			curRequestCard.TopElem.comment = reason;
 			tools.create_notification('Merlion_19', request_id )	
@@ -1181,7 +1181,7 @@ function getEventPlaces(queryObjects) {
 	if (eventDocTE.place_id.HasValue) {
 		selectedNode = {
 			id : eventDocTE.place_id + '', 
-			name : eventDocTE.place_id.ForeignElem.name + ''
+			name : StrReplace(eventDocTE.place_id.ForeignElem.name + '', '"', '\'')
 		}
 	}
 
