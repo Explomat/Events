@@ -24,9 +24,9 @@ var exp = {
 			ReactDOM.render(React.createElement(Calendar.default), app);
 			isLoaded = true;
 		}.bind(this), function(err){
-			console.log(err);
+			console.log(err, err.stack);
 		}).catch(function(e){
-			console.log(e);
+			console.log(e, e.stack);
 		});
 	}
 }
