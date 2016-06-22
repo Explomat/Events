@@ -1689,6 +1689,7 @@ function saveData(queryObjects) {
 					curEventCard.TopElem.prev_testing.auto_assign = 'true';
 					curEventCard.TopElem.prev_testing.assessments.ObtainChildByKey( Int(test.id));
 				} else {
+					curEventCard.TopElem.post_testing.auto_assign = 'true';
 					curEventCard.TopElem.post_testing.assessments.ObtainChildByKey( Int(test.id));
 				}
 			}

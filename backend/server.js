@@ -547,6 +547,12 @@
 		} catch (e) {
 			return e;
 		}
+		var curEventCardTE = OpenDoc(UrlFromDocID(Int(queryObjects.event_id))).TopElem;
+		for (test in curEventCardTE.post_testing.assessments) {
+			for (colab in curEventCardTE.collaborators) {
+				tools.activate_test_to_person(Int(colab.collaborator_id) ,Int(test.assessment_id), Int(queryObjects.event_id) )
+			}
+		}
 	}
 
 	function planEvent(queryObjects) {
