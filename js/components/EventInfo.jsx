@@ -288,6 +288,11 @@ class EventInfo extends React.Component {
 
 	handleEditEvent(e){
 		e.preventDefault();
+		if (e.button !== 0){ return; }
+		if (e.ctrlKey){
+			window.open("#event/edit/" + this.state.event.id);
+			return;
+		}
 		let isLoadingNode = this.refs.isLoading;
 		isLoadingNode.classList.add('overlay-loading--show');
 		Hasher.setHash("#event/edit/" + this.state.event.id);
@@ -319,7 +324,7 @@ class EventInfo extends React.Component {
 								<a href='#' className="event-info__map-link"> Схема проезда</a>
 							</p>
 							<Auth componentsDenied={componentsDenied}>
-								<EditEventButton onClick={::this.handleEditEvent} className='event-info__edit-event' />
+								<EditEventButton onMouseUp={::this.handleEditEvent} className='event-info__edit-event' />
 							</Auth>
 						</div>
 						<EventInfoBody members={this.state.event.members} collaborators={this.state.event.collaborators} tutors={this.state.event.tutors} lectors={this.state.event.lectors} files={this.state.event.files}/>

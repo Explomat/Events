@@ -5,14 +5,14 @@ class EditEventButton extends React.Component {
 	static displayName = 'EditEventButton'
 
 	static propTypes = {
-		onClick: React.PropTypes.func,
+		onMouseUp: React.PropTypes.func,
 		className: React.PropTypes.string
 	}
 
 	render() {
-		const { onClick, className } = this.props;
+		const { onMouseUp, className } = this.props;
 		return (
-			<a onClick={onClick} href='#' className={className} title="Редактировать мероприятие">
+			<a onMouseUp={onMouseUp} href='#' className={className} title="Редактировать мероприятие">
 				<i className="icon-pencil-square-o"></i>
 			</a>
 		);
