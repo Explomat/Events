@@ -9,10 +9,14 @@ class EditEventButton extends React.Component {
 		className: React.PropTypes.string
 	}
 
+	handleClick(e){
+		e.preventDefault();
+	}
+
 	render() {
 		const { onMouseUp, className } = this.props;
 		return (
-			<a onMouseUp={onMouseUp} href='#' className={className} title="Редактировать мероприятие">
+			<a onMouseUp={onMouseUp} onClick={this.handleClick} href='#' className={className} title="Редактировать мероприятие">
 				<i className="icon-pencil-square-o"></i>
 			</a>
 		);

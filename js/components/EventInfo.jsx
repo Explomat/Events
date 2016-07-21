@@ -287,7 +287,6 @@ class EventInfo extends React.Component {
 	}
 
 	handleEditEvent(e){
-		e.preventDefault();
 		if (e.button !== 0){ return; }
 		if (e.ctrlKey){
 			window.open("#event/edit/" + this.state.event.id);
