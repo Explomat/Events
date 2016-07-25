@@ -120,9 +120,8 @@
 		var userGroups = getUserGroups(userId);
 		var matchedGroups = [];
 		var i = userGroups.length - 1;
-		var j = groups.length - 1;
 		for (i; i >= 0; i--) {
-			for (j; j >= 0; j--) {
+			for (j = groups.length - 1; j >= 0; j--) {
 				if (groups[j].name == userGroups[i].name) {
 					matchedGroups.push(groups[j]);
 				}
@@ -548,9 +547,10 @@
 			return e;
 		}
 		var curEventCardTE = OpenDoc(UrlFromDocID(Int(queryObjects.event_id))).TopElem;
+		var personsForTest = XQuery("for $elem in event_results where $elem/event_id = "+queryObjects.event_id+" and $elem/is_assist = true() return $elem")
 		for (test in curEventCardTE.post_testing.assessments) {
-			for (colab in curEventCardTE.collaborators) {
-				tools.activate_test_to_person(Int(colab.collaborator_id) ,Int(test.assessment_id), Int(queryObjects.event_id) )
+			for ( person in personsForTest ) {
+				tools.activate_test_to_person(Int(person.person_id) ,Int(test.assessment_id), Int(queryObjects.event_id) )
 			}
 		}
 	}
