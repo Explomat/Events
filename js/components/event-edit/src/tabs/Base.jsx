@@ -48,6 +48,10 @@ class Base extends React.Component {
 		EventEditActions.base.changeEducationMethod(educationMethod);
 	}
 
+	handleChangePlaceText(place){
+		EventEditActions.base.changePlaceText(place);
+	}
+
 	handleChangePlace(place){
 		EventEditActions.base.changePlace(place);
 	}
@@ -64,12 +68,20 @@ class Base extends React.Component {
 		EventEditActions.base.changeIsTestRepeat(isTestRepeat);
 	}
 
+	handleChangeIsRecordPublished(isRecordPublished){
+		EventEditActions.base.changeIsRecordPublished(isRecordPublished);
+	}
+
 	render(){
 		const educationMethodClasses = cx({
 			'event-edit-base__edication-method': true,
 			'event-edit-base__edication-method--display': this.props.selectedType !== EventTypes.keys.one_time
 		});
-		const {name, types, selectedType, codes, selectedCode, startDateTime, finishDateTime, educationOrgs, selectedEducationOrgId, selectedEducationMethod, places, maxPersonNum, isPublic, isTestRepeat} = this.props;
+		const isRecordPublishedClasses = cx({
+			'event-edit-base__is-record-published': true,
+			'event-edit-base__is-record-published--display': this.props.selectedType === EventTypes.keys.webinar
+		});
+		const {name, types, selectedType, codes, selectedCode, startDateTime, finishDateTime, educationOrgs, selectedEducationOrgId, selectedEducationMethod, place, places, maxPersonNum, isPublic, isTestRepeat, isRecordPublished} = this.props;
 		return (
 			<div className="event-edit-base">
 				<div className="event-edit-base__left-block">
@@ -121,6 +133,11 @@ class Base extends React.Component {
 						modalTitle="Выберите учебную программу"
 						query={Config.url.createPath({action_name: 'getEducationMethod'})}
 						onSave={this.handleChangeEducationMethod}/>
+					<TextView
+						onBlur={this.handleChangePlaceText} 
+						value={place} 
+						placeholder="Место проведения"
+						className="event-edit-base__place-text"/>
 					<SelectTree 
 						nodes={places.nodes}
 						selectedNode={places.selectedNode} 
@@ -128,14 +145,14 @@ class Base extends React.Component {
 						modalTitle="Выберите расположение"
 						onSave={this.handleChangePlace}
 						isExpand={true}/>
+				</div>
+				<div className="event-edit-base__right-block">
 					<TextView
 						onBlur={this.handleChangeMaxPersonNum} 
 						value={maxPersonNum} 
 						placeholder="Максимальное количество участников"
 						isValid={isNumberOrEmpty}
 						className="event-edit-base__max-person-num"/>
-				</div>
-				<div className="event-edit-base__right-block">
 					<CheckBox 
 						onChange={this.handleChangeIsPublic} 
 						label="Публичное мероприятие"
@@ -146,6 +163,13 @@ class Base extends React.Component {
 						onChange={this.handleChangeIsTestRepeat} 
 						label="Повторно назначать тесты при отрицательном результате"
 						checked={isTestRepeat}/>
+					<br />
+					<br />
+					<CheckBox
+						className={isRecordPublishedClasses}
+						onChange={this.handleChangeIsRecordPublished} 
+						label="Опубликовать запись вебинара на портале"
+						checked={isRecordPublished}/>
 				</div>
 			</div>
 		);

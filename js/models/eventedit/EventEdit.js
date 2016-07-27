@@ -42,6 +42,7 @@ export default function(args){
 		codes: args.base.codes || EventCodes.toArray(),
 		isPublic: args.base.isPublic || false,
 		isTestRepeat: args.base.isTestRepeat || false,
+		isRecordPublished: args.base.isRecordPublished || false,
 		startDateTime: new Date(args.base.startDateTime),
 		finishDateTime: new Date(args.base.finishDateTime),
 		educationOrgs: (args.base.educationOrgs || []).map(item => {
@@ -51,8 +52,8 @@ export default function(args){
 			}
 		}),
 		places: Places(args.base.places),
+		place: args.base.place || '',
 		maxPersonNum: args.base.maxPersonNum || '',
-
 		selectedType: args.base.selectedType,
 		selectedCode: args.base.selectedCode,
 		selectedEducationMethod: args.base.selectedEducationMethod,

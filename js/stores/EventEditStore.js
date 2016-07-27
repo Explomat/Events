@@ -105,6 +105,9 @@ const base = {
 	changeEducationMethod(educationMethod){
 		_eventEdit.base.selectedEducationMethod = educationMethod;
 	},
+	changePlaceText(place){
+		_eventEdit.base.place = place;
+	},
 	changePlace(place){
 		_eventEdit.base.places.selectedNode = place;
 	},
@@ -116,6 +119,9 @@ const base = {
 	},
 	changeIsTestRepeat(isTestRepeat){
 		_eventEdit.base.isTestRepeat = isTestRepeat;
+	},
+	changeIsRecordPublished(isRecordPublished){
+		_eventEdit.base.isRecordPublished = isRecordPublished;
 	}
 }
 
@@ -630,6 +636,10 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			base.changeEducationMethod(action.educationMethod);
 			isEmit = true;
 			break;
+		case EventEditConstants.EVENTEDIT_BASE_CHANGE_PLACE_TEXT:
+			base.changePlaceText(action.place);
+			isEmit = true;
+			break;
 		case EventEditConstants.EVENTEDIT_BASE_CHANGE_PLACE:
 			base.changePlace(action.place);
 			isEmit = true;
@@ -644,6 +654,10 @@ EventEditStore.dispatchToken = AppDispatcher.register((payload) => {
 			break;
 		case EventEditConstants.EVENTEDIT_BASE_CHANGE_IS_TEST_REPEAT:
 			base.changeIsTestRepeat(action.isTestRepeat);
+			isEmit = true;
+			break;
+		case EventEditConstants.EVENTEDIT_BASE_CHANGE_IS_RECORD_PUBLISHED:
+			base.changeIsRecordPublished(action.isRecordPublished);
 			isEmit = true;
 			break;
 

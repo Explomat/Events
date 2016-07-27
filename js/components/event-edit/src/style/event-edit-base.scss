@@ -65,5 +65,17 @@
 	.event-edit-base__right-block {
 		float: right;
 		width: 45%;
+
+		.event-edit-base__max-person-num{
+			padding-bottom: 20px;
+		}
+
+		.event-edit-base__is-record-published{
+			display: none;
+
+			&.event-edit-base__is-record-published--display {
+				display: inline-block;
+			}
+		}
 	}
 }

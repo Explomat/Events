@@ -107,6 +107,12 @@ var EventEditActions = {
 				educationMethod: educationMethod
 			});
 		},
+		changePlaceText(place){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_BASE_CHANGE_PLACE_TEXT,
+				place: place
+			});
+		},
 		changePlace(place){
 			AppDispatcher.handleAction({
 				actionType: EventEditConstants.EVENTEDIT_BASE_CHANGE_PLACE,
@@ -131,6 +137,13 @@ var EventEditActions = {
 			AppDispatcher.handleAction({
 				actionType: EventEditConstants.EVENTEDIT_BASE_CHANGE_IS_TEST_REPEAT,
 				isTestRepeat: isTestRepeat
+			});
+		},
+
+		changeIsRecordPublished(isRecordPublished){
+			AppDispatcher.handleAction({
+				actionType: EventEditConstants.EVENTEDIT_BASE_CHANGE_IS_RECORD_PUBLISHED,
+				isRecordPublished: isRecordPublished
 			});
 		}
 	},
