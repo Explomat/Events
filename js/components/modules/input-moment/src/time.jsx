@@ -29,8 +29,8 @@ module.exports = React.createClass({
           <InputSlider
             className="u-slider-time"
             xmin={0}
-            xmax={59}
-            x={m.minute()}
+            xmax={11}
+            x={m.minute() / 5}
             onChange={this.changeMinutes}
           />
         </div>
@@ -46,7 +46,7 @@ module.exports = React.createClass({
 
   changeMinutes: function(pos) {
     var m = this.props.moment;
-    m.minutes(parseInt(pos.x, 10));
+    m.minutes(parseInt(pos.x, 10) * 5);
     this.props.onChange(m);
   }
 });

@@ -186,7 +186,7 @@
 		if (curEventCard.TopElem.place_id.HasValue && curEventCard.TopElem.place_id != 6106768546989817488 ) {
 			var placeCard = OpenDoc(UrlFromDocID(curEventCard.TopElem.place_id));
 			var eventPlace = OpenDoc(UrlFromDocID(placeCard.TopElem.region_id)).TopElem.name;
-			var eventAddress = placeCard.TopElem.address.HasValue == true ? placeCard.TopElem.address : '';
+			var eventAddress = curEventCard.TopElem.place.HasValue == true ? curEventCard.TopElem.place : '';
 		} else {
 			var eventPlace = '';
 			var eventAddress = '';

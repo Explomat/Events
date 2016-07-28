@@ -1221,12 +1221,14 @@ function getEventBaseData (queryObjects) {
 			basicData.name = ev.name + '';
 			basicData.isPublic = ev.is_public + '';
 			basicData.isTestRepeat = eventDocTE.custom_elems.ObtainChildByKey('test_repeat').value == 'true' ? true : false;
+			basicData.isRecordPublished = eventDocTE.custom_elems.ObtainChildByKey('f_hadc').value == 'true' ? true : false;
 			basicData.selectedType = ev.type_id + '';
 			basicData.selectedCode = ev.code + '';
 			basicData.startDateTime = StrMimeDate(ev.start_date) + '';
 			basicData.finishDateTime = StrMimeDate(ev.finish_date) + '';
 			basicData.educationOrgs = DEFAULT_EDUCATION_ORGS;
 			basicData.selectedEducationOrgId = ev.education_org_id + '';
+			basicData.place = eventDocTE.place + '';
 			if ( ev.education_method_id.HasValue ) {
 				basicData.selectedEducationMethod = {
 					id : Int(ev.education_method_id),
@@ -1454,6 +1456,14 @@ function saveData(queryObjects) {
 				return tools.object_to_text({ error: "Не параметра isTestRepeat"}, 'json');
 			}
 
+
+			/*Публиковать запись вебинара на портале */
+			if ( baseData.HasProperty('isRecordPublished') ) {
+					curEventCard.TopElem.custom_elems.ObtainChildByKey('f_hadc').value = baseData.isRecordPublished;
+			} else {
+				return tools.object_to_text({ error: "Не параметра isRecordPublished"}, 'json');
+			}			
+
 			/*Публичное меропирятие*/
 			if ( baseData.HasProperty('isPublic') ) {
 				if (baseData.isPublic != curEventCard.TopElem.is_public ) {
@@ -1472,6 +1482,13 @@ function saveData(queryObjects) {
 				} else {
 					return tools.object_to_text({ error: "Расположение отсутствует"}, 'json');
 				}	
+			} 
+
+			/*Расположение мероприятия*/
+			if ( baseData.HasProperty('place') ) {
+					curEventCard.TopElem.place = baseData.place;
+			} else {
+					return tools.object_to_text({ error: "Место проведения отсутствует"}, 'json');
 			} 
 
 			/*Обучающая организация*/
