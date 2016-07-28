@@ -100,7 +100,7 @@
 		var min = _groups[_groups.length - 1].priority;
 		var index = _groups.length - 1;
 		for (var i = _groups.length - 1; i >= 0; i--) {
-			if (min < _groups[i].priority) {
+			if (min > _groups[i].priority) {
 				min = _groups[i].priority;
 				index = i;
 			}
