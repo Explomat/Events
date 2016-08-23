@@ -56,7 +56,7 @@
 		if (obj == null || obj == undefined) 
 			return 'null';
 		if (type == 'string' || type == 'integer')
-			return '\"' + obj + '\"'  
+			return StrReplace('\"' + obj + '\"', '\"', '\'')
 		if (type == 'bool')
 			return obj;
 
@@ -341,7 +341,7 @@
 			startDate: StrMimeDate(curEventCard.TopElem.start_date),
 			finishDate: StrMimeDate(curEventCard.TopElem.finish_date),
 			status: curEventCard.TopElem.status_id + '',
-			place: eventPlace + ', ' + eventAddress + '',
+			place: eventPlace + ', ' + StrReplace(eventAddress, '\"', '\''),
 			type: eventType + '',
 			collaborators: ArraySort(collaboratorsArray, 'fullname','+'),
 			tutors: tutorsArray,

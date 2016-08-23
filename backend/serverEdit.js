@@ -1228,7 +1228,7 @@ function getEventBaseData (queryObjects) {
 			basicData.finishDateTime = StrMimeDate(ev.finish_date) + '';
 			basicData.educationOrgs = DEFAULT_EDUCATION_ORGS;
 			basicData.selectedEducationOrgId = ev.education_org_id + '';
-			basicData.place = eventDocTE.place + '';
+			basicData.place = StrReplace(eventDocTE.place, '\"', '\'');
 			if ( ev.education_method_id.HasValue ) {
 				basicData.selectedEducationMethod = {
 					id : Int(ev.education_method_id),
@@ -1828,7 +1828,7 @@ function changeStatus(queryObjects) {
 }
 
 function isEventEditing( queryObjects){
-	var eventId = queryObjects.event_id;
+	/*var eventId = queryObjects.event_id;
 	var sessions = queryObjects.Request.AllSessions;
 	for (var i = sessions.length - 1; i >= 0; i--) {
 		session = sessions[i];
@@ -1839,7 +1839,7 @@ function isEventEditing( queryObjects){
 				error: 'В данный момент это мероприятие редактирует : ' + userName
 			}, 'json');
 		}
-	};
+	};*/
 	return tools.object_to_text({
 		isEditing: false,
 		error: null
