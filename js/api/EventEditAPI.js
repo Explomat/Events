@@ -8,13 +8,13 @@ module.exports = {
 
 	isDeniedActionAccess: function(id, action){
 		return Ajax.sendRequest(Config.url.createPath({action_name: 'isDeniedActionAccess', event_id: id, action: action}), null, false).then((data) => {
-			return JSON.parse(data);
+			return JSON.parse(data.replace(/\n/g, "\\\\n").replace(/\r/, ''));
 		});
 	},
 
 	isEventEditing: function(eventId){
 		return Ajax.sendRequest(Config.url.createPath({action_name: 'isEventEditing', event_id: eventId}), null, false).then((data) => {
-			return JSON.parse(data, (key, value) => {
+			return JSON.parse(data.replace(/\n/g, "\\\\n").replace(/\r/, ''), (key, value) => {
 				return value === 'true' ? true : value === 'false' ? false : value;
 			});
 		});
@@ -23,7 +23,7 @@ module.exports = {
 	getData: function(eventId){
 		//return Promise.resolve({});
 		return Ajax.sendRequest(Config.url.createPath({action_name: 'getEventEditData', event_id: eventId}), null, false).then(function(data){
-			return JSON.parse(data, (key, value) => {
+			return JSON.parse(data.replace(/\n/g, "\\\\n").replace(/\r/, ''), (key, value) => {
 				/*if (key === 'id') return value;
 				var val = isNumberOrReal(value) ? Number(value) : value;*/
 				return value === 'true' ? true : value === 'false' ? false : value;
@@ -33,7 +33,7 @@ module.exports = {
 
 	saveData: function(data){
 		return Ajax.sendRequest(Config.url.createPath({action_name: 'saveData'}), JSON.stringify(data), false, true, null, 'POST').then((data) => {
-			return JSON.parse(data);
+			return JSON.parse(data.replace(/\n/g, "\\\\n").replace(/\r/, ''));
 		});
 	},
 
@@ -48,7 +48,7 @@ module.exports = {
 			return item.id;
 		});
 		return Ajax.sendRequest(Config.url.createPath({action_name: 'createNotification'}), JSON.stringify({ids: ids, subject: subject, body: body}), false, true, null, 'POST').then((data) => {
-			return JSON.parse(data, (key, value) => {
+			return JSON.parse(data.replace(/\n/g, "\\\\n").replace(/\r/, ''), (key, value) => {
 				/*if (key === 'id') return value;
 				var val = isNumberOrReal(value) ? Number(value) : value;*/
 				return value === 'true' ? true : value === 'false' ? false : value;
@@ -70,23 +70,23 @@ module.exports = {
 		};
 		return Promise.all(promises).then(function(files){
 			var parseFiles = files.map(function(f){
-				return JSON.parse(f);
+				return JSON.parse(f.replace(/\n/g, "\\\\n").replace(/\r/, ''));
 			}).concat(curFiles);
 			return Ajax.sendRequest(Config.url.createPath({action_name: 'addFiles'}), JSON.stringify({files: parseFiles}), false, true, null, 'POST').then(function(data){
-				return JSON.parse(data);
+				return JSON.parse(data.replace(/\n/g, "\\\\n").replace(/\r/, ''));
 			});
 		});
 	},
 
 	updateFiles: function (files) {
 		return Ajax.sendRequest(Config.url.createPath({action_name: 'addFiles'}), JSON.stringify({files: files}), false, true, null, 'POST').then(function(data){
-			return JSON.parse(data);
+			return JSON.parse(data.replace(/\n/g, "\\\\n").replace(/\r/, ''));
 		});
 	},
 
 	removeFiles: function(ids){
 		return Ajax.sendRequest(Config.url.createPath({action_name: 'removeFiles'}), JSON.stringify({ids: ids}), false, true, null, 'POST').then(function(_files){
-			return JSON.parse(_files);
+			return JSON.parse(_files.replace(/\n/g, "\\\\n").replace(/\r/, ''));
 			/*return files.map((file) => {
 				return JSON.parse(file);
 			});*/
@@ -100,10 +100,10 @@ module.exports = {
 		};
 		return Promise.all(promises).then(function(files){
 			var parseFiles = files.map(function(f){
-				return JSON.parse(f);
+				return JSON.parse(f.replace(/\n/g, "\\\\n").replace(/\r/, ''));
 			}).concat(curFiles);
 			return Ajax.sendRequest(Config.url.createPath({action_name: 'addLibraryMaterials'}), JSON.stringify({files: parseFiles}), false, true, null, 'POST').then(function(data){
-				return JSON.parse(data);
+				return JSON.parse(data.replace(/\n/g, "\\\\n").replace(/\r/, ''));
 			});
 		});
 	},
@@ -113,7 +113,7 @@ module.exports = {
 			return expand(m);
 		})
 		return Ajax.sendRequest(Config.url.createPath({action_name: 'addLibraryMaterials'}), JSON.stringify({files: materials}), false, true, null, 'POST').then(function(data){
-			return JSON.parse(data);
+			return JSON.parse(data.replace(/\n/g, "\\\\n").replace(/\r/, ''));
 		});
 
 		/*var promises = [];
@@ -134,7 +134,7 @@ module.exports = {
 		};
 		return Promise.all(promises).then(function(files){
 			return files.map((file) => {
-				return JSON.parse(file);
+				return JSON.parse(file.replace(/\n/g, "\\\\n").replace(/\r/, ''));
 			});
 		});
 	}

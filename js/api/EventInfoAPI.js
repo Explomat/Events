@@ -10,9 +10,10 @@ module.exports = {
 	getData: function(eventId){
 		return Ajax.sendRequest(Config.url.createPath({action_name: 'getEventInfo', event_id: eventId}), null, false).then(function(data){
 			try {
-				return JSON.parse(data);
+				var parseData = data.replace(/\r\n/g, "\\n");
+				return JSON.parse(parseData);
 			}
-			catch(e){ throw data; }
+			catch(e){ throw e.message; }
 		});
 	},
 

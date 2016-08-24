@@ -12,7 +12,7 @@ module.exports = {
 		if (calendarData) return Promise.resolve(calendarData);*/
 		
 		return Ajax.sendRequest(Config.url.createPath({action_name: 'getData'}), null, false).then(function(data){
-			var calendarData = JSON.parse(data);
+			var calendarData = JSON.parse(data.replace(/\n/g, "\\\\n").replace(/\r/, ''));
 			//Storage.setItem('calendar', calendarData);
 			return calendarData;
 		});
@@ -26,7 +26,7 @@ module.exports = {
 
 	getEvents: function(year, month, businessType, region){
 		return Ajax.sendRequest(Config.url.createPath({action_name: 'getEventsData', year: year, month: month + 1, business_type: businessType, region: region}), null, false).then(function(data){
-			return JSON.parse(data);
+			return JSON.parse(data.replace(/\n/g, "\\\\n").replace(/\r/, ''));
 		});
 
 		/*return new Promise(function(resolve, reject){

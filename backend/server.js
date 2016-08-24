@@ -56,7 +56,7 @@
 		if (obj == null || obj == undefined) 
 			return 'null';
 		if (type == 'string' || type == 'integer')
-			return StrReplace('\"' + obj + '\"', '\"', '\'')
+			return '\"' + StrReplace(String(obj), '\"', '\'') + '\"';
 		if (type == 'bool')
 			return obj;
 
@@ -83,7 +83,7 @@
 		var curEventID = null;
 		try { curEventID = Int(eventId); }
 			catch(e) { return false; }
-		return ArraySelectAll(XQuery("sql: select events.id from events where events.id=" +curEventID)).length > 0;
+		return ArraySelectAll(XQuery("sql: select events.id from events where events.id=" + curEventID)).length > 0;
 	}
 
 	//Работа с группами ----------------------------------------------------------------------------------------------
@@ -341,7 +341,7 @@
 			startDate: StrMimeDate(curEventCard.TopElem.start_date),
 			finishDate: StrMimeDate(curEventCard.TopElem.finish_date),
 			status: curEventCard.TopElem.status_id + '',
-			place: eventPlace + ', ' + StrReplace(eventAddress, '\"', '\''),
+			place: eventPlace + ', ' + eventAddress,
 			type: eventType + '',
 			collaborators: ArraySort(collaboratorsArray, 'fullname','+'),
 			tutors: tutorsArray,
