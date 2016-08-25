@@ -55,8 +55,10 @@
 
 		if (obj == null || obj == undefined) 
 			return 'null';
-		if (type == 'string' || type == 'integer')
-			return '\"' + StrReplace(String(obj), '\"', '\'') + '\"';
+		if (type == 'string' || type == 'integer') {
+			var newObj = '\"' + StrReplace(String(obj), '\"', '\'') + '\"';
+			return StrReplace(newObj, '<', '&lt;');
+		}
 		if (type == 'bool')
 			return obj;
 
