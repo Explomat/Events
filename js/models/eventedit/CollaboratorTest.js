@@ -11,5 +11,5 @@ module.exports = function(args){
 	this.maxscore = (Number(args.maxscore) === 0 || !args.maxscore) ? 1 : Number(args.maxscore) ;
 
 	//state fields
-	this.percent = ceil((100.0 / this.maxscore) * this.score, 1);
+	this.percent = ceil(((100.0 / this.maxscore) * this.score).toFixed(1), 1);
 }
