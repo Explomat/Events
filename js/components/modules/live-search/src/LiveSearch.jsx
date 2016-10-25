@@ -1,6 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import listensToClickOutside from 'react-onclickoutside/decorator';
+import listensToClickOutside from 'react-onclickoutside';
 
 import Ajax from '../../../../utils/Ajax';
 import './style/live-search.scss';

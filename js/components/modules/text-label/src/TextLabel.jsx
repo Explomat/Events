@@ -1,5 +1,5 @@
 var React = require('react');
-var extend = require('extend');
+var assign = require('lodash/assign');
 
 require('./style/text-label.scss');
 
@@ -41,10 +41,14 @@ var TextBase = {
 
 	componentDidMount: function(){
 		if (this.props.focused){
-			var inpt = this.refs.inpt;
-			inpt.selectionStart = inpt.selectionEnd = inpt.value.length;
-			inpt.focus();
+			this.focus();
 		}
+	},
+
+	focus(){
+		var inpt = this.refs.inpt;
+		inpt.selectionStart = inpt.selectionEnd = inpt.value.length;
+		inpt.focus();
 	},
 
 	handleChange: function(e) {
@@ -112,7 +116,7 @@ var TextView = React.createClass({
 	}
 });
 
-var TextAreaView = React.createClass(extend(true, {}, TextBase, {
+var TextAreaView = React.createClass(assign({}, TextBase, {
 
 	handleChange: function(e){
 		TextBase.handleChange.call(this, e);

@@ -113,11 +113,13 @@ class Tests extends React.Component {
 		});
 		const checkboxClasses = cx({
 			'buttons__checkbox': true,
-			'buttons__checkbox--display': this.props.allTests.length > 0
+			'buttons__checkbox--display': this.props.allTests.length > 0,
+			'default-button': true
 		});
 		const sortClasses = cx({
 			'buttons__sort': true,
-			'buttons__sort--display': this.props.allTests.length > 0
+			'buttons__sort--display': this.props.allTests.length > 0,
+			'default-button': true
 		});
 		const removeClasses = cx({
 			'default-button': true,
@@ -147,7 +149,7 @@ class Tests extends React.Component {
 						</DropDownIcon>
 						<DropDownIcon 
 							icon={<i className="icon-plus"></i>}
-							className="buttons__add">
+							className="buttons__add default-button">
 								<DropDownIconItem onClick={::this.handleOpenTestsModal} payload='prev' text='Выбрать предварительные тесты'/>
 								<DropDownIconItem onClick={::this.handleOpenTestsModal} payload='post' text='Выбрать пост-тесты'/>
 						</DropDownIcon>
@@ -233,7 +235,8 @@ class Testing extends React.Component {
 		});
 		const dropdownSortClasses = cx({
 			'buttons__sort': true,
-			'buttons__sort--display': this.props.testingList.length > 0
+			'buttons__sort--display': this.props.testingList.length > 0,
+			'default-button': true
 		});
 		const exportToExcelClasses = cx({
 			'default-button': true,

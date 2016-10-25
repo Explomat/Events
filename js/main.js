@@ -6,6 +6,7 @@ var CalendarController = require('./controllers/CalendarController');
 var EventInfoController = require('./controllers/EventInfoController');
 var EventEditController = require('./controllers/EventEditController');
 var EventNewController = require('./controllers/EventNewController');
+var ReasonMissEventController = require('./controllers/ReasonMissEventController');
 var UtilsForControllers = require('./controllers/UtilsForControllers');
 var moment = require('moment');
 
@@ -45,6 +46,11 @@ window.onload = function(){
 	    else {
 	    	EventNewController.start();
 	    }
+	});
+
+	Router.addRoute(Config.hashes.reasonMissEvent, function(){
+		ReasonMissEventController.start();
+		CalendarController.isLoaded(false);
 	});
 
 	function init(curHash){

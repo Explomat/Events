@@ -1,0 +1,11 @@
+var keyMirror = require('keyMirror');
+
+module.exports = keyMirror({
+	REASON_MISS_EVENT_RECEIVE_DATA: null,
+	REASON_MISS_EVENT_SEARCH_DATA: null,
+	REASON_MISS_EVENT_SORT_DATA: null,
+	
+	REASON_MISS_EVENT_REMOVE_USER: null,
+	REASON_MISS_EVENT_REMOVE_USER_SUCCESS: null,
+	REASON_MISS_EVENT_REMOVE_USER_FAILURE: null
+});

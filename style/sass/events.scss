@@ -41,15 +41,13 @@
 
     .default-button {
         display: inline-block;
-        padding: 0 .5em;
+        padding: .5em;
         background-image: linear-gradient(#fff, #ddd);
         border: 1px solid #ccc;
         border-radius: 2px;
         text-align: center;
         cursor: pointer;
         outline: 0;
-        height: 29px;
-        line-height: 29px;
         vertical-align: middle;
 
         &:after {

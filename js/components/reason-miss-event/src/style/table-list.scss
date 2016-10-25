@@ -1,0 +1,138 @@
+.table-list {
+	height: 100%;
+	overflow: hidden;
+	position: relative;
+	border: 1px solid #ccc;
+
+	.table-list__description-is-empty{
+		display: none;
+		position: absolute;
+		top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #ccc;
+
+        &.table-list__description-is-empty--display{
+        	display: inline-block;
+        }
+	}
+
+	.table-list__header {
+		display: table;
+	    width: 100%;
+	    border-collapse: collapse;
+
+		&.table-list__header--header {
+			position: absolute;
+		    z-index: 10;
+		    width: calc(100% - 17px);
+		    background: #fff;
+		}
+		.table-list__header-row {
+			text-align: left;
+		    display: table-row;
+			border-bottom: 1px solid #ddd;
+
+			.table-list__header-cell {
+				display: table-cell;
+			    box-sizing: border-box;
+			    height: 32px;
+			    padding: 4px;
+			    vertical-align: middle;
+			    cursor: pointer;
+				position: relative;
+				font-weight: bold;
+
+				&.table-list__header-cell--hide {
+					opacity: 0;
+				}
+
+				&.table-list__header-cell--1{
+					width: 1%;
+				}
+
+				&.table-list__header-cell--5{
+					width: 5%;
+				}
+
+				&.table-list__header-cell--10{
+					width: 20%;
+				}
+
+				&.table-list__header-cell--20{
+					width: 20%;
+				}
+				&.table-list__header-cell--25{
+					width: 25%;
+				}
+				&.table-list__header-cell--30{
+					width: 30%;
+				}
+
+				&.table-list__header-cell--no-hover {
+					&:hover {
+						background-color: transparent;
+					}
+				}
+
+				&:hover {
+					background-color: #f2f2f2;
+				}
+				&:hover > .table-list__caret {
+					display: inline-block;
+				}
+				.table-list__caret {
+					display: none;
+					position: absolute;
+					top: calc(50% - 2px);
+				}
+			}
+		}
+	}
+
+	.table-list__table {
+		position: relative;
+	    overflow-y: auto;
+	    width: 100%;
+	    height: 100%;
+	    /* margin-top: -35px; */
+
+	    .table-list__body {
+			display: table;
+		    width: 100%;
+		    border-collapse: collapse;
+		
+			.table-list__body-row{
+				display: table-row;
+				border-bottom: 1px solid #ddd;
+
+				&:last-child {
+					border-bottom: none;
+				}
+
+				&.table-list__body-row--selected {
+			    	background-color: #f5f5f5;
+			    }
+
+				.table-list__body-cell{
+					display: table-cell;
+				    box-sizing: border-box;
+				    height: 32px;
+				    padding: 6px;
+				    vertical-align: middle;
+
+				    @for $i from 1 through 20 {
+				    	&.table-list__body-cell--#{$i * 5} {
+				    		width: $i * 5%;
+				    	}
+				    }
+
+				    &.table-list__body-cell--icon {
+				    	width: 36px;
+				    	color: #444;
+				    }
+				}
+			}
+		}
+	}
+}

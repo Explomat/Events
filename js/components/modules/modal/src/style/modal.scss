@@ -1,5 +1,5 @@
 @mixin modal-box {
-    position: fixed;
+    position: absolute;
     top: 0px;
     right: 0px;
     bottom: 0px;
@@ -63,7 +63,7 @@
 	@include modal-box;
 
     &.modal-box_color_overlay {
-        background-color: rgba(0, 0, 0, 0.53);
+        background-color: rgba(0, 0, 0, 0.2);
     }
 
     .modal-box__dialog {
@@ -76,6 +76,10 @@
         &.modal-box__dialog_show {
             transition: all .3s ease-in;
             transform: scale(1) translate(0,0) !important;
+            opacity: 1;
+        }
+        &.modal-box__dialog_show--no-transition{
+            transition: none;
             opacity: 1;
         }
         &.modal-box__dialog_close {

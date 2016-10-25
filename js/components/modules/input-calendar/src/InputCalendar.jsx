@@ -9,10 +9,8 @@ moment.locale('ru');
 
 require('./style/input-calendar.scss');
 
-module.exports = React.createClass({
+var InputCalendar = React.createClass({
   displayName: 'InputCalendar',
-
-  mixins: [clickOutSide],
 
   propTypes: {
     className: React.PropTypes.string,
@@ -68,3 +66,5 @@ module.exports = React.createClass({
     );
   }
 });
+
+module.exports = clickOutSide(InputCalendar);

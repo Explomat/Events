@@ -166,11 +166,13 @@ class Collaborators extends React.Component {
 		});
 		const checkboxClasses = cx({
 			'buttons__checkbox': true,
-			'buttons__checkbox--display': this.props.collaborators.length > 0
+			'buttons__checkbox--display': this.props.collaborators.length > 0,
+			'default-button': true
 		});
 		const dropDownClasses = cx({
 			'buttons__dropdown': true,
-			'buttons__dropdown--display': this.props.collaborators.length > 0
+			'buttons__dropdown--display': this.props.collaborators.length > 0,
+			'default-button': true
 		});
 
 		const items = this._prepareNotificateForModal(this.props.collaborators);

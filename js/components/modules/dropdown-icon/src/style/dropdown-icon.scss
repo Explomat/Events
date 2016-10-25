@@ -1,23 +1,31 @@
 .dropdown-icon {
-	position: relative;
+    position: relative;
     display: inline-block;
     vertical-align: middle;
     font-size: inherit;
 
     border-radius: 2px;
-    cursor: default;
+    cursor: pointer;
     font-size: 11px;
     font-weight: bold;
     text-align: center;
     white-space: nowrap;
-    margin-right: 32px;
-    line-height: 27px;
+    line-height: 29px;
+    height: 29px;
     min-width: 54px;
     outline: 0;
+    padding: 0 .5em;
 
     .dropdown-icon__button{
         width: 100%;
         height: inherit;
+
+        .dropdown-icon__icon{
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 5px;
+        }
     }
 
     .dropdown-icon__list-container {
@@ -29,9 +37,11 @@
             .dropdown-icon__list {
                 position: absolute;
                 top: 4px;
-                left: -1px;
+                /*left: -1px;*/
                 z-index: 1000;
-                display: none;
+                visibility: hidden;
+                left:-10000px;
+
                 min-width: 160px;
                 padding: 5px 0;
                 margin: 0;
@@ -46,7 +56,14 @@
                 overflow-y:auto;
 
                 &.dropdown-icon__list--display {
-                    display: block;
+                    visibility: visible;
+                    left: -1px;
+                }
+
+                &.dropdown-icon__list--display-right {
+                    left: initial;
+                    right: -1px;
+                    visibility: visible;
                 }
 
                 .dropdown-icon__item {
@@ -57,6 +74,7 @@
                     margin: 0;
                     padding: 2px 44px 2px 30px;
                     white-space: nowrap;
+                    line-height: 27px;
 
                     &:hover {
                         background-color: #E6F4FA;
@@ -66,8 +84,17 @@
     }
 
     .dropdown-icon__caret {
-        margin-left: 24px;
         display: none;
+        width: 0;
+        height: 0;
+        border-top: 4px dashed;
+        border-right: 4px solid transparent;
+        border-left: 4px solid transparent;
+        color: #444;
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        transform: translateY(-50%);
 
         &.dropdown-icon__caret--display{
             display: inline-block;

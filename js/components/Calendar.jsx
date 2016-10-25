@@ -4,6 +4,7 @@ import Auth from './modules/Auth';
 import BusinessTypeFilter from './authmodules/BusinessTypeFilter';
 import RegionsFilter from './authmodules/RegionsFilter';
 import CreateEventButton from './authmodules/CreateEventButton';
+import ReasonMissEventButton from './authmodules/ReasonMissEventButton';
 import DropDown from './modules/dropdown';
 import SearchBar from './modules/search-bar';
 import TextOverflow from './modules/text-overflow';
@@ -349,6 +350,9 @@ var Calendar = React.createClass({
 					<div className="calendar-table__footer clearfix">
 						<Auth componentsDenied={componentsDenied}>
 							<CreateEventButton href='#event/new' className='calendar-table__create-event' />
+						</Auth>
+						<Auth componentsDenied={componentsDenied}>
+							<ReasonMissEventButton href='#reasonMissEvent' />
 						</Auth>
 					</div>
 					<div className={"overlay-loading " + isLoadingClass}></div>

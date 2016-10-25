@@ -257,11 +257,13 @@ class Tutors extends React.Component {
 		});
 		const checkboxTutorsClasses = cx({
 			'buttons__checkbox': true,
-			'buttons__checkbox--display': this.props.tutors.length > 0
+			'buttons__checkbox--display': this.props.tutors.length > 0,
+			'default-button': true
 		});
 		const dropDownTutorsClasses = cx({
 			'buttons__dropdown': true,
-			'buttons__dropdown--display': this.props.tutors.length > 0
+			'buttons__dropdown--display': this.props.tutors.length > 0,
+			'default-button': true
 		});
 
 		const removeLectorsClasses = cx({
@@ -271,11 +273,13 @@ class Tutors extends React.Component {
 		});
 		const checkboxLectorsClasses = cx({
 			'buttons__checkbox': true,
-			'buttons__checkbox--display': this.props.lectors.length > 0
+			'buttons__checkbox--display': this.props.lectors.length > 0,
+			'default-button': true
 		});
 		const dropDownLectorsClasses = cx({
 			'buttons__dropdown': true,
-			'buttons__dropdown--display': this.props.lectors.length > 0
+			'buttons__dropdown--display': this.props.lectors.length > 0,
+			'default-button': true
 		});
 		return (
 			<div className="event-edit-tutors">
@@ -341,7 +345,7 @@ class Tutors extends React.Component {
 
 							<DropDownIcon
 								icon={<i className="icon-plus"></i>}
-								className="buttons__add">
+								className="buttons__add default-button">
 									<DropDownIconItem onClick={::this.handleOpenInnerLectorModal} payload='inner' text='Выбрать внутреннего преподавателя'/>
 									<DropDownIconItem onClick={::this.handleOpenNewLectorModal} payload='new' text='Добавить нового преподавателя'/>
 							</DropDownIcon>

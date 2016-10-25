@@ -148,7 +148,8 @@ class Requests extends React.Component {
 		});
 		const dropdownSortclasses = cx({
 			'event-edit-requests__base-sort': true,
-			'event-edit-requests__base-sort--display': this.props.requestItems.length > 0
+			'event-edit-requests__base-sort--display': this.props.requestItems.length > 0,
+			'default-button': true
 		});
 		return (
 			<div className="event-edit-requests">

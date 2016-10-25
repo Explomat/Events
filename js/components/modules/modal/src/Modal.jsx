@@ -59,7 +59,7 @@ var ModalBoxHeader = React.createClass({
 	render: function(){
 		return (
 			<div className={"modal-box__header " + this.props.className}>
-				<button type="button" className="close" onClick={this.handleClose}>&times;</button>
+				<button type="button" className="close-button" onClick={this.handleClose}>&times;</button>
 				{this.props.children}
 			</div>
 		);
@@ -127,7 +127,6 @@ var ModalBoxFooter = React.createClass({
 		return (
 			<div className={"modal-box__footer " + this.props.className}>
 				{this.props.children}
-				<button type="button" className="btn btn-primary" onClick={this.handleSave} disabled={this.props.disabled}>Сохранить</button>
 			</div>
 		);
 	}
@@ -163,7 +162,7 @@ var ModalBox = React.createClass({
 
     getChildContext: function() {
         return { 
-        	delay: this.props.delay || 350,
+        	delay: this.props.delay,
         	parent: this
         };
     },
@@ -179,17 +178,24 @@ var ModalBox = React.createClass({
     },
 
     shift: function(){
+    	var delay = this.props.delay;
+    	if (delay === 0){
+    		this.refs.modalBox.classList.add('modal-box_color_overlay');
+    		return;
+    	}
+
     	var coordinates = this.refs.modal.getBoundingClientRect();
     	var shiftX = this.props.positionX - coordinates.left;
-    	var shiftY = this.props.positionY - coordinates.top;
+    	//var shiftY = this.props.positionY - coordinates.top;
 		var x = Number(shiftX);
-		var y = Number(shiftY);
+		//var y = Number(shiftY);
+
 		this.refs.modal.style.transform = 'scale(' + this.props.scale +')';
 		this.refs.modal.style.transformOrigin = x + 'px '+ this.props.positionY + 'px';
     	
 		setTimeout(function(){
 			this.refs.modalBox.classList.add('modal-box_color_overlay');
-		}.bind(this), this.props.delay);
+		}.bind(this), delay);
     },
 
     hideParentScroll: function(){
@@ -227,9 +233,12 @@ var ModalBox = React.createClass({
         if (this.state.isMounted) {
             modalClasses = ' modal-box__dialog_show';
         }
+        if (this.props.delay === 0){
+        	modalClasses += ' modal-box__dialog_show--no-transition';
+        }
 		return (
-			<div ref="modalBox" className={"modal-box " + this.props.className} style={{display: "block"}}>
-				<div ref="modal" className={"modal-box__dialog modal-box__dialog_translate" + modalClasses}>
+			<div ref="modalBox" className={"modal-box"} style={{display: "block"}}>
+				<div ref="modal" className={"modal-box__dialog modal-box__dialog_translate" + modalClasses + " " + this.props.className}>
 					{this.props.children}
 				</div>
 			</div>

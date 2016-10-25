@@ -252,7 +252,8 @@ class Files extends React.Component {
 		});
 		const checkboxFilesClasses = cx({
 			'buttons__checkbox': true,
-			'buttons__checkbox--display': this.props.files.length > 0
+			'buttons__checkbox--display': this.props.files.length > 0,
+			'default-button': true
 		});
 
 		const removeLibraryMaterialsClasses = cx({
@@ -262,7 +263,8 @@ class Files extends React.Component {
 		});
 		const checkboxLibraryMaterialsClasses = cx({
 			'buttons__checkbox': true,
-			'buttons__checkbox--display': this.props.libraryMaterials.length > 0
+			'buttons__checkbox--display': this.props.libraryMaterials.length > 0,
+			'default-button': true
 		});
 
 		const isUploadingFilesClasses = cx({
