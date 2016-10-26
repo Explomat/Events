@@ -20,10 +20,11 @@ class ReasonMissEventButton extends React.Component {
 
 	render() {
 		const { href, className } = this.props;
-		const classes = cx('events-btn', className);
+		const classes = cx('event-btn', 'event-btn--reverse', 'calendar-table__reason-miss-event', className);
 		return (
 			<a href={href} className={classes} title="Указать причину">
 				<i className="calendar-table__reason-icon"></i>
+				<span>?</span>
 			</a>
 		);
 	}

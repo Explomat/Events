@@ -261,10 +261,14 @@ class Files extends React.Component {
 			'buttons__remove--display': isDisplayLibraryMaterialsButtons,
 			'default-button': true
 		});
-		const checkboxLibraryMaterialsClasses = cx({
+		const dropdownLibraryMaterialsClasses = cx({
 			'buttons__checkbox': true,
 			'buttons__checkbox--display': this.props.libraryMaterials.length > 0,
 			'default-button': true
+		});
+		const checkboxLibraryMaterialsClasses = cx({
+			'buttons__checkbox': true,
+			'buttons__checkbox--display': this.props.libraryMaterials.length > 0
 		});
 
 		const isUploadingFilesClasses = cx({
@@ -285,8 +289,7 @@ class Files extends React.Component {
 							className={checkboxFilesClasses}
 							icon={<CheckBox 
 									onChange={::this.handleToggleCheckedAllFiles} 
-									checked={this.props.checkedAllFiles} 
-									className={checkboxFilesClasses}/>}
+									checked={this.props.checkedAllFiles} />}
 						/>
 						<div className="buttons__funcs">
 							<label className="buttons__upload default-button">
@@ -317,7 +320,7 @@ class Files extends React.Component {
 				<div className="library-materials">
 					<div className="buttons">
 						<DropDownIcon 
-							className={checkboxLibraryMaterialsClasses}
+							className={dropdownLibraryMaterialsClasses}
 							icon={<CheckBox 
 									onChange={::this.handleToggleCheckedAllLibraryMaterials} 
 									checked={this.props.checkedAllLibraryMaterials} 

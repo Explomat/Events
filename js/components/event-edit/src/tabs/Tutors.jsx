@@ -271,6 +271,11 @@ class Tutors extends React.Component {
 			'buttons__remove--display': isDisplayLectorsButtons,
 			'default-button': true
 		});
+		const dropdownLectorsClasses = cx({
+			'buttons__checkbox': true,
+			'buttons__checkbox--display': this.props.lectors.length > 0,
+			'default-button': true
+		});
 		const checkboxLectorsClasses = cx({
 			'buttons__checkbox': true,
 			'buttons__checkbox--display': this.props.lectors.length > 0,
@@ -289,8 +294,7 @@ class Tutors extends React.Component {
 							className={checkboxTutorsClasses}
 							icon={<CheckBox 
 									onChange={::this.handleToggleCheckedAllTutors} 
-									checked={this.props.checkedAllTutors} 
-									className={checkboxTutorsClasses}/>}>
+									checked={this.props.checkedAllTutors} />}>
 							<DropDownIconItem onClick={this.handleToggleCheckedTutorsConditions} payload='{"main": "true"}' text='Основной' />
 						</DropDownIcon>
 						<DropDownIcon className={dropDownTutorsClasses} icon={<i className="icon-arrow-combo"></i>}>
@@ -324,8 +328,7 @@ class Tutors extends React.Component {
 							className={checkboxLectorsClasses}
 							icon={<CheckBox 
 									onChange={::this.handleToggleCheckedAllLectors} 
-									checked={this.props.checkedAllLectors} 
-									className={checkboxLectorsClasses}/>}>
+									checked={this.props.checkedAllLectors} />}>
 							<DropDownIconItem onClick={this.handleSelectLectorType} payload={'{"type": "' + LectorTypes.keys.collaborator + '"}'} text='Внутренние'/>
 							<DropDownIconItem onClick={this.handleSelectLectorType} payload={'{"type": "' + LectorTypes.keys.invitee + '"}'} text='Внешние'/>
 						</DropDownIcon>
@@ -346,8 +349,8 @@ class Tutors extends React.Component {
 							<DropDownIcon
 								icon={<i className="icon-plus"></i>}
 								className="buttons__add default-button">
-									<DropDownIconItem onClick={::this.handleOpenInnerLectorModal} payload='inner' text='Выбрать внутреннего преподавателя'/>
-									<DropDownIconItem onClick={::this.handleOpenNewLectorModal} payload='new' text='Добавить нового преподавателя'/>
+									<DropDownIconItem onClick={::this.handleOpenInnerLectorModal} payload='inner' text='Добавить нового внутреннего преподавателя'/>
+									<DropDownIconItem onClick={::this.handleOpenNewLectorModal} payload='new' text='Добавить нового внешнего преподавателя'/>
 							</DropDownIcon>
 						</div>
 					</div>

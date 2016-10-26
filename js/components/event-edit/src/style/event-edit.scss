@@ -9,6 +9,7 @@
     .buttons__checkbox {
       display: none;
       vertical-align: middle;
+      margin-right: 16px;
 
       &.buttons__checkbox--display {
         display: inline-block;
@@ -28,13 +29,12 @@
 
     .buttons__funcs{
       display: inline-block;
+      height: 29px;
 
       .buttons__upload{
-        height: 29px;
-        line-height: 29px;
-        vertical-align: middle;
         margin-right: 16px;
         color: #444;
+        height: inherit;
 
         .buttons__upload-icon{
             color: #444;
@@ -42,6 +42,7 @@
       }
 
       .buttons__sort{
+        height: inherit;
         margin-right: 16px;
         display: none;
         vertical-align: middle;
@@ -54,18 +55,14 @@
 
       .buttons__add{
         margin-right: 8px;
-        height: 29px;
-        line-height: 29px;
-        vertical-align: middle;
         color: #ff5252;
+        height: inherit;
       }
       .buttons__remove{
         margin-right: 8px;
-        height: 29px;
-        line-height: 29px;
-        vertical-align: middle;
         color: #ff5252;
         display: none;
+        height: inherit;
 
         &.buttons__remove--display{
           display: inline-block;
@@ -83,8 +80,6 @@
     width: auto;
     height: auto;
     font-size: 18px;
-    vertical-align: middle;
-    line-height: 30px;
     vertical-align: middle;
   }
 

@@ -1,6 +1,6 @@
 var servers = require('./servers');
 var routerId = '6238833803725312131';
-var customBaseUrl = 'https://study.merlion.ru/custom_web_template.html';
+var customBaseUrl = '/custom_web_template.html';
 
 servers
 	.addServer('6230716351040721570')

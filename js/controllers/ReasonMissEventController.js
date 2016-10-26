@@ -30,7 +30,9 @@ module.exports = {
 			else {
 				ReactDOM.render(React.createElement(EventError.default, {error: "У вас нет прав!"}), appElem);
 			} 
-		});
+		}, function(err){
+			ReactDOM.render(React.createElement(EventError.default, {error: err.message}), appElem);
+		})
 	},
 
 	stop: function () {

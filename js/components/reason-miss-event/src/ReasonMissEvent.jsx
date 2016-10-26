@@ -95,10 +95,10 @@ class UserItem extends React.Component {
 				<div className="table-list__body-cell table-list__body-cell--icon">
 					<i className="icon-user"></i>
 				</div>
-				<div className="table-list__body-cell">{userName}</div>
-				<div className="table-list__body-cell">{eventName}</div>
-				<div className="table-list__body-cell">{eventDate}</div>
-				<div className="table-list__body-cell table-list__body-cell--10">
+				<div className="table-list__body-cell table-list__body-cell--35">{userName}</div>
+				<div className="table-list__body-cell table-list__body-cell--25">{eventName}</div>
+				<div className="table-list__body-cell table-list__body-cell--25">{eventDate}</div>
+				<div className="table-list__body-cell table-list__body-cell--15">
 					<button className="default-button" onClick={::this.handleToggleModal} title="Указать причину">
 						<span>Указать причину</span>
 					</button>
@@ -139,12 +139,12 @@ class ReasonMissEvent extends Component {
 		});
 	    return (
 	    	<div className="reason-miss-event">
+	    		<div id="modal"></div>
 	    		<div className="reason-miss-event__header">
 	    			<a href="#calendar" className="icon-left-open-big reason-miss-event__icon"></a>
 	    			<span className="reason-miss-event__description">Укажите причину</span>
 	    		</div>
 		        <div className="users">
-		        	<div id="modal"></div>
 		        	<SearchBar onSearch={ReasonMissEventActions.searchData} className="users__searchbar" classNameInput="users__searchbar-input"/>
 		        	<span className="users__count">{filteredUsers.length}</span>
 		        	<DropDownIcon

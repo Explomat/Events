@@ -26,14 +26,10 @@
 			.buttons__add{
 				margin-right: 8px;
 				color: #ff5252;
-				line-height: 27px;
-    			vertical-align: middle;
 			}
 			.buttons__remove{
 				margin-right: 8px;
 				display: none;
-				line-height: 27px;
-    			vertical-align: middle;
 				color: #ff5252;
 
 				&.buttons__remove--display{
@@ -42,8 +38,6 @@
 			}
 			.buttons__notificate{
 				display: none;
-				height: 29px;
-    			vertical-align: middle;
 				color: #ff5252;
 
 				&.buttons__notificate--display{

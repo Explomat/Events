@@ -1,5 +1,8 @@
 .reason-miss-event {
-	position: relative;
+	max-width: 1200px;
+    margin: 0 auto;
+    height: 720px;
+    position: relative;
 
 	.close-button{
 	    outline: 0;
@@ -34,7 +37,6 @@
 	    color: #FFF;
 	    background-color: #646464;
 	    font-size: 1.1em;
-	    margin-bottom: 16px;
 
 	    .reason-miss-event__icon {
 	    	font-size: 1.5em;
@@ -75,8 +77,8 @@
 	}
 
 	.users{
-		height: 400px;
 		position: relative;
+		padding: 8px;
 		
 		.users__searchbar {
 			margin-bottom: 8px;

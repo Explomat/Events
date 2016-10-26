@@ -133,8 +133,7 @@ class Tests extends React.Component {
 						className={checkboxClasses}
 						icon={<CheckBox 
 								onChange={::this.handleToggleCheckedAll} 
-								checked={this.props.checkedAll} 
-								className={checkboxClasses}/>}>
+								checked={this.props.checkedAll} />}>
 						<DropDownIconItem onClick={this.handleSelectTestsType} payload='{"type": "prev"}' text='Предварительные тесты'/>
 						<DropDownIconItem onClick={this.handleSelectTestsType} payload='{"type": "post"}' text='Пост-тесты'/>
 					</DropDownIcon>

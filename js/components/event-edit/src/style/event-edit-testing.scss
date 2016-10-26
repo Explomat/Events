@@ -17,9 +17,11 @@
 		.buttons {
 			width: 70%;
 			display: inline-block;
+			height: 29px;
 
 			.buttons__sort{
 				display: none;
+				margin-right: 16px;
 
 				&.buttons__sort--display {
 					display: inline-block;
@@ -31,6 +33,7 @@
 			display: none;
 			color: #000;
 			text-decoration: none;
+			height: inherit;
 
 			&:hover, &:active, &:visited {
 	            text-decoration: none;

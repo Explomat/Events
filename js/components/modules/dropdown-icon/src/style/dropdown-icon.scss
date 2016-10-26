@@ -10,7 +10,6 @@
     font-weight: bold;
     text-align: center;
     white-space: nowrap;
-    line-height: 29px;
     height: 29px;
     min-width: 54px;
     outline: 0;
@@ -18,7 +17,10 @@
 
     .dropdown-icon__button{
         width: 100%;
-        height: inherit;
+
+        .dropdown-icon__button-icon {
+            margin-right: 24px;
+        }
 
         .dropdown-icon__icon{
             position: absolute;
