@@ -24,14 +24,14 @@ module.exports = {
 					ReactDOM.render(React.createElement(ReasonMissEvent.default), appElem);
 					isLoaded = true;
 				}).catch(function(err){
-					ReactDOM.render(React.createElement(EventError.default, {error: err || err.message}), appElem);
+					ReactDOM.render(React.createElement(EventError.default, {error: err || err.message, className: 'event-edit-error-box'}), appElem);
 				});
 			}
 			else {
-				ReactDOM.render(React.createElement(EventError.default, {error: "У вас нет прав!"}), appElem);
+				ReactDOM.render(React.createElement(EventError.default, {error: "У вас нет прав!", className: 'event-edit-error-box'}), appElem);
 			} 
 		}, function(err){
-			ReactDOM.render(React.createElement(EventError.default, {error: err || err.message}), appElem);
+			ReactDOM.render(React.createElement(EventError.default, {error: err || err.message, className: 'event-edit-error-box'}), appElem);
 		})
 	},
 
