@@ -352,7 +352,7 @@ var Calendar = React.createClass({
 							<CreateEventButton href='#event/new' className='calendar-table__create-event' />
 						</Auth>
 						<Auth componentsDenied={componentsDenied}>
-							<ReasonMissEventButton href='#reasonMissEvent' />
+							<ReasonMissEventButton href='#reasonMissEvent' onMouseUp={this.handleLoading}/>
 						</Auth>
 					</div>
 					<div className={"overlay-loading " + isLoadingClass}></div>

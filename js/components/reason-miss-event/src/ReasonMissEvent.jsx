@@ -11,7 +11,6 @@ import ReasonMissEventActions from 'actions/ReasonMissEventActions';
 import ReasonMissEventStore from 'stores/ReasonMissEventStore';
 
 import cx from 'classnames';
-import config from 'config';
 
 import './style/reason-miss-event.scss';
 import './style/table-list.scss';

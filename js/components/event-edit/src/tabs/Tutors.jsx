@@ -271,11 +271,6 @@ class Tutors extends React.Component {
 			'buttons__remove--display': isDisplayLectorsButtons,
 			'default-button': true
 		});
-		const dropdownLectorsClasses = cx({
-			'buttons__checkbox': true,
-			'buttons__checkbox--display': this.props.lectors.length > 0,
-			'default-button': true
-		});
 		const checkboxLectorsClasses = cx({
 			'buttons__checkbox': true,
 			'buttons__checkbox--display': this.props.lectors.length > 0,

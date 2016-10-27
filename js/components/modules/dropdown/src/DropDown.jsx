@@ -154,7 +154,7 @@ class DropDown extends React.Component {
 			<div className={classes}>
 				<button className={classesButton} type="button" onClick={::this.handleToggleDisplay}>
 					<span className={classesTitle}>{selectedText}</span>
-					<span className="dropdown-box__caret caret"></span>
+					<span className="dropdown-box__caret dropdown-box__caret--display"></span>
 				</button>
 				<ul className={classesChild}>{list}</ul>
 			</div>

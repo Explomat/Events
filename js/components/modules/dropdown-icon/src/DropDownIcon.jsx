@@ -103,9 +103,6 @@ class _DropDownIcon extends React.Component {
 	render() {
 		const isChildren = this._isChildren(this.props.children);
 		const className = cx('dropdown-icon', this.props.className);
-		const dropDownButtonIconClasses = cx({
-			'dropdown-icon__button-icon': isChildren
-		})
 		const classNameList = cx({
 			'dropdown-icon__list': true,
 			'dropdown-icon__list--display': this.state.display,
@@ -118,7 +115,7 @@ class _DropDownIcon extends React.Component {
 		return (
 			<div className={className}>
 				<div className="dropdown-icon__button" type="button" onClick={::this.handleToggleDisplay}>
-					<span className={dropDownButtonIconClasses}>{this.props.icon}</span>
+					<span className="dropdown-icon__button-icon">{this.props.icon}</span>
 					<span className={caretClassName}></span>
 				</div>
 				<div ref="listContainer" className="dropdown-icon__list-container">

@@ -16,10 +16,13 @@
     padding: 0 .5em;
 
     .dropdown-icon__button{
-        width: 100%;
+        width: 50px;
+        height: 100%;
 
         .dropdown-icon__button-icon {
-            margin-right: 24px;
+            position: absolute;
+            left: 5px;
+            top: 50%;
         }
 
         .dropdown-icon__icon{
