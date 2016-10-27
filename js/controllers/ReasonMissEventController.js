@@ -23,15 +23,15 @@ module.exports = {
 					ReasonMissEventActions.receiveData(data);
 					ReactDOM.render(React.createElement(ReasonMissEvent.default), appElem);
 					isLoaded = true;
-				}).catch(function(e){
-					console.error(e.stack);
+				}).catch(function(err){
+					ReactDOM.render(React.createElement(EventError.default, {error: err || err.message}), appElem);
 				});
 			}
 			else {
 				ReactDOM.render(React.createElement(EventError.default, {error: "У вас нет прав!"}), appElem);
 			} 
 		}, function(err){
-			ReactDOM.render(React.createElement(EventError.default, {error: err.message}), appElem);
+			ReactDOM.render(React.createElement(EventError.default, {error: err || err.message}), appElem);
 		})
 	},
 

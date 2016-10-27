@@ -40,7 +40,12 @@ class UserItem extends React.Component {
 		const placeholderClasses = cx({
 			'modal__placeholder': true,
 			'modal__placeholder--display': isDisplayPlaceholder
-		})
+		});
+		const saveClasses = cx({
+			'event-btn': true,
+			'event-btn--reverse': true,
+			'event-btn--disabled': reason === ''
+		});
 		return (
 				<ModalBox className="modal__container" delay={0}>
 					<ModalBoxContent>
@@ -53,7 +58,7 @@ class UserItem extends React.Component {
 							<TextAreaView ref="textarea" onChange={::this.handleChangeReason} value={reason}/>
 						</ModalBoxBody>
 						<ModalBoxFooter>
-							<button className="default-button" disabled={reason === ''} onClick={::this.handleRemoveUser}>Сохранить</button>
+							<button className={saveClasses} onClick={::this.handleRemoveUser}>Сохранить</button>
 						</ModalBoxFooter>
 					</ModalBoxContent>
 				</ModalBox>

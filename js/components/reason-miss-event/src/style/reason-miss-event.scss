@@ -3,6 +3,8 @@
     margin: 0 auto;
     height: 720px;
     position: relative;
+    background-color: #fff;
+    box-shadow: 2px 2px 10px 0 #979797;
 
 	.close-button{
 	    outline: 0;
@@ -107,7 +109,7 @@
 
 		.users__table{
 			position: relative;
-			height: 358px;
+			height: 605px;
 
 			.users__table-list{
 				margin-top: 0px;
