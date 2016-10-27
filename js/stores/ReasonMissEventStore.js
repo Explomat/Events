@@ -53,6 +53,11 @@ function removeUser(newState, eventResultID){
 }
 
 
+function deleteUserError(){
+	delete _reasonMissEvent['errorRemoveUser'];
+	_reasonMissEvent = assign({}, _reasonMissEvent);
+}
+
 var ReasonMissEventStore = extend({}, EventEmitter.prototype, {
 	
 	getData: function(){
@@ -91,6 +96,9 @@ ReasonMissEventStore.dispatchToken = AppDispatcher.register(function(payload) {
 			break;
 		case ReasonMissEventConstants.REASON_MISS_EVENT_REMOVE_USER_FAILURE:
 			setFailure(action.error, "errorRemoveUser", "fetchingRemoveUser");
+			break;
+		case ReasonMissEventConstants.REASON_MISS_EVENT_DELETE_USER_ERROR:
+			deleteUserError();
 			break;
 		default:
 			return true;

@@ -57,7 +57,7 @@ class UserItem extends React.Component {
 							<TextAreaView ref="textarea" onChange={::this.handleChangeReason} value={reason}/>
 						</ModalBoxBody>
 						<ModalBoxFooter>
-							<button className={saveClasses} onClick={::this.handleRemoveUser}>Сохранить</button>
+							<button className={saveClasses} disabled={reason === ''} onClick={::this.handleRemoveUser}>Сохранить</button>
 						</ModalBoxFooter>
 					</ModalBoxContent>
 				</ModalBox>
@@ -117,12 +117,18 @@ class UserItem extends React.Component {
 
 class ReasonMissEvent extends Component {
 
+	constructor(props){
+		super(props);
+
+		this._onChange = this._onChange.bind(this);
+	}
+
 	componentDidMount() {
-		ReasonMissEventStore.addChangeListener(this._onChange.bind(this));
+		ReasonMissEventStore.addChangeListener(this._onChange);
 	}
 
 	componentWillUnmount() {
-		ReasonMissEventStore.removeChangeListener(this._onChange.bind(this));
+		ReasonMissEventStore.removeChangeListener(this._onChange);
 	}
 
 	_onChange() {
@@ -161,7 +167,7 @@ class ReasonMissEvent extends Component {
 								<DropDownIconItem onClick={::this.handleSort} payload='{"key": "eventDate", "isAsc": "true"}' text='Сортировать по дате(по возрастанию)'/>
 								<DropDownIconItem onClick={::this.handleSort} payload='{"key": "eventDate", "isAsc": "false"}' text='Сортировать по дате(по убыванию)'/>
 					</DropDownIcon>
-					{errorRemoveUser && <AlertDanger className="users__error" text={errorRemoveUser}/>}
+					{errorRemoveUser && <AlertDanger onClose={ReasonMissEventActions.deleteUserError} className="users__error" text={errorRemoveUser}/>}
 					<div className="users__table">
 			      		<div ref="table" className="table-list users__table-list">
 							<span className={tableDescrClasses}>Нет данных</span>

@@ -51,5 +51,11 @@ module.exports = {
 				error: err
 			});
 		})
+	},
+
+	deleteUserError(){
+		AppDispatcher.handleAction({
+			actionType: ReasonMissEventConstants.REASON_MISS_EVENT_DELETE_USER_ERROR
+		});
 	}
 }
