@@ -3,8 +3,11 @@
   "description": "Events",
   "author": "Matveev Savva",
   "scripts": {
-    "development": "webpack --config webpack.config.js",
-    "production": "webpack --config webpack.production.config.js"
+    "set-prod": "set NODE_ENV=production && node environment.js > js/env.js",
+    "set-dev": "set NODE_ENV=development && node environment.js > js/env.js",
+    "start-dev-server": "npm run set-dev && webpack-dev-server",
+    "development": "npm run set-dev && webpack --config webpack.config.js",
+    "production": "npm run set-prod && webpack --config webpack.production.config.js && npm run set-dev"
   },
   "dependencies": {
     "blacklist": "^1.1.2",

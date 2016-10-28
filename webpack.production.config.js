@@ -71,6 +71,11 @@ module.exports = {
         }),
         new ExtractTextPlugin('style/style.min.css', { allChunks: true }),
         new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ru/),
+        new webpack.DefinePlugin({
+          "process.env": { 
+             NODE_ENV: JSON.stringify("production") 
+           }
+        }),
         new webpack.optimize.UglifyJsPlugin({ mangle: false })
     ]
 }
