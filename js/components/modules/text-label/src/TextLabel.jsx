@@ -118,11 +118,20 @@ var TextView = React.createClass({
 
 var TextAreaView = React.createClass(assign({}, TextBase, {
 
-	handleChange: function(e){
-		TextBase.handleChange.call(this, e);
+	componentWillReceiveProps: function(nextProps){
+		this.setState({value: nextProps.value});
+		this._setHeight();
+	},
+
+	_setHeight(){
 		setTimeout(function(){
 			this.setState({height: this.refs.hiddenBlock.offsetHeight});
-		}.bind(this), 0)
+		}.bind(this), 0);
+	},
+
+	handleChange: function(e){
+		TextBase.handleChange.call(this, e);
+		this._setHeight();
 	},
 
 	handleAddtranslate: function(e){
