@@ -89,6 +89,9 @@ class EventInfoBody extends React.Component {
 	constructor(props){
 		super(props);
 		this.handleChangeMembers = this.handleChangeMembers.bind(this);
+		this.state = {
+			selectedPayload: props.members[0].payload
+		}
 	}
 
 	static propTypes = {
@@ -97,10 +100,6 @@ class EventInfoBody extends React.Component {
 		tutors: React.PropTypes.array,
 		lectors: React.PropTypes.array,
 		files: React.PropTypes.array
-	}
-
-	state = {
-		selectedPayload: this.props.members[0].payload
 	}
 
 	handleChangeMembers(e, payload/*, text, index*/){

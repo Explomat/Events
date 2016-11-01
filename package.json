@@ -10,6 +10,7 @@
     "production": "npm run set-prod && webpack --config webpack.production.config.js && npm run set-dev"
   },
   "dependencies": {
+    "babel-polyfill": "^6.16.0",
     "blacklist": "^1.1.2",
     "classnames": "^2.2.3",
     "es6-promise": "^2.3.0",

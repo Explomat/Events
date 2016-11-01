@@ -19,11 +19,10 @@ class TreeNode extends React.Component {
 		this._isMounted = true;
 		this.onChildDisplayToggle = this.onChildDisplayToggle.bind(this);
 		this.onCategorySelect = this.onCategorySelect.bind(this);
-	}
-
-	state = {
-		children: [],
-		isExpand: this.props.isExpand || false
+		this.state = {
+			children: [],
+			isExpand: props.isExpand || false
+		}
 	}
 
 	componentDidMount(){

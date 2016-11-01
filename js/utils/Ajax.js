@@ -1,3 +1,4 @@
+import env from './env';
 var Promise = require('es6-promise').Promise;
 var AJAX_TIME_OVER = 10000;
 var CACHE_MAX_REQUESTS = 10;
@@ -27,7 +28,7 @@ module.exports = {
         }
         if (!xmlHttp && typeof(XMLHttpRequest) != 'undefined')
             xmlHttp = new XMLHttpRequest();
-        //xmlHttp.withCredentials = true;
+        xmlHttp.withCredentials = env !== 'production';
         return xmlHttp;
     },
 

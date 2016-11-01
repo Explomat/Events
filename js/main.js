@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 var Router = require('./utils/Crossroads');
 var Hasher = require('./utils/Hasher');
 var Config = require('./config');

@@ -40,10 +40,9 @@ class Tests extends React.Component {
 	constructor(props){
 		super(props);
 		this.testType = null;
-	}
-
-	state = {
-		isShowTestsModal: false
+		this.state = {
+			isShowTestsModal: false
+		}
 	}
 
 	_isSomeChecked(items){

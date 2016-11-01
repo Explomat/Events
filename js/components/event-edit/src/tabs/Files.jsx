@@ -79,15 +79,14 @@ class Files extends React.Component {
 		this.MAX_LIBRARY_MATERIAL_COUNT = 2;
 		this.LIBRARY_MATERIAL_MIME_TYPE = 'application/pdf';
 		this.LIBRARY_MATERIAL_SHOW_TYPE = 'pdf';
+		this.state = {
+			isShowFiles: false,
+			isShowLibraryMaterials: false
+		}
 	} 
 
 	static defaultProps = {
 		files: []
-	}
-
-	state = {
-		isShowFiles: false,
-		isShowLibraryMaterials: false
 	}
 
 	_isCorrectLibraryMaterialsType(libraryMaterials, type){

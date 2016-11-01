@@ -34,6 +34,18 @@ class SelectItems extends React.Component {
 		this._setData = this._setData.bind(this);
 		this._castType = this._castType.bind(this);
 		this.handleCloseError = this.handleCloseError.bind(this);
+		this.state = {
+			headerCols: props.headerCols || [],
+			items: props.items || [],
+			selectedItems: props.selectedItems || [],
+			maxSelectedItems: Number.MAX_VALUE,
+			search: '',
+			page: 1,
+			pagesCount: 1,
+			isLoading: true,
+			error: '',
+			isShowError: false
+		}
 	} 
 
 	static childContextTypes = {
@@ -58,19 +70,6 @@ class SelectItems extends React.Component {
 		title: React.PropTypes.string,
 		onClose: React.PropTypes.func,
 		onSave: React.PropTypes.func
-	}
-
-	state = {
-		headerCols: this.props.headerCols || [],
-		items: this.props.items || [],
-		selectedItems: this.props.selectedItems || [],
-		maxSelectedItems: Number.MAX_VALUE,
-		search: '',
-		page: 1,
-		pagesCount: 1,
-		isLoading: true,
-		error: '',
-		isShowError: false
 	}
 
 	static defaultProps = {

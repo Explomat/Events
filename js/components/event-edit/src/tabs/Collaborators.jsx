@@ -55,11 +55,10 @@ class Collaborators extends React.Component {
 		this.handleCloseModal = this.handleCloseModal.bind(this);
 		this.handleCloseNotificateModal = this.handleCloseNotificateModal.bind(this);
 		this.handleNotificateItems = this.handleNotificateItems.bind(this);
-	}
-
-	state = {
-		isShowModal: false,
-		isShowNotificateModal: false
+		this.state = {
+			isShowModal: false,
+			isShowNotificateModal: false
+		}
 	}
 
 	_isSomeChecked(){

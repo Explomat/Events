@@ -33,6 +33,11 @@ class LiveSearch extends React.Component {
 		this.timeouts = [];
 		this.currentValue = '';
 		this.curKeyUpMilliseconds = 0;
+		this.state = {
+			value: props.value,
+			items: [],
+			display: false
+		}
 	}
 
 	static propTypes = {
@@ -50,12 +55,6 @@ class LiveSearch extends React.Component {
 	static defaultProps = {
 		limit: 5,
 		timeoutDelay: 300
-	}
-
-	state = {
-		value: this.props.value,
-		items: [],
-		display: false
 	}
 
 	componentWillReceiveProps(nextProps){

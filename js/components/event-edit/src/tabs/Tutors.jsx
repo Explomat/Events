@@ -81,11 +81,14 @@ class LectorItem extends React.Component {
 
 class Tutors extends React.Component {
 
-	state = {
-		isShowTutorsModal: false,
-		isShowLectorsModal: false,
-		isShowNewLectorModal: false,
-		isShowInnerLectorsModal: false
+	constructor(props){
+		super(props);
+		this.state = {
+			isShowTutorsModal: false,
+			isShowLectorsModal: false,
+			isShowNewLectorModal: false,
+			isShowInnerLectorsModal: false
+		}
 	}
 
 	_isSomeChecked(items){

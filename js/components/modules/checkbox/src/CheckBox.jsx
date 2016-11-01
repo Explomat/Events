@@ -4,16 +4,19 @@ import './style/checkbox.scss';
 
 class CheckBox extends React.Component {
 
+	constructor(props){
+		super(props);
+		this.state = {
+			checked: props.checked || false
+		}
+	}
+
 	static propsTypes = {
 		checked: React.PropTypes.bool,
 		label: React.PropTypes.string,
 		onChange: React.PropTypes.func,
 		className: React.PropTypes.string,
 		style: React.PropTypes.object
-	}
-
-	state = {
-		checked: this.props.checked || false
 	}
 
 	componentWillReceiveProps(nextProps){

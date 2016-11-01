@@ -29,11 +29,10 @@ class EventEdit extends React.Component {
 		this._onChange = this._onChange.bind(this);
 		this.getTabView = this.getTabView.bind(this);
 		this.handleSelectTab = this.handleSelectTab.bind(this);
+		this.state = merge(getEventEditState(), {
+			selectedTab: { key: 'base', value: 'Основные' }
+		});
 	}
-
-	state = merge(getEventEditState(), {
-		selectedTab: { key: 'base', value: 'Основные' }
-	})
 
 	componentDidMount() {
 		EventEditStore.addChangeListener(this._onChange);

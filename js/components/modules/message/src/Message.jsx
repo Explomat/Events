@@ -51,6 +51,13 @@ class Message extends React.Component {
 
     constructor(props){
         super(props);
+
+        this.state = {
+            subject: '',
+            body: '',
+            selectedItems: props.selectedItems,
+            notSelectedItems: props.notSelectedItems
+        }
     }
 
     static propsTypes = {
@@ -66,13 +73,6 @@ class Message extends React.Component {
         notSelectedItems: [],
         isShow: false,
         title: ' '
-    }
-
-    state = {
-        subject: '',
-        body: '',
-        selectedItems: this.props.selectedItems,
-        notSelectedItems: this.props.notSelectedItems
     }
 
     componentWillReceiveProps(nextProps, prevProps){

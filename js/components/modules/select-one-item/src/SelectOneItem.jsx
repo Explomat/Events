@@ -10,6 +10,10 @@ class SelectOneItem extends React.Component {
 		this.handleCloseModal = this.handleCloseModal.bind(this);
 		this.handleShowModal = this.handleShowModal.bind(this);
 		this.handleSave = this.handleSave.bind(this);
+		this.state = {
+			isShowModal: false, 
+			selectedItem: props.selectedItem
+		}
 	}
 
 	static propTypes = {
@@ -18,11 +22,6 @@ class SelectOneItem extends React.Component {
 		query: React.PropTypes.string,
 		onSave: React.PropTypes.func,
 		selectedItem: React.PropTypes.object
-	};
-
-	state = {
-		isShowModal: false, 
-		selectedItem: this.props.selectedItem
 	}
 
 	componentWillReceiveProps(nextProps){

@@ -73,6 +73,11 @@ class Requests extends React.Component {
 	constructor(props){
 		super(props);
 		this.handleIgnoreStatus = this.handleIgnoreStatus.bind(this);
+		this.state = {
+			isShowRejectReasonInfo: false,
+			rejectRequestId: null,
+			rejectRequestStatus: null
+		}
 	}
 
 	componentDidMount(){
@@ -81,12 +86,6 @@ class Requests extends React.Component {
 
 	componentDidUpdate(){
 		this._updateHeight();
-	}
-
-	state = {
-		isShowRejectReasonInfo: false,
-		rejectRequestId: null,
-		rejectRequestStatus: null
 	}
 
 	_updateHeight(){
