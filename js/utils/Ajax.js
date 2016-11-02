@@ -1,4 +1,4 @@
-import env from './env';
+import env from '../env';
 var Promise = require('es6-promise').Promise;
 var AJAX_TIME_OVER = 10000;
 var CACHE_MAX_REQUESTS = 10;
