@@ -28,7 +28,9 @@ module.exports = {
         }
         if (!xmlHttp && typeof(XMLHttpRequest) != 'undefined')
             xmlHttp = new XMLHttpRequest();
-        xmlHttp.withCredentials = env !== 'production';
+        if (xmlHttp.withCredentials !== undefined){
+            xmlHttp.withCredentials = env !== 'production';
+        }
         return xmlHttp;
     },
 
