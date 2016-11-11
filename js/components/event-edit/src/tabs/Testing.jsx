@@ -3,6 +3,7 @@ import CheckBox from 'components/modules/new-checkbox';
 import {DropDownIcon, DropDownIconItem} from 'components/modules/dropdown-icon';
 import SelectItems from 'components/modules/select-items';
 import EventEditActions from 'actions/EventEditActions';
+import EventEditStore from 'stores/EventEditStore';
 import TestTypes from 'utils/eventedit/TestTypes';
 import {some, pick} from 'lodash';
 import cx from 'classnames';
@@ -254,7 +255,7 @@ class Testing extends React.Component {
 								<DropDownIconItem onClick={::this.handleSortTestingList} payload='{"key": "score", "isAsc": "false"}' text='Сортировать по результату(по убыванию)'/>
 								<DropDownIconItem onClick={::this.handleSortTestingList} payload='{"key": "score", "isAsc": "true"}' text='Сортировать по результату(по возрастанию)'/>
 						</DropDownIcon>
-						<a href={config.url.createPath({action_name: 'exportTestResultsToExcel'})} className={exportToExcelClasses}>
+						<a href={config.url.createPath({action_name: 'exportTestResultsToExcel', event_id: EventEditStore.getData().id})} className={exportToExcelClasses}>
 							<i className="testing__export-to-excel-icon icon fa fa-file-excel-o"></i>
 							<span>Экспорт в excel</span>
 						</a>

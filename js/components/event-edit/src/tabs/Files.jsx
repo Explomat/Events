@@ -1,5 +1,6 @@
 import React from 'react';
 import EventEditActions from 'actions/EventEditActions';
+import EventEditStore from 'stores/EventEditStore';
 import CheckBox from 'components/modules/new-checkbox';
 import {DropDownIcon} from 'components/modules/dropdown-icon';
 import Info from 'components/modules/info';
@@ -172,7 +173,8 @@ class Files extends React.Component {
 
 	handleUpdateFiles(files){
 		this.setState({isShowFiles: false});
-		EventEditActions.files.updateFiles(files);
+		var eventId = EventEditStore.getData().id;
+		EventEditActions.files.updateFiles(files, eventId);
 	}
 
 	handleCloseLibraryMaterialsModal(){
@@ -186,7 +188,8 @@ class Files extends React.Component {
 
 	handleChangeFiles(e){
 		var files = e.target.files;
-		EventEditActions.files.uploadFiles(this.props.files, files);
+		var eventId = EventEditStore.getData().id;
+		EventEditActions.files.uploadFiles(this.props.files, files, eventId);
 		this.refs.fileInput.value = '';
 	}
 
@@ -200,7 +203,8 @@ class Files extends React.Component {
 			return;
 		}
 
-		EventEditActions.files.uploadLibraryMaterials(this.props.libraryMaterials, files);
+		var eventId = EventEditStore.getData().id;
+		EventEditActions.files.uploadLibraryMaterials(this.props.libraryMaterials, files, eventId);
 		libraryMaterialRef.value = '';
 	}
 
@@ -210,14 +214,16 @@ class Files extends React.Component {
 		}).map((f) => {
 			return f.id;
 		});
-		EventEditActions.files.removeFiles(filesIds);
+		var eventId = EventEditStore.getData().id;
+		EventEditActions.files.removeFiles(filesIds, eventId);
 	}
 
 	handleRemoveLibraryMaterials(){
 		var materials = this.props.libraryMaterials.filter((lm) => {
 			return lm.checked === false;
 		});
-		EventEditActions.files.updateLibraryMaterials(materials);
+		var eventId = EventEditStore.getData().id;
+		EventEditActions.files.updateLibraryMaterials(materials, eventId);
 	}
 
 	handleInputFilesClick(e){

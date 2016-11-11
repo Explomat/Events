@@ -60,32 +60,32 @@ module.exports = {
 		return Ajax.sendRequest(Config.url.createPath({action_name: 'processingRequest'}), JSON.stringify({id: id, status: status, reason: reason}), false, true, null, 'POST');
 	},
 
-	uploadFiles: function(curFiles, files){
+	uploadFiles: function(curFiles, files, eventId){
 		/*return Ajax.uploadFiles(Config.url.createPath({action_name: 'uploadFiles'}), files).then(function(files){
 			return JSON.parse(files);
 		});*/
 		var promises = [];
 		for (var i = files.length - 1; i >= 0; i--) {
-			promises.push(Ajax.uploadFile(Config.url.createPath({action_name: 'uploadFile'}), files[i]));
+			promises.push(Ajax.uploadFile(Config.url.createPath({action_name: 'uploadFile', event_id: eventId}), files[i]));
 		};
 		return Promise.all(promises).then(function(files){
 			var parseFiles = files.map(function(f){
 				return JSON.parse(f.replace(/\n/g, "\\\\n").replace(/\r/, ''));
 			}).concat(curFiles);
-			return Ajax.sendRequest(Config.url.createPath({action_name: 'addFiles'}), JSON.stringify({files: parseFiles}), false, true, null, 'POST').then(function(data){
+			return Ajax.sendRequest(Config.url.createPath({action_name: 'addFiles', event_id: eventId}), JSON.stringify({files: parseFiles}), false, true, null, 'POST').then(function(data){
 				return JSON.parse(data.replace(/\n/g, "\\\\n").replace(/\r/, ''));
 			});
 		});
 	},
 
-	updateFiles: function (files) {
-		return Ajax.sendRequest(Config.url.createPath({action_name: 'addFiles'}), JSON.stringify({files: files}), false, true, null, 'POST').then(function(data){
+	updateFiles: function (files, eventId) {
+		return Ajax.sendRequest(Config.url.createPath({action_name: 'addFiles', event_id: eventId}), JSON.stringify({files: files}), false, true, null, 'POST').then(function(data){
 			return JSON.parse(data.replace(/\n/g, "\\\\n").replace(/\r/, ''));
 		});
 	},
 
-	removeFiles: function(ids){
-		return Ajax.sendRequest(Config.url.createPath({action_name: 'removeFiles'}), JSON.stringify({ids: ids}), false, true, null, 'POST').then(function(_files){
+	removeFiles: function(ids, eventId){
+		return Ajax.sendRequest(Config.url.createPath({action_name: 'removeFiles', event_id: eventId}), JSON.stringify({ids: ids}), false, true, null, 'POST').then(function(_files){
 			return JSON.parse(_files.replace(/\n/g, "\\\\n").replace(/\r/, ''));
 			/*return files.map((file) => {
 				return JSON.parse(file);
@@ -93,26 +93,26 @@ module.exports = {
 		});
 	},
 
-	uploadLibraryMaterials: function(curFiles, files){
+	uploadLibraryMaterials: function(curFiles, files, eventId){
 		var promises = [];
 		for (var i = files.length - 1; i >= 0; i--) {
-			promises.push(Ajax.uploadFile(Config.url.createPath({action_name: 'uploadLibraryMaterial'}), files[i]));
+			promises.push(Ajax.uploadFile(Config.url.createPath({action_name: 'uploadLibraryMaterial', event_id: eventId}), files[i]));
 		};
 		return Promise.all(promises).then(function(files){
 			var parseFiles = files.map(function(f){
 				return JSON.parse(f.replace(/\n/g, "\\\\n").replace(/\r/, ''));
 			}).concat(curFiles);
-			return Ajax.sendRequest(Config.url.createPath({action_name: 'addLibraryMaterials'}), JSON.stringify({files: parseFiles}), false, true, null, 'POST').then(function(data){
+			return Ajax.sendRequest(Config.url.createPath({action_name: 'addLibraryMaterials', event_id: eventId}), JSON.stringify({files: parseFiles}), false, true, null, 'POST').then(function(data){
 				return JSON.parse(data.replace(/\n/g, "\\\\n").replace(/\r/, ''));
 			});
 		});
 	},
 
-	updateLibraryMaterials: function (libraryMaterials) {
+	updateLibraryMaterials: function (libraryMaterials, eventId) {
 		var materials = libraryMaterials.map(function(m){
 			return expand(m);
 		})
-		return Ajax.sendRequest(Config.url.createPath({action_name: 'addLibraryMaterials'}), JSON.stringify({files: materials}), false, true, null, 'POST').then(function(data){
+		return Ajax.sendRequest(Config.url.createPath({action_name: 'addLibraryMaterials', event_id: eventId}), JSON.stringify({files: materials}), false, true, null, 'POST').then(function(data){
 			return JSON.parse(data.replace(/\n/g, "\\\\n").replace(/\r/, ''));
 		});
 

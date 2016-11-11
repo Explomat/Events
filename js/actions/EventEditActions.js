@@ -462,11 +462,11 @@ var EventEditActions = {
 			});
 		},
 
-		uploadFiles(curFiles, files){
+		uploadFiles(curFiles, files, eventId){
 			AppDispatcher.handleAction({
 				actionType: EventEditConstants.EVENTEDIT_FILES_UPLOADING_FILES
 			});
-			EventEditAPI.uploadFiles(curFiles, files).then((uploadedFiles) => {
+			EventEditAPI.uploadFiles(curFiles, files, eventId).then((uploadedFiles) => {
 				var filesWithoutErrors = filter(uploadedFiles, (file) => {
 					return file.error === '';
 				});
@@ -503,11 +503,11 @@ var EventEditActions = {
 			})
 		},
 
-		uploadLibraryMaterials(curLibraryMaterials, libraryMaterials){
+		uploadLibraryMaterials(curLibraryMaterials, libraryMaterials, eventId){
 			AppDispatcher.handleAction({
 				actionType: EventEditConstants.EVENTEDIT_FILES_UPLOADING_LIBRARY_MATERIALS
 			});
-			EventEditAPI.uploadLibraryMaterials(curLibraryMaterials, libraryMaterials).then((uploadedlibraryMaterials) => {
+			EventEditAPI.uploadLibraryMaterials(curLibraryMaterials, libraryMaterials, eventId).then((uploadedlibraryMaterials) => {
 				/*var filesWithoutErrors = filter(uploadedlibraryMaterials, (file) => {
 					return file.error === '';
 				});*/
@@ -544,8 +544,8 @@ var EventEditActions = {
 			})
 		},
 
-		removeFiles(ids){
-			EventEditAPI.removeFiles(ids).then((files) => {
+		removeFiles(ids, eventId){
+			EventEditAPI.removeFiles(ids, eventId).then((files) => {
 				var filesWithoutErrors = filter(files, (file) => {
 					return file.error === '';
 				});
@@ -569,8 +569,8 @@ var EventEditActions = {
 			});
 		},
 
-		updateFiles(files){
-			EventEditAPI.updateFiles(files).then((files) => {
+		updateFiles(files, eventId){
+			EventEditAPI.updateFiles(files, eventId).then((files) => {
 				AppDispatcher.handleAction({
 					actionType: EventEditConstants.EVENTEDIT_FILES_UPDATE_FILES,
 					files: files
@@ -578,8 +578,8 @@ var EventEditActions = {
 			});
 		},
 
-		updateLibraryMaterials(libraryMaterials){
-			EventEditAPI.updateLibraryMaterials(libraryMaterials).then((libraryMaterials) => {
+		updateLibraryMaterials(libraryMaterials, eventId){
+			EventEditAPI.updateLibraryMaterials(libraryMaterials, eventId).then((libraryMaterials) => {
 				AppDispatcher.handleAction({
 					actionType: EventEditConstants.EVENTEDIT_FILES_UPDATE_LIBRARY_MATERIALS,
 					libraryMaterials: libraryMaterials
