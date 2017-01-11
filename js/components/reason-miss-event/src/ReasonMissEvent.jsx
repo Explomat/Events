@@ -10,6 +10,8 @@ import Portal from 'components/modules/portal';
 import ReasonMissEventActions from 'actions/ReasonMissEventActions';
 import ReasonMissEventStore from 'stores/ReasonMissEventStore';
 
+import moment from 'moment';
+
 import cx from 'classnames';
 
 import './style/reason-miss-event.scss';
@@ -101,7 +103,7 @@ class UserItem extends React.Component {
 				</div>
 				<div className="table-list__body-cell table-list__body-cell--35">{userName}</div>
 				<div className="table-list__body-cell table-list__body-cell--25">{eventName}</div>
-				<div className="table-list__body-cell table-list__body-cell--25">{eventDate}</div>
+				<div className="table-list__body-cell table-list__body-cell--25">{moment(eventDate).format('DD MMMM YYYY, HH:mm')}</div>
 				<div className="table-list__body-cell table-list__body-cell--15">
 					<button className="default-button" onClick={::this.handleToggleModal} title="Указать причину">
 						<span>Указать причину</span>
